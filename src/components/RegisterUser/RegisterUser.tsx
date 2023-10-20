@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Card,
   CardBody,
@@ -9,7 +8,6 @@ import {
   Heading,
   Input,
   Link,
-  Stack,
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
@@ -28,132 +26,133 @@ const RegisterUser = () => {
   };
 
   return (
-    <Box>
-      <Center>
-        <Stack spacing="4">
-          <Card
-            bg="brand.violetLogo50"
-            variant="outline"
-            borderColor="#d8dee4"
-            w="900px"
-            h="800px"
-          >
-            <VStack as="header" spacing="6" mt="8">
-              <Heading
-                paddingTop={10}
-                as="h1"
-                fontWeight="800"
-                fontSize="60px"
-                letterSpacing="-0.5px"
-                color={"brand.greenLogo"}
-              >
-                Registro
-              </Heading>
-            </VStack>
-            <CardBody padding={20}>
-              <form>
-                <FormControl id="name">
-                  <Input
-                    padding={3}
-                    fontSize="20px"
-                    h={"auto"}
-                    placeholder="Nombre Y Apellido"
-                    type="name"
-                    {...register("name")}
-                    bg="white"
-                    color="#003844"
-                    borderColor="#d8dee4"
-                    size="sm"
-                    borderRadius="6px"
-                    _placeholder={{
-                      color: "brand.blueLogo",
-                    }}
-                  />
-                </FormControl>
-                <FormControl id="email" paddingTop="20px">
-                  <Input
-                    padding={3}
-                    fontSize="20px"
-                    h={"auto"}
-                    placeholder="Dirección de correo electrónico"
-                    type="email"
-                    {...register("email")}
-                    bg="white"
-                    color="#003844"
-                    borderColor="#d8dee4"
-                    size="sm"
-                    borderRadius="6px"
-                    _placeholder={{
-                      color: "brand.blueLogo",
-                    }}
-                  />
-                </FormControl>
-                <FormControl id="password" paddingTop="20px">
-                  <Input
-                    padding={3}
-                    fontSize="20px"
-                    h={"auto"}
-                    placeholder="Contraseña"
-                    type="password"
-                    {...register("password")}
-                    bg="white"
-                    color="#003844"
-                    borderColor="#d8dee4"
-                    size="sm"
-                    borderRadius="6px"
-                    _placeholder={{
-                      color: "brand.blueLogo",
-                    }}
-                  />
-                </FormControl>
-                <FormControl id="confirmPassword" paddingTop="20px">
-                  <Input
-                    padding={3}
-                    fontSize="20px"
-                    h={"auto"}
-                    placeholder="Contraseña"
-                    type="password"
-                    color="brand.blueLogo"
-                    {...register("confirmPassword")}
-                    bg="white"
-                    borderColor="#d8dee4"
-                    size="sm"
-                    borderRadius="6px"
-                    _placeholder={{
-                      color: "brand.blueLogo",
-                    }}
-                  />
-                </FormControl>
-                <Center>
-                  <Button
-                    marginTop={8}
-                    fontSize={20}
-                    w={200}
-                    type="submit"
-                    bg="brand.violetLogo"
-                    color="brand.blueLogo"
-                    borderRadius="6px"
-                    size="lg"
-                    fontWeight="400"
-                    _hover={{ bg: "brand.greenLogo", color: "white" }}
-                    onClick={handleSubmit(onSubmit)}
-                  >
-                    Registrate
-                  </Button>
-                </Center>
-              </form>
-              <Center paddingTop={20}>
-                <HStack fontSize="lg" spacing="1">
-                  <Link isExternal color="#006C67" href="#">
-                    ¿Ya tienes una cuenta? Inicia sesión.
-                  </Link>
-                </HStack>
+    <Center>
+      <Card
+        bg="brand.violetLogo50"
+        variant="outline"
+        borderColor="#d8dee4"
+        maxW={
+          breakpointValue === "base"
+            ? "90%"
+            : breakpointValue === "lg"
+            ? "800px"
+            : "500px"
+        }
+        w="100%"
+      >
+        <CardBody padding={10}>
+          <VStack spacing={6}>
+            <Heading
+              as="h1"
+              fontWeight="800"
+              fontSize={{ base: "2xl", md: "4xl" }}
+              letterSpacing="-0.5px"
+              color={"brand.greenLogo"}
+            >
+              Registro
+            </Heading>
+            <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+              <FormControl id="name" w="100%">
+                <Input
+                  padding={3}
+                  fontSize={{ base: "lg", md: "xl" }}
+                  h={"auto"}
+                  placeholder="Nombre Y Apellido"
+                  type="name"
+                  {...register("name")}
+                  bg="white"
+                  color="#003844"
+                  borderColor="#d8dee4"
+                  size="sm"
+                  borderRadius="6px"
+                  _placeholder={{
+                    color: "brand.blueLogo",
+                  }}
+                />
+              </FormControl>
+              <FormControl id="email" paddingTop="20px" w="100%">
+                <Input
+                  padding={3}
+                  fontSize={{ base: "lg", md: "xl" }}
+                  h={"auto"}
+                  placeholder="Dirección de correo electrónico"
+                  type="email"
+                  {...register("email")}
+                  bg="white"
+                  color="#003844"
+                  borderColor="#d8dee4"
+                  size="sm"
+                  borderRadius="6px"
+                  _placeholder={{
+                    color: "brand.blueLogo",
+                  }}
+                />
+              </FormControl>
+              <FormControl id="password" paddingTop="20px" w="100%">
+                <Input
+                  padding={3}
+                  fontSize={{ base: "lg", md: "xl" }}
+                  h={"auto"}
+                  placeholder="Contraseña"
+                  type="password"
+                  {...register("password")}
+                  bg="white"
+                  color="#003844"
+                  borderColor="#d8dee4"
+                  size="sm"
+                  borderRadius="6px"
+                  _placeholder={{
+                    color: "brand.blueLogo",
+                  }}
+                />
+              </FormControl>
+              <FormControl id="confirmPassword" paddingTop="20px" w="100%">
+                <Input
+                  padding={3}
+                  fontSize={{ base: "lg", md: "xl" }}
+                  h={"auto"}
+                  placeholder="Confirma tu contraseña"
+                  type="password"
+                  color="brand.blueLogo"
+                  {...register("confirmPassword")}
+                  bg="white"
+                  borderColor="#d8dee4"
+                  size="sm"
+                  borderRadius="6px"
+                  _placeholder={{
+                    color: "brand.blueLogo",
+                  }}
+                />
+              </FormControl>
+              <Center>
+                <Button
+                  marginTop={8}
+                  fontSize={{ base: "xl", md: "2xl" }}
+                  w="100%"
+                  type="submit"
+                  bg="brand.violetLogo"
+                  color="brand.blueLogo"
+                  borderRadius="6px"
+                  size="lg"
+                  fontWeight="400"
+                  _hover={{ bg: "brand.greenLogo", color: "white" }}
+                >
+                  Registrate
+                </Button>
               </Center>
-            </CardBody>
-          </Card>
-        </Stack>
-      </Center>
-    </Box>
+            </form>
+            <Center paddingTop={20}>
+              <HStack fontSize={{ base: "lg", md: "xl" }} spacing="1" w="100%">
+                <Link isExternal color="#006C67" href="#">
+                  ¿Ya tienes una cuenta? Inicia sesión.
+                </Link>
+              </HStack>
+            </Center>
+          </VStack>
+        </CardBody>
+      </Card>
+    </Center>
   );
 };
+
 export default RegisterUser;
