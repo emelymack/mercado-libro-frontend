@@ -32,8 +32,6 @@ const RegisterUser = () => {
       <Center>
         <Stack spacing="4">
           <Card
-            w={breakpointValue === "base" ? "100%" : "50%"}
-            mt="8"
             bg="brand.violetLogo50"
             variant="outline"
             borderColor="#d8dee4"
