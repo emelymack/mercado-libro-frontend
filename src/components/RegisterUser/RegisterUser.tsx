@@ -11,7 +11,7 @@ import {
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
+import { useForm, FieldValues } from "react-hook-form";
 
 const RegisterUser = () => {
   const breakpointValue = useBreakpointValue({
@@ -21,7 +21,7 @@ const RegisterUser = () => {
   });
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data: unknown) => {
+  const onSubmit = (data: FieldValues) => {
     console.info(data);
   };
 
