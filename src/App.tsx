@@ -1,18 +1,18 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, ChakraProvider, Text } from "@chakra-ui/react";
 import "./App.css";
 import ColorModeSwitch from "./components/ColorModeSwitch";
+import RegisterUser from "./components/RegisterUser/RegisterUser";
+import theme from "./theme";
 
 function App() {
   return (
-    <>
-      <ColorModeSwitch />
-      <Box bg="brand.blueLogo" fontFamily="heading">
-        Esto es un texto de prueba de le fuente
-      </Box>
-      <Text color="brand.violetLogo" fontFamily="heading">
-        Texto de Encabezado
-      </Text>
-    </>
+    <ChakraProvider theme={theme}>
+      <>
+        <ColorModeSwitch />
+
+        <RegisterUser />
+      </>
+    </ChakraProvider>
   );
 }
 

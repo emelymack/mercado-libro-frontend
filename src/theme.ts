@@ -6,6 +6,7 @@ const colors = {
     blueLogo: "#003844",
     greenLogo: "#006C67",
     violetLogo: "#8884FF",
+    violetLogo50: "#C4C3FF",
   },
 };
 

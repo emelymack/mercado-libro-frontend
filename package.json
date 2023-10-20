@@ -14,9 +14,12 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/gabarito": "^5.0.1",
+    "@hookform/resolvers": "^3.3.2",
     "framer-motion": "^10.16.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.47.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
