@@ -75,7 +75,11 @@ const RegisterUser = () => {
                   padding={3}
                   fontSize={{ base: "lg", md: "xl" }}
                   h={"auto"}
-                  placeholder="Dirección de correo electrónico"
+                  placeholder={
+                    breakpointValue === "base"
+                      ? "Correo electrónico"
+                      : "Dirección de correo electrónico"
+                  }
                   type="email"
                   {...register("email")}
                   bg="white"
@@ -128,7 +132,7 @@ const RegisterUser = () => {
                 <Button
                   marginTop={8}
                   fontSize={{ base: "xl", md: "2xl" }}
-                  w="100%"
+                  w="40%"
                   type="submit"
                   bg="brand.violetLogo"
                   color="brand.blueLogo"
