@@ -1,4 +1,4 @@
-import { CardFooter } from "@chakra-ui/react";
+/* import { CardFooter } from "@chakra-ui/react";
 import styled from "styled-components";
 
 
@@ -7,4 +7,4 @@ export const Title = styled.h1`
     color: grey;
     text-align: center;
     font-size: 2rem;
-`;
+`; */
