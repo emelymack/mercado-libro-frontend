@@ -73,20 +73,71 @@ const Header = () => {
 
   return (
     <header>
-      <Box px={20} py={8} color={'var(--secondary)'}>
+      <Box px={{base: 6, md: 20}} py={8} color={'var(--secondary)'}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <IconButton
-            size={'md'}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={'Open Menu'}
-            display={{ md: 'none' }}
-            onClick={isOpen ? onClose : onOpen}
-          />
           <HStack spacing={8} alignItems={'center'} justifyContent={'space-between'} w={'100%'} >
             <Box>
               <Image src={logo} alt='Dan Abramov' boxSize={200} />
             </Box>
             <Box display={'flex'} alignItems={'center'} color={'var(--secondary)'}>
+              <HStack as={'nav'} spacing={4} display={{ base: 'none', lg: 'flex' }} ms={2} me={3}>
+                <Menu>
+                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />} bg={'none'} color={'var(--secondary)'}>
+                    Categorías
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>Link 1</MenuItem>
+                    <MenuItem>Link 2</MenuItem>
+                    <MenuDivider />
+                    <MenuItem>Link 3</MenuItem>
+                  </MenuList>
+                </Menu>
+                {Links.map((link) => (
+                  <NavLink key={link.name} url={link.url}>{link.name}</NavLink>
+                ))}
+
+                {!isLogged ? (
+                  <NavLink key={'login'} url={''}>LOGIN</NavLink>
+                ) : (
+                  <Menu>
+                    <MenuButton as={Button} bg={'none'} style={{color:'var(--secondary)'}}>
+                      MI CUENTA
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem>Link 1</MenuItem>
+                      <MenuItem>Link 2</MenuItem>
+                      <MenuDivider />
+                      <MenuItem>Link 3</MenuItem>
+                    </MenuList>
+                  </Menu>
+                )}
+              </HStack>
+              <Box ms={3}>
+                <Button bg={'none'} px={{base: 2, md: 3}} className='headerBtn'>
+                  <Image src={searchIcon} boxSize={{base: 20, md:12}} />
+                </Button>
+              </Box>
+              <Box>
+                <Button bg={'none'} px={{base: 2, md: 3}} className='headerBtn'>
+                  <Image src={cartIcon} boxSize={{base: 20, md:12}} />
+                </Button>
+              </Box>
+              <IconButton
+                size={'md'}
+                icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+                aria-label={'Open Menu'}
+                display={{ lg: 'none' }}
+                ms={2}
+                onClick={isOpen ? onClose : onOpen}
+              />
+            </Box>
+          </HStack>
+          
+        </Flex>
+
+        {isOpen ? (
+          <Box pb={4} display={{ lg: 'none' }} mt={8}>
+            <Stack as={'nav'} spacing={4} alignItems={'center'}>
               <Menu>
                 <MenuButton as={Button} rightIcon={<ChevronDownIcon />} bg={'none'} color={'var(--secondary)'}>
                   Categorías
@@ -98,45 +149,6 @@ const Header = () => {
                   <MenuItem>Link 3</MenuItem>
                 </MenuList>
               </Menu>
-              <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }} ms={2} me={3}>
-                {Links.map((link) => (
-                  <NavLink key={link.name} url={link.url}>{link.name}</NavLink>
-                ))}
-              </HStack>
-              {!isLogged ? (
-                <NavLink key={'login'} url={''}>LOGIN</NavLink>
-              ) : (
-                <Menu>
-                  <MenuButton as={Button} bg={'none'} style={{color:'var(--secondary)'}}>
-                    MI CUENTA
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem>Link 1</MenuItem>
-                    <MenuItem>Link 2</MenuItem>
-                    <MenuDivider />
-                    <MenuItem>Link 3</MenuItem>
-                  </MenuList>
-                </Menu>
-              )}
-              
-              <Box ms={3}>
-                <Button bg={'none'} px={3} className='headerBtn'>
-                  <Image src={searchIcon} boxSize={12} />
-                </Button>
-              </Box>
-              <Box>
-                <Button bg={'none'} px={3} className='headerBtn'>
-                  <Image src={cartIcon} boxSize={12} />
-                </Button>
-              </Box>
-            </Box>
-          </HStack>
-          
-        </Flex>
-
-        {isOpen ? (
-          <Box pb={4} display={{ md: 'none' }}>
-            <Stack as={'nav'} spacing={4}>
               {Links.map((link) => (
                 <NavLink key={link.name} url={link.url}>{link.name}</NavLink>
               ))}
