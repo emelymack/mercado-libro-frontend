@@ -1,4 +1,8 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Button,
   Card,
   CardBody,
@@ -12,8 +16,16 @@ import {
   InputGroup,
   InputRightElement,
   Link,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   VStack,
   useBreakpointValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -61,16 +73,28 @@ const RegisterUser = () => {
     resolver: zodResolver(schema),
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isRegistered, setIsRegistered] = useState(false);
+
   useEffect(() => {
     const currentDate = moment().format("YYYY-MM-DD");
     setValue("fecha", currentDate);
   }, [setValue]);
 
-  const [showPassword, setShowPassword] = useState(false);
-  const handleClick = () => setShowPassword(!showPassword);
+  const handleClickPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleClickConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const onSubmit = (data: RegisterDataForm) => {
     console.info(data);
+    setIsRegistered(true);
+    onOpen();
   };
 
   return (
@@ -177,7 +201,7 @@ const RegisterUser = () => {
                       aria-label="Mostrar contraseña"
                       h="1.75rem"
                       size="sm"
-                      onClick={handleClick}
+                      onClick={handleClickPassword}
                       variant="ghost"
                       icon={
                         showPassword ? (
@@ -207,7 +231,7 @@ const RegisterUser = () => {
                     fontSize={{ base: "lg", md: "xl" }}
                     h={"auto"}
                     placeholder="Confirma tu contraseña"
-                    type={showPassword ? "text" : "password"}
+                    type={showConfirmPassword ? "text" : "password"}
                     color="brand.blueLogo"
                     {...register("confirmPassword")}
                     bg="white"
@@ -221,10 +245,10 @@ const RegisterUser = () => {
                       aria-label="Mostrar contraseña"
                       h="1.75rem"
                       size="sm"
-                      onClick={handleClick}
+                      onClick={handleClickConfirmPassword}
                       variant="ghost"
                       icon={
-                        showPassword ? (
+                        showConfirmPassword ? (
                           <ViewOffIcon w={8} h={8} color="brand.blueLogo" />
                         ) : (
                           <ViewIcon w={8} h={8} color="brand.blueLogo" />
@@ -266,6 +290,46 @@ const RegisterUser = () => {
           </VStack>
         </CardBody>
       </Card>
+      {isRegistered && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent bg={"brand.greenLogo"}>
+            <ModalHeader textAlign="center">Registro Exitoso</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Alert
+                bg={"brand.greenLogo"}
+                status="success"
+                variant="subtle"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                textAlign="center"
+                height="200px"
+              >
+                <AlertIcon boxSize="40px" mr={0} />
+                <AlertTitle mt={4} mb={1} fontSize="lg">
+                  Application submitted!
+                </AlertTitle>
+                <AlertDescription maxWidth="sm">
+                  Thanks for submitting your application. Our team will get back
+                  to you soon.
+                </AlertDescription>
+              </Alert>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                bg="brand.violetLogo"
+                color="brand.blueLogo"
+                _hover={{ bg: "brand.blueLogo", color: "white" }}
+                onClick={onClose}
+              >
+                Cerrar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </Center>
   );
 };
