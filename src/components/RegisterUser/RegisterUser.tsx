@@ -4,14 +4,47 @@ import {
   CardBody,
   Center,
   FormControl,
+  FormErrorMessage,
   HStack,
   Heading,
+  IconButton,
   Input,
+  InputGroup,
+  InputRightElement,
   Link,
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { useForm, FieldValues } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useEffect, useState } from "react";
+import moment from "moment";
+import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
+
+const schema = z
+  .object({
+    name: z
+      .string()
+      .min(2, { message: "Debe tener 5 o más caracteres" })
+      .max(50),
+    email: z
+      .string()
+      .email({ message: "Dirección de correo electrónico no válida" }),
+    fecha: z.string().min(6),
+    password: z
+      .string()
+      .min(6, { message: "La contraseña debe tener al menos 6 caracteres" }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: "Se requiere confirmar la contraseña" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "La contraseña no coincide",
+  });
+
+type RegisterDataForm = z.infer<typeof schema>;
 
 const RegisterUser = () => {
   const breakpointValue = useBreakpointValue({
@@ -19,9 +52,24 @@ const RegisterUser = () => {
     md: "md",
     lg: "lg",
   });
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<RegisterDataForm>({
+    resolver: zodResolver(schema),
+  });
 
-  const onSubmit = (data: FieldValues) => {
+  useEffect(() => {
+    const currentDate = moment().format("YYYY-MM-DD");
+    setValue("fecha", currentDate);
+  }, [setValue]);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClick = () => setShowPassword(!showPassword);
+
+  const onSubmit = (data: RegisterDataForm) => {
     console.info(data);
   };
 
@@ -52,8 +100,10 @@ const RegisterUser = () => {
               Registro
             </Heading>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-              <FormControl id="name" w="100%">
+              <FormControl id="name" w="100%" isInvalid={!!errors.name}>
                 <Input
+                  variant="unstyled"
+                  autoComplete="name"
                   padding={3}
                   fontSize={{ base: "lg", md: "xl" }}
                   h={"auto"}
@@ -61,16 +111,22 @@ const RegisterUser = () => {
                   type="name"
                   {...register("name")}
                   bg="white"
-                  color="#003844"
                   borderColor="#d8dee4"
                   size="sm"
                   borderRadius="6px"
-                  _placeholder={{
-                    color: "brand.blueLogo",
-                  }}
                 />
+                {errors.name && (
+                  <FormErrorMessage fontSize="lg" color="red">
+                    {errors.name.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
-              <FormControl id="email" paddingTop="20px" w="100%">
+              <FormControl
+                id="email"
+                paddingTop="20px"
+                w="100%"
+                isInvalid={!!errors.email}
+              >
                 <Input
                   padding={3}
                   fontSize={{ base: "lg", md: "xl" }}
@@ -80,53 +136,108 @@ const RegisterUser = () => {
                       ? "Correo electrónico"
                       : "Dirección de correo electrónico"
                   }
+                  autoComplete="email"
                   type="email"
                   {...register("email")}
                   bg="white"
-                  color="#003844"
                   borderColor="#d8dee4"
                   size="sm"
                   borderRadius="6px"
-                  _placeholder={{
-                    color: "brand.blueLogo",
-                  }}
                 />
+                {errors.email && (
+                  <FormErrorMessage fontSize="lg" color="red">
+                    {errors.email.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
-              <FormControl id="password" paddingTop="20px" w="100%">
-                <Input
-                  padding={3}
-                  fontSize={{ base: "lg", md: "xl" }}
-                  h={"auto"}
-                  placeholder="Contraseña"
-                  type="password"
-                  {...register("password")}
-                  bg="white"
-                  color="#003844"
-                  borderColor="#d8dee4"
-                  size="sm"
-                  borderRadius="6px"
-                  _placeholder={{
-                    color: "brand.blueLogo",
-                  }}
-                />
+              <FormControl
+                id="password"
+                paddingTop="20px"
+                w="100%"
+                isInvalid={!!errors.password}
+              >
+                <InputGroup>
+                  <Input
+                    padding={3}
+                    fontSize={{ base: "lg", md: "xl" }}
+                    h={"auto"}
+                    placeholder="Contraseña"
+                    type={showPassword ? "text" : "password"}
+                    {...register("password")}
+                    bg="white"
+                    color="#003844"
+                    borderColor="#d8dee4"
+                    size="sm"
+                    borderRadius="6px"
+                    autoComplete="new-password"
+                  />
+
+                  <InputRightElement padding={7}>
+                    <IconButton
+                      aria-label="Mostrar contraseña"
+                      h="1.75rem"
+                      size="sm"
+                      onClick={handleClick}
+                      variant="ghost"
+                      icon={
+                        showPassword ? (
+                          <ViewOffIcon w={8} h={8} color="brand.blueLogo" />
+                        ) : (
+                          <ViewIcon w={8} h={8} color="brand.blueLogo" />
+                        )
+                      }
+                    />
+                  </InputRightElement>
+                </InputGroup>
+                {errors.password && (
+                  <FormErrorMessage fontSize="lg" color="red">
+                    {errors.password.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
-              <FormControl id="confirmPassword" paddingTop="20px" w="100%">
-                <Input
-                  padding={3}
-                  fontSize={{ base: "lg", md: "xl" }}
-                  h={"auto"}
-                  placeholder="Confirma tu contraseña"
-                  type="password"
-                  color="brand.blueLogo"
-                  {...register("confirmPassword")}
-                  bg="white"
-                  borderColor="#d8dee4"
-                  size="sm"
-                  borderRadius="6px"
-                  _placeholder={{
-                    color: "brand.blueLogo",
-                  }}
-                />
+              <FormControl
+                id="confirmPassword"
+                paddingTop="20px"
+                w="100%"
+                isInvalid={!!errors.confirmPassword}
+              >
+                <InputGroup>
+                  <Input
+                    padding={3}
+                    fontSize={{ base: "lg", md: "xl" }}
+                    h={"auto"}
+                    placeholder="Confirma tu contraseña"
+                    type={showPassword ? "text" : "password"}
+                    color="brand.blueLogo"
+                    {...register("confirmPassword")}
+                    bg="white"
+                    borderColor="#d8dee4"
+                    size="sm"
+                    autoComplete="off"
+                    borderRadius="6px"
+                  />
+                  <InputRightElement padding={7}>
+                    <IconButton
+                      aria-label="Mostrar contraseña"
+                      h="1.75rem"
+                      size="sm"
+                      onClick={handleClick}
+                      variant="ghost"
+                      icon={
+                        showPassword ? (
+                          <ViewOffIcon w={8} h={8} color="brand.blueLogo" />
+                        ) : (
+                          <ViewIcon w={8} h={8} color="brand.blueLogo" />
+                        )
+                      }
+                    />
+                  </InputRightElement>
+                </InputGroup>
+                {errors.confirmPassword && (
+                  <FormErrorMessage fontSize="lg" color="red">
+                    {errors.confirmPassword.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
               <Center>
                 <Button
