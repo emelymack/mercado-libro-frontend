@@ -1,4 +1,3 @@
-
 import {
     Card,
     Image,
@@ -12,9 +11,15 @@ import {
     Text,
     Flex
   } from "@chakra-ui/react";
-  
-  
-  const ProductoCategorie = () => {
+  interface Props {
+    ap1: string,
+    ap2: string,
+    ap3: string,
+  }
+
+
+  const ProductoCategorie = (props: Props) => {
+
     
     return (
         
@@ -23,17 +28,16 @@ import {
   <Flex  align="center" justify="center">
     <Image
       maxW='150px'
-      src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU'
+      src={props.ap1}
       alt='Green double couch with wooden legs'
       borderRadius='lg'
     />
     </Flex>
     <Stack mt='2' spacing='2'>
-    <Divider />
-      <Heading size='md'>Título</Heading>
+    <Divider/>
+      <Heading size='md'>{props.ap2}</Heading>
       <Text>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-      sed do eiusmod tempor ...
+      {props.ap3}
       </Text>
       
     </Stack>
