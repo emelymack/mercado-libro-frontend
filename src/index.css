@@ -21,7 +21,9 @@
   transform: scale(1.15);
 }
 
-
+.chakra-menu__menu-button:hover {
+  background-color: var(--primary) !important;
+}
 
 .icon-outline {
   border: 2px solid var(--primary) !important;
@@ -38,4 +40,14 @@
 }
 .icon-outline:hover {
   background-color: var(--primary);
+}
+
+.secondaryBtn {
+  border: 3px solid var(--secondary) !important;
+  color: var(--secondary) !important;
+  background-color: transparent !important;
+}
+.secondaryBtn:hover {
+  background-color: var(--secondary) !important;
+  color: var(--primary) !important;
 }

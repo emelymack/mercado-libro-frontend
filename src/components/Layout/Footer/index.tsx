@@ -1,4 +1,4 @@
-import { Box, Container, Divider, Flex, Heading, Image, Link, SimpleGrid, Text } from '@chakra-ui/react'
+import { Box, Container, Flex, Heading, Image, Link, SimpleGrid, Text } from '@chakra-ui/react'
 import facebookIcon from '../../../assets/icons/icon-facebook-white.svg'
 import twitterIcon from '../../../assets/icons/icon-twitter-white.svg'
 import instagramIcon from '../../../assets/icons/icon-instagram-white.svg'
