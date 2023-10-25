@@ -1,4 +1,4 @@
-import { Card, CardBody, Stack, Heading, Divider, Image, Box, CardHeader } from '@chakra-ui/react'
+import { Card, CardBody, Stack, Heading, Image, Box, CardHeader } from '@chakra-ui/react'
 import { Category } from '../../types/category'
 
 const CategoryCard = ({img, title}: Category) => {

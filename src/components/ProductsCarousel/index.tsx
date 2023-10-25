@@ -25,7 +25,7 @@ const ProductsCarousel = ({title, products}: Props) => {
             640: {
               slidesPerView: 2,
             },
-            768: {
+            992: {
               slidesPerView: 3,
             },
           }}

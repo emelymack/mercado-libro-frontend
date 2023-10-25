@@ -38,7 +38,7 @@ const categories = [
 const Categories = () => {
   return (
     <Box px={20} my={20}>
-      <SimpleGrid columns={3} spacingX={6} spacingY={7}>
+      <SimpleGrid columns={{'base': 1, 'md': 2, 'lg': 3 }} spacingX={6} spacingY={7}>
         {categories.map((item) => (
           <CategoryCard img={item.img} title={item.title} />
         ))}
