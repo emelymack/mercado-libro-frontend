@@ -1,12 +1,12 @@
 import './App.css'
-import AccordionTest from './components/AccordionTest'
+import Home from './components/Home'
 import Layout from './components/Layout'
 
 function App() {
 
   return (
     <Layout>
-      <AccordionTest />
+      <Home />
     </Layout>
   )
 }

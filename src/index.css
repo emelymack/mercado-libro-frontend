@@ -2,11 +2,22 @@
   --font-color: #212427;
   --primary: #8884FF;
   --secondary: #003844;
-  --highlight: #006C67: 
+  --highlight: #006C67; 
 }
 
 * {
   font-family: 'Gabarito', sans-serif !important;
+  border-color: transparent !important;
+}
+
+header {
+  background-color: rgba(136, 132, 255, .8);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+footer {
+  background-color: var(--secondary);
+  color: #fff;
 }
 
 .headerBtn:hover {
@@ -50,4 +61,20 @@
 .secondaryBtn:hover {
   background-color: var(--secondary) !important;
   color: var(--primary) !important;
+}
+
+.productsSwiper {
+  position: initial;
+}
+.swiper .swiper-button-prev::after,
+.swiper .swiper-button-next::after {
+  color: var(--highlight);
+  font-weight: 900;
+  font-size: 30px;
+}
+.productsSwiper .swiper-button-prev {
+  left: -10px;
+}
+.productsSwiper .swiper-button-next {
+  right: -10px;
 }
