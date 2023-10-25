@@ -90,7 +90,7 @@ import {
 
 <Container maxW='5x1' bg='white.600' centerContent>
 <Heading size='lg' fontSize='50px' mb={10} mt={10} color='#006C67'>
- Nombre de Categoría
+ NOMBRE DE CATEGORÍA
 </Heading>
 
 <Center>
