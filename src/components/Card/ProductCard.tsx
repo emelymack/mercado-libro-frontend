@@ -4,11 +4,11 @@ import { Product } from '../../types/product'
 const ProductCard = ({img, title, author, price}: Product) => {
   return (
     <Card variant={'productCard'} w={'auto'}>
-      <CardHeader>
+      <CardHeader py={2}>
         <Box display={'flex'} justifyContent={'center'}>
           <Image
             src={img}
-            maxH={250}
+            maxH={200}
             w={'auto'}
             alt={title}
             borderRadius='lg'
@@ -16,8 +16,8 @@ const ProductCard = ({img, title, author, price}: Product) => {
         </Box>
       </CardHeader>
       <Divider bg={'brand.greenLogo'} style={{height: 2, opacity: .75}}  />
-      <CardBody px={8}>
-        <Stack mt='6' spacing='1'>
+      <CardBody px={6} pb={3}>
+        <Stack mt='6' spacing='0'>
           {/* Titulo del libro */}
           <Heading size='md'>{title}</Heading>
           {/* Nombre del autor */}
@@ -31,7 +31,7 @@ const ProductCard = ({img, title, author, price}: Product) => {
         </Stack>
       </CardBody>
       <Divider />
-      <CardFooter px={8}>
+      <CardFooter px={6}>
         <Button variant='brandPrimary' w={'100%'} py={3}>
           Agregar al carrito
         </Button>

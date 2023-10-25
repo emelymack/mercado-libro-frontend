@@ -25,11 +25,14 @@ const ProductsCarousel = ({title, products}: Props) => {
             640: {
               slidesPerView: 2,
             },
-            992: {
+            768: {
               slidesPerView: 3,
             },
+            992: {
+              slidesPerView: 4,
+            },
           }}
-          spaceBetween={30}
+          spaceBetween={20}
           navigation={true} 
           modules={[Navigation]} 
           className="productsSwiper" 

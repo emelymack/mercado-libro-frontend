@@ -3,6 +3,7 @@ import Banner from './Banner'
 import NewsCarousel from './NewsCarousel'
 import TrendingCarousel from './TrendingCarousel'
 import Categories from './Categories'
+import Services from './Services'
 
 const Home = () => {
   return (
@@ -12,10 +13,11 @@ const Home = () => {
         <Box>
           <NewsCarousel />
         </Box>
-        <Box my={12}>
+        <Box my={5}>
           <TrendingCarousel />
         </Box>
         <Categories />
+        <Services />
       </Container>
     </Box>
   )

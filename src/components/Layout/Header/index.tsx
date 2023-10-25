@@ -23,11 +23,6 @@ import NavLink from './NavLink'
 import NavMenu from './Mobile/NavMenu'
 import { useEffect } from 'react'
 
-interface Props {
-  children: React.ReactNode,
-  url: string
-}
-
 const Links = [
   {
     name: 'Novedades',
@@ -100,10 +95,12 @@ const Header = () => {
               </Box>
               <IconButton
                 size={'md'}
-                icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-                aria-label={'Open Menu'}
+                bg={'brand.violetLogo'}
+                color={'brand.blueLogo'}
+                icon={isOpen ? <CloseIcon /> : <HamburgerIcon fontSize={22} fontWeight={900}/>}
+                aria-label={'Abrir menú'}
                 display={{ lg: 'none' }}
-                ms={2}
+                ms={1}
                 onClick={isOpen ? onClose : onOpen}
               />
             </Box>
@@ -111,7 +108,7 @@ const Header = () => {
           
         </Flex>
 
-        {isOpen && ( <NavMenu Links={Links} /> )}
+        {isOpen && ( <NavMenu Links={Links} isLogged={isLogged} /> )}
       </Box>
     </header>
   )
