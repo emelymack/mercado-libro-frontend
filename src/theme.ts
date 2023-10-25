@@ -37,28 +37,48 @@ const components = {
         }
       }
     }
-    
-
   },
   Card: {
     baseStyle: {
       container: {
-        backgroundColor: '#fff',
-        border: `3px solid ${colors.brand.greenLogo} !important`,
-        borderRadius: 20,
-        boxShadow: '6px 8px 15px 3px rgba(0, 0, 0, 0.16)',
-        transition: 'background .2s ease-in-out',
         _hover: {
           backgroundColor: 'brand.violetLogo25'
         }
+      }
+    },
+    variants: {
+      productCard: {
+        container: {
+          backgroundColor: '#fff',
+          border: `3px solid ${colors.brand.greenLogo} !important`,
+          borderRadius: 20,
+          boxShadow: '6px 8px 15px 3px rgba(0, 0, 0, 0.16)',
+          transition: 'background .2s ease-in-out',
+        },
+        body: {
+          paddingTop: '2px',
+          color: '#212427'
+        },
+        footer: {
+          paddingTop: '2px',
+        },
       },
-      body: {
-        paddingTop: '2px',
-        color: '#212427'
-      },
-      footer: {
-        paddingTop: '2px',
-      },
+      categoryCard: {
+        container: {
+          backgroundColor: 'brand.violetLogo50',
+          border: `5px solid ${colors.brand.violetLogo} !important`,
+          borderRadius: 40,
+          boxShadow: '0px 4px 10px 5px rgba(0, 0, 0, 0.25)',
+          transition: 'background .2s ease-in-out',
+        },
+        body: {
+          paddingTop: '2px',
+          color: '#212427'
+        },
+        footer: {
+          paddingTop: '2px',
+        },
+      }
     }
   },
   Input: {

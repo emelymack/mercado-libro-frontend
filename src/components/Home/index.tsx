@@ -2,6 +2,7 @@ import { Box, Container } from '@chakra-ui/react'
 import Banner from './Banner'
 import NewsCarousel from './NewsCarousel'
 import TrendingCarousel from './TrendingCarousel'
+import Categories from './Categories'
 
 const Home = () => {
   return (
@@ -11,9 +12,10 @@ const Home = () => {
         <Box>
           <NewsCarousel />
         </Box>
-        <Box mt={20}>
+        <Box my={12}>
           <TrendingCarousel />
         </Box>
+        <Categories />
       </Container>
     </Box>
   )

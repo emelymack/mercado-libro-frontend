@@ -11,7 +11,6 @@ import {
   MenuItem,
   MenuDivider,
   useDisclosure,
-  Stack,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import logo from '../../../assets/Logo.svg'
@@ -22,6 +21,7 @@ import Login from './Login'
 import MyAccount from './MyAccount'
 import NavLink from './NavLink'
 import NavMenu from './Mobile/NavMenu'
+import { useEffect } from 'react'
 
 interface Props {
   children: React.ReactNode,
@@ -50,10 +50,20 @@ const Links = [
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ isLogged, setIsLogged ] = useState<boolean>(false)
+  const [ isScrolling, setIsScrolling ] = useState<boolean>(false)
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      window.scrollY > 0 ? setIsScrolling(true) : setIsScrolling(false)
+    })
+    
+    return () => {}
+  }, [window.scrollY])
+  
 
   return (
-    <header>
-      <Box px={{base: 6, md: 20}} py={8} color={'var(--secondary)'}>
+    <header className={isScrolling ? 'scroll' : ''}>
+      <Box px={{base: 6, md: 20}} color={'var(--secondary)'}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <HStack spacing={8} alignItems={'center'} justifyContent={'space-between'} w={'100%'} >
             <Box>

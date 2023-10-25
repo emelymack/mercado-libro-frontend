@@ -1,9 +1,9 @@
 import { Card, CardBody, CardFooter, Stack, Heading, Divider, Button, Text, Image, Box, CardHeader } from '@chakra-ui/react'
-import { Product } from '../../types/Products'
+import { Product } from '../../types/product'
 
 const ProductCard = ({img, title, author, price}: Product) => {
   return (
-    <Card w={'auto'}>
+    <Card variant={'productCard'} w={'auto'}>
       <CardHeader>
         <Box display={'flex'} justifyContent={'center'}>
           <Image

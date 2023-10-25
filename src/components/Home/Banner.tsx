@@ -16,7 +16,7 @@ import { Image } from '@chakra-ui/react';
 const Banner = () => {
   return (
     <div>
-      <Swiper pagination={true} navigation={true} modules={[Pagination, Navigation]} className="mySwiper" loop={true}>
+      <Swiper pagination={true} navigation={true} modules={[Pagination, Navigation]} className="bannerSwiper" loop={true}>
         <SwiperSlide>
           <Image src={img1} />
         </SwiperSlide>

@@ -5,6 +5,21 @@
   --highlight: #006C67; 
 }
 
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 12px;
+  border: 2px solid #f1f1f1;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--highlight);
+}
+
 * {
   font-family: 'Gabarito', sans-serif !important;
   border-color: transparent !important;
@@ -13,6 +28,17 @@
 header {
   background-color: rgba(136, 132, 255, .8);
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+  padding-top: 32px;
+  padding-bottom: 32px;
+  transition: all .25s ease-in-out;
+}
+header.scroll {
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: rgba(136, 132, 255, .5);
 }
 
 footer {
@@ -63,14 +89,33 @@ footer {
   color: var(--primary) !important;
 }
 
-.productsSwiper {
-  position: initial;
-}
+
 .swiper .swiper-button-prev::after,
 .swiper .swiper-button-next::after {
   color: var(--highlight);
   font-weight: 900;
   font-size: 30px;
+}
+.swiper .swiper-pagination-bullet {
+  width: 20px;
+  height: 20px;
+  border: 5px solid #fff !important;
+  background-color: #858585;
+  opacity: .75;
+}
+.swiper .swiper-pagination-bullet-active {
+  border-color: var(--highlight) !important;
+  background-color: #fff;
+  opacity: 1;
+}
+
+.bannerSwiper .swiper-pagination {
+  bottom: 20px;
+}
+
+.productsSwiper {
+  position: initial;
+  min-height: 550px;
 }
 .productsSwiper .swiper-button-prev {
   left: -10px;

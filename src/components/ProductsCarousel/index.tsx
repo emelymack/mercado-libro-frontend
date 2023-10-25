@@ -6,7 +6,7 @@ import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import ProductCard from '../Card/ProductCard';
 import { Box } from '@chakra-ui/react';
-import { Product } from '../../types/Products';
+import { Product } from '../../types/product';
 
 
 interface Props {
