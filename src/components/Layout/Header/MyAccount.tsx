@@ -1,6 +1,5 @@
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { Button, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from '@chakra-ui/react'
-import React from 'react'
 
 const MyAccount = () => {
   return (

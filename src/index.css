@@ -2,11 +2,48 @@
   --font-color: #212427;
   --primary: #8884FF;
   --secondary: #003844;
-  --highlight: #006C67: 
+  --highlight: #006C67; 
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 12px;
+  border: 2px solid #f1f1f1;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--highlight);
 }
 
 * {
   font-family: 'Gabarito', sans-serif !important;
+  border-color: transparent !important;
+}
+
+header {
+  background-color: rgba(136, 132, 255, .8);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+  padding-top: 32px;
+  padding-bottom: 32px;
+  transition: all .25s ease-in-out;
+}
+header.scroll {
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: rgba(136, 132, 255, .5);
+}
+
+footer {
+  background-color: var(--secondary);
+  color: #fff;
 }
 
 .headerBtn:hover {
@@ -50,4 +87,66 @@
 .secondaryBtn:hover {
   background-color: var(--secondary) !important;
   color: var(--primary) !important;
+}
+
+
+.swiper .swiper-button-prev::after,
+.swiper .swiper-button-next::after {
+  color: var(--highlight);
+  font-weight: 900;
+  font-size: 30px;
+}
+.swiper .swiper-pagination-bullet {
+  width: 20px;
+  height: 20px;
+  border: 5px solid #fff !important;
+  background-color: #858585;
+  opacity: .75;
+}
+.swiper .swiper-pagination-bullet-active {
+  border-color: var(--highlight) !important;
+  background-color: #fff;
+  opacity: 1;
+}
+
+.bannerSwiper .swiper-pagination {
+  bottom: 20px;
+}
+
+.productsSwiper {
+  position: initial;
+  min-height: 475px;
+}
+.productsSwiper .swiper-button-prev {
+  left: -10px;
+}
+.productsSwiper .swiper-button-next {
+  right: -10px;
+}
+
+@media(max-width: 767px) {
+  header {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  header.scroll {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  
+  .bannerSwiper .swiper-button-prev,
+  .bannerSwiper .swiper-button-next {
+    display: none;
+  }
+
+  .bannerSwiper .swiper-pagination {
+    bottom: -5px;
+  }
+
+  .bannerSwiper .swiper-pagination-bullet {
+    width: 15px;
+    height: 15px;
+    border-width: 4px !important;
+  }
+  
 }
