@@ -1,26 +1,24 @@
-import { Title } from '../Title'
+import { Title } from "../Title";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import { Navigation } from 'swiper/modules';
-import ProductCard from '../Card/ProductCard';
-import { Box } from '@chakra-ui/react';
-import { Product } from '../../types/product';
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
+import ProductCard from "../Card/ProductCard";
+import { Box } from "@chakra-ui/react";
+import { Product } from "../../types/product";
 
 interface Props {
-  title:string,
-  products: Product[]
+  title: string;
+  products: Product[];
 }
 
-
-const ProductsCarousel = ({title, products}: Props) => {
+const ProductsCarousel = ({ title, products }: Props) => {
   return (
     <Box>
-      <Title htmlElement={'h2'} size='lg' text={title} />
-      <Box mt={8} px={10} position={'relative'}>
-        <Swiper 
+      <Title htmlElement={"h2"} size="lg" text={title} />
+      <Box mt={8} px={10} position={"relative"}>
+        <Swiper
           breakpoints={{
             640: {
               slidesPerView: 2,
@@ -33,20 +31,25 @@ const ProductsCarousel = ({title, products}: Props) => {
             },
           }}
           spaceBetween={20}
-          navigation={true} 
-          modules={[Navigation]} 
-          className="productsSwiper" 
+          navigation={true}
+          modules={[Navigation]}
+          className="productsSwiper"
           loop={true}
         >
           {products.map((item) => (
             <SwiperSlide>
-              <ProductCard img={item.img} title={item.title} author={item.author} price={item.price} />
+              <ProductCard
+                img={item.img}
+                title={item.title}
+                author={item.author}
+                price={item.price}
+              />
             </SwiperSlide>
           ))}
         </Swiper>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default ProductsCarousel
+export default ProductsCarousel;
