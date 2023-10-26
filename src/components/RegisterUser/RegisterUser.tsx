@@ -111,6 +111,10 @@ const RegisterUser = () => {
             : "500px"
         }
         w="100%"
+        _hover={{
+          transition: "none",
+        }}
+        marginY={20}
       >
         <CardBody padding={10}>
           <VStack spacing={6}>
@@ -119,7 +123,7 @@ const RegisterUser = () => {
               fontWeight="800"
               fontSize={{ base: "2xl", md: "4xl" }}
               letterSpacing="-0.5px"
-              color={"brand.greenLogo"}
+              color={"brand.blueLogo"}
             >
               Registro
             </Heading>

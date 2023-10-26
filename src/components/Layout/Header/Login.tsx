@@ -29,6 +29,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
+import { Link as LinkTo, useNavigate } from "react-router-dom";
 
 const schema = z.object({
   email: z
@@ -55,6 +56,8 @@ const Login = () => {
   } = useForm<LoginDataForm>({
     resolver: zodResolver(schema),
   });
+
+  const history = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -237,7 +240,15 @@ const Login = () => {
                   w="100%"
                 >
                   <Link isExternal color="#006C67" href="#">
-                    ¿Todavía no tienes una cuenta? Registrate.
+                    <LinkTo
+                      to="/register"
+                      onClick={() => {
+                        history.push("/register");
+                        onClose(); // Cierra el modal
+                      }}
+                    >
+                      ¿Todavía no tienes una cuenta? Registrate.
+                    </LinkTo>
                   </Link>
                 </HStack>
               </Center>

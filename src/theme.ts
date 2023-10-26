@@ -9,7 +9,7 @@ const colors = {
     violetLogo25: "rgba(136,132,255,.25)",
     violetLogo50: "#C4C3FF",
     violetLogo75: "rgba(136,132,255,.75)",
-    violetLogo50: "#C4C3FF",
+
   },
 };
 
@@ -17,70 +17,70 @@ const components = {
   Button: {
     variants: {
       brandPrimary: {
-        background: 'brand.violetLogo75',
-        color: 'brand.blueLogo',
-        fontFamily: 'serif',
-        fontWeight: '800',
-        textTransform: 'uppercase',
+        background: "brand.violetLogo75",
+        color: "brand.blueLogo",
+        fontFamily: "serif",
+        fontWeight: "800",
+        textTransform: "uppercase",
         borderRadius: 14,
-        borderWidth: '3px',
-        borderColor: 'brand.violetLogo !important',
-        boxShadow: '2px 3px 8px 4px rgba(0, 0, 0, 0.15)',
-        transition: 'all .2s ease-in-out',
-        height: 'auto',
+        borderWidth: "3px",
+        borderColor: "brand.violetLogo !important",
+        boxShadow: "2px 3px 8px 4px rgba(0, 0, 0, 0.15)",
+        transition: "all .2s ease-in-out",
+        height: "auto",
         _hover: {
-          backgroundColor: 'brand.violetLogo',
-          fontSize: 'lg',
+          backgroundColor: "brand.violetLogo",
+          fontSize: "lg",
           // borderColor: 'brand.blueLogo !important'
         },
         _active: {
-          fontSize: 'md'
-        }
-      }
-    }
+          fontSize: "md",
+        },
+      },
+    },
   },
   Card: {
     baseStyle: {
       container: {
         _hover: {
-          backgroundColor: 'brand.violetLogo25'
-        }
-      }
+          backgroundColor: "brand.violetLogo25",
+        },
+      },
     },
     variants: {
       productCard: {
         container: {
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
           border: `3px solid ${colors.brand.greenLogo} !important`,
           borderRadius: 20,
-          boxShadow: '6px 8px 15px 3px rgba(0, 0, 0, 0.16)',
-          transition: 'background .2s ease-in-out',
+          boxShadow: "6px 8px 15px 3px rgba(0, 0, 0, 0.16)",
+          transition: "background .2s ease-in-out",
         },
         body: {
-          paddingTop: '2px',
-          color: '#212427'
+          paddingTop: "2px",
+          color: "#212427",
         },
         footer: {
-          paddingTop: '2px',
+          paddingTop: "2px",
         },
       },
       categoryCard: {
         container: {
-          backgroundColor: 'brand.violetLogo50',
+          backgroundColor: "brand.violetLogo50",
           border: `5px solid ${colors.brand.violetLogo} !important`,
           borderRadius: 40,
-          boxShadow: '0px 4px 10px 5px rgba(0, 0, 0, 0.25)',
-          transition: 'background .2s ease-in-out',
+          boxShadow: "0px 4px 10px 5px rgba(0, 0, 0, 0.25)",
+          transition: "background .2s ease-in-out",
         },
         body: {
-          paddingTop: '2px',
-          color: '#212427'
+          paddingTop: "2px",
+          color: "#212427",
         },
         footer: {
-          paddingTop: '2px',
+          paddingTop: "2px",
         },
-      }
-    }
+      },
+    },
   },
   Input: {
     baseStyle: {
