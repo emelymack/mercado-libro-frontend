@@ -1,0 +1,53 @@
+:root {
+  --font-color: #212427;
+  --primary: #8884FF;
+  --secondary: #003844;
+  --highlight: #006C67: 
+}
+
+* {
+  font-family: 'Gabarito', sans-serif !important;
+}
+
+.headerBtn:hover {
+  background-color: transparent !important;
+}
+.headerBtn img {
+  transition: transform .2s ease-in-out;
+}
+.headerBtn img:hover {
+  background-color: var(--primary);
+  border-radius: 50%;
+  transform: scale(1.15);
+}
+
+.chakra-menu__menu-button:hover {
+  background-color: var(--primary) !important;
+}
+
+.icon-outline {
+  border: 2px solid var(--primary) !important;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  transition: all .15s ease-in-out;
+  display: flex;
+  align-items: center;
+}
+.icon-outline img {
+  width: 35px;
+  height: 20px;
+}
+.icon-outline:hover {
+  background-color: var(--primary);
+}
+
+.secondaryBtn {
+  border: 3px solid var(--secondary) !important;
+  color: var(--secondary) !important;
+  background-color: transparent !important;
+}
+.secondaryBtn:hover {
+  background-color: var(--secondary) !important;
+  color: var(--primary) !important;
+}

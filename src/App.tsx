@@ -1,18 +1,12 @@
-import { Box, ChakraProvider, Text } from "@chakra-ui/react";
 import "./App.css";
-import ColorModeSwitch from "./components/ColorModeSwitch";
-import RegisterUser from "./components/RegisterUser/RegisterUser";
-import theme from "./theme";
+import AccordionTest from "./components/AccordionTest";
+import Layout from "./components/Layout";
 
 function App() {
   return (
-    <ChakraProvider theme={theme}>
-      <>
-        <ColorModeSwitch />
-
-        <RegisterUser />
-      </>
-    </ChakraProvider>
+    <Layout>
+      <AccordionTest />
+    </Layout>
   );
 }
 
