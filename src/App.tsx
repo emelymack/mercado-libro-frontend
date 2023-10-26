@@ -1,20 +1,24 @@
 import "./App.css";
 import Home from "./components/Home";
 import Layout from "./components/Layout";
-import { ChakraProvider, theme } from "@chakra-ui/react";
 import "./App.css";
 import ColorModeSwitch from "./components/ColorModeSwitch";
+import { Routes, Route } from "react-router-dom";
+import RegisterUser from "./components/RegisterUser/RegisterUser";
 
 function App() {
   return (
-    <ChakraProvider theme={theme}>
-      <>
-        <ColorModeSwitch />
-        <Layout>
-          <Home />
-        </Layout>
-      </>
-    </ChakraProvider>
+    <>
+      <ColorModeSwitch />
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<RegisterUser />} />
+          <Route path="/about" element={<h1>About</h1>} />
+          <Route path="/contact" element={<h1>Contact</h1>} />
+        </Routes>
+      </Layout>
+    </>
   );
 }
 
