@@ -9,6 +9,7 @@ const colors = {
     violetLogo25: "rgba(136,132,255,.25)",
     violetLogo50: "#C4C3FF",
     violetLogo75: "rgba(136,132,255,.75)",
+    violetLogo50: "#C4C3FF",
   },
 };
 
