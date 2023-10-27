@@ -11,8 +11,9 @@ import {
   MenuItem,
   MenuDivider,
   useDisclosure,
+  useColorMode,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon, ChevronDownIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import logo from "../../../assets/Logo.svg";
 import searchIcon from "../../../assets/icons/icon-search.svg";
 import cartIcon from "../../../assets/icons/icon-cart.svg";
@@ -47,6 +48,7 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLogged, setIsLogged] = useState<boolean>(false);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
+  const { colorMode, toggleColorMode } = useColorMode()
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -119,12 +121,16 @@ const Header = () => {
               <Box>
                 <Button
                   bg={"none"}
-                  px={{ base: 2, md: 3 }}
+                  ps={0}
+                  pe={{ base: 2, md: 3 }}
                   className="headerBtn"
                 >
                   <Image src={cartIcon} boxSize={{ base: 20, md: 12 }} />
                 </Button>
               </Box>
+              <Button onClick={toggleColorMode} borderRadius={'full'}>
+                {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+              </Button>
               <IconButton
                 size={"md"}
                 bg={"brand.violetLogo"}
