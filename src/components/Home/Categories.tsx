@@ -7,6 +7,7 @@ import img3 from '../../assets/img/portada_destroza-este-diario-ahora-a-todo-col
 import img4 from '../../assets/img/376931_portada_parasyte-n-0308_hitoshi-iwaaki_201701051250.jpg'
 import img5 from '../../assets/img/358594_portada_manos-que-curan_barbara-ann-brennan_202205302327.jpg'
 import img6 from '../../assets/img/377616_portada_miss-marple-doce-casos-nuevos_varios-autores_202310231050.jpg'
+import { Link } from "react-router-dom"
 
 const categories = [
   {
@@ -40,7 +41,9 @@ const Categories = () => {
     <Box px={{'base': 10, 'md': 20}} my={20}>
       <SimpleGrid columns={{'base': 1, 'md': 2, 'lg': 3 }} spacingX={6} spacingY={7}>
         {categories.map((item) => (
-          <CategoryCard img={item.img} title={item.title} />
+          <Link to={`/category/${item.title}`}>
+            <CategoryCard img={item.img} title={item.title} />
+          </Link>
         ))}
       </SimpleGrid>
     </Box>
