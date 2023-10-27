@@ -1,37 +1,35 @@
-import apiClient from "./apiClient";
+import axios, { AxiosResponse } from "axios";
 
-//TODO : Aca hacemos referencias a los params a la api
-interface Entity {
-  id: number;
+axios.defaults.baseURL = "";
+
+interface RequestGeneric {
+  get: (url: string) => Promise<AxiosResponse>;
+  post: <T>(url: string, body: T) => Promise<AxiosResponse>;
+  put: <T>(url: string, body: T) => Promise<AxiosResponse>;
+  patch: <T>(url: string, body: T) => Promise<AxiosResponse>;
+  delete: (url: string) => Promise<AxiosResponse>;
 }
 
-class HttpService {
-  ednpoint: string;
+const requestGeneric: RequestGeneric = {
+  get: (url) => axios.get(url),
+  post: (url, body) => axios.post(url, body),
+  put: (url, body) => axios.put(url, body),
+  patch: (url, body) => axios.patch(url, body),
+  delete: (url) => axios.delete(url),
+};
 
-  constructor(endpoint: string) {
-    this.ednpoint = endpoint;
-  }
-  getAll<T>() {
-    const controller = new AbortController();
-    const request = apiClient.get<T[]>(this.ednpoint, {
-      signal: controller.signal,
-    });
-    return { request, cancel: () => controller.abort() };
-  }
+// axios.interceptors.request.use(
+//   (config) => {
+//     console.log(".. intercerptor..");
+//     const user = JSON.parse(localStorage.getItem("token_app"));
+//     if (user) {
+//       config.headers.Authorization = `Bearer ${user.token}`;
+//     } else {
+//       config.headers.Authorization = '';
+//     }
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
 
-  delete(id: number) {
-    return apiClient.delete(`${this.ednpoint}"/"${id}`);
-  }
-
-  create<T>(entity: T) {
-    return apiClient.post(this.ednpoint, entity);
-  }
-
-  update<T extends Entity>(entity: T) {
-    return apiClient.put(`${this.ednpoint}/${entity.id}`, entity);
-  }
-}
-
-const create = (endpoint: string) => new HttpService(endpoint);
-
-export default create;
+export default requestGeneric;
