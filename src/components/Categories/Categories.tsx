@@ -1,3 +1,4 @@
+import { useParams, useSearchParams } from "react-router-dom";
 import ProductCard from "../Card/ProductCard";
 
 import {
@@ -7,6 +8,7 @@ import {
     Container,
     SimpleGrid,
   } from "@chakra-ui/react";
+import { useEffect } from "react";
 
   
   const Productos = [
@@ -96,13 +98,17 @@ import {
     }]
 
 
-  
   export const Categories = () => {
-    
+    const params = useParams()
+
+    useEffect(()=> {
+      window.scrollTo(0,0)
+    },[])
+
     return (
       <Container maxW='container.xl' bg='white.600' centerContent mb={20}>
         <Heading size='lg' fontSize='50px' mb={10} mt={10} color='brand.greenLogo'>
-        NOMBRE DE CATEGORÍA
+          {params.categoryName}
         </Heading>
 
         <Center>

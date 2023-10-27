@@ -22,7 +22,7 @@ import Login from "./Login";
 import MyAccount from "./MyAccount";
 import NavLink from "./NavLink";
 import NavMenu from "./Mobile/NavMenu";
-import { Link as LinkTo } from "react-router-dom";
+import { Link, Link as LinkTo } from "react-router-dom";
 import { useEffect } from "react";
 
 const Links = [
@@ -95,10 +95,25 @@ const Header = () => {
                     Categorías
                   </MenuButton>
                   <MenuList>
-                    <MenuItem>Link 1</MenuItem>
-                    <MenuItem>Link 2</MenuItem>
-                    <MenuDivider />
-                    <MenuItem>Link 3</MenuItem>
+                    <MenuItem>
+                      <Link to={`/category/Literatura`}>Literatura</Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to={`/category/Ciencia, historia y sociedad`}>Ciencia, historia y sociedad</Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to={`/category/Salud y bienestar`}>Salud y bienestar</Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to={`/category/Infantiles`}>Infantiles</Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to={`/category/Cómic y novela gráfica`}>Cómic y novela gráfica</Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to={`/category/Más vendidos`}>Más vendidos</Link>
+                    </MenuItem>
+                    {/* <MenuDivider /> */}
                   </MenuList>
                 </Menu>
                 {Links.map((link) => (
