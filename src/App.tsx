@@ -2,7 +2,7 @@ import "./App.css";
 import Home from "./components/Home";
 import Layout from "./components/Layout";
 import "./App.css";
-import ColorModeSwitch from "./components/ColorModeSwitch";
+// import ColorModeSwitch from "./components/ColorModeSwitch";
 import { Routes, Route } from "react-router-dom";
 import RegisterUser from "./components/RegisterUser/RegisterUser";
 import Health from "./components/Health/Health";
@@ -11,8 +11,6 @@ import Categories from "./components/Categories/Categories";
 function App() {
   return (
     <>
-      <ColorModeSwitch />
-
       {/* <ColorModeSwitch /> */}
       <Layout>
         <Routes>
