@@ -1,6 +1,6 @@
 // import Swiper JS
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation } from 'swiper/modules';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 // import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -19,9 +19,13 @@ const Banner = () => {
       <Swiper 
         pagination={true} 
         navigation={true} 
-        modules={[Pagination, Navigation]} 
+        modules={[Pagination, Navigation, Autoplay]} 
         className="bannerSwiper" 
         loop={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
       >
         <SwiperSlide>
           <Image src={img1} />

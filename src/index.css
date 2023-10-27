@@ -31,6 +31,8 @@ header {
   padding-top: 32px;
   padding-bottom: 32px;
   transition: all .25s ease-in-out;
+  position: relative;
+  z-index: 2;
 }
 header.scroll {
   position: fixed;
@@ -109,9 +111,6 @@ footer {
   opacity: 1;
 }
 
-.bannerSwiper {
-  z-index: -1;
-}
 .bannerSwiper .swiper-pagination {
   bottom: 20px;
 }
