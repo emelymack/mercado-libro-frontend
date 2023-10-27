@@ -7,7 +7,6 @@ import {
   Th,
   Thead,
   Tr,
-  Image,
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";

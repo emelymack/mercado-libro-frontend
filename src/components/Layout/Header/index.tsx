@@ -9,11 +9,16 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   useDisclosure,
   useColorMode,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon, ChevronDownIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import {
+  HamburgerIcon,
+  CloseIcon,
+  ChevronDownIcon,
+  MoonIcon,
+  SunIcon,
+} from "@chakra-ui/icons";
 import logo from "../../../assets/Logo.svg";
 import searchIcon from "../../../assets/icons/icon-search.svg";
 import cartIcon from "../../../assets/icons/icon-cart.svg";
@@ -46,9 +51,10 @@ const Links = [
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLogged, setIsLogged] = useState<boolean>(false);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode, toggleColorMode } = useColorMode();
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -56,7 +62,7 @@ const Header = () => {
     });
 
     return () => {};
-  }, [window.scrollY]);
+  }, []);
 
   return (
     <header className={isScrolling ? "scroll" : ""}>
@@ -99,16 +105,22 @@ const Header = () => {
                       <Link to={`/category/Literatura`}>Literatura</Link>
                     </MenuItem>
                     <MenuItem>
-                      <Link to={`/category/Ciencia, historia y sociedad`}>Ciencia, historia y sociedad</Link>
+                      <Link to={`/category/Ciencia, historia y sociedad`}>
+                        Ciencia, historia y sociedad
+                      </Link>
                     </MenuItem>
                     <MenuItem>
-                      <Link to={`/category/Salud y bienestar`}>Salud y bienestar</Link>
+                      <Link to={`/category/Salud y bienestar`}>
+                        Salud y bienestar
+                      </Link>
                     </MenuItem>
                     <MenuItem>
                       <Link to={`/category/Infantiles`}>Infantiles</Link>
                     </MenuItem>
                     <MenuItem>
-                      <Link to={`/category/Cómic y novela gráfica`}>Cómic y novela gráfica</Link>
+                      <Link to={`/category/Cómic y novela gráfica`}>
+                        Cómic y novela gráfica
+                      </Link>
                     </MenuItem>
                     <MenuItem>
                       <Link to={`/category/Más vendidos`}>Más vendidos</Link>
@@ -143,8 +155,8 @@ const Header = () => {
                   <Image src={cartIcon} boxSize={{ base: 20, md: 12 }} />
                 </Button>
               </Box>
-              <Button onClick={toggleColorMode} borderRadius={'full'}>
-                {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+              <Button onClick={toggleColorMode} borderRadius={"full"}>
+                {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
               <IconButton
                 size={"md"}
