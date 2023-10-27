@@ -7,20 +7,34 @@ import {
 } from "./apiUrls";
 
 export interface Book {
+  id: number;
+  title: string;
   authors: string;
-  categories: { id: number }[];
-  currency_code: string;
+  publisher: string;
   description: string;
-  image_links: string[];
   isbn: string;
   language: string;
-  page_count: number;
   price: number;
-  published_date: string;
-  publisher: string;
-  ratings_count: number;
   stock: number;
-  title: string;
+  categories: Category[];
+  published_date: string;
+  page_count: number;
+  ratings_count: number;
+  image_links: string[];
+  currency_code: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+  status: string;
+  description: string;
+  image_link: string;
+}
+
+export interface Author {
+  name: string;
+  email: string;
 }
 
 export const getBookById = (id: number): Promise<Book> => {
@@ -65,7 +79,13 @@ export const patchBook = (
 export const getAllBooks = (): Promise<Book[]> => {
   return httpService
     .get(`${BASE_URL}${GET_ALL_BOOK_URL}`)
-    .then((response) => response.data)
+    .then((response) => {
+      if (Array.isArray(response.data)) {
+        return response.data as Book[];
+      } else {
+        throw new Error("La respuesta no es un array de libros");
+      }
+    })
     .catch((error) => {
       throw new Error(error.response?.data?.message);
     });
