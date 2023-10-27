@@ -51,8 +51,7 @@ const Links = [
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [isLogged] = useState<boolean>(false);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
   const { colorMode, toggleColorMode } = useColorMode();
 

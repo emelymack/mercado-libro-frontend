@@ -43,6 +43,7 @@ const ProductsCarousel = ({ title, products }: Props) => {
                 title={item.title}
                 author={item.author}
                 price={item.price}
+                url={""}
               />
             </SwiperSlide>
           ))}

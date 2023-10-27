@@ -243,7 +243,7 @@ const Login = () => {
                     <LinkTo
                       to="/register"
                       onClick={() => {
-                        history.push("/register");
+                        history("/register");
                         onClose(); // Cierra el modal
                       }}
                     >
