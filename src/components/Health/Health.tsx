@@ -1,56 +1,101 @@
-import { Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import {
-  TestItem,
-  getTestList,
-  pingHealthCheck,
-} from "../../services/HealthService";
-import { getAllBooks } from "../../services/BookService";
+  Alert,
+  AlertIcon,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Image,
+  Text,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+
+import { Book, getAllBooks } from "../../services/BookService";
 
 const Health = () => {
-  const [pingResult, setPingResult] = useState<string>();
-  const [testList, setTestList] = useState<TestItem[]>();
   const [error, setError] = useState<string>("");
+  const [books, setBooks] = useState<Book[]>();
 
   useEffect(() => {
-    pingHealthCheck()
-      .then((response) => {
-        setPingResult(response);
-      })
-      .catch((error) => {
-        console.error("Error en pingHealthCheck:", error);
-        setError(error.message);
-      });
-
-    getTestList()
-      .then((response) => {
-        setTestList(response);
-      })
-      .catch((error) => {
-        console.error("Error en getTestList:", error);
-        setError(error.message);
-      });
-
     getAllBooks()
       .then((books) => {
+        books.forEach((book) => {
+          try {
+            book.authors = JSON.parse(book.authors.replace(/'/g, '"'));
+          } catch (error) {
+            console.error("Error al parsear autores:", error);
+          }
+        });
+
+        setBooks(books);
         console.log("Lista de libros:", books);
       })
       .catch((error) => {
-        console.error("Error al obtener la lista de libros:", error);
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 500
+        ) {
+          setError("No se encontraron libros.");
+        } else {
+          console.error("Error al obtener la lista de libros:", error);
+        }
       });
   }, []);
 
   return (
     <>
-      <Text>Health</Text>
-      {error !== "" && <Text>Error al hacer la solicitud: {error}</Text>}
+      {books && books.length > 0 ? (
+        <Table variant="simple">
+          <Thead>
+            <Tr>
+              <Th>Título</Th>
+              <Th>Autor(es)</Th>
+              <Th>Editor</Th>
+              <Th>Categoria</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {books.map((book) => (
+              <Tr key={book.id}>
+                <Td>{book.title}</Td>
+                <Td>
+                  {Array.isArray(book.authors) &&
+                    book.authors.map((author) => (
+                      <Text key={author.id}>{author.name}</Text>
+                    ))}
+                </Td>
+                <Td>{book.publisher}</Td>
+                <Td>
+                  {book.categories.map((category) => (
+                    <div key={category.id}>
+                      <Text> {category.name}</Text>
+                      <br />
+                      <Text key={category.id}>
+                        Descripción: {category.description}
+                      </Text>
+                    </div>
+                  ))}
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      ) : (
+        <Alert status="error">
+          <AlertIcon />
+          {error || "No se encontraron libros."}
+        </Alert>
+      )}
+      {/* 
       {testList &&
         testList.map((item) => (
           <Text key={item.id}>
             ID: {item.id}, Nombre: {item.name}
           </Text>
         ))}
-      {pingResult !== null && <Text>Ping: {pingResult}</Text>}
+      {pingResult !== null && <Text>Ping: {pingResult}</Text>} */}
     </>
   );
 };
