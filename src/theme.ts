@@ -106,7 +106,7 @@ const fonts = {
   body: `'Gabarito', sans-serif`,
 };
 const config: ThemeConfig = {
-  initialColorMode: "dark",
+  initialColorMode: "light",
 };
 
 const theme = extendTheme({
