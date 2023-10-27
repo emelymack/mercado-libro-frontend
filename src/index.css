@@ -109,6 +109,9 @@ footer {
   opacity: 1;
 }
 
+.bannerSwiper {
+  z-index: -1;
+}
 .bannerSwiper .swiper-pagination {
   bottom: 20px;
 }
