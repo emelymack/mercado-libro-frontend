@@ -75,7 +75,7 @@ const Header = () => {
           >
             <Box>
               <LinkTo to="/">
-                <Image src={logo} alt="Dan Abramov" boxSize={200} />
+                <Image src={logo} alt="Dan Abramov" boxSize={200} className="logo" />
               </LinkTo>
             </Box>
             <Box

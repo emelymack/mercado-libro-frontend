@@ -15,23 +15,36 @@ const colors = {
 
 const components = {
   Button: {
+    baseStyle: {
+      fontWeight: "800",
+      textTransform: "uppercase",
+      borderRadius: 12,
+      height: "auto",
+      transition: "all .2s ease-in-out",
+    },
     variants: {
       brandPrimary: {
         background: "brand.violetLogo75",
         color: "brand.blueLogo",
-        fontFamily: "serif",
-        fontWeight: "800",
-        textTransform: "uppercase",
-        borderRadius: 14,
         borderWidth: "3px",
         borderColor: "brand.violetLogo !important",
         boxShadow: "2px 3px 8px 4px rgba(0, 0, 0, 0.15)",
-        transition: "all .2s ease-in-out",
-        height: "auto",
         _hover: {
           backgroundColor: "brand.violetLogo",
           fontSize: "lg",
-          // borderColor: 'brand.blueLogo !important'
+        },
+        _active: {
+          fontSize: "md",
+        },
+      },
+      brandSecondary: {
+        background: "transparent",
+        color: "brand.greenLogo",
+        borderWidth: "3px",
+        borderColor: "brand.greenLogo !important",
+        boxShadow: "2px 3px 8px 4px rgba(0, 0, 0, 0.15)",
+        _hover: {
+          fontSize: "lg",
         },
         _active: {
           fontSize: "md",
