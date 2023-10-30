@@ -38,9 +38,15 @@ header.scroll {
   position: fixed;
   width: 100%;
   z-index: 5;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   background-color: rgba(136, 132, 255, .5);
+}
+header .logo {
+  transition: width .15s ease-in-out;
+}
+header.scroll .logo {
+  width: 140px;
 }
 
 footer {
