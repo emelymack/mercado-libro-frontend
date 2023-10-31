@@ -4,10 +4,12 @@ import NewsCarousel from "./NewsCarousel";
 import TrendingCarousel from "./TrendingCarousel";
 import Categories from "./Categories";
 import Services from "./Services";
+import { useAppSelector } from "../../context/hooks";
 
 const Home = () => {
+  const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
   return (
-    <Box>
+    <Box className={`page ${isScrolling ? 'scroll' : ''}`}>
       <Banner />
       <Container maxW={"container.xl"} mt={12} mb={20}>
         <Box>

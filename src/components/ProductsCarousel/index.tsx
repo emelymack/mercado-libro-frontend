@@ -26,7 +26,7 @@ const ProductsCarousel = ({ title, products }: Props) => {
             768: {
               slidesPerView: 3,
             },
-            992: {
+            1200: {
               slidesPerView: 4,
             },
           }}
@@ -39,6 +39,7 @@ const ProductsCarousel = ({ title, products }: Props) => {
           {products.map((item) => (
             <SwiperSlide>
               <ProductCard
+                id={item.id}
                 img={item.img}
                 title={item.title}
                 author={item.author}

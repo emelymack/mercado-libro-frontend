@@ -19,7 +19,6 @@ const components = {
       fontWeight: "800",
       textTransform: "uppercase",
       borderRadius: 12,
-      height: "auto",
       transition: "all .2s ease-in-out",
     },
     variants: {

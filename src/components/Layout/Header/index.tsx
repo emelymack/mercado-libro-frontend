@@ -28,7 +28,7 @@ import MyAccount from "./MyAccount";
 import NavLink from "./NavLink";
 import NavMenu from "./Mobile/NavMenu";
 import { Link, Link as LinkTo } from "react-router-dom";
-import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../../context/hooks";import {useEffect} from 'react'
 
 const Links = [
   {
@@ -39,10 +39,10 @@ const Links = [
     name: "Más vendidos",
     url: "",
   },
-  {
-    name: "eBooks",
-    url: "",
-  },
+  // {
+  //   name: "eBooks",
+  //   url: "",
+  // },
   {
     name: "Editoriales",
     url: "",
@@ -52,30 +52,22 @@ const Links = [
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLogged] = useState<boolean>(false);
-  const [isScrolling, setIsScrolling] = useState<boolean>(false);
+  const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
   const { colorMode, toggleColorMode } = useColorMode();
 
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      window.scrollY > 0 ? setIsScrolling(true) : setIsScrolling(false);
-    });
-
-    return () => {};
-  }, []);
-
   return (
-    <header className={isScrolling ? "scroll" : ""}>
-      <Box px={{ base: 6, md: 20 }} color={"var(--secondary)"}>
+    <header className={isScrolling ? "scroll": ''}>
+      <Box px={{ base: 6, md: 20, lg: 10, xl: 20 }} color={"var(--secondary)"}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <HStack
-            spacing={8}
+            spacing={{base: 3, md: 8}}
             alignItems={"center"}
             justifyContent={"space-between"}
             w={"100%"}
           >
             <Box>
               <LinkTo to="/">
-                <Image src={logo} alt="Dan Abramov" boxSize={200} className="logo" />
+                <Image src={logo} alt="Dan Abramov" boxSize={{base: 160, md: 200}} className="logo" />
               </LinkTo>
             </Box>
             <Box
@@ -88,7 +80,7 @@ const Header = () => {
                 spacing={4}
                 display={{ base: "none", lg: "flex" }}
                 ms={2}
-                me={3}
+                me={{base: 3, lg: 0, xl: 3}}
               >
                 <Menu>
                   <MenuButton
@@ -135,23 +127,23 @@ const Header = () => {
 
                 {!isLogged ? <Login /> : <MyAccount />}
               </HStack>
-              <Box ms={3}>
+              <Box ms={2}>
                 <Button
                   bg={"none"}
                   px={{ base: 2, md: 3 }}
                   className="headerBtn"
                 >
-                  <Image src={searchIcon} boxSize={{ base: 20, md: 12 }} />
+                  <Image src={searchIcon} boxSize={{ base: '50px' }} />
                 </Button>
               </Box>
-              <Box>
+              <Box me={1}>
                 <Button
                   bg={"none"}
                   ps={0}
                   pe={{ base: 2, md: 3 }}
                   className="headerBtn"
                 >
-                  <Image src={cartIcon} boxSize={{ base: 20, md: 12 }} />
+                  <Image src={cartIcon} boxSize={{ base: '50px' }} />
                 </Button>
               </Box>
               <Button onClick={toggleColorMode} borderRadius={"full"}>
@@ -170,7 +162,7 @@ const Header = () => {
                 }
                 aria-label={"Abrir menú"}
                 display={{ lg: "none" }}
-                ms={1}
+                ms={3}
                 onClick={isOpen ? onClose : onOpen}
               />
             </Box>

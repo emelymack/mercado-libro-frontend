@@ -15,13 +15,25 @@ const NavLink = (props: Props) => {
       px={1}
       py={1}
       rounded={'md'}
+      _after={{
+        display:'block',
+        content: '""',
+        borderBottom: 'solid 2px #003844',  
+        transform: 'scaleX(0)',  
+        transition: 'transform 250ms ease-in-out',
+      }}
       _hover={{
         textDecoration: 'none',
+        _after: {
+          transform: 'scaleX(1)' 
+        }
       }}
       color={'var(--secondary)'}
       fontWeight={600}
       fontSize={17}
-      href={props.url}>
+      href={props.url}
+    
+    >
       {children}
     </Box>
   )
