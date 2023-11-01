@@ -7,7 +7,7 @@ import RegisterUser from "./components/RegisterUser/RegisterUser";
 import Health from "./components/Health/Health";
 import CategoriesPage from "./components/CategoriesPage/CategoriesPage";
 import ProductPage from "./components/ProductPage";
-import { useAppDispatch, useAppSelector } from "./context/hooks";
+import { useAppDispatch } from "./context/hooks";
 import { scrollPosition } from "./context/slices/scrollSlice";
 import { useEffect } from "react";
 
@@ -15,7 +15,7 @@ function App() {
   const dispatch = useAppDispatch()
 
   const handleScroll = () => {
-    dispatch(scrollPosition(window.scrollY > 50))
+    dispatch(scrollPosition(window.scrollY > 90))
   }
 
   useEffect(() => {

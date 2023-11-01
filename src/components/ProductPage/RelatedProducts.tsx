@@ -47,10 +47,10 @@ const products = [
   },
 ]
 
-const NewsCarousel = () => {
+const RelatedProducts = () => {
   return (
-    <ProductsCarousel title='Novedades de octubre' products={products} />
+    <ProductsCarousel title='Productos relacionados' titleColor='green' products={products} />
   )
 }
 
-export default NewsCarousel
+export default RelatedProducts

@@ -6,3 +6,9 @@ export interface Product {
   price: number,
   url: string
 }
+
+export interface ProductDetail extends Product {
+  pages: number,
+  language: string,
+  publishDate: Date,
+}

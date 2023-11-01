@@ -11,9 +11,9 @@ import {
   Box,
   CardHeader,
 } from "@chakra-ui/react";
-import iconCart from '../../assets/icons/icon-add-cart.svg'
 import { Product } from "../../types/product";
 import { useNavigate } from "react-router-dom";
+import AddToCart from "../Button/AddToCart";
 
 const ProductCard = ({ id, img, title, author, price }: Product) => {
   const navigate = useNavigate()
@@ -60,9 +60,7 @@ const ProductCard = ({ id, img, title, author, price }: Product) => {
         >
           Ver más
         </Button>
-        <Button variant="brandPrimary" w={"100%"} py={2} h={"auto"} px={10} onClick={()=>alert('Agregado!')} aria-label="Agregar al carrito">
-          Agregar <Image src={iconCart} ps={1} w={8} mb={1} />
-        </Button>
+        <AddToCart />
       </CardFooter>
     </Card>
   );

@@ -10,20 +10,21 @@ import { Product } from "../../types/product";
 
 interface Props {
   title: string;
+  titleColor?: 'green' | 'blue';
   products: Product[];
 }
 
-const ProductsCarousel = ({ title, products }: Props) => {
+const ProductsCarousel = ({ title, products, titleColor }: Props) => {
   return (
     <Box>
-      <Title htmlElement={"h2"} size="lg" text={title} />
+      <Title htmlElement={"h2"} size="lg" text={title} color={titleColor ?? 'blue'} />
       <Box mt={8} px={10} position={"relative"}>
         <Swiper
           breakpoints={{
             640: {
               slidesPerView: 2,
             },
-            768: {
+            992: {
               slidesPerView: 3,
             },
             1200: {
