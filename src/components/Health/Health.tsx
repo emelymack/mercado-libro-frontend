@@ -12,7 +12,6 @@ import {
 import { useEffect, useState } from "react";
 
 import { Book, getAllBooks } from "../../services/BookService";
-import { User } from "../../types/user";
 import { createUser } from "../../services/UserService";
 
 const Health = () => {

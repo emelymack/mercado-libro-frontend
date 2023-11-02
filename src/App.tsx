@@ -12,7 +12,6 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 function App() {
   return (
     <>
-      {/* <ColorModeSwitch /> */}
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />

@@ -62,6 +62,6 @@ export const createUser = (user: User): Promise<User> => {
     .post(`${BASE_URL}${USER_URL}`, user)
     .then((response) => response.data)
     .catch((error) => {
-      throw new Error(error.response?.data?.message);
+      throw new Error(error.response?.data);
     });
 };
