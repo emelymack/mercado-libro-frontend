@@ -34,6 +34,7 @@ import moment from "moment";
 import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
 import { createUser } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
+import CustomLoading from "../CustomLoading/CustomLoading";
 
 const schema = z
   .object({
@@ -81,6 +82,7 @@ const RegisterUser = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const currentDate = moment().format("YYYY-MM-DD");
@@ -96,6 +98,7 @@ const RegisterUser = () => {
   };
 
   const onSubmit = (data: RegisterDataForm) => {
+    setIsLoading(true);
     console.log("Click boton");
     console.info(data);
     const [name, lastName] = data.name.split(" ");
@@ -109,11 +112,19 @@ const RegisterUser = () => {
         console.log("Usuario creado:", createdUser);
         setModalMessage("Usuario creado exitosamente");
         setIsSuccessModalOpen(true);
+        setIsLoading(false);
       })
       .catch((error) => {
-        console.error("Error al crear usuario:", error);
-        setModalMessage(error.message);
-        setIsErrorModalOpen(true);
+        if (error.statusCode === 401) {
+          // Manejar el error de código 401 (no autorizado)
+          console.error("No estás autorizado:", error);
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          console.error("Error al crear usuario:", error);
+          setModalMessage(error.message);
+          setIsErrorModalOpen(true);
+        }
       });
   };
 
@@ -403,6 +414,7 @@ const RegisterUser = () => {
           </ModalContent>
         </Modal>
       )}
+      {isLoading ? <CustomLoading /> : null}
     </Center>
   );
 };

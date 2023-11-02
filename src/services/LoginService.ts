@@ -1,25 +1,31 @@
 import httpService from "./httpService";
 import { BASE_URL, LOGIN_URL } from "./apiUrls";
 import { UserLogin } from "../types/userLogin";
-
 import { CustomResponse } from "../types/customResponse";
+import axios from "axios";
 
-export const loginUser = (
+export const loginUser = async (
   userLogin: UserLogin
 ): Promise<CustomResponse<UserLogin>> => {
-  return httpService
-    .post(`${BASE_URL}${LOGIN_URL}`, userLogin)
-    .then((response) => {
-      return {
-        statusCode: response.status,
-        data: response.data,
-      };
-    })
-    .catch((error) => {
-      return {
-        statusCode: error?.response?.status,
+  try {
+    const response = await httpService.post(
+      `${BASE_URL}${LOGIN_URL}`,
+      userLogin
+    );
+
+    return {
+      statusCode: response.status,
+      data: response.data,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
         data: null,
         errorMessage: error.message,
       };
-    });
+    } else {
+      throw error;
+    }
+  }
 };

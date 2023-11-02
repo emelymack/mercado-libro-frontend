@@ -62,22 +62,34 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data: LoginDataForm) => {
+  const onSubmit = async (data: LoginDataForm) => {
     console.info(data);
     onOpen();
 
-    loginUser({
-      email: data.email,
-      password: data.password,
-    })
-      .then((response) => {
-        console.log("Inicio de sesión exitoso");
-        console.log(response.statusCode);
-        console.log("Datos del usuario:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error inesperado:", error);
+    try {
+      const response = await loginUser({
+        email: data.email,
+        password: data.password,
       });
+
+      if (response.statusCode === 200) {
+        console.log("Inicio de sesión exitoso");
+        console.log("Datos del usuario:", response.data);
+        // Aquí puedes redirigir al usuario, actualizar el estado, etc.
+      } else {
+        console.error("Error en el inicio de sesión:", response.errorMessage);
+
+        if (response.statusCode === 401) {
+          console.log("Credenciales inválidas.");
+          // Puedes mostrar un mensaje en la UI indicando que las credenciales son inválidas
+        }
+
+        // Aquí puedes actualizar el estado para mostrar un mensaje de error en la UI
+      }
+    } catch (error) {
+      console.error("Error en el inicio de sesión:", error);
+      // Aquí puedes actualizar el estado para mostrar un mensaje de error en la UI
+    }
   };
 
   const handleClickPassword = () => {
