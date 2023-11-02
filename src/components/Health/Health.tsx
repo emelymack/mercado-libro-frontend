@@ -12,10 +12,30 @@ import {
 import { useEffect, useState } from "react";
 
 import { Book, getAllBooks } from "../../services/BookService";
+import { User } from "../../types/user";
+import { createUser } from "../../services/UserService";
 
 const Health = () => {
   const [error, setError] = useState<string>("");
+  // const [users, setUsers] = useState<User[]>();
   const [books, setBooks] = useState<Book[]>();
+
+  const handleCreateUser = () => {
+    const newUser = {
+      email: "test2@example.com",
+      name: "John",
+      lastName: "Doe",
+      password: "testpassword2",
+    };
+
+    createUser(newUser)
+      .then((createdUser) => {
+        console.log("Usuario creado:", createdUser);
+      })
+      .catch((error) => {
+        console.error("Error al crear usuario:", error);
+      });
+  };
 
   useEffect(() => {
     getAllBooks()
@@ -45,6 +65,7 @@ const Health = () => {
 
   return (
     <>
+      <button onClick={handleCreateUser}>Crear Usuario</button>
       {books && books.length > 0 ? (
         <Table variant="simple">
           <Thead>

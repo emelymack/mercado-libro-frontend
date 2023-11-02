@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import RegisterUser from "./components/RegisterUser/RegisterUser";
 import Health from "./components/Health/Health";
 import Categories from "./components/Categories/Categories";
+import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 
 function App() {
   return (
@@ -18,8 +19,8 @@ function App() {
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/about" element={<h1>About</h1>} />
           <Route path="/contact" element={<Health />} />
-          <Route path="/contact" element={<h1>Contact</h1>} />
           <Route path="/category/:categoryName" element={<Categories />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
     </>
