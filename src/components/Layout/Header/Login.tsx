@@ -30,6 +30,7 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Link as LinkTo, useNavigate } from "react-router-dom";
+import { loginUser } from "../../../services/LoginService";
 
 const schema = z.object({
   email: z
@@ -64,6 +65,20 @@ const Login = () => {
   const onSubmit = (data: LoginDataForm) => {
     console.info(data);
     onOpen();
+    loginUser({
+      email: data.email,
+      password: data.password,
+    })
+      .then((loginUser) => {
+        console.log("Usuario creado:", loginUser);
+        // setModalMessage("Usuario creado exitosamente");
+        // setIsSuccessModalOpen(true);
+      })
+      .catch((error) => {
+        console.error("Error al crear usuario:", error);
+        console.log(error.message);
+        // setIsErrorModalOpen(true);
+      });
   };
 
   const handleClickPassword = () => {
