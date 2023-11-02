@@ -65,19 +65,18 @@ const Login = () => {
   const onSubmit = (data: LoginDataForm) => {
     console.info(data);
     onOpen();
+
     loginUser({
       email: data.email,
       password: data.password,
     })
-      .then((loginUser) => {
-        console.log("Usuario creado:", loginUser);
-        // setModalMessage("Usuario creado exitosamente");
-        // setIsSuccessModalOpen(true);
+      .then((response) => {
+        console.log("Inicio de sesión exitoso");
+        console.log(response.statusCode);
+        console.log("Datos del usuario:", response.data);
       })
       .catch((error) => {
-        console.error("Error al crear usuario:", error);
-        console.log(error.message);
-        // setIsErrorModalOpen(true);
+        console.error("Error inesperado:", error);
       });
   };
 

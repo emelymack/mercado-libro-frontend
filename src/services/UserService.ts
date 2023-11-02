@@ -2,6 +2,7 @@
 import httpService from "./httpService";
 import { BASE_URL, USER_URL } from "./apiUrls";
 import { User } from "../types/user";
+import { CustomResponse } from "../types/customResponse";
 
 export const getUserById = (id: number): Promise<User> => {
   return httpService
@@ -57,11 +58,20 @@ export const getAllUsers = (): Promise<User[]> => {
     });
 };
 
-export const createUser = (user: User): Promise<User> => {
+export const createUser = (user: User): Promise<CustomResponse<User>> => {
   return httpService
     .post(`${BASE_URL}${USER_URL}`, user)
-    .then((response) => response.data)
+    .then((response) => {
+      return {
+        statusCode: response.status,
+        data: response.data,
+      };
+    })
     .catch((error) => {
-      throw new Error(error.response?.data);
+      return {
+        statusCode: error?.response?.status,
+        data: null,
+        errorMessage: error.message,
+      };
     });
 };
