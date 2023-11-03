@@ -32,7 +32,7 @@ import { z } from "zod";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
-import { createUser } from "../../services/UserService";
+import { createUser } from "../../services/RegisterService";
 import { useNavigate } from "react-router-dom";
 import CustomLoading from "../CustomLoading/CustomLoading";
 

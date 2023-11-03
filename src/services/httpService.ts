@@ -20,7 +20,6 @@ const requestGeneric: RequestGeneric = {
 
 axios.interceptors.request.use(
   (config) => {
-    console.log("interceptor");
     const tokenItem = localStorage.getItem("token");
     if (tokenItem) {
       const token = JSON.parse(tokenItem);

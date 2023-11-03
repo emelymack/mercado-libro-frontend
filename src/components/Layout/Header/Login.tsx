@@ -32,6 +32,7 @@ import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Link as LinkTo, useNavigate } from "react-router-dom";
 import { loginUser } from "../../../services/LoginService";
 import CustomLoading from "../../CustomLoading/CustomLoading";
+import setLocalStorageItem from "../../../utils/setStorage";
 
 const schema = z.object({
   email: z
@@ -78,28 +79,27 @@ const Login = () => {
         setIsLoading(false);
         console.log("Inicio de sesión exitoso");
         console.log("Datos del usuario:", response.data);
-        // Aquí puedes redirigir al usuario, actualizar el estado, etc.
-        const token = response.data?.token; // Access token if it exists
+        const token = response.data?.token;
         if (token) {
           console.log("Token:", token);
-          window.localStorage.setItem("token", JSON.stringify(token));
-          // Rest of the code...
+          setLocalStorageItem("token", token);
         }
+        history("/userDashboard");
       } else {
         console.error("Error en el inicio de sesión:", response.errorMessage);
         setIsLoading(false);
         if (response.statusCode === 401) {
           setIsLoading(false);
           console.log("Credenciales inválidas.");
-          // Puedes mostrar un mensaje en la UI indicando que las credenciales son inválidas
+          //  TODO Mostrar un mensaje que las credenciales son inválidas
         }
 
-        // Aquí puedes actualizar el estado para mostrar un mensaje de error en la UI
+        // TODO Actualizar el estado para mostrar un mensaje de error
       }
     } catch (error) {
       setIsLoading(false);
       console.error("Error en el inicio de sesión:", error);
-      // Aquí puedes actualizar el estado para mostrar un mensaje de error en la UI
+      // TODO Actualizar el estado para mostrar un mensaje de error
     }
   };
 

@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 
 import { Book, getAllBooks } from "../../services/BookService";
-import { createUser } from "../../services/UserService";
+import { createUser } from "../../services/RegisterService";
 import CustomLoading from "../CustomLoading/CustomLoading";
 
 const Health = () => {
