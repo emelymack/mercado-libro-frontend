@@ -12,7 +12,7 @@ export const loginUser = async (
       `${BASE_URL}${LOGIN_URL}`,
       userLogin
     );
-
+    userLogin.token = response.data.token;
     return {
       statusCode: response.status,
       data: response.data,
