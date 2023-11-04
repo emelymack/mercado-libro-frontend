@@ -8,7 +8,7 @@ import RegisterUser from "./components/RegisterUser/RegisterUser";
 import Health from "./components/Health/Health";
 import Categories from "./components/Categories/Categories";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
-import UserInfo from "./components/Health/UserInfo";
+import UserInfo from "./components/UserDashboard/UserInfo";
 
 function App() {
   return (

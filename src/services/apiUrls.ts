@@ -7,5 +7,5 @@ export const BOOK_URL = "book/";
 export const URL_REGISTER = "api/user";
 export const CATEGORY_URL = "category/";
 export const LOGIN_URL = "api/auth/login";
-export const USER_URL = "user/";
+export const USER_URL = "api/user/";
 export const GET_ALL_USERS_URL = "api/user";

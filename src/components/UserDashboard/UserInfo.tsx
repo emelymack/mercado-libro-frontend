@@ -12,10 +12,28 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { Role, User } from "../../types/user";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import EditUserModal from "./EditUserModal";
+import CustomLoading from "../CustomLoading/CustomLoading";
 
 const UserInfo = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [selectedUserId, setSelectedUserId] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleEdit = (id: number) => {
+    setSelectedUserId(id);
+    setIsEditModalOpen(true);
+  };
+
+  const handleDelete = (id: number) => {
+    console.log("ID para eliminar:", id);
+    // Resto del código para eliminar el usuario
+  };
+
   useEffect(() => {
+    setIsLoading(true);
     const fetchUsers = async () => {
       try {
         const response = await getAllUsers();
@@ -26,6 +44,8 @@ const UserInfo = () => {
         }
       } catch (error) {
         console.error("Failed to fetch users:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -61,10 +81,34 @@ const UserInfo = () => {
                     {role.description}
                   </Tag>
                 ))}
+                <Td>
+                  <EditIcon
+                    w={6}
+                    h={6}
+                    color="teal.500"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleEdit(user.id)}
+                  />
+                  <DeleteIcon
+                    w={6}
+                    h={6}
+                    color="red.500"
+                    style={{ cursor: "pointer", marginLeft: "1rem" }}
+                    onClick={() => handleDelete(user.id)}
+                  />
+                </Td>
               </Tr>
             ))}
+            {selectedUserId !== null && isEditModalOpen && (
+              <EditUserModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                userId={selectedUserId}
+              />
+            )}
           </Tbody>
         </Table>
+        {isLoading ? <CustomLoading /> : null}
       </Box>
     </>
   );
