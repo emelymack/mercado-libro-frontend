@@ -14,7 +14,7 @@ const Details = () => {
 
       <Box mt={12}>
         <Heading color={'brand.greenLogo'} fontWeight={700} size={"md"}>Detalles del producto</Heading>
-        <TableContainer mt={5} w={{lg: '75%'}}>
+        <TableContainer mt={5} w={{lg: '85%'}}>
           <Table size='sm'>
             <Tbody>
               <Tr>

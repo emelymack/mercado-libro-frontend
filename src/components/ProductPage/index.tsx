@@ -2,10 +2,12 @@ import { Box, Container, Heading, Image, Link, SimpleGrid, Stack, Text } from '@
 import BreadcrumbNav from './Breadcrumb'
 import bookImg from '../../assets/img/book-2.png'
 import { useAppSelector } from '../../context/hooks'
-import QuantityInput from './QuantityInput'
+import QuantityInput from '../Input/QuantityInput'
 import AddToCart from '../Button/AddToCart'
 import Details from './Details'
 import RelatedProducts from './RelatedProducts'
+import { useEffect } from 'react'
+import Cart from '../Cart'
 
 const ProductPage = () => {
   // const {id, img, title, author, publisher, publishDate, price, description, pages, lang} = product
@@ -15,6 +17,9 @@ const ProductPage = () => {
     return `https://www.google.com/search?q=${searchStr}`
   }
   const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
   return (
     <Container maxW={'container.xl'} className={`page ${isScrolling ? 'scroll' : ''}`}>
       <Box py={8} mb={20}>
@@ -23,7 +28,7 @@ const ProductPage = () => {
           <Box display={'flex'} justifyContent={{base: 'center', lg: 'flex-end'}} >
             <Image src={bookImg} boxSize={'300px'} h={'auto'}/>
           </Box>
-          <Box w={{base: '100%', lg: '70%'}} px={{base: 6, lg: 0}}>
+          <Box w={{base: '100%', lg: '75%'}} px={{base: 6, lg: 0}}>
             {/* Titulo */}
             <Heading color={'brand.blueLogo'} noOfLines={3} w={{lg: '90%'}}>El corredor o las almas que lleva el diablo (Mapa de las lenguas) </Heading>
             

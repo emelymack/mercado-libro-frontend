@@ -120,9 +120,7 @@ export const Categories = () => {
   const params = useParams();
   const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   return (
     <Container maxW="container.xl" bg="white.600" centerContent mb={20} className={`page ${isScrolling ? 'scroll' : ''}`}>

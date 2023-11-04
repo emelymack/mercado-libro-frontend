@@ -48,7 +48,6 @@ const ProductCard = ({ id, img, title, author, price }: Product) => {
           </Text>
         </Stack>
       </CardBody>
-      <Divider />
       <CardFooter px={5}>
         <Button 
           variant="brandSecondary" 

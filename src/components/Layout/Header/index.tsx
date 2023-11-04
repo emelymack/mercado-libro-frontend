@@ -21,14 +21,14 @@ import {
 } from "@chakra-ui/icons";
 import logo from "../../../assets/Logo.svg";
 import searchIcon from "../../../assets/icons/icon-search.svg";
-import cartIcon from "../../../assets/icons/icon-cart.svg";
 import { useState } from "react";
 import Login from "./Login";
 import MyAccount from "./MyAccount";
 import NavLink from "./NavLink";
 import NavMenu from "./Mobile/NavMenu";
 import { Link, Link as LinkTo } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../context/hooks";import {useEffect} from 'react'
+import { useAppDispatch, useAppSelector } from "../../../context/hooks";
+import Cart from "../../Cart";
 
 const Links = [
   {
@@ -137,14 +137,7 @@ const Header = () => {
                 </Button>
               </Box>
               <Box me={1}>
-                <Button
-                  bg={"none"}
-                  ps={0}
-                  pe={{ base: 2, md: 3 }}
-                  className="headerBtn"
-                >
-                  <Image src={cartIcon} boxSize={{ base: '50px' }} />
-                </Button>
+                <Cart />
               </Box>
               <Button onClick={toggleColorMode} borderRadius={"full"}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
