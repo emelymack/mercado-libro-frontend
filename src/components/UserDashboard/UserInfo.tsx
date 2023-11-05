@@ -79,7 +79,12 @@ const UserInfo = () => {
                 <Th>{user.status}</Th>
                 <Th>{user.dateCreated}</Th>
                 {user.roles.map((role: Role) => (
-                  <Tag key={role.id} colorScheme="green">
+                  <Tag
+                    key={role.id}
+                    colorScheme={
+                      role.description === "USER" ? "green" : "orange"
+                    }
+                  >
                     {role.description}
                   </Tag>
                 ))}
