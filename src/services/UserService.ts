@@ -30,13 +30,10 @@ export const getUserById = async (
 
 export const updateUser = async (
   id: number,
-  user: User
-): Promise<CustomResponse<User>> => {
+  user: EditUser
+): Promise<CustomResponse<EditUser>> => {
   try {
-    const response = await httpService.put(
-      `${BASE_URL}${USER_URL}/${id}`,
-      user
-    );
+    const response = await httpService.put(`${BASE_URL}${USER_URL}${id}`, user);
 
     return {
       statusCode: response.status,
@@ -78,11 +75,11 @@ export const deleteUser = async (id: number): Promise<CustomResponse<void>> => {
 
 export const patchUser = async (
   id: number,
-  userUpdates: Partial<User>
+  userUpdates: EditUser
 ): Promise<CustomResponse<EditUser>> => {
   try {
     const response = await httpService.patch(
-      `${BASE_URL}${USER_URL}/${id}`,
+      `${BASE_URL}${USER_URL}${id}`,
       userUpdates
     );
 

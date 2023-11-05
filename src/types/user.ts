@@ -9,11 +9,11 @@ export interface User {
 }
 
 export interface EditUser {
-  id: number;
-  name: string;
-  lastName: string;
-  email: string;
-  dateCreated: string;
+  id?: number;
+  name?: string;
+  lastName?: string;
+  email?: string;
+  dateCreated?: string;
 }
 
 export interface Role {

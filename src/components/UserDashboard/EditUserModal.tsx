@@ -24,7 +24,8 @@ import { User } from "../../types/user";
 import CustomLoading from "../CustomLoading/CustomLoading";
 
 const schema = z.object({
-  name: z.string().min(2, { message: "Debe tener 2 o más caracteres" }),
+  name: z.string(),
+  lastName: z.string(),
   email: z
     .string()
     .email({ message: "Dirección de correo electrónico no válida" }),
@@ -36,20 +37,21 @@ interface EditUserModalProps {
   isOpen?: boolean;
   userId?: number;
   onClose: () => void;
+  reloadUsers: () => void;
 }
 
-const EditUserModal = ({ userId, isOpen, onClose }: EditUserModalProps) => {
+const EditUserModal = ({
+  userId,
+  isOpen,
+  onClose,
+  reloadUsers,
+}: EditUserModalProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSubmit = (data: EditUserDataForm) => {
-    console.log(data);
-    onSubmit(data);
-    onClose();
-  };
-
   const {
     register,
+    handleSubmit: handleFormSubmit,
     formState: { errors },
   } = useForm<EditUserDataForm>({
     resolver: zodResolver(schema),
@@ -78,6 +80,7 @@ const EditUserModal = ({ userId, isOpen, onClose }: EditUserModalProps) => {
   }, [userId, isOpen]);
 
   const onSubmit = async (data: EditUserDataForm) => {
+    setIsLoading(true);
     try {
       if (!userId) {
         console.error("User ID is undefined");
@@ -91,69 +94,97 @@ const EditUserModal = ({ userId, isOpen, onClose }: EditUserModalProps) => {
       }
     } catch (error) {
       console.error("Error al actualizar el usuario:", error);
+    } finally {
+      setIsLoading(false);
+      reloadUsers();
+      onClose();
     }
-    onClose();
   };
 
   return (
     <Modal isOpen={!!isOpen} onClose={onClose} isCentered>
       <ModalOverlay bg="none" backdropFilter="auto" backdropBlur="2px" />
-      <ModalContent>
+      <ModalContent bg={"brand.violetLogo50"}>
         <ModalHeader textAlign="center">Editar Usuario</ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton onClick={onClose} />
         <ModalBody>
-          <form onSubmit={() => console.log("Hola")} style={{ width: "100%" }}>
+          <form onSubmit={handleFormSubmit(onSubmit)} style={{ width: "100%" }}>
             <Flex direction="column" align="center">
-              <Box w="90%">
-                <FormControl id="name" w="100%" isInvalid={!!errors.name}>
-                  <Input
-                    value={user ? user.name + " " + user.lastName : ""}
-                    variant="unstyled"
-                    autoComplete="name"
-                    padding={3}
-                    fontSize={{ base: "lg", md: "xl" }}
-                    h={"auto"}
-                    placeholder="Nombre Y Apellido"
-                    type="name"
-                    {...register("name")}
-                    bg="white"
-                    borderColor="#d8dee4"
-                    size="sm"
-                    borderRadius="6px"
-                  />
-                  {errors.name && (
-                    <FormErrorMessage fontSize="lg" color="red">
-                      {errors.name.message}
-                    </FormErrorMessage>
-                  )}
-                </FormControl>
-                <FormControl
-                  id="email"
-                  paddingTop="20px"
-                  w="100%"
-                  isInvalid={!!errors.email}
-                >
-                  <Input
-                    value={user ? user.email : ""}
-                    padding={3}
-                    fontSize={{ base: "lg", md: "xl" }}
-                    h={"auto"}
-                    placeholder={"Dirección de correo electrónico"}
-                    autoComplete="email"
-                    type="email"
-                    {...register("email")}
-                    bg="white"
-                    borderColor="#d8dee4"
-                    size="sm"
-                    borderRadius="6px"
-                  />
-                  {errors.email && (
-                    <FormErrorMessage fontSize="lg" color="red">
-                      {errors.email.message}
-                    </FormErrorMessage>
-                  )}
-                </FormControl>
+              <Box w="90%" mb={4}>
+                <Flex>
+                  <FormControl
+                    id="name"
+                    w="50%"
+                    mr={2}
+                    isInvalid={!!errors.name}
+                  >
+                    <Input
+                      variant="unstyled"
+                      autoComplete="given-name"
+                      padding={3}
+                      fontSize={{ base: "lg", md: "xl" }}
+                      h={"auto"}
+                      placeholder="Nombre"
+                      type="name"
+                      {...register("name")}
+                      bg="white"
+                      borderColor="#d8dee4"
+                      size="sm"
+                      borderRadius="6px"
+                    />
+                    {errors.name && (
+                      <FormErrorMessage fontSize="lg" color="red">
+                        {errors.name.message}
+                      </FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl
+                    id="lastName"
+                    w="50%"
+                    isInvalid={!!errors.lastName}
+                  >
+                    <Input
+                      variant="unstyled"
+                      autoComplete="family-name"
+                      padding={3}
+                      fontSize={{ base: "lg", md: "xl" }}
+                      h={"auto"}
+                      placeholder="Apellido"
+                      type="text"
+                      {...register("lastName")}
+                      bg="white"
+                      borderColor="#d8dee4"
+                      size="sm"
+                      borderRadius="6px"
+                    />
+                    {errors.lastName && (
+                      <FormErrorMessage fontSize="lg" color="red">
+                        {errors.lastName.message}
+                      </FormErrorMessage>
+                    )}
+                  </FormControl>
+                </Flex>
               </Box>
+              <FormControl id="email" w="100%" isInvalid={!!errors.email}>
+                <Input
+                  padding={3}
+                  fontSize={{ base: "lg", md: "xl" }}
+                  h={"auto"}
+                  placeholder={"Dirección de correo electrónico"}
+                  autoComplete="email"
+                  type="email"
+                  {...register("email")}
+                  bg="white"
+                  borderColor="#d8dee4"
+                  size="sm"
+                  borderRadius="6px"
+                />
+                {errors.email && (
+                  <FormErrorMessage fontSize="lg" color="red">
+                    {errors.email.message}
+                  </FormErrorMessage>
+                )}
+              </FormControl>
             </Flex>
             <HStack
               fontSize={{ base: "lg", md: "xl" }}
@@ -176,6 +207,21 @@ const EditUserModal = ({ userId, isOpen, onClose }: EditUserModalProps) => {
               _hover={{ bg: "#003844", color: "white" }}
             >
               Guardar Cambios
+            </Button>
+            <Button
+              onClick={onClose}
+              marginTop={8}
+              fontSize={{ base: "md", md: "lg" }}
+              w="40%"
+              type="submit"
+              bg="#8884FF"
+              color="#003844"
+              borderRadius="6px"
+              size="lg"
+              fontWeight="700"
+              _hover={{ bg: "#003844", color: "white" }}
+            >
+              Cancelar
             </Button>
           </form>
         </ModalBody>

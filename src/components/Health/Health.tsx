@@ -28,7 +28,6 @@ const Health = () => {
       email: "test2@example.com",
       name: "John",
       lastName: "Doe",
-      password: "testpassword2",
     };
 
     createUser(newUser)

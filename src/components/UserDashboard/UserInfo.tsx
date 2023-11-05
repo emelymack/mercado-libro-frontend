@@ -21,6 +21,7 @@ const UserInfo = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [selectedUserId, setSelectedUserId] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [reloadKey, setReloadKey] = useState(0);
 
   const handleEdit = (id: number) => {
     setSelectedUserId(id);
@@ -50,7 +51,8 @@ const UserInfo = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [reloadKey]);
+
   return (
     <>
       <Box position={"relative"} zIndex={1}>
@@ -104,6 +106,7 @@ const UserInfo = () => {
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
                 userId={selectedUserId}
+                reloadUsers={() => setReloadKey((prevKey) => prevKey + 1)}
               />
             )}
           </Tbody>
