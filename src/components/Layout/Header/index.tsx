@@ -127,6 +127,21 @@ const Header = () => {
                     {/* <MenuDivider /> */}
                   </MenuList>
                 </Menu>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rightIcon={<ChevronDownIcon />}
+                    bg={"none"}
+                    color={"var(--secondary)"}
+                  >
+                    Administración
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>
+                      <Link to={`/admin/products`}>Productos</Link>
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
                 {Links.map((link) => (
                   <NavLink key={link.name} url={link.url}>
                     {link.name}
