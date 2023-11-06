@@ -38,8 +38,6 @@ const OrderSummaryItem = (props: OrderSummaryItemProps) => {
 export const CartOrderSummary = () => {
   const [ showShippingMenu, setShowShippingMenu ] = useState(false)
 
-
-
   return (
     <Stack spacing="8" borderWidth="1px" rounded="lg" py={8} px={5} width="full">
       <Heading size="md">Resumen de compra</Heading>

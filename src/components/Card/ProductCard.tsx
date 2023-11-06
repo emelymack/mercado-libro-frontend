@@ -11,11 +11,11 @@ import {
   Box,
   CardHeader,
 } from "@chakra-ui/react";
-import { Product } from "../../types/product";
+import { Book } from "../../types/product";
 import { useNavigate } from "react-router-dom";
 import AddToCart from "../Button/AddToCart";
 
-const ProductCard = ({ id, img, title, author, price }: Product) => {
+const ProductCard = ({ id, image_links, title, authors, price }: Book) => {
   const navigate = useNavigate()
 
   const verMasInfo = () => {
@@ -27,7 +27,7 @@ const ProductCard = ({ id, img, title, author, price }: Product) => {
       <CardHeader py={2}>
         <Box display={"flex"} justifyContent={"center"}>
           <Image
-            src={img}
+            src={image_links[0]}
             maxH={200}
             w={"auto"}
             alt={title}
@@ -41,7 +41,7 @@ const ProductCard = ({ id, img, title, author, price }: Product) => {
           {/* Titulo del libro */}
           <Heading size="md">{title}</Heading>
           {/* Nombre del autor */}
-          <Text noOfLines={2}>{author}</Text>
+          <Text noOfLines={2}>{authors}</Text>
           {/* Precio */}
           <Text color="brand.blueLogo" fontSize="2xl" fontWeight={600}>
             ${price}

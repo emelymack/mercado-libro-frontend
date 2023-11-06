@@ -6,12 +6,12 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import ProductCard from "../Card/ProductCard";
 import { Box } from "@chakra-ui/react";
-import { Product } from "../../types/product";
+import { Book } from "../../types/product";
 
 interface Props {
   title: string;
   titleColor?: 'green' | 'blue';
-  products: Product[];
+  products: Book[];
 }
 
 const ProductsCarousel = ({ title, products, titleColor }: Props) => {
@@ -41,11 +41,10 @@ const ProductsCarousel = ({ title, products, titleColor }: Props) => {
             <SwiperSlide>
               <ProductCard
                 id={item.id}
-                img={item.img}
+                image_links={item.image_links}
                 title={item.title}
-                author={item.author}
+                authors={item.authors}
                 price={item.price}
-                url={""}
               />
             </SwiperSlide>
           ))}

@@ -1,4 +1,4 @@
-import { CloseButton, Flex, Link, Select, SelectProps, useColorModeValue } from '@chakra-ui/react'
+import { Flex, Link } from '@chakra-ui/react'
 import { CartProductMeta } from './CartProductMeta'
 import QuantityInput from '../Input/QuantityInput'
 
@@ -11,22 +11,6 @@ type CartItemProps = {
   imageUrl: string
   onChangeQuantity?: (quantity: number) => void
   onClickDelete?: () => void
-}
-
-const QuantitySelect = (props: SelectProps) => {
-  return (
-    <Select
-      maxW="64px"
-      aria-label="Select quantity"
-      focusBorderColor={useColorModeValue('blue.500', 'blue.200')}
-      {...props}
-    >
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-    </Select>
-  )
 }
 
 export const CartItem = (props: CartItemProps) => {
@@ -57,12 +41,6 @@ export const CartItem = (props: CartItemProps) => {
         display={{ base: 'flex' }}
         flexDir={'column'}
       >
-        {/* <QuantitySelect
-          value={quantity}
-          onChange={(e) => {
-            onChangeQuantity?.(+e.currentTarget.value)
-          }}
-        /> */}
         <QuantityInput />
         <Link fontSize="sm" textDecor="underline" mt={2} color={'red.500'}>
           Eliminar
