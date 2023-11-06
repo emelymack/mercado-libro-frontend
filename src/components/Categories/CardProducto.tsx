@@ -11,14 +11,17 @@ import {
     Text,
     Flex
   } from "@chakra-ui/react";
-  interface Props {
+/*   import { Category} from "../../services/BookService" */
+import { Category, CategoryDetail } from "../../types/category"; 
+import { Product } from "../../types/product";
+  /* interface Props {
     ap1: string,
     ap2: string,
     ap3: string,
-  }
+  }  */
 
 
-  const ProductoCategorie = (props: Props) => {
+  const ProductoCategorie = ({title, img, author,}: Product) => {
 
     
     return (
@@ -31,7 +34,7 @@ px='0'>
   <Flex  align="center" justify="center">
     <Image
       maxW='124px'
-      src={props.ap1}
+      src={img}
       alt='Green double couch with wooden legs'
       borderRadius='lg'
       boxShadow='lg'
@@ -48,9 +51,9 @@ px='0'>
     <CardBody py='3' px='6'>
 
     <Stack  spacing='2'>
-      <Heading size='md'>{props.ap2}</Heading>
+      <Heading size='md'>{title}</Heading>
       <Text fontSize='sm'>
-      {props.ap3}
+      {author}
       </Text>
       
     </Stack>

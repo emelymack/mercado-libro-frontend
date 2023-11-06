@@ -1,142 +1,66 @@
 import { useParams } from "react-router-dom";
 import ProductCard from "../Card/ProductCard";
-
 import { Center, Heading, Container, SimpleGrid } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { CategoryDetail } from "../../types/category";
+import { Product } from "../../types/product";
+/* import {getBooksByCategory, getAllBooks} from "../../services/BookService" */
 
-const Productos = [
-  {
-    titulo: "Libro1",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    titulo: "Libro2",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    titulo: "Libro3",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    titulo: "Libro4",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    titulo: "Libro5",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    titulo: "Libro6",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    titulo: "Libro7",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    titulo: "Libro8",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    titulo: "Libro9",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    titulo: "Libro10",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    titulo: "Libro11",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    titulo: "Libro12",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-];
+
+
 
 export const Categories = () => {
-  const params = useParams();
+   const {nameCategory} = useParams();
+  
+  const [result, setResult] = useState<Product[]>([]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const getCategory = async () => {
+      const data = await fetch(`http://localhost:8080/v1/api/book?page=0&category=${nameCategory}`, {
+        method: "GET"
+      });
+      const jsonData = await data.json();
+      setResult(jsonData.results);
+    };
+
+    getCategory();
   }, []);
+ 
+ 
+
+  /* useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []); */
+
 
   return (
+    <>
     <Container maxW="container.xl" bg="white.600" centerContent mb={20}>
       <Heading
         size="lg"
         fontSize="50px"
         mb={10}
         mt={10}
-        color="brand.greenLogo"
-      >
-        {params.categoryName}
+        color="brand.greenLogo">
+        {nameCategory}
       </Heading>
 
       <Center>
         <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} gap={5}>
-          {Productos.map((producto) => (
+        {result?.map((product) => (
             <ProductCard
-              img={producto.imagen}
-              title={producto.titulo}
-              author={producto.autor}
-              price={producto.precio}
-              url=""
+              img={product.img}
+              title={product.title}
+              url={product.url}
+              author={product.author}
+              price={product.price}
             />
           ))}
         </SimpleGrid>
       </Center>
     </Container>
+    </>
   );
-};
+         };
 
 export default Categories;

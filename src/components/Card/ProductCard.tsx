@@ -11,9 +11,12 @@ import {
   Box,
   CardHeader,
 } from "@chakra-ui/react";
+import { Book } from "../../services/BookService"
+import { CategoryDetail } from "../../types/category";
 import { Product } from "../../types/product";
 
-const ProductCard = ({ img, title, author, price }: Product) => {
+
+const ProductCard = ({ author, img, title, price, url }: Product) => {
   return (
     <Card variant={"productCard"} w={"auto"}>
       <CardHeader py={2}>
