@@ -33,6 +33,9 @@ import { Link as LinkTo, useNavigate } from "react-router-dom";
 import { loginUser } from "../../../services/LoginService";
 import CustomLoading from "../../CustomLoading/CustomLoading";
 import setLocalStorageItem from "../../../utils/setStorage";
+import { useAppDispatch } from "../../../context/hooks";
+import { setUser } from "../../../context/slices/userSlice";
+import { login } from "../../../context/slices/authSlice";
 
 const schema = z.object({
   email: z
@@ -45,14 +48,8 @@ const schema = z.object({
 
 type LoginDataForm = z.infer<typeof schema>;
 
-interface LoginModalProps {
-  setIsLogged: boolean;
-}
-
-const Login = ({ setIsLogged }: LoginModalProps) => {
-  const loginOrNot = setIsLogged;
-
-  console.log("Validando login--->", loginOrNot);
+const Login = () => {
+  const dispatch = useAppDispatch();
   const breakpointValue = useBreakpointValue({
     base: "base",
     sm: "sm",
@@ -68,11 +65,10 @@ const Login = ({ setIsLogged }: LoginModalProps) => {
   });
 
   const history = useNavigate();
-
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const onSubmit = async (data: LoginDataForm) => {
-    console.info(data);
+    console.log(data);
     setIsLoading(true);
     onOpen();
 
@@ -83,31 +79,48 @@ const Login = ({ setIsLogged }: LoginModalProps) => {
       });
 
       if (response.statusCode === 200) {
-        setIsLoading(false);
         console.log("Inicio de sesión exitoso");
         console.log("Datos del usuario:", response.data);
         const token = response.data?.token;
+        const user = response.data?.user;
+
         if (token) {
           console.log("Token:", token);
           setLocalStorageItem("token", token);
         }
-        // setIsLoggedIn(true);
-        history("/userDashboard");
-      } else {
-        console.error("Error en el inicio de sesión:", response.errorMessage);
-        setIsLoading(false);
-        if (response.statusCode === 401) {
-          setIsLoading(false);
-          console.log("Credenciales inválidas.");
-          //  TODO Mostrar un mensaje que las credenciales son inválidas
+        if (user) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ name: user.name, lastName: user.lastName })
+          );
+          dispatch(setUser({ name: user.name, lastName: user.lastName }));
         }
+        const isAdmin = response.data?.user?.roles.some(
+          (role) => role.description === "ADMIN"
+        );
 
-        // TODO Actualizar el estado para mostrar un mensaje de error
+        if (isAdmin) {
+          localStorage.setItem("isLogged", "true");
+          dispatch(login());
+          history("/userDashboard");
+        } else {
+          localStorage.setItem("isLogged", "true");
+          dispatch(login());
+          console.log("No eres administrador. Redireccionando...");
+          history("/"); // Redirigir a otra página si no es administrador
+        }
       }
     } catch (error) {
-      setIsLoading(false);
+      const err = error as { statusCode: number };
+      if (err.statusCode === 403) {
+        window.alert("Credenciales inválidas.");
+        console.log("Credenciales inválidas.");
+        // TODO: Mostrar un mensaje que las credenciales son inválidas
+      }
       console.error("Error en el inicio de sesión:", error);
-      // TODO Actualizar el estado para mostrar un mensaje de error
+      // TODO: Actualizar el estado para mostrar un mensaje de error
+    } finally {
+      setIsLoading(false); // Asegúrate de que isLoading se actualice incluso si hay un error
     }
   };
 

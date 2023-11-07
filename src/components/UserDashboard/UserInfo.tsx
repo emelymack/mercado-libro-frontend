@@ -116,8 +116,8 @@ const UserInfo = () => {
             )}
           </Tbody>
         </Table>
-        {isLoading ? <CustomLoading /> : null}
       </Box>
+      {isLoading ? <CustomLoading /> : null}
     </>
   );
 };

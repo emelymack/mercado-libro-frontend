@@ -27,7 +27,7 @@ import MyAccount from "./MyAccount";
 import NavLink from "./NavLink";
 import NavMenu from "./Mobile/NavMenu";
 import { Link, Link as LinkTo } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../context/hooks";
+import { useAppSelector } from "../../../context/hooks";
 import Cart from "../../Cart";
 
 const Links = [
@@ -51,23 +51,28 @@ const Links = [
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLogged] = useState<boolean>(false);
-  const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
+  const isLogged = useAppSelector((state) => state.auth.isLogged);
+  const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <header className={isScrolling ? "scroll": ''}>
+    <header className={isScrolling ? "scroll" : ""}>
       <Box px={{ base: 6, md: 10, xl: 20 }} color={"var(--secondary)"}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <HStack
-            spacing={{base: 3, md: 8}}
+            spacing={{ base: 3, md: 8 }}
             alignItems={"center"}
             justifyContent={"space-between"}
             w={"100%"}
           >
             <Box>
               <LinkTo to="/">
-                <Image src={logo} alt="Dan Abramov" boxSize={{base: 160, md: 200}} className="logo" />
+                <Image
+                  src={logo}
+                  alt="Dan Abramov"
+                  boxSize={{ base: 160, md: 200 }}
+                  className="logo"
+                />
               </LinkTo>
             </Box>
             <Box
@@ -80,7 +85,7 @@ const Header = () => {
                 spacing={4}
                 display={{ base: "none", lg: "flex" }}
                 ms={2}
-                me={{base: 3, lg: 0, xl: 3}}
+                me={{ base: 3, lg: 0, xl: 3 }}
               >
                 <Menu>
                   <MenuButton
@@ -125,7 +130,7 @@ const Header = () => {
                   </NavLink>
                 ))}
 
-                {isLogged ? <Login setIsLogged={isLogged} /> : <MyAccount />}
+                {!isLogged ? <Login /> : <MyAccount />}
               </HStack>
               <Box ms={2}>
                 <Button
@@ -133,13 +138,17 @@ const Header = () => {
                   px={{ base: 2, md: 3 }}
                   className="headerBtn"
                 >
-                  <Image src={searchIcon} boxSize={{ base: '50px' }} />
+                  <Image src={searchIcon} boxSize={{ base: "50px" }} />
                 </Button>
               </Box>
               <Box me={1}>
                 <Cart />
               </Box>
-              <Button onClick={toggleColorMode} borderRadius={"full"} size={{base: 'sm', md: 'md'}}>
+              <Button
+                onClick={toggleColorMode}
+                borderRadius={"full"}
+                size={{ base: "sm", md: "md" }}
+              >
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
               <IconButton

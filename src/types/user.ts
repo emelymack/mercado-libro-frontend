@@ -17,7 +17,7 @@ export interface EditUser {
 }
 
 export interface Role {
-  id: number;
+  id?: number;
   description: string;
   status: "ACTIVE" | "INACTIVE";
 }
