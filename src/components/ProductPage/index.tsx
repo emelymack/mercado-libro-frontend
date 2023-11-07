@@ -11,6 +11,7 @@ import { Book } from '../../types/product'
 import { getBookById } from '../../services/BookService'
 import { useParams } from 'react-router-dom'
 import { formatDateMonthYYYY, googleSearch } from '../../utils/functions'
+import CustomLoading from '../CustomLoading/CustomLoading'
 
 interface Product {
   book: Book | undefined,
@@ -41,8 +42,7 @@ const ProductPage = () => {
 
   if(product.isLoading) return ( 
     <Box h={'calc(100vh - 130px)'} display={'flex'} alignItems={'center'} justifyContent={'center'}>
-      {/* Cambiar por spinner MercadoLibro */}
-      <Spinner size={'xl'} /> 
+      <CustomLoading />
     </Box> 
   )
 
