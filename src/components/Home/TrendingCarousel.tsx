@@ -3,39 +3,39 @@ import img from '../../assets/img/portada_la-casa-neville-la-formidable-senorita
 
 const products = [
   {
-    img: img,
+    image_links: [img],
     title: "La Casa Neville. La formidable señorita Manon",
-    author: "Florencia Bonelli",
+    authors: "Florencia Bonelli",
     price: 11900,
     url: ""
   },{
-    img: img,
+    image_links: [img],
     title: "La Casa Neville. La formidable señorita Manon",
-    author: "Florencia Bonelli",
+    authors: "Florencia Bonelli",
     price: 11000,
     url: ""
   },{
-    img: img,
+    image_links: [img],
     title: "La Casa Neville. La formidable señorita Manon",
-    author: "Florencia Bonelli",
+    authors: "Florencia Bonelli",
     price: 11000,
     url: ""
   },{
-    img: img,
+    image_links: [img],
     title: "La Casa Neville. La formidable señorita Manon",
-    author: "Florencia Bonelli",
+    authors: "Florencia Bonelli",
     price: 11000,
     url: ""
   },{
-    img: img,
+    image_links: [img],
     title: "La Casa Neville. La formidable señorita Manon",
-    author: "Florencia Bonelli",
+    authors: "Florencia Bonelli",
     price: 11000,
     url: ""
   },{
-    img: img,
+    image_links: [img],
     title: "La Casa Neville. La formidable señorita Manon",
-    author: "Florencia Bonelli",
+    authors: "Florencia Bonelli",
     price: 11000,
     url: ""
   },

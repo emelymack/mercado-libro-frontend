@@ -9,7 +9,6 @@ const colors = {
     violetLogo25: "rgba(136,132,255,.25)",
     violetLogo50: "#C4C3FF",
     violetLogo75: "rgba(136,132,255,.75)",
-
   },
 };
 
@@ -19,7 +18,6 @@ const components = {
       fontWeight: "800",
       textTransform: "uppercase",
       borderRadius: 12,
-      height: "auto",
       transition: "all .2s ease-in-out",
     },
     variants: {

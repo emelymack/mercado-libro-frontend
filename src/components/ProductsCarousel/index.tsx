@@ -6,27 +6,28 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import ProductCard from "../Card/ProductCard";
 import { Box } from "@chakra-ui/react";
-import { Product } from "../../types/product";
+import { Book } from "../../types/product";
 
 interface Props {
   title: string;
-  products: Product[];
+  titleColor?: 'green' | 'blue';
+  products: Book[];
 }
 
-const ProductsCarousel = ({ title, products }: Props) => {
+const ProductsCarousel = ({ title, products, titleColor }: Props) => {
   return (
     <Box>
-      <Title htmlElement={"h2"} size="lg" text={title} />
-      <Box mt={8} px={10} position={"relative"}>
+      <Title htmlElement={"h2"} size="lg" text={title} color={titleColor ?? 'blue'} />
+      <Box mt={8} px={{base: 6, lg: 10}} position={"relative"}>
         <Swiper
           breakpoints={{
             640: {
               slidesPerView: 2,
             },
-            768: {
+            992: {
               slidesPerView: 3,
             },
-            992: {
+            1200: {
               slidesPerView: 4,
             },
           }}
@@ -39,11 +40,11 @@ const ProductsCarousel = ({ title, products }: Props) => {
           {products.map((item) => (
             <SwiperSlide>
               <ProductCard
-                img={item.img}
+                id={item.id}
+                image_links={item.image_links}
                 title={item.title}
-                author={item.author}
+                authors={item.authors}
                 price={item.price}
-                url={""}
               />
             </SwiperSlide>
           ))}
