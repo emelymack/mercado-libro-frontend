@@ -57,7 +57,7 @@ const Header = () => {
 
   return (
     <header className={isScrolling ? "scroll": ''}>
-      <Box px={{ base: 6, md: 20, lg: 10, xl: 20 }} color={"var(--secondary)"}>
+      <Box px={{ base: 6, md: 10, xl: 20 }} color={"var(--secondary)"}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <HStack
             spacing={{base: 3, md: 8}}
@@ -139,7 +139,7 @@ const Header = () => {
               <Box me={1}>
                 <Cart />
               </Box>
-              <Button onClick={toggleColorMode} borderRadius={"full"}>
+              <Button onClick={toggleColorMode} borderRadius={"full"} size={{base: 'sm', md: 'md'}}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
               <IconButton

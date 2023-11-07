@@ -18,7 +18,7 @@ const ProductsCarousel = ({ title, products, titleColor }: Props) => {
   return (
     <Box>
       <Title htmlElement={"h2"} size="lg" text={title} color={titleColor ?? 'blue'} />
-      <Box mt={8} px={10} position={"relative"}>
+      <Box mt={8} px={{base: 6, lg: 10}} position={"relative"}>
         <Swiper
           breakpoints={{
             640: {

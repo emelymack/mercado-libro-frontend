@@ -28,11 +28,11 @@ const Cart = () => {
           <DrawerBody>
             <Stack
               direction={{ base: 'column' }}
-              spacing={{ base: '8' }}
+              spacing={{ base: 8 }}
               py={5}
             >
-              <Stack spacing={{ base: '8', md: '10' }} flex="2">
-                <Stack spacing="6">
+              <Stack spacing={{ base: 8, md: 10 }} flex="2">
+                <Stack spacing={{ base: 3, md: 6 }}>
                   {cartData.map((item) => (
                     <CartItem key={item.id} {...item} />
                   ))}

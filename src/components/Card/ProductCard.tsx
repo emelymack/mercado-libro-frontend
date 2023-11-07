@@ -48,13 +48,14 @@ const ProductCard = ({ id, image_links, title, authors, price }: Book) => {
           </Text>
         </Stack>
       </CardBody>
-      <CardFooter px={5}>
+      <CardFooter display={'flex'} flexDir={{base: 'column', lg: 'row'}} px={5}>
         <Button 
           variant="brandSecondary" 
           w={"100%"}
           h={"auto"} 
           py={3} 
           me={2} 
+          mb={{base: 3, lg: 0}}
           onClick={() => verMasInfo()}
         >
           Ver más

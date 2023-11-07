@@ -1,6 +1,5 @@
-import { Box, Button, Flex, HStack, Input, Radio, Spinner, Stack, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, HStack, Input, Link, Radio, Spinner, Stack, Text } from '@chakra-ui/react'
 import {useState, useRef} from 'react'
-import { Link } from 'react-router-dom'
 
 const Shipping = () => {
   const [results, setResults ] = useState({isLoading: false, isShown: false})

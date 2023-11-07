@@ -24,7 +24,7 @@ export const CartItem = (props: CartItemProps) => {
   } = props
 
   return (
-    <Flex  justify="space-between" align="center">
+    <Flex flexDir={{base: 'column', md: 'row'}} justify="space-between" align="center" border={{base: '1px solid', md: 'none'}} borderColor={'gray.300'} borderRadius={10} p={{base:4, md: 0}}>
       <CartProductMeta
         name={name}
         image={imageUrl}
@@ -32,11 +32,10 @@ export const CartItem = (props: CartItemProps) => {
         currency='usd'
       />
 
-      {/* Mobile */}
       <Flex
         mt="4"
         align="center"
-        width="50%"
+        width={{base: "80%", md: "50%"}}
         justify="space-between"
         display={{ base: 'flex' }}
         flexDir={'column'}
