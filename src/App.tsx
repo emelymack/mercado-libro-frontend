@@ -12,19 +12,34 @@ import { scrollPosition } from "./context/slices/scrollSlice";
 import { useEffect } from "react";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import UserInfo from "./components/UserDashboard/UserInfo";
+import { login } from "./context/slices/authSlice";
+import { setUser } from "./context/slices/userSlice";
 
 function App() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const handleScroll = () => {
-    dispatch(scrollPosition(window.scrollY > 90))
-  }
+    dispatch(scrollPosition(window.scrollY > 90));
+  };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    
-    return () => { window.removeEventListener('scroll', handleScroll) }
-  },[])
+    const isLogged = localStorage.getItem("isLogged");
+    const storedUser = localStorage.getItem("user");
+    if (isLogged === "true") {
+      dispatch(login());
+    }
+    if (storedUser) {
+      dispatch(setUser(JSON.parse(storedUser)));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div className="content">

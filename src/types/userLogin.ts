@@ -1,7 +1,11 @@
 import { Role, User } from "./user";
 
+
 export interface UserLoginResponse {
-  token: string;
-  user: User;
-  roles: Role[];
+  email: string;
+  password: string;
+  token?: string;
+  user?: User | null;
+  roles?: Role[];
 }
+

@@ -1,5 +1,6 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
+  Avatar,
   Button,
   Menu,
   MenuButton,
@@ -9,21 +10,22 @@ import {
 } from "@chakra-ui/react";
 
 import { useNavigate } from "react-router-dom";
+import { clearLocalStorage } from "../../../utils/setStorage";
+import { useAppDispatch, useAppSelector } from "../../../context/hooks";
+import { logout } from "../../../context/slices/authSlice";
 
-interface LoginProps {
-  setIsLogged: (value: boolean) => void;
-}
-
-const MyAccount = ({ setIsLogged }: LoginProps) => {
+const MyAccount = () => {
+  debugger;
   const history = useNavigate();
+  const dispatch = useAppDispatch();
+  const { name, lastName } = useAppSelector((state) => state.user);
 
   const handleLogout = () => {
-    // Limpiar el estado de autenticación y realizar cualquier otra tarea de limpieza si es necesario
-    setIsLogged(false);
-
-    // Redirigir al usuario a la página de inicio
+    dispatch(logout());
+    clearLocalStorage();
     history("/");
   };
+  const initials = `${name} ${lastName}`;
 
   return (
     <Menu>
@@ -35,6 +37,7 @@ const MyAccount = ({ setIsLogged }: LoginProps) => {
         pe={2}
         rightIcon={<ChevronDownIcon />}
       >
+        <Avatar size="sm" name={initials} mr={2} />
         MI CUENTA
       </MenuButton>
       <MenuList>

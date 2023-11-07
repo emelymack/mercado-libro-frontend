@@ -33,6 +33,9 @@ import { Link as LinkTo, useNavigate } from "react-router-dom";
 import { loginUser } from "../../../services/LoginService";
 import CustomLoading from "../../CustomLoading/CustomLoading";
 import setLocalStorageItem from "../../../utils/setStorage";
+import { useAppDispatch } from "../../../context/hooks";
+import { setUser } from "../../../context/slices/userSlice";
+import { login } from "../../../context/slices/authSlice";
 
 const schema = z.object({
   email: z
@@ -45,11 +48,8 @@ const schema = z.object({
 
 type LoginDataForm = z.infer<typeof schema>;
 
-interface LoginModalProps {
-  setIsLogged: (value: boolean) => void;
-}
-
-const Login = ({ setIsLogged }: LoginModalProps) => {
+const Login = () => {
+  const dispatch = useAppDispatch();
   const breakpointValue = useBreakpointValue({
     base: "base",
     sm: "sm",
@@ -82,33 +82,41 @@ const Login = ({ setIsLogged }: LoginModalProps) => {
         console.log("Inicio de sesión exitoso");
         console.log("Datos del usuario:", response.data);
         const token = response.data?.token;
+        const user = response.data?.user;
 
         if (token) {
           console.log("Token:", token);
           setLocalStorageItem("token", token);
+        }
+        if (user) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ name: user.name, lastName: user.lastName })
+          );
+          dispatch(setUser({ name: user.name, lastName: user.lastName }));
         }
         const isAdmin = response.data?.user?.roles.some(
           (role) => role.description === "ADMIN"
         );
 
         if (isAdmin) {
-          setIsLogged(true);
+          localStorage.setItem("isLogged", "true");
+          dispatch(login());
           history("/userDashboard");
         } else {
-          setIsLogged(true);
+          localStorage.setItem("isLogged", "true");
+          dispatch(login());
           console.log("No eres administrador. Redireccionando...");
           history("/"); // Redirigir a otra página si no es administrador
         }
-      } else {
-        console.error("Error en el inicio de sesión:", response.errorMessage);
-        if (response.statusCode === 401) {
-          console.log("Credenciales inválidas.");
-          // TODO: Mostrar un mensaje que las credenciales son inválidas
-        }
-
-        // TODO: Actualizar el estado para mostrar un mensaje de error
       }
     } catch (error) {
+      const err = error as { statusCode: number };
+      if (err.statusCode === 403) {
+        window.alert("Credenciales inválidas.");
+        console.log("Credenciales inválidas.");
+        // TODO: Mostrar un mensaje que las credenciales son inválidas
+      }
       console.error("Error en el inicio de sesión:", error);
       // TODO: Actualizar el estado para mostrar un mensaje de error
     } finally {
