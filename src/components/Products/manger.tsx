@@ -22,14 +22,44 @@ import {
   FormLabel,
   Textarea,
   Select,
+  useBreakpointValue,
+  Center,
+  Tag,
+  TagLabel,
+  TagRightIcon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  FormHelperText,
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Book, getAllBooks } from '../../services/BookService';
 import { Category, getAllCategories } from '../../services/CategoryService';
-import { MdDelete, MdEditDocument, MdAdd } from "react-icons/md"
+import { MdDelete, MdEditDocument, MdAdd, MdPerson, MdSave } from "react-icons/md"
 import ml from '../../assets/ml.png';
 import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+const schema = z
+  .object({
+    name: z
+      .string()
+      .min(5, { message: "Debe tener 5 o más caracteres" })
+      .max(50).regex(/^[a-zA-Z0-9,.;\s@:]+$/),
+    description: z
+      .string()
+      .min(5, { message: "Debe tener al menos 5 o más caracteres" })
+      .max(500, { message: "Limite máximo de caracteres" }).regex(/^[a-zA-Z0-9,.;\s@:]+$/),
+    category: z.number()
+  });
+
+type RegisterDataForm = z.infer<typeof schema>;
 
 const ProductManager = () => {
 
@@ -37,6 +67,9 @@ const ProductManager = () => {
   const [books, setBooks] = useState<Book[]>();
   const [book, setBook] = useState<Book>();
   const [categories, setCategories] = useState<Category[]>();
+  const [authors, setAuthors] = useState<string[]>([]);
+  const [existAuthor, setExistAuthor] = useState<boolean>(false);
+  const [author, setAuthor] = useState<string>("");
 
 
   useEffect(() => {
@@ -83,12 +116,58 @@ const ProductManager = () => {
       });
   }, []);
 
-  const { handleSubmit, control, formState: { errors } } = useForm();
+  const breakpointValue = useBreakpointValue({
+    base: "base",
+    md: "md",
+    lg: "lg",
+    borderColor: "gray.200"
+  });
 
-  const onSubmit = (data: any) => {
-    // Aquí puedes manejar la acción cuando se envía el formulario.
-    console.log(data);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<RegisterDataForm>({
+    resolver: zodResolver(schema),
+  });
+
+
+  const onSubmit = (data: RegisterDataForm) => {
+    console.info(data);
   };
+
+  //modal add author
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const initialRef = React.useRef(null)
+
+  const addAuthor = () => {
+    console.log("saving!!!");
+
+    if (initialRef && initialRef.current) {
+      var newAuthor = initialRef.current.value;
+      setAuthor(newAuthor);
+      if (newAuthor.length == 0) {
+        return;
+      }
+      if (!authors.includes(newAuthor)) {
+        authors.push(newAuthor);
+        setAuthors(authors);
+        setExistAuthor(false);
+        onClose();
+      } else {
+        setExistAuthor(true);
+      }
+    } else {
+      setAuthor("");
+    }
+  };
+
+  const cancelAddAuthor = () => {
+    setAuthor("");
+    onClose();
+  }
+
 
 
   return (
@@ -138,7 +217,10 @@ const ProductManager = () => {
                             <Td>
                               {Array.isArray(book.authors) &&
                                 book.authors.map((author) => (
-                                  <Text key={author.id}>{author.name}</Text>
+                                  <Tag key={author.id} variant='outline'>
+                                    <TagLabel>{author.name}</TagLabel>
+                                    <TagRightIcon as={MdPerson} />
+                                  </Tag>
                                 ))}
                             </Td>
                             <Td>{book.publisher}</Td>
@@ -189,86 +271,132 @@ const ProductManager = () => {
             Registrar producto
           </Heading>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl isRequired isInvalid={errors.bookName}>
-              <FormLabel>Nombre del Libro</FormLabel>
-              <Controller
-                name="bookName"
-                control={control}
-                defaultValue=""
-                rules={{
-                  required: "Este campo es obligatorio",
-                  pattern: {
-                    value: /^[a-zA-Z0-9,.;\s]+$/,
-                    message: "Solo se permiten caracteres alfanuméricos, comas, puntos y punto y comas",
-                  },
-                }}
-                render={({ field }) => <Input {...field} />}
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+            <FormControl id="name" w="100%" isInvalid={!!errors.name}>
+              <FormLabel>Nombre del libro</FormLabel>
+              <Input
+                variant="outline"
+                autoComplete="name"
+                padding={3}
+                fontSize={{ base: "sm", md: "xl" }}
+                h={"auto"}
+                type="name"
+                {...register("name")}
+                size="sm"
+                borderColor="#d8dee4"
+                borderRadius="6px"
               />
-              <Text color="red.500" fontSize="sm" mt={1}>
-                {errors.bookName && errors.bookName.message}
-              </Text>
+              {errors.name && (
+                <FormErrorMessage fontSize="lg" color="red">
+                  {errors.name.message}
+                </FormErrorMessage>
+              )}
             </FormControl>
-            <FormControl isRequired isInvalid={errors.description}>
-              <FormLabel>Descripción</FormLabel>
-              <Controller
-                name="description"
-                control={control}
-                defaultValue=""
-                rules={{
-                  required: "Este campo es obligatorio",
-                  maxLength: { value: 500, message: "Máximo 500 caracteres permitidos" },
-                  pattern: {
-                    value: /^[a-zA-Z0-9,.;\s@:]+$/,
-                    message: "Solo se permiten caracteres alfanuméricos, espacios, comas, puntos, punto y comas, arrobas y dos puntos",
-                  },
-                }}
-                render={({ field }) => <Textarea {...field} />
-                }
+            <FormControl
+              id="description"
+              paddingTop="20px"
+              w="100%"
+              isInvalid={!!errors.description}
+            >
+              <FormLabel>Reseña del libro</FormLabel>
+
+              <Textarea
+                fontSize={{ base: "md", md: "xl" }}
+                h={"auto"}
+                {...register("description")}
+                size="sm"
+                borderRadius="6px"
               />
-              <Text color="red.500" fontSize="sm" mt={1}>
-                {errors.description && errors.description.message}
-              </Text>
-            </FormControl>
-            <FormControl isRequired isInvalid={errors.category}>
-              <FormLabel>Categoría</FormLabel>
-              <Controller
-                name="category"
-                control={control}
-                defaultValue=""
-                rules={{ required: "Debes seleccionar una categoría" }}
-                render={({ field }) => (
-                  <Select {...field}>
-                    <option value="" disabled>
-                      Seleccione una categoría
-                    </option>
-                    {categories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </Select>
-                )}
-              />
-              <Text color="red.500" fontSize="sm" mt={1}>
-                {errors.category && errors.category.message}
-              </Text>
+              {errors.description && (
+                <FormErrorMessage fontSize="lg" color="red">
+                  {errors.description.message}
+                </FormErrorMessage>
+              )}
             </FormControl>
 
-            
+            <FormControl isRequired
+              id="description"
+              paddingTop="20px"
+              w="100%">
+              <div>
+                {authors.map((author, index) => (
+                  <Tag key={index} variant='outline'>
+                    <TagLabel>{author}</TagLabel>
+                    <TagRightIcon as={MdPerson} />
+                  </Tag>
+                ))}
+              </div>
+              <Button
+                leftIcon={<MdPerson />}
+                mt={2}
+                onClick={onOpen}
+              >
+                Agregar Autor
+              </Button>
+            </FormControl>
 
-            <Button type="submit" colorScheme="blue" mt={4}>
-              Enviar
-            </Button>
+            <Center>
+              <Button
+                leftIcon={<MdSave />}
+                marginTop={8}
+                fontSize={{ base: "xl", md: "2xl" }}
+                w="40%"
+                type="submit"
+                bg="brand.violetLogo"
+                color="brand.blueLogo"
+                borderRadius="6px"
+                size="lg"
+                fontWeight="400"
+                _hover={{ bg: "brand.greenLogo", color: "white" }}
+              >
+                Guardar
+              </Button>
+            </Center>
           </form>
 
 
         </VStack>
-        
-      
-      </Container>
-    
 
+
+      </Container>
+
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Agregar Author</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            {existAuthor && (
+              <Alert status='warning' >
+                <AlertIcon />
+                El Autor ya se encuentra registrado!!
+              </Alert>
+            )}
+            <FormControl>
+              <FormLabel>Nombre completo</FormLabel>
+              <Input
+                type="text"
+                id="author"
+                name="author"
+                ref={initialRef}
+              />
+              {author.length == 0 && (
+                <FormHelperText color="red">
+                  Campo obligatorio
+                </FormHelperText>
+              )}
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button mr={1} onClick={addAuthor}>
+              Guardar
+            </Button>
+            <Button onClick={cancelAddAuthor}>Cancelar</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   )
 }

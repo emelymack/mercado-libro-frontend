@@ -29,7 +29,7 @@ import { Category, getAllCategories } from '../../services/CategoryService';
 import { MdDelete, MdEditDocument, MdAdd } from "react-icons/md"
 import ml from '../../assets/ml.png';
 import { useForm, Controller } from "react-hook-form";
-import AuthorModal from './author';
+import AuthorModal from './Author/author';
 
 const ProductManagerC = () => {
 
