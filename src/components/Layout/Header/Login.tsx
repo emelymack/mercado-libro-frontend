@@ -30,6 +30,9 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Link as LinkTo, useNavigate } from "react-router-dom";
+import { loginUser } from "../../../services/LoginService";
+import CustomLoading from "../../CustomLoading/CustomLoading";
+import setLocalStorageItem from "../../../utils/setStorage";
 
 const schema = z.object({
   email: z
@@ -42,7 +45,14 @@ const schema = z.object({
 
 type LoginDataForm = z.infer<typeof schema>;
 
-const Login = () => {
+interface LoginModalProps {
+  setIsLogged: boolean;
+}
+
+const Login = ({ setIsLogged }: LoginModalProps) => {
+  const loginOrNot = setIsLogged;
+
+  console.log("Validando login--->", loginOrNot);
   const breakpointValue = useBreakpointValue({
     base: "base",
     sm: "sm",
@@ -60,10 +70,45 @@ const Login = () => {
   const history = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const onSubmit = (data: LoginDataForm) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const onSubmit = async (data: LoginDataForm) => {
     console.info(data);
+    setIsLoading(true);
     onOpen();
+
+    try {
+      const response = await loginUser({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (response.statusCode === 200) {
+        setIsLoading(false);
+        console.log("Inicio de sesión exitoso");
+        console.log("Datos del usuario:", response.data);
+        const token = response.data?.token;
+        if (token) {
+          console.log("Token:", token);
+          setLocalStorageItem("token", token);
+        }
+        // setIsLoggedIn(true);
+        history("/userDashboard");
+      } else {
+        console.error("Error en el inicio de sesión:", response.errorMessage);
+        setIsLoading(false);
+        if (response.statusCode === 401) {
+          setIsLoading(false);
+          console.log("Credenciales inválidas.");
+          //  TODO Mostrar un mensaje que las credenciales son inválidas
+        }
+
+        // TODO Actualizar el estado para mostrar un mensaje de error
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error en el inicio de sesión:", error);
+      // TODO Actualizar el estado para mostrar un mensaje de error
+    }
   };
 
   const handleClickPassword = () => {
@@ -255,6 +300,7 @@ const Login = () => {
             </VStack>
           </ModalBody>
         </ModalContent>
+        {isLoading ? <CustomLoading /> : null}
       </Modal>
     </>
   );

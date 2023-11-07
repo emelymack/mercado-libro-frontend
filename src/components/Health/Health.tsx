@@ -12,10 +12,35 @@ import {
 import { useEffect, useState } from "react";
 
 import { Book, getAllBooks } from "../../services/BookService";
+import { createUser } from "../../services/RegisterService";
+import CustomLoading from "../CustomLoading/CustomLoading";
 
 const Health = () => {
   const [error, setError] = useState<string>("");
+  // const [users, setUsers] = useState<User[]>();
   const [books, setBooks] = useState<Book[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleCreateUser = () => {
+    setIsLoading(true);
+    setTimeout(() => {}, 3000);
+    const newUser = {
+      email: "test2@example.com",
+      name: "John",
+      lastName: "Doe",
+      password: "testpassword2",
+    };
+
+    createUser(newUser)
+      .then((createdUser) => {
+        console.log("Usuario creado:", createdUser);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al crear usuario:", error);
+        setIsLoading(false);
+      });
+  };
 
   useEffect(() => {
     getAllBooks()
@@ -45,7 +70,9 @@ const Health = () => {
 
   return (
     <>
-      {books && books.length > 0 ? (
+      {isLoading ? <CustomLoading /> : null}
+      <button onClick={handleCreateUser}>Crear Usuario</button>
+      {!isLoading && books && books.length > 0 ? (
         <Table variant="simple">
           <Thead>
             <Tr>
@@ -87,14 +114,6 @@ const Health = () => {
           {error || "No se encontraron libros."}
         </Alert>
       )}
-      {/* 
-      {testList &&
-        testList.map((item) => (
-          <Text key={item.id}>
-            ID: {item.id}, Nombre: {item.name}
-          </Text>
-        ))}
-      {pingResult !== null && <Text>Ping: {pingResult}</Text>} */}
     </>
   );
 };

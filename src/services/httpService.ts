@@ -18,18 +18,20 @@ const requestGeneric: RequestGeneric = {
   delete: (url) => axios.delete(url),
 };
 
-// axios.interceptors.request.use(
-//   (config) => {
-//     console.log(".. intercerptor..");
-//     const user = JSON.parse(localStorage.getItem("token_app"));
-//     if (user) {
-//       config.headers.Authorization = `Bearer ${user.token}`;
-//     } else {
-//       config.headers.Authorization = '';
-//     }
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
+axios.interceptors.request.use(
+  (config) => {
+    const tokenItem = localStorage.getItem("token");
+    if (tokenItem) {
+      const token = JSON.parse(tokenItem);
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        config.headers.Authorization = "";
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 export default requestGeneric;
