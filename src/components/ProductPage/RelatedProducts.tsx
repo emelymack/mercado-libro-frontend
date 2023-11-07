@@ -6,51 +6,51 @@ const products = [
     id: 6,
     image_links: [img],
     title: "El corazón de piedra verde",
-    authors: "Salvador de Madariaga",
+    author: "Salvador de Madariaga",
     price: 12500,
     url: ""
   },{
     id: 7,
     image_links: [img],
     title: "El corazón de piedra verde",
-    authors: "Salvador de Madariaga",
+    author: "Salvador de Madariaga",
     price: 12500,
     url: ""
   },{
     id: 8,
     image_links: [img],
     title: "El corazón de piedra verde",
-    authors: "Salvador de Madariaga",
+    author: "Salvador de Madariaga",
     price: 12500,
     url: ""
   },{
     id: 9,
     image_links: [img],
     title: "El corazón de piedra verde",
-    authors: "Salvador de Madariaga",
+    author: "Salvador de Madariaga",
     price: 12500,
     url: ""
   },{
     id: 10,
     image_links: [img],
     title: "El corazón de piedra verde",
-    authors: "Salvador de Madariaga",
+    author: "Salvador de Madariaga",
     price: 12500,
     url: ""
   },{
-    id: 6,
+    id: 11,
     image_links: [img],
     title: "El corazón de piedra verde",
-    authors: "Salvador de Madariaga",
+    author: "Salvador de Madariaga",
     price: 12500,
     url: ""
   },
 ]
 
-const NewsCarousel = () => {
+const RelatedProducts = () => {
   return (
-    <ProductsCarousel title='Novedades de octubre' products={products} />
+    <ProductsCarousel title='Productos relacionados' titleColor='green' products={products} />
   )
 }
 
-export default NewsCarousel
+export default RelatedProducts
