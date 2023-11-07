@@ -75,7 +75,12 @@ const Header = () => {
           >
             <Box>
               <LinkTo to="/">
-                <Image src={logo} alt="Dan Abramov" boxSize={200} className="logo" />
+                <Image
+                  src={logo}
+                  alt="Dan Abramov"
+                  boxSize={200}
+                  className="logo"
+                />
               </LinkTo>
             </Box>
             <Box
@@ -133,7 +138,7 @@ const Header = () => {
                   </NavLink>
                 ))}
 
-                {!isLogged ? <Login /> : <MyAccount />}
+                {isLogged ? <Login setIsLogged={isLogged} /> : <MyAccount />}
               </HStack>
               <Box ms={3}>
                 <Button

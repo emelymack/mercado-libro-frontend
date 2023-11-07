@@ -45,7 +45,14 @@ const schema = z.object({
 
 type LoginDataForm = z.infer<typeof schema>;
 
-const Login = () => {
+interface LoginModalProps {
+  setIsLogged: boolean;
+}
+
+const Login = ({ setIsLogged }: LoginModalProps) => {
+  const loginOrNot = setIsLogged;
+
+  console.log("Validando login--->", loginOrNot);
   const breakpointValue = useBreakpointValue({
     base: "base",
     sm: "sm",
@@ -84,6 +91,7 @@ const Login = () => {
           console.log("Token:", token);
           setLocalStorageItem("token", token);
         }
+        // setIsLoggedIn(true);
         history("/userDashboard");
       } else {
         console.error("Error en el inicio de sesión:", response.errorMessage);
