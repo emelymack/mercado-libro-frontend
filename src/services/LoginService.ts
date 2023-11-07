@@ -1,12 +1,12 @@
 import httpService from "./httpService";
 import { BASE_URL, LOGIN_URL } from "./apiUrls";
-import { UserLogin } from "../types/userLogin";
+import { UserLogin, UserLoginResponse } from "../types/userLogin";
 import { CustomResponse } from "../types/customResponse";
 import axios from "axios";
 
 export const loginUser = async (
   userLogin: UserLogin
-): Promise<CustomResponse<UserLogin>> => {
+): Promise<CustomResponse<UserLoginResponse>> => {
   try {
     const response = await httpService.post(
       `${BASE_URL}${LOGIN_URL}`,

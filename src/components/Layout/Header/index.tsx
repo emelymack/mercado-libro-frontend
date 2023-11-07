@@ -51,7 +51,7 @@ const Links = [
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLogged] = useState<boolean>(false);
+  const [isLogged, setIsLogged] = useState<boolean>(false);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -138,7 +138,11 @@ const Header = () => {
                   </NavLink>
                 ))}
 
-                {isLogged ? <Login setIsLogged={isLogged} /> : <MyAccount />}
+                {!isLogged ? (
+                  <Login setIsLogged={setIsLogged} />
+                ) : (
+                  <MyAccount setIsLogged={setIsLogged} />
+                )}
               </HStack>
               <Box ms={3}>
                 <Button

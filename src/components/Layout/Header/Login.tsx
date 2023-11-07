@@ -46,13 +46,10 @@ const schema = z.object({
 type LoginDataForm = z.infer<typeof schema>;
 
 interface LoginModalProps {
-  setIsLogged: boolean;
+  setIsLogged: (value: boolean) => void;
 }
 
 const Login = ({ setIsLogged }: LoginModalProps) => {
-  const loginOrNot = setIsLogged;
-
-  console.log("Validando login--->", loginOrNot);
   const breakpointValue = useBreakpointValue({
     base: "base",
     sm: "sm",
@@ -68,11 +65,10 @@ const Login = ({ setIsLogged }: LoginModalProps) => {
   });
 
   const history = useNavigate();
-
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const onSubmit = async (data: LoginDataForm) => {
-    console.info(data);
+    console.log(data);
     setIsLoading(true);
     onOpen();
 
@@ -83,31 +79,40 @@ const Login = ({ setIsLogged }: LoginModalProps) => {
       });
 
       if (response.statusCode === 200) {
-        setIsLoading(false);
         console.log("Inicio de sesión exitoso");
         console.log("Datos del usuario:", response.data);
         const token = response.data?.token;
+
         if (token) {
           console.log("Token:", token);
           setLocalStorageItem("token", token);
         }
-        // setIsLoggedIn(true);
-        history("/userDashboard");
+        const isAdmin = response.data?.user?.roles.some(
+          (role) => role.description === "ADMIN"
+        );
+
+        if (isAdmin) {
+          setIsLogged(true);
+          history("/userDashboard");
+        } else {
+          setIsLogged(true);
+          console.log("No eres administrador. Redireccionando...");
+          history("/"); // Redirigir a otra página si no es administrador
+        }
       } else {
         console.error("Error en el inicio de sesión:", response.errorMessage);
-        setIsLoading(false);
         if (response.statusCode === 401) {
-          setIsLoading(false);
           console.log("Credenciales inválidas.");
-          //  TODO Mostrar un mensaje que las credenciales son inválidas
+          // TODO: Mostrar un mensaje que las credenciales son inválidas
         }
 
-        // TODO Actualizar el estado para mostrar un mensaje de error
+        // TODO: Actualizar el estado para mostrar un mensaje de error
       }
     } catch (error) {
-      setIsLoading(false);
       console.error("Error en el inicio de sesión:", error);
-      // TODO Actualizar el estado para mostrar un mensaje de error
+      // TODO: Actualizar el estado para mostrar un mensaje de error
+    } finally {
+      setIsLoading(false); // Asegúrate de que isLoading se actualice incluso si hay un error
     }
   };
 

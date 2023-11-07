@@ -1,5 +1,7 @@
-export interface UserLogin {
-  email: string;
-  password: string;
-  token?: string;
+import { Role, User } from "./user";
+
+export interface UserLoginResponse {
+  token: string;
+  user: User;
+  roles: Role[];
 }
