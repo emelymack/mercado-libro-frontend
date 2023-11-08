@@ -1,5 +1,9 @@
 import {
-  Table, TableContainer, Tbody, Thead, Tr,
+  Table,
+  TableContainer,
+  Tbody,
+  Thead,
+  Tr,
   Th,
   Td,
   Tfoot,
@@ -41,65 +45,71 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-} from '@chakra-ui/react'
-import React, { useEffect, useRef, useState } from 'react'
-import { Book, getAllBooks } from '../../services/BookService';
-import { Category, getAllCategories } from '../../services/CategoryService';
-import { MdDelete, MdEditDocument, MdAdd, MdPerson, MdSave } from "react-icons/md"
-import ml from '../../assets/ml.png';
+} from "@chakra-ui/react";
+import React, { useEffect, useRef, useState } from "react";
+import { Book, getAllBooks } from "../../services/BookService";
+import { Category, getAllCategories } from "../../services/CategoryService";
+import {
+  MdDelete,
+  MdEditDocument,
+  MdAdd,
+  MdPerson,
+  MdSave,
+} from "react-icons/md";
+import ml from "../../assets/ml.png";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const schema = z
-  .object({
-    title: z
-      .string({ required_error: "Campo obligatorio" })
-      .min(5, { message: "Debe tener 5 o más caracteres" })
-      .max(50).regex(/^[a-zA-Z0-9,.;\s@:]+$/),
-    description: z
-      .string({ required_error: "Campo obligatorio" })
-      .min(5, { message: "Debe tener al menos 5 o más caracteres" })
-      .max(500, { message: "Limite máximo de caracteres" }).regex(/^[a-zA-Z0-9,.;\s@:]+$/),
-    category: z.number(),
-    isbn: z
-      .string({ required_error: "Campo obligatorio" })
-      .min(5, { message: "Debe tener 5 o más caracteres" })
-      .max(50).regex(/^[a-zA-Z0-9,.;\s@:]+$/),
-    language: z
-      .string({ required_error: "Campo obligatorio" })
-      .min(1, { message: "Campo obligatorio" }),
-    pagecount: z
-      .string().refine((value) => /^\d+?$/.test(value), {
-      message: "Campo obligatorio",
-    }),
-    price: z
-    .string().refine((value) => /^\d+(\.\d{1,2})?$/.test(value), {
-      message: "Campo obligatorio, ingresa un número con hasta dos decimales",
-    }),
-    published: z
-      .string({ required_error: "Campo obligatorio" })
-      .min(1, { message: "Debe tener 5 o más caracteres" })
-      .max(10).refine((value) => /^\d{2}\/\d{2}\/\d{4}$/.test(value), {
-        message: "El formato de fecha debe ser dd/MM/yyyy",
-      }),
-    publisher: z
-      .string({ required_error: "Campo obligatorio" })
-      .min(5, { message: "Debe tener 5 o más caracteres" })
-      .max(50).regex(/^[a-zA-Z0-9,.;\s@:]+$/),
-    stock: z
-    .string().refine((value) => /^\d+?$/.test(value), {
+const schema = z.object({
+  title: z
+    .string({ required_error: "Campo obligatorio" })
+    .min(5, { message: "Debe tener 5 o más caracteres" })
+    .max(50)
+    .regex(/^[a-zA-Z0-9,.;\s@:]+$/),
+  description: z
+    .string({ required_error: "Campo obligatorio" })
+    .min(5, { message: "Debe tener al menos 5 o más caracteres" })
+    .max(500, { message: "Limite máximo de caracteres" })
+    .regex(/^[a-zA-Z0-9,.;\s@:]+$/),
+  // category: z.number(),
+  isbn: z
+    .string({ required_error: "Campo obligatorio" })
+    .min(5, { message: "Debe tener 5 o más caracteres" })
+    .max(50)
+    .regex(/^[a-zA-Z0-9,.;\s@:]+$/),
+  language: z
+    .string({ required_error: "Campo obligatorio" })
+    .min(1, { message: "Campo obligatorio" }),
+  pagecount: z.string().refine((value) => /^\d+?$/.test(value), {
     message: "Campo obligatorio",
   }),
-    currency: z
-      .string({ required_error: "Campo obligatorio" })
-      .min(1, { message: "Campo obligatorio" }),
-  });
+  price: z.string().refine((value) => /^\d+(\.\d{1,2})?$/.test(value), {
+    message: "Campo obligatorio, ingresa un número con hasta dos decimales",
+  }),
+  published: z
+    .string({ required_error: "Campo obligatorio" })
+    .min(1, { message: "Debe tener 5 o más caracteres" })
+    .max(10)
+    .refine((value) => /^\d{2}\/\d{2}\/\d{4}$/.test(value), {
+      message: "El formato de fecha debe ser dd/MM/yyyy",
+    }),
+  publisher: z
+    .string({ required_error: "Campo obligatorio" })
+    .min(5, { message: "Debe tener 5 o más caracteres" })
+    .max(50)
+    .regex(/^[a-zA-Z0-9,.;\s@:]+$/),
+  stock: z.string().refine((value) => /^\d+?$/.test(value), {
+    message: "Campo obligatorio",
+  }),
+  currency: z
+    .string({ required_error: "Campo obligatorio" })
+    .min(1, { message: "Campo obligatorio" }),
+});
 
 type RegisterDataForm = z.infer<typeof schema>;
 
 const ProductManager = () => {
-
   const [error, setError] = useState<string>("");
   const [books, setBooks] = useState<Book[]>();
   const [book, setBook] = useState<Book>();
@@ -107,7 +117,6 @@ const ProductManager = () => {
   const [authors, setAuthors] = useState<string[]>([]);
   const [existAuthor, setExistAuthor] = useState<boolean>(false);
   const [author, setAuthor] = useState<string>("");
-
 
   useEffect(() => {
     getAllBooks()
@@ -161,22 +170,21 @@ const ProductManager = () => {
     resolver: zodResolver(schema),
   });
 
-
   const onSubmit = (data: RegisterDataForm) => {
     console.log("save all info!!!");
-    
+
     console.info(data);
   };
 
   //modal add author
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const initialRef = React.useRef(null)
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const initialRef = React.useRef<HTMLInputElement>(null);
 
   const addAuthor = () => {
     console.log("saving!!!");
 
     if (initialRef && initialRef.current) {
-      var newAuthor = initialRef.current.value;
+      const newAuthor = initialRef.current.value;
       setAuthor(newAuthor);
       if (newAuthor.length == 0) {
         return;
@@ -197,25 +205,23 @@ const ProductManager = () => {
   const cancelAddAuthor = () => {
     setAuthor("");
     onClose();
-  }
-
-
+  };
 
   return (
     <div className="title_admin">
-      <Container maxW='6xl'>
-        <div className='row mt-3'>
-
+      <Container maxW="6xl">
+        <div className="row mt-3">
           <Grid templateAreas={`"header header""nav main"`}>
-            <GridItem pl='4' area={'header'}>
+            <GridItem pl="4" area={"header"}>
               <h2>Administración de productos</h2>
-              <Button leftIcon={<MdAdd />} colorScheme='gray'>Crear producto</Button>
+              <Button leftIcon={<MdAdd />} colorScheme="gray">
+                Crear producto
+              </Button>
             </GridItem>
           </Grid>
         </div>
         {books && books.length > 0 ? (
-
-          <div className='row mt-3'>
+          <div className="row mt-3">
             <VStack spacing={6}>
               <Heading
                 as="h2"
@@ -226,11 +232,11 @@ const ProductManager = () => {
               >
                 Lista de productos
               </Heading>
-              <div className='col-12 col-lg-8 offset-0 offset-lg-2'>
-                <div className='css-vdxpmq'>
+              <div className="col-12 col-lg-8 offset-0 offset-lg-2">
+                <div className="css-vdxpmq">
                   <TableContainer>
-                    <Table size='sm'>
-                      <Thead className='table_ml_header'>
+                    <Table size="sm">
+                      <Thead className="table_ml_header">
                         <Tr>
                           <Th></Th>
                           <Th>Título</Th>
@@ -243,12 +249,14 @@ const ProductManager = () => {
                       <Tbody>
                         {books.map((book) => (
                           <Tr key={book.id}>
-                            <Td><Avatar src={ml} /></Td>
+                            <Td>
+                              <Avatar src={ml} />
+                            </Td>
                             <Td>{book.title}</Td>
                             <Td>
                               {Array.isArray(book.authors) &&
                                 book.authors.map((author) => (
-                                  <Tag key={author.id} variant='outline'>
+                                  <Tag key={author.id} variant="outline">
                                     <TagLabel>{author.name}</TagLabel>
                                     <TagRightIcon as={MdPerson} />
                                   </Tag>
@@ -264,23 +272,32 @@ const ProductManager = () => {
                               ))}
                             </Td>
                             <Td>
-                              <Stack direction='row' spacing={2}>
-                                <Button leftIcon={<MdDelete />} colorScheme='purple' variant='outline'>Eliminar</Button>
-                                <Button rightIcon={<MdEditDocument />} colorScheme='gray' variant='outline'>Editar</Button>
+                              <Stack direction="row" spacing={2}>
+                                <Button
+                                  leftIcon={<MdDelete />}
+                                  colorScheme="purple"
+                                  variant="outline"
+                                >
+                                  Eliminar
+                                </Button>
+                                <Button
+                                  rightIcon={<MdEditDocument />}
+                                  colorScheme="gray"
+                                  variant="outline"
+                                >
+                                  Editar
+                                </Button>
                               </Stack>
                             </Td>
                           </Tr>
                         ))}
                       </Tbody>
-                      <Tfoot>
-
-                      </Tfoot>
+                      <Tfoot></Tfoot>
                     </Table>
                   </TableContainer>
                 </div>
               </div>
             </VStack>
-
           </div>
         ) : (
           <Alert status="error">
@@ -288,9 +305,8 @@ const ProductManager = () => {
             {error || "No se encontraron libros."}
           </Alert>
         )}
-
       </Container>
-      <Container maxW='6xl'>
+      <Container maxW="6xl">
         <VStack spacing={6}>
           <Heading
             as="h2"
@@ -367,14 +383,14 @@ const ProductManager = () => {
 
             <FormControl id="language" w="50%" isInvalid={!!errors.language}>
               <FormLabel>Lenguaje</FormLabel>
-              <Select placeholder='Select option'
+              <Select
+                placeholder="Select option"
                 {...register("language")}
                 fontSize={{ base: "sm", md: "sm" }}
-                
               >
-                <option value='Español'>Español</option>
-                <option value='Ingles'>Ingles</option>
-                <option value='Frances'>Frances</option>
+                <option value="Español">Español</option>
+                <option value="Ingles">Ingles</option>
+                <option value="Frances">Frances</option>
               </Select>
 
               {errors.language && (
@@ -384,45 +400,49 @@ const ProductManager = () => {
               )}
             </FormControl>
 
-
-            <FormControl w="50%" isInvalid={errors.pagecount}>
+            <FormControl w="50%" isInvalid={!!errors.pagecount}>
               <FormLabel>Número de páginas</FormLabel>
               <NumberInput>
                 <NumberInputField
                   {...register("pagecount")}
                   placeholder="Ingresa un número con hasta dos decimales"
-                  _placeholder={{ color: 'gray.120' }}
+                  _placeholder={{ color: "gray.120" }}
                   borderColor="#d8dee4"
                   borderRadius="6px"
                 />
               </NumberInput>
-              <FormErrorMessage>{errors.pagecount && errors.pagecount.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.pagecount && errors.pagecount.message}
+              </FormErrorMessage>
             </FormControl>
 
-            <FormControl w="50%" isInvalid={errors.price}>
+            <FormControl w="50%" isInvalid={!!errors.price}>
               <FormLabel>Precio de venta</FormLabel>
               <NumberInput>
                 <NumberInputField
                   {...register("price")}
                   placeholder="Ingresa un número con hasta dos decimales"
-                  _placeholder={{ color: 'gray.120' }}
+                  _placeholder={{ color: "gray.120" }}
                   borderColor="#d8dee4"
                   borderRadius="6px"
                 />
               </NumberInput>
-              <FormErrorMessage>{errors.price && errors.price.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.price && errors.price.message}
+              </FormErrorMessage>
             </FormControl>
 
             <FormControl id="currency" w="50%" isInvalid={!!errors.currency}>
               <FormLabel>Moneda país venta</FormLabel>
-              <Select placeholder='Select option'
+              <Select
+                placeholder="Select option"
                 {...register("currency")}
                 fontSize={{ base: "sm", md: "sm" }}
               >
-                <option value='COP'>COP</option>
-                <option value='ARS'>ARS</option>
-                <option value='EUR'>EUR</option>
-                <option value='USD'>USD</option>
+                <option value="COP">COP</option>
+                <option value="ARS">ARS</option>
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
               </Select>
 
               {errors.currency && (
@@ -438,8 +458,8 @@ const ProductManager = () => {
                 variant="outline"
                 autoComplete="published"
                 padding={3}
-                placeholder='dd/MM/yyyy'
-                _placeholder={{ color: 'gray.120' }}
+                placeholder="dd/MM/yyyy"
+                _placeholder={{ color: "gray.120" }}
                 fontSize={{ base: "sm", md: "sm" }}
                 h={"auto"}
                 type="published"
@@ -476,7 +496,7 @@ const ProductManager = () => {
               )}
             </FormControl>
 
-            <FormControl w="50%" isInvalid={errors.stock}>
+            <FormControl w="50%" isInvalid={!!errors.stock}>
               <FormLabel>Cantidad Stock</FormLabel>
               <NumberInput>
                 <NumberInputField
@@ -485,26 +505,21 @@ const ProductManager = () => {
                   borderRadius="6px"
                 />
               </NumberInput>
-              <FormErrorMessage>{errors.stock && errors.stock.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.stock && errors.stock.message}
+              </FormErrorMessage>
             </FormControl>
 
-            <FormControl isRequired
-              id="description"
-              paddingTop="20px"
-              w="100%">
+            <FormControl isRequired id="description" paddingTop="20px" w="100%">
               <div>
                 {authors.map((author, index) => (
-                  <Tag key={index} variant='outline'>
+                  <Tag key={index} variant="outline">
                     <TagLabel>{author}</TagLabel>
                     <TagRightIcon as={MdPerson} />
                   </Tag>
                 ))}
               </div>
-              <Button
-                leftIcon={<MdPerson />}
-                mt={2}
-                onClick={onOpen}
-              >
+              <Button leftIcon={<MdPerson />} mt={2} onClick={onOpen}>
                 Agregar Autor
               </Button>
             </FormControl>
@@ -527,13 +542,8 @@ const ProductManager = () => {
               </Button>
             </Center>
           </form>
-
-
         </VStack>
-
-
       </Container>
-
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -542,23 +552,16 @@ const ProductManager = () => {
           <ModalCloseButton />
           <ModalBody pb={6}>
             {existAuthor && (
-              <Alert status='warning' >
+              <Alert status="warning">
                 <AlertIcon />
                 El Autor ya se encuentra registrado!!
               </Alert>
             )}
             <FormControl>
               <FormLabel>Nombre completo</FormLabel>
-              <Input
-                type="text"
-                id="author"
-                name="author"
-                ref={initialRef}
-              />
+              <Input type="text" id="author" name="author" ref={initialRef} />
               {author.length == 0 && (
-                <FormHelperText color="red">
-                  Campo obligatorio
-                </FormHelperText>
+                <FormHelperText color="red">Campo obligatorio</FormHelperText>
               )}
             </FormControl>
           </ModalBody>
@@ -572,7 +575,7 @@ const ProductManager = () => {
         </ModalContent>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default ProductManager
+export default ProductManager;
