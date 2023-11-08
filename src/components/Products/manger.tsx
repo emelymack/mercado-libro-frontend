@@ -36,6 +36,11 @@ import {
   ModalFooter,
   useDisclosure,
   FormHelperText,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { Book, getAllBooks } from '../../services/BookService';
@@ -48,15 +53,47 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const schema = z
   .object({
-    name: z
-      .string()
+    title: z
+      .string({ required_error: "Campo obligatorio" })
       .min(5, { message: "Debe tener 5 o más caracteres" })
       .max(50).regex(/^[a-zA-Z0-9,.;\s@:]+$/),
     description: z
-      .string()
+      .string({ required_error: "Campo obligatorio" })
       .min(5, { message: "Debe tener al menos 5 o más caracteres" })
       .max(500, { message: "Limite máximo de caracteres" }).regex(/^[a-zA-Z0-9,.;\s@:]+$/),
-    category: z.number()
+    category: z.number(),
+    isbn: z
+      .string({ required_error: "Campo obligatorio" })
+      .min(5, { message: "Debe tener 5 o más caracteres" })
+      .max(50).regex(/^[a-zA-Z0-9,.;\s@:]+$/),
+    language: z
+      .string({ required_error: "Campo obligatorio" })
+      .min(1, { message: "Campo obligatorio" }),
+    pagecount: z
+      .string().refine((value) => /^\d+?$/.test(value), {
+      message: "Campo obligatorio",
+    }),
+    price: z
+    .string().refine((value) => /^\d+(\.\d{1,2})?$/.test(value), {
+      message: "Campo obligatorio, ingresa un número con hasta dos decimales",
+    }),
+    published: z
+      .string({ required_error: "Campo obligatorio" })
+      .min(1, { message: "Debe tener 5 o más caracteres" })
+      .max(10).refine((value) => /^\d{2}\/\d{2}\/\d{4}$/.test(value), {
+        message: "El formato de fecha debe ser dd/MM/yyyy",
+      }),
+    publisher: z
+      .string({ required_error: "Campo obligatorio" })
+      .min(5, { message: "Debe tener 5 o más caracteres" })
+      .max(50).regex(/^[a-zA-Z0-9,.;\s@:]+$/),
+    stock: z
+    .string().refine((value) => /^\d+?$/.test(value), {
+    message: "Campo obligatorio",
+  }),
+    currency: z
+      .string({ required_error: "Campo obligatorio" })
+      .min(1, { message: "Campo obligatorio" }),
   });
 
 type RegisterDataForm = z.infer<typeof schema>;
@@ -116,17 +153,9 @@ const ProductManager = () => {
       });
   }, []);
 
-  const breakpointValue = useBreakpointValue({
-    base: "base",
-    md: "md",
-    lg: "lg",
-    borderColor: "gray.200"
-  });
-
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<RegisterDataForm>({
     resolver: zodResolver(schema),
@@ -134,6 +163,8 @@ const ProductManager = () => {
 
 
   const onSubmit = (data: RegisterDataForm) => {
+    console.log("save all info!!!");
+    
     console.info(data);
   };
 
@@ -272,23 +303,23 @@ const ProductManager = () => {
           </Heading>
 
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-            <FormControl id="name" w="100%" isInvalid={!!errors.name}>
-              <FormLabel>Nombre del libro</FormLabel>
+            <FormControl id="title" w="100%" isInvalid={!!errors.title}>
+              <FormLabel>Titulo del libro</FormLabel>
               <Input
                 variant="outline"
-                autoComplete="name"
+                autoComplete="title"
                 padding={3}
-                fontSize={{ base: "sm", md: "xl" }}
+                fontSize={{ base: "sm", md: "sm" }}
                 h={"auto"}
-                type="name"
-                {...register("name")}
+                type="title"
+                {...register("title")}
                 size="sm"
                 borderColor="#d8dee4"
                 borderRadius="6px"
               />
-              {errors.name && (
-                <FormErrorMessage fontSize="lg" color="red">
-                  {errors.name.message}
+              {errors.title && (
+                <FormErrorMessage fontSize="xs" color="red">
+                  {errors.title.message}
                 </FormErrorMessage>
               )}
             </FormControl>
@@ -299,19 +330,162 @@ const ProductManager = () => {
               isInvalid={!!errors.description}
             >
               <FormLabel>Reseña del libro</FormLabel>
-
               <Textarea
-                fontSize={{ base: "md", md: "xl" }}
+                fontSize={{ base: "md", md: "sm" }}
                 h={"auto"}
                 {...register("description")}
                 size="sm"
                 borderRadius="6px"
               />
               {errors.description && (
-                <FormErrorMessage fontSize="lg" color="red">
+                <FormErrorMessage fontSize="xs" color="red">
                   {errors.description.message}
                 </FormErrorMessage>
               )}
+            </FormControl>
+
+            <FormControl id="isbn" w="50%" isInvalid={!!errors.isbn}>
+              <FormLabel>ISBN</FormLabel>
+              <Input
+                variant="outline"
+                autoComplete="isbn"
+                padding={3}
+                fontSize={{ base: "sm", md: "sm" }}
+                h={"auto"}
+                type="isbn"
+                {...register("isbn")}
+                size="sm"
+                borderColor="#d8dee4"
+                borderRadius="6px"
+              />
+              {errors.isbn && (
+                <FormErrorMessage fontSize="xs" color="red">
+                  {errors.isbn.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+
+            <FormControl id="language" w="50%" isInvalid={!!errors.language}>
+              <FormLabel>Lenguaje</FormLabel>
+              <Select placeholder='Select option'
+                {...register("language")}
+                fontSize={{ base: "sm", md: "sm" }}
+                
+              >
+                <option value='Español'>Español</option>
+                <option value='Ingles'>Ingles</option>
+                <option value='Frances'>Frances</option>
+              </Select>
+
+              {errors.language && (
+                <FormErrorMessage fontSize="xs" color="red">
+                  {errors.language.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+
+
+            <FormControl w="50%" isInvalid={errors.pagecount}>
+              <FormLabel>Número de páginas</FormLabel>
+              <NumberInput>
+                <NumberInputField
+                  {...register("pagecount")}
+                  placeholder="Ingresa un número con hasta dos decimales"
+                  _placeholder={{ color: 'gray.120' }}
+                  borderColor="#d8dee4"
+                  borderRadius="6px"
+                />
+              </NumberInput>
+              <FormErrorMessage>{errors.pagecount && errors.pagecount.message}</FormErrorMessage>
+            </FormControl>
+
+            <FormControl w="50%" isInvalid={errors.price}>
+              <FormLabel>Precio de venta</FormLabel>
+              <NumberInput>
+                <NumberInputField
+                  {...register("price")}
+                  placeholder="Ingresa un número con hasta dos decimales"
+                  _placeholder={{ color: 'gray.120' }}
+                  borderColor="#d8dee4"
+                  borderRadius="6px"
+                />
+              </NumberInput>
+              <FormErrorMessage>{errors.price && errors.price.message}</FormErrorMessage>
+            </FormControl>
+
+            <FormControl id="currency" w="50%" isInvalid={!!errors.currency}>
+              <FormLabel>Moneda país venta</FormLabel>
+              <Select placeholder='Select option'
+                {...register("currency")}
+                fontSize={{ base: "sm", md: "sm" }}
+              >
+                <option value='COP'>COP</option>
+                <option value='ARS'>ARS</option>
+                <option value='EUR'>EUR</option>
+                <option value='USD'>USD</option>
+              </Select>
+
+              {errors.currency && (
+                <FormErrorMessage fontSize="xs" color="red">
+                  {errors.currency.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+
+            <FormControl id="published" w="50%" isInvalid={!!errors.published}>
+              <FormLabel>Fecha de publicación</FormLabel>
+              <Input
+                variant="outline"
+                autoComplete="published"
+                padding={3}
+                placeholder='dd/MM/yyyy'
+                _placeholder={{ color: 'gray.120' }}
+                fontSize={{ base: "sm", md: "sm" }}
+                h={"auto"}
+                type="published"
+                {...register("published")}
+                size="sm"
+                borderColor="#d8dee4"
+                borderRadius="6px"
+              />
+              {errors.published && (
+                <FormErrorMessage fontSize="xs" color="red">
+                  {errors.published.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+
+            <FormControl id="publisher" w="50%" isInvalid={!!errors.publisher}>
+              <FormLabel>Editorial</FormLabel>
+              <Input
+                variant="outline"
+                autoComplete="publisher"
+                padding={3}
+                fontSize={{ base: "sm", md: "sm" }}
+                h={"auto"}
+                type="publisher"
+                {...register("publisher")}
+                size="sm"
+                borderColor="#d8dee4"
+                borderRadius="6px"
+              />
+              {errors.publisher && (
+                <FormErrorMessage fontSize="xs" color="red">
+                  {errors.publisher.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+
+            <FormControl w="50%" isInvalid={errors.stock}>
+              <FormLabel>Cantidad Stock</FormLabel>
+              <NumberInput>
+                <NumberInputField
+                  {...register("stock")}
+                  borderColor="#d8dee4"
+                  borderRadius="6px"
+                />
+              </NumberInput>
+              <FormErrorMessage>{errors.stock && errors.stock.message}</FormErrorMessage>
             </FormControl>
 
             <FormControl isRequired
