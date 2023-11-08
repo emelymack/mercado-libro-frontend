@@ -11,12 +11,11 @@ import {
   Box,
   CardHeader,
 } from "@chakra-ui/react";
-import { Book } from "../../services/BookService"
-import { CategoryDetail } from "../../types/category";
 import { Product } from "../../types/product";
+import { Link } from "react-router-dom";
 
 
-const ProductCard = ({ author, img, title, price, url }: Product) => {
+const ProductCard = ({ author, img, title, price, url}: Product) => {
   return (
     <Card variant={"productCard"} w={"auto"}>
       <CardHeader py={2}>
@@ -46,7 +45,9 @@ const ProductCard = ({ author, img, title, price, url }: Product) => {
       <Divider />
       <CardFooter px={6}>
         <Button variant="brandPrimary" w={"100%"} py={3}>
+        <Link to={url}>
           Agregar al carrito
+          </Link>
         </Button>
       </CardFooter>
     </Card>

@@ -2,35 +2,27 @@ import { useParams } from "react-router-dom";
 import ProductCard from "../Card/ProductCard";
 import { Center, Heading, Container, SimpleGrid } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { CategoryDetail } from "../../types/category";
-import { Product } from "../../types/product";
-/* import {getBooksByCategory, getAllBooks} from "../../services/BookService" */
+import { Book, getBooksByCategory} from "../../services/BookService";
 
 
 
 
 export const Categories = () => {
-   const {nameCategory} = useParams();
+   const {categoryName} = useParams();
+   const [libroCategoria, setLibroCategoria] = useState<Book[]>([]);
+
   
-  const [result, setResult] = useState<Product[]>([]);
+   useEffect(() => {
+      window.scrollTo(0,0);
 
-  useEffect(() => {
-    const getCategory = async () => {
-      const data = await fetch(`http://localhost:8080/v1/api/book?page=0&category=${nameCategory}`, {
-        method: "GET"
-      });
-      const jsonData = await data.json();
-      setResult(jsonData.results);
-    };
-
-    getCategory();
-  }, []);
- 
- 
-
-  /* useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []); */
+      if(categoryName) {
+      getBooksByCategory(`${categoryName}`)
+      .then((res) => {
+      console.log(res);
+      setLibroCategoria(res)
+      })
+    }
+      }, []);
 
 
   return (
@@ -42,19 +34,19 @@ export const Categories = () => {
         mb={10}
         mt={10}
         color="brand.greenLogo">
-        {nameCategory}
+        {categoryName}
       </Heading>
 
       <Center>
         <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} gap={5}>
-        {result?.map((product) => (
+        {libroCategoria?.map((product) => (
             <ProductCard
-              img={product.img}
-              title={product.title}
-              url={product.url}
-              author={product.author}
-              price={product.price}
-            />
+            img={product.image_links}
+            title={product.title}
+            author={product.authors}
+            price={product.price}
+            url={""}
+             />
           ))}
         </SimpleGrid>
       </Center>

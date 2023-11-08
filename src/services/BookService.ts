@@ -4,6 +4,7 @@ import {
   BOOK_URL,
   CREATE_BOOK_URL,
   GET_ALL_BOOK_URL,
+  CATEGORY_URL
 } from "./apiUrls";
 
 export interface Book {
@@ -31,6 +32,7 @@ export interface Category {
   description: string;
   image_link: string;
 }
+
 
 export interface Author {
   name: string;
@@ -91,9 +93,25 @@ export const getAllBooks = (): Promise<Book[]> => {
     });
 };
 
-export const getBooksByCategory = (category: string): Promise<Book[]> => {
+export const getAllCategory = (): Promise<Category[]> => {
   return httpService
-    .get(`${BASE_URL}${GET_ALL_BOOK_URL}/${category}`)
+    .get(`${BASE_URL}${CATEGORY_URL}`)
+    .then((response) => {
+      if (Array.isArray(response.data)) {
+        console.log(response.data)
+        return response.data as Category[];
+      } else {
+        throw new Error("La respuesta no es un array de Categorias");
+      }
+    })
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};
+
+export const getBooksByCategory = (nameCategory: string): Promise<Book[]> => {
+  return httpService
+    .get(`${BASE_URL}${BOOK_URL}?page=0&category=${nameCategory}`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
