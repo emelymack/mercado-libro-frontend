@@ -10,12 +10,13 @@ import {
   Image,
   Box,
   CardHeader,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { Book } from "../../types/product";
 import { useNavigate } from "react-router-dom";
 import AddToCart from "../Button/AddToCart";
 
-const ProductCard = ({ id, image_links, title, authors, price }: Book) => {
+const ProductCard = ({ id, image_links, title, authors, price, stock }: Book) => {
   const navigate = useNavigate()
 
   const verMasInfo = () => {
@@ -23,7 +24,9 @@ const ProductCard = ({ id, image_links, title, authors, price }: Book) => {
   }
 
   return (
-    <Card variant={"productCard"} w={"auto"}>
+    <Card variant={"productCard"} w={"auto"} _hover={{
+            backgroundColor: useColorModeValue('brand.violetLogo25', 'brand.violetLogo50'),
+          }}>
       <CardHeader py={2}>
         <Box display={"flex"} justifyContent={"center"}>
           <Image
@@ -60,7 +63,7 @@ const ProductCard = ({ id, image_links, title, authors, price }: Book) => {
         >
           Ver más
         </Button>
-        <AddToCart />
+        <AddToCart stock={stock} />
       </CardFooter>
     </Card>
   );

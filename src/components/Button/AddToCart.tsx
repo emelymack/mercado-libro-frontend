@@ -1,7 +1,11 @@
 import { Button, Image } from "@chakra-ui/react"
 import iconCart from '../../assets/icons/icon-add-cart.svg'
+import { useEffect } from "react"
 
-const AddToCart = () => {
+interface Props {
+  stock: number
+}
+const AddToCart = ({stock}: Props) => {
   return (
     <Button 
       variant="brandPrimary" 
@@ -11,6 +15,7 @@ const AddToCart = () => {
       px={10} 
       aria-label="Agregar al carrito"
       onClick={()=>alert('Agregado!')}
+      isDisabled={stock <= 1}
     >
       Agregar <Image src={iconCart} ps={1} w={8} mb={1} />
     </Button>

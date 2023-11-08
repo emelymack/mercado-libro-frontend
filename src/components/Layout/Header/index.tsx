@@ -11,6 +11,7 @@ import {
   MenuItem,
   useDisclosure,
   useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -20,6 +21,7 @@ import {
   SunIcon,
 } from "@chakra-ui/icons";
 import logo from "../../../assets/Logo.svg";
+import logoWhite from "../../../assets/logo-white.svg";
 import searchIcon from "../../../assets/icons/icon-search.svg";
 import { useState } from "react";
 import Login from "./Login";
@@ -27,7 +29,7 @@ import MyAccount from "./MyAccount";
 import NavLink from "./NavLink";
 import NavMenu from "./Mobile/NavMenu";
 import { Link, Link as LinkTo } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../context/hooks";
+import { useAppSelector } from "../../../context/hooks";
 import Cart from "../../Cart";
 
 const Links = [
@@ -67,7 +69,7 @@ const Header = () => {
           >
             <Box>
               <LinkTo to="/">
-                <Image src={logo} alt="Dan Abramov" boxSize={{base: 160, md: 200}} className="logo" />
+                <Image src={useColorModeValue(logo, logoWhite)} alt="Mercado Libro" boxSize={{base: 160, md: 200}} className="logo" />
               </LinkTo>
             </Box>
             <Box
@@ -87,11 +89,11 @@ const Header = () => {
                     as={Button}
                     rightIcon={<ChevronDownIcon />}
                     bg={"none"}
-                    color={"var(--secondary)"}
+                    color={useColorModeValue('brand.blueLogo', 'white')}
                   >
                     Categorías
                   </MenuButton>
-                  <MenuList>
+                  <MenuList color={useColorModeValue('brand.blueLogo', 'white')}>
                     <MenuItem>
                       <Link to={`/category/Literatura`}>Literatura</Link>
                     </MenuItem>

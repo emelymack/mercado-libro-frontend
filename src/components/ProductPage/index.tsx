@@ -1,6 +1,5 @@
-import { Box, Container, Heading, Hide, Image, Link, Show, SimpleGrid, Spinner, Stack, Text } from '@chakra-ui/react'
+import { Box, Container, Heading, Image, Link, SimpleGrid, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import BreadcrumbNav from './Breadcrumb'
-import bookImg from '../../assets/img/book-2.png'
 import { useAppSelector } from '../../context/hooks'
 import QuantityInput from '../Input/QuantityInput'
 import AddToCart from '../Button/AddToCart'
@@ -12,6 +11,7 @@ import { getBookById } from '../../services/BookService'
 import { useParams } from 'react-router-dom'
 import { formatDateMonthYYYY, googleSearch } from '../../utils/functions'
 import CustomLoading from '../CustomLoading/CustomLoading'
+import { Title } from '../Title'
 
 interface Product {
   book: Book | undefined,
@@ -28,7 +28,7 @@ const ProductPage = () => {
 
   useEffect(() => { 
     window.scrollTo(0, 0); 
-    console.log(product);
+    console.log(product.book);
     
     if(productId) {
       setProduct({...product, isLoading: true})
@@ -58,7 +58,9 @@ const ProductPage = () => {
               </Box>
               <Box w={{base: '100%', lg: '75%'}} px={{base: 6, lg: 0}}>
                 {/* Titulo */}
-                <Heading color={'brand.blueLogo'} noOfLines={3} w={{lg: '90%'}}>{product.book.title}</Heading>
+                <Box w={{lg: '90%'}}>
+                  <Title htmlElement={'h3'}  noOfLines={3} text={product.book.title} capitalize fw={700} />
+                </Box>
                 
                 {/* Autor */}
                 <Text mt={2} fontSize={'lg'} fontWeight={600} textDecor={'underline'}>
@@ -71,14 +73,14 @@ const ProductPage = () => {
                 </Text>
 
                 {/* Precio */}
-                <Text color={'brand.blueLogo'} fontWeight={800} fontSize={'4xl'} mt={{base: 2, lg:8}}>
+                <Text color={useColorModeValue('brand.blueLogo', '#b9b6ff')} fontWeight={800} fontSize={'4xl'} mt={{base: 2, lg:8}}>
                   ${product.book.price}
                 </Text>
 
                 {/* Botones */}
                 <Stack direction={{base: 'column', lg: 'row'}} alignItems={'center'} spacing={{base: 5, lg: 10}} mt={4}>
                   <QuantityInput />
-                  <AddToCart />
+                  <AddToCart stock={product.book.stock} />
                 </Stack>
               </Box>
             </SimpleGrid>

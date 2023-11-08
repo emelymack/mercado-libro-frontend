@@ -40,7 +40,7 @@ header.scroll {
   z-index: 5;
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color: rgba(136, 132, 255, .5);
+  background-color: rgba(136, 132, 255, .75);
 }
 header .logo {
   transition: width .35s ease-in-out;
