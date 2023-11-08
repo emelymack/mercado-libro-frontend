@@ -16,6 +16,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  VStack,
   //   VStack,
 } from "@chakra-ui/react";
 import { getUserById, patchUser } from "../../services/UserService";
@@ -54,7 +55,6 @@ const EditUserModal = ({
     handleSubmit: handleFormSubmit,
     formState: { errors },
     setValue,
-    reset,
   } = useForm<EditUserDataForm>({
     resolver: zodResolver(schema),
   });
@@ -112,129 +112,76 @@ const EditUserModal = ({
   };
 
   return (
-    <Modal isOpen={!!isOpen} onClose={onClose} isCentered>
-      <ModalOverlay bg="none" backdropFilter="auto" backdropBlur="2px" />
-      <ModalContent bg={"brand.violetLogo50"}>
-        <ModalHeader textAlign="center">Editar Usuario</ModalHeader>
-        <ModalCloseButton onClick={onClose} />
+    <Modal isOpen={!!isOpen} onClose={onClose} isCentered size="2xl">
+      <ModalOverlay bg="blackAlpha.300" backdropBlur="2px" />
+      <ModalContent
+        m={4}
+        p={{ base: 4, md: 6 }}
+        bg={"brand.violetLogo50"}
+        borderRadius="lg"
+        shadow="xl"
+      >
+        <ModalHeader textAlign="center" fontSize="2xl" color={"brand.blueLogo"}>
+          Editar Usuario
+        </ModalHeader>
+        <ModalCloseButton />
         <ModalBody>
-          <form onSubmit={handleFormSubmit(onSubmit)} style={{ width: "100%" }}>
-            <Flex direction="column" align="center">
-              <Box w="90%" mb={4}>
-                <Flex>
-                  <FormControl
-                    id="name"
-                    w="50%"
-                    mr={2}
-                    isInvalid={!!errors.name}
-                  >
-                    <Input
-                      variant="unstyled"
-                      autoComplete="given-name"
-                      padding={3}
-                      fontSize={{ base: "lg", md: "xl" }}
-                      h={"auto"}
-                      placeholder="Nombre"
-                      type="name"
-                      {...register("name")}
-                      bg="white"
-                      borderColor="#d8dee4"
-                      size="sm"
-                      borderRadius="6px"
-                    />
-                    {errors.name && (
-                      <FormErrorMessage fontSize="lg" color="red">
-                        {errors.name.message}
-                      </FormErrorMessage>
-                    )}
-                  </FormControl>
-                  <FormControl
-                    id="lastName"
-                    w="50%"
-                    isInvalid={!!errors.lastName}
-                  >
-                    <Input
-                      variant="unstyled"
-                      autoComplete="family-name"
-                      padding={3}
-                      fontSize={{ base: "lg", md: "xl" }}
-                      h={"auto"}
-                      placeholder="Apellido"
-                      type="text"
-                      {...register("lastName")}
-                      bg="white"
-                      borderColor="#d8dee4"
-                      size="sm"
-                      borderRadius="6px"
-                    />
-                    {errors.lastName && (
-                      <FormErrorMessage fontSize="lg" color="red">
-                        {errors.lastName.message}
-                      </FormErrorMessage>
-                    )}
-                  </FormControl>
-                </Flex>
-              </Box>
-              <FormControl id="email" w="100%" isInvalid={!!errors.email}>
+          <VStack spacing={4} align="stretch">
+            <form onSubmit={handleFormSubmit(onSubmit)}>
+              <FormControl id="name" isInvalid={!!errors.name} mt={6} mb={6}>
                 <Input
-                  padding={3}
-                  fontSize={{ base: "lg", md: "xl" }}
-                  h={"auto"}
-                  placeholder={"Dirección de correo electrónico"}
-                  autoComplete="email"
-                  type="email"
-                  {...register("email")}
-                  bg="white"
-                  borderColor="#d8dee4"
-                  size="sm"
-                  borderRadius="6px"
+                  variant="outline"
+                  placeholder="Nombre"
+                  {...register("name")}
+                  size="md"
                 />
-                {errors.email && (
-                  <FormErrorMessage fontSize="lg" color="red">
-                    {errors.email.message}
-                  </FormErrorMessage>
-                )}
+                <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
               </FormControl>
-            </Flex>
-            <HStack
-              fontSize={{ base: "lg", md: "xl" }}
-              spacing="1"
-              w="100%"
-              justifyContent="flex-start"
-            ></HStack>
-            <Button
-              marginTop={8}
-              fontSize={{ base: "md", md: "lg" }}
-              w="40%"
-              type="submit"
-              bg="#8884FF"
-              color="#003844"
-              borderRadius="6px"
-              size="lg"
-              fontWeight="700"
-              _hover={{ bg: "#003844", color: "white" }}
-            >
-              Guardar Cambios
-            </Button>
-            <Button
-              onClick={onClose}
-              marginTop={8}
-              fontSize={{ base: "md", md: "lg" }}
-              w="40%"
-              type="submit"
-              bg="#8884FF"
-              color="#003844"
-              borderRadius="6px"
-              size="lg"
-              fontWeight="700"
-              _hover={{ bg: "#003844", color: "white" }}
-            >
-              Cancelar
-            </Button>
-          </form>
+              <FormControl id="lastName" isInvalid={!!errors.lastName} mb={6}>
+                <Input
+                  variant="outline"
+                  placeholder="Apellido"
+                  {...register("lastName")}
+                  size="md"
+                />
+                <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
+              </FormControl>
+              <FormControl id="email" isInvalid={!!errors.email} mb={6}>
+                <Input
+                  variant="outline"
+                  placeholder="Email"
+                  {...register("email")}
+                  size="md"
+                />
+                <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+              </FormControl>
+              <Button
+                mt={4}
+                w="full"
+                bg={"brand.blueLogo"}
+                color="white"
+                isLoading={isLoading}
+                type="submit"
+                size="lg"
+                _hover={{ bg: "brand.greenLogo" }}
+              >
+                Guardar Cambios
+              </Button>
+              <Button
+                mt={4}
+                w="full"
+                variant="outline"
+                color={"brand.blueLogo"}
+                onClick={onClose}
+                size="lg"
+              >
+                Cancelar
+              </Button>
+            </form>
+          </VStack>
         </ModalBody>
       </ModalContent>
-      {isLoading ? <CustomLoading /> : null}
+      {isLoading && <CustomLoading />}
     </Modal>
   );
 };

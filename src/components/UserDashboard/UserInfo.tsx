@@ -10,6 +10,7 @@ import {
   Th,
   Thead,
   Tr,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { Role, User } from "../../types/user";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
@@ -17,6 +18,8 @@ import EditUserModal from "./EditUserModal";
 import CustomLoading from "../CustomLoading/CustomLoading";
 
 const UserInfo = () => {
+  const fontSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
+  const tableLayout = useBreakpointValue({ base: "auto", lg: "fixed" });
   const [users, setUsers] = useState<User[]>([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [selectedUserId, setSelectedUserId] = useState<number>(0);
@@ -55,71 +58,73 @@ const UserInfo = () => {
 
   return (
     <>
-      <Box position={"relative"} zIndex={1}>
-        <Table color={"brand.blueLogo"} variant="unstyled">
-          <TableCaption fontSize={30} color={"#FFFFFF"}>
-            Usuario registrados Mercado Libro
-          </TableCaption>
+      <Box overflowX="auto">
+        <Table variant="simple" size="md" sx={{ tableLayout: tableLayout }}>
+          <TableCaption>Usuarios Registrados en Mercado Libro</TableCaption>
           <Thead>
-            <Tr fontSize={20}>
-              <Th>Nombre</Th>
-              <Th>Apellido</Th>
-              <Th>Email</Th>
-              <Th>Estado</Th>
-              <Th>Fecha Creacion</Th>
-              <Th>Rol</Th>
+            <Tr>
+              <Th fontSize={fontSize}>Nombre</Th>
+              <Th fontSize={fontSize}>Apellido</Th>
+              <Th fontSize={fontSize}>Email</Th>
+              <Th fontSize={fontSize}>Estado</Th>
+              <Th fontSize={fontSize}>Fecha Creación</Th>
+              <Th fontSize={fontSize}>Rol</Th>
+              <Th fontSize={fontSize}>Acciones</Th>
             </Tr>
           </Thead>
           <Tbody>
             {users.map((user) => (
-              <Tr fontSize={20} key={user.id}>
-                <Td>{user.name}</Td>
-                <Td>{user.lastName}</Td>
-                <Td>{user.email}</Td>
-                <Th>{user.status}</Th>
-                <Th>{user.dateCreated}</Th>
-                {user.roles.map((role: Role) => (
-                  <Tag
-                    key={role.id}
-                    colorScheme={
-                      role.description === "USER" ? "green" : "orange"
-                    }
-                  >
-                    {role.description}
-                  </Tag>
-                ))}
+              <Tr key={user.id}>
+                <Td fontSize={fontSize}>{user.name}</Td>
+                <Td fontSize={fontSize}>{user.lastName}</Td>
+                <Td fontSize={fontSize}>{user.email}</Td>
+                <Td fontSize={fontSize}>{user.status}</Td>
+                <Td fontSize={fontSize}>{user.dateCreated}</Td>
+                <Td>
+                  {user.roles.map((role) => (
+                    <Tag
+                      key={role.id}
+                      colorScheme={
+                        role.description === "USER" ? "green" : "red"
+                      }
+                      m={1}
+                    >
+                      {role.description}
+                    </Tag>
+                  ))}
+                </Td>
                 <Td>
                   <EditIcon
                     w={6}
                     h={6}
-                    color="teal.500"
-                    style={{ cursor: "pointer" }}
+                    color="brand.blueLogo"
+                    _hover={{ color: "green" }}
                     onClick={() => handleEdit(user.id)}
                   />
                   <DeleteIcon
                     w={6}
                     h={6}
-                    color="red.500"
-                    style={{ cursor: "pointer", marginLeft: "1rem" }}
+                    color="red"
+                    _hover={{ color: "orange" }}
+                    ml={4}
                     onClick={() => handleDelete(user.id)}
                   />
                 </Td>
               </Tr>
             ))}
-            {selectedUserId !== null && isEditModalOpen && (
-              <EditUserModal
-                isOpen={isEditModalOpen}
-                onClose={() => setIsEditModalOpen(false)}
-                userId={selectedUserId}
-                reloadUsers={() => setReloadKey((prevKey) => prevKey + 1)}
-              />
-            )}
           </Tbody>
         </Table>
       </Box>
-      {isLoading ? <CustomLoading /> : null}
+      {isLoading && <CustomLoading />}
+      {isEditModalOpen && selectedUserId && (
+        <EditUserModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          userId={selectedUserId}
+          reloadUsers={() => setReloadKey((prevKey) => prevKey + 1)}
+        />
+      )}
     </>
   );
 };
-
 export default UserInfo;
