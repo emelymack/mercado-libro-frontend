@@ -53,6 +53,8 @@ const EditUserModal = ({
     register,
     handleSubmit: handleFormSubmit,
     formState: { errors },
+    setValue,
+    reset,
   } = useForm<EditUserDataForm>({
     resolver: zodResolver(schema),
   });
@@ -78,6 +80,14 @@ const EditUserModal = ({
       fetchUser();
     }
   }, [userId, isOpen]);
+
+  useEffect(() => {
+    if (user && isOpen) {
+      setValue("name", user.name);
+      setValue("lastName", user.lastName);
+      setValue("email", user.email);
+    }
+  }, [user, isOpen, setValue]);
 
   const onSubmit = async (data: EditUserDataForm) => {
     setIsLoading(true);
@@ -191,9 +201,7 @@ const EditUserModal = ({
               spacing="1"
               w="100%"
               justifyContent="flex-start"
-            >
-              {/* Links or additional elements can be added here */}
-            </HStack>
+            ></HStack>
             <Button
               marginTop={8}
               fontSize={{ base: "md", md: "lg" }}
