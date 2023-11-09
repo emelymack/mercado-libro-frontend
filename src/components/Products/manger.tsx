@@ -45,9 +45,11 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
-import { Book, getAllBooks } from "../../services/BookService";
+import { Book, getAllBooks, saveBook } from "../../services/BookService";
 import { Category, getAllCategories } from "../../services/CategoryService";
 import {
   MdDelete,
@@ -91,8 +93,8 @@ const schema = z.object({
     .string({ required_error: "Campo obligatorio" })
     .min(1, { message: "Debe tener 5 o más caracteres" })
     .max(10)
-    .refine((value) => /^\d{2}\/\d{2}\/\d{4}$/.test(value), {
-      message: "El formato de fecha debe ser dd/MM/yyyy",
+    .refine((value) => /^\d{4}-\d{2}-\d{2}$/.test(value), {
+      message: "El formato de fecha debe ser yyyy-MM-dd",
     }),
   publisher: z
     .string({ required_error: "Campo obligatorio" })
@@ -112,11 +114,12 @@ type RegisterDataForm = z.infer<typeof schema>;
 const ProductManager = () => {
   const [error, setError] = useState<string>("");
   const [books, setBooks] = useState<Book[]>();
-  const [book, setBook] = useState<Book>();
   const [categories, setCategories] = useState<Category[]>();
   const [authors, setAuthors] = useState<string[]>([]);
   const [existAuthor, setExistAuthor] = useState<boolean>(false);
   const [author, setAuthor] = useState<string>("");
+  const [errorSave, setErrorSave] = useState<string>("");
+  const [successSave, setSuccessSave] = useState<string>("");
 
   useEffect(() => {
     getAllBooks()
@@ -172,17 +175,33 @@ const ProductManager = () => {
 
   const onSubmit = (data: RegisterDataForm) => {
     console.log("save all info!!!");
+    saveBook(mapDatoToBook(data)).then((response) => {
 
-    console.info(mapDatoToBook(data));
+      console.log(response);
+      setSuccessSave("ok!!");
+      startTimer();
+    })
+      .catch((error) => {
+        if (error.statusCode === 400) {
+          if (error.data["validation-error"]) {
+            const errorListItems = error.data["validation-error"].map((err: any) => {
+              return `<li>El campo <strong> ${err.field}</strong> ${err.message} </li>`;
+            }).join('');
+            setErrorSave(errorListItems.toString());
+          }
+        } else {
+          setErrorSave("No se pudo guardar la información de Libro");
+        }
+      });
   };
 
-  function mapDatoToBook(data:any){
-  
-    const listAuthors =  authors.join(",");
-    const listCategories =[];
+  function mapDatoToBook(data: any) {
+
+    const listAuthors = authors.join(",");
+    const listCategories = [];
     const category = categories?.find((category) => category.id === Number(data.category));
     if (category) {
-      listCategories.push(category);  
+      listCategories.push(category);
     }
 
     var book: Book = {
@@ -195,12 +214,12 @@ const ProductManager = () => {
       language: data.language,
       price: Number(data.price),
       stock: Number(data.stock),
-      published_date:data.published,
+      published_date: data.published,
       page_count: Number(data.pagecount),
-      ratings_count:5,
-      currency_code:data.currency,
-      image_links:[],
-      categories:listCategories
+      ratings_count: 5,
+      currency_code: data.currency,
+      image_links: ["http://mercadolibro-site-g5.s3-website-us-east-1.amazonaws.com/assets/ml.png"],
+      categories: listCategories
     };
     return book;
   }
@@ -236,6 +255,14 @@ const ProductManager = () => {
     onClose();
   };
 
+  function startTimer(): void {
+    console.log("Temporizador iniciado.");
+  
+    setTimeout(() => {
+      setSuccessSave("");
+    }, 10000);
+  }
+
   return (
     <div className="title_admin">
       <Container maxW="6xl">
@@ -249,6 +276,8 @@ const ProductManager = () => {
             </GridItem>
           </Grid>
         </div>
+
+
         {books && books.length > 0 ? (
           <div className="row mt-3">
             <VStack spacing={6}>
@@ -260,7 +289,28 @@ const ProductManager = () => {
                 color={"brand.blueLogo"}
               >
                 Lista de productos
+
               </Heading>
+             {successSave && <Alert
+                borderRadius="10px"
+                status='success'
+                variant='subtle'
+                flexDirection='column'
+                alignItems='center'
+                justifyContent='center'
+                textAlign='center'
+                height='200px'
+              >
+                <AlertIcon boxSize='40px' mr={0} />
+                <AlertTitle mt={4} mb={1} fontSize='lg'>
+                  Información del producto almacenada exitosamente!
+                </AlertTitle>
+                <AlertDescription maxWidth='sm'>
+                  El producto registrado esta disponible para la venta
+                </AlertDescription>
+              </Alert>}
+              
+
               <div className="col-12 col-lg-8 offset-0 offset-lg-2">
                 <div className="css-vdxpmq">
                   <TableContainer>
@@ -343,6 +393,15 @@ const ProductManager = () => {
           >
             Registrar producto
           </Heading>
+
+          {errorSave && <Alert status='error'>
+            <AlertIcon />
+            <AlertTitle>Información!</AlertTitle>
+            <AlertDescription><div dangerouslySetInnerHTML={{ __html: errorSave }} /> </AlertDescription>
+          </Alert>
+          }
+
+
 
           <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
             <FormControl id="title" w="100%" isInvalid={!!errors.title}>
@@ -484,7 +543,7 @@ const ProductManager = () => {
                 variant="outline"
                 autoComplete="published"
                 padding={3}
-                placeholder="dd/MM/yyyy"
+                placeholder="yyyy-MM-dd"
                 _placeholder={{ color: "gray.120" }}
                 fontSize={{ base: "sm", md: "sm" }}
                 h={"auto"}

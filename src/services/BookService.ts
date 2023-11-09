@@ -5,6 +5,7 @@ import {
   CREATE_BOOK_URL,
   GET_ALL_BOOK_URL,
 } from "./apiUrls";
+import axios from "axios";
 
 export interface Book {
   id: number;
@@ -105,6 +106,14 @@ export const saveBook = (book: Book): Promise<Book> => {
     .post(`${BASE_URL}${CREATE_BOOK_URL}`, book)
     .then((response) => response.data)
     .catch((error) => {
-      throw new Error(error.response?.data?.message);
+      if (axios.isAxiosError(error)) {        
+        throw {
+          statusCode: error.response ? error.response.status : 500,
+          data: error.response ? error.response.data:null,
+          errorMessage: error.message,
+        };
+      } else {
+        throw error;
+      }
     });
 };
