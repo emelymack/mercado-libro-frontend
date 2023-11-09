@@ -7,14 +7,14 @@ import { Routes, Route } from "react-router-dom";
 import RegisterUser from "./components/RegisterUser/RegisterUser";
 import Health from "./components/Health/Health";
 import Categories from "./components/Categories/Categories";
-import { QueryClient, QueryClientProvider } from "react-query";
+
 
 function App() {
-  const queryClient = new QueryClient();
+
   return (
     <>
       {/* <ColorModeSwitch /> */}
-      {/* <QueryClientProvider client={queryClient}> */}
+      
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -25,7 +25,7 @@ function App() {
           <Route path="/category/:categoryName" element={<Categories />} />
         </Routes>
       </Layout>
-      {/* </QueryClientProvider> */}
+    
     </>
   );
 }

@@ -29,6 +29,7 @@ import NavLink from "./NavLink";
 import NavMenu from "./Mobile/NavMenu";
 import { Link, Link as LinkTo } from "react-router-dom";
 import { useEffect } from "react";
+import { Category, getAllCategory } from "../../../services/BookService";
 
 const Links = [
   {
@@ -54,14 +55,23 @@ const Header = () => {
   const [isLogged] = useState<boolean>(false);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
   const { colorMode, toggleColorMode } = useColorMode();
+  const [categoria, setCategoria] = useState<Category[]>([]);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
       window.scrollY > 0 ? setIsScrolling(true) : setIsScrolling(false);
     });
+    
+
+    getAllCategory ()
+    .then((res) => {
+    console.log(res);
+    setCategoria(res)
+    })
 
     return () => {};
   }, []);
+
 
   return (
     <header className={isScrolling ? "scroll" : ""}>
@@ -89,8 +99,10 @@ const Header = () => {
                 display={{ base: "none", lg: "flex" }}
                 ms={2}
                 me={3}
-              >
+              > 
+                
                 <Menu>
+                
                   <MenuButton
                     as={Button}
                     rightIcon={<ChevronDownIcon />}
@@ -99,39 +111,29 @@ const Header = () => {
                   >
                     Categorías
                   </MenuButton>
+                  
                   <MenuList>
+                  {categoria?.map((item) => (
                     <MenuItem>
-                      <Link to={`/category/Literatura`}>Literatura</Link>
+                  
+                      <Link to={`/category/${item?.name}`}>{item?.name}</Link>
+                      
                     </MenuItem>
-                    <MenuItem>
-                      <Link to={`/category/Ciencia, historia y sociedad`}>
-                        Ciencia, historia y sociedad
-                      </Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link to={`/category/Salud y bienestar`}>
-                        Salud y bienestar
-                      </Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link to={`/category/Infantiles`}>Infantiles</Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link to={`/category/Cómic y novela gráfica`}>
-                        Cómic y novela gráfica
-                      </Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link to={`/category/Más vendidos`}>Más vendidos</Link>
-                    </MenuItem>
-                    {/* <MenuDivider /> */}
+                    ))}
                   </MenuList>
+                
+                  
                 </Menu>
+                
+
+              
+
                 {Links.map((link) => (
                   <NavLink key={link.name} url={link.url}>
                     {link.name}
                   </NavLink>
                 ))}
+                
 
                 {!isLogged ? <Login /> : <MyAccount />}
               </HStack>
