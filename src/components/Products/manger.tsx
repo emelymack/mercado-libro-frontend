@@ -47,9 +47,12 @@ import {
   NumberDecrementStepper,
   AlertTitle,
   AlertDescription,
+  Card,
+  CardHeader,
+  Flex,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
-import { Book, getAllBooks, saveBook } from "../../services/BookService";
+import { Author, Book, getAllBooks, saveBook } from "../../services/BookService";
 import { Category, getAllCategories } from "../../services/CategoryService";
 import {
   MdDelete,
@@ -111,13 +114,18 @@ const schema = z.object({
 
 type RegisterDataForm = z.infer<typeof schema>;
 
+const initialAuthor: Author = {
+  name: '',
+  email: '',
+};
+
 const ProductManager = () => {
   const [error, setError] = useState<string>("");
   const [books, setBooks] = useState<Book[]>();
   const [categories, setCategories] = useState<Category[]>();
-  const [authors, setAuthors] = useState<string[]>([]);
+  const [authors, setAuthors] = useState<Author[]>([]);
   const [existAuthor, setExistAuthor] = useState<boolean>(false);
-  const [author, setAuthor] = useState<string>("");
+  const [author, setAuthor] = useState<Author>(initialAuthor);
   const [errorSave, setErrorSave] = useState<string>("");
   const [successSave, setSuccessSave] = useState<string>("");
 
@@ -196,8 +204,6 @@ const ProductManager = () => {
   };
 
   function mapDatoToBook(data: any) {
-
-    const listAuthors = authors.join(",");
     const listCategories = [];
     const category = categories?.find((category) => category.id === Number(data.category));
     if (category) {
@@ -207,7 +213,7 @@ const ProductManager = () => {
     var book: Book = {
       id: data.id,
       title: data.title,
-      authors: listAuthors,
+      authors: JSON.stringify(authors),
       publisher: data.publisher,
       description: data.description,
       isbn: data.isbn,
@@ -227,18 +233,27 @@ const ProductManager = () => {
   //modal add author
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef<HTMLInputElement>(null);
+  const initialEmail = React.useRef<HTMLInputElement>(null);
 
   const addAuthor = () => {
     console.log("saving!!!");
 
-    if (initialRef && initialRef.current) {
-      const newAuthor = initialRef.current.value;
-      setAuthor(newAuthor);
-      if (newAuthor.length == 0) {
+    if (initialRef && initialRef.current && initialEmail && initialEmail.current) {
+      const name = initialRef.current.value;
+      const email = initialEmail.current.value;
+
+      const autor: Author = {
+        name: name,
+        email: email,
+      };
+
+
+      setAuthor(autor);
+      if (autor.name.length === 0 || autor.email.length === 0) {
         return;
       }
-      if (!authors.includes(newAuthor)) {
-        authors.push(newAuthor);
+      if (!authors.includes(autor)) {
+        authors.push(autor);
         setAuthors(authors);
         setExistAuthor(false);
         onClose();
@@ -246,18 +261,18 @@ const ProductManager = () => {
         setExistAuthor(true);
       }
     } else {
-      setAuthor("");
+      setAuthor(initialAuthor);
     }
   };
 
   const cancelAddAuthor = () => {
-    setAuthor("");
+    setAuthor(initialAuthor);
     onClose();
   };
 
   function startTimer(): void {
     console.log("Temporizador iniciado.");
-  
+
     setTimeout(() => {
       setSuccessSave("");
     }, 10000);
@@ -291,7 +306,7 @@ const ProductManager = () => {
                 Lista de productos
 
               </Heading>
-             {successSave && <Alert
+              {successSave && <Alert
                 borderRadius="10px"
                 status='success'
                 variant='subtle'
@@ -309,7 +324,7 @@ const ProductManager = () => {
                   El producto registrado esta disponible para la venta
                 </AlertDescription>
               </Alert>}
-              
+
 
               <div className="col-12 col-lg-8 offset-0 offset-lg-2">
                 <div className="css-vdxpmq">
@@ -622,10 +637,23 @@ const ProductManager = () => {
             <FormControl isRequired id="autor" paddingTop="20px" w="100%">
               <div>
                 {authors.map((author, index) => (
-                  <Tag key={index} variant="outline">
-                    <TagLabel>{author}</TagLabel>
-                    <TagRightIcon as={MdPerson} />
-                  </Tag>
+
+                  <Card maxW='250px' key={index}>
+                    <CardHeader>
+                      <Flex>
+                        <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                          <Avatar name='Escritor' src='https://mercadolibro-site-g5.s3.amazonaws.com/assets/writer.jpg' />
+                          <Box>
+                            <Heading size='sm'>{author.name}</Heading>
+                            <Text>{author.email}</Text>
+                          </Box>
+                        </Flex>
+                      </Flex>
+                    </CardHeader>
+                  </Card>
+
+
+
                 ))}
               </div>
               <Button leftIcon={<MdPerson />} mt={2} onClick={onOpen}>
@@ -669,7 +697,14 @@ const ProductManager = () => {
             <FormControl>
               <FormLabel>Nombre completo</FormLabel>
               <Input type="text" id="author" name="author" ref={initialRef} />
-              {author.length == 0 && (
+              {author.name.length == 0 && (
+                <FormHelperText color="red">Campo obligatorio</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl>
+              <FormLabel>Email</FormLabel>
+              <Input type="text" id="author" name="author" ref={initialEmail} />
+              {author.email.length == 0 && (
                 <FormHelperText color="red">Campo obligatorio</FormHelperText>
               )}
             </FormControl>
