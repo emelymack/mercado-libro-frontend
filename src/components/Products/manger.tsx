@@ -72,7 +72,7 @@ const schema = z.object({
     .min(5, { message: "Debe tener al menos 5 o más caracteres" })
     .max(500, { message: "Limite máximo de caracteres" })
     .regex(/^[a-zA-Z0-9,.;\s@:]+$/),
-  category: z.number(),
+  category: z.string(),
   isbn: z
     .string({ required_error: "Campo obligatorio" })
     .min(5, { message: "Debe tener 5 o más caracteres" })
@@ -173,8 +173,37 @@ const ProductManager = () => {
   const onSubmit = (data: RegisterDataForm) => {
     console.log("save all info!!!");
 
-    console.info(data);
+    console.info(mapDatoToBook(data));
   };
+
+  function mapDatoToBook(data:any){
+  
+    const listAuthors =  authors.join(",");
+    const listCategories =[];
+    const category = categories?.find((category) => category.id === Number(data.category));
+    if (category) {
+      listCategories.push(category);  
+    }
+
+    var book: Book = {
+      id: data.id,
+      title: data.title,
+      authors: listAuthors,
+      publisher: data.publisher,
+      description: data.description,
+      isbn: data.isbn,
+      language: data.language,
+      price: Number(data.price),
+      stock: Number(data.stock),
+      published_date:data.published,
+      page_count: Number(data.pagecount),
+      ratings_count:5,
+      currency_code:data.currency,
+      image_links:[],
+      categories:listCategories
+    };
+    return book;
+  }
 
   //modal add author
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -265,7 +294,7 @@ const ProductManager = () => {
                             <Td>{book.publisher}</Td>
                             <Td>
                               {book.categories.map((category) => (
-                                  <Text key={category.id}> {category.name}</Text>
+                                <Text key={category.id}> {category.name}</Text>
                               ))}
                             </Td>
                             <Td>
@@ -515,13 +544,13 @@ const ProductManager = () => {
                 {...register("category")}
                 fontSize={{ base: "sm", md: "sm" }}
               >
-                <div>
-                {categories && categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-                    </div>
+                <optgroup>
+                  {categories && categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </optgroup>
               </Select>
 
               {errors.category && (
