@@ -15,7 +15,7 @@ const Home = () => {
         <Box>
           <NewsCarousel />
         </Box>
-        <Box my={5}>
+        <Box mt={{base: 12, lg: 20}} mb={5}>
           <TrendingCarousel />
         </Box>
         <Categories />

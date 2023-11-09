@@ -80,7 +80,7 @@ const ProductPage = () => {
                 {/* Botones */}
                 <Stack direction={{base: 'column', lg: 'row'}} alignItems={'center'} spacing={{base: 5, lg: 10}} mt={4}>
                   <QuantityInput />
-                  <AddToCart stock={product.book.stock} />
+                  <AddToCart id={product.book.id} stock={product.book.stock} />
                 </Stack>
               </Box>
             </SimpleGrid>

@@ -1,9 +1,11 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import scrollReducer from '../context/slices/scrollSlice'
+import cartReducer from '../context/slices/cartSlice'
 
 export const store = configureStore({
   reducer: {
-    scroll: scrollReducer
+    scroll: scrollReducer,
+    cart: cartReducer
   },
 });
 

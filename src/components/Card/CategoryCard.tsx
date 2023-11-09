@@ -22,7 +22,7 @@ const CategoryCard = ({img, title}: Category) => {
         <Stack mt='1' spacing='1'>
           <Heading 
             fontSize={22}
-            color={!isHovering ? 'brand.greenLogo': 'white'} 
+            color={!isHovering ? 'brand.greenLogo': useColorModeValue('brand.blueLogo', 'white')} 
             textTransform={'uppercase'} 
             fontWeight={900}
             textAlign={'center'}
