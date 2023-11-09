@@ -21,9 +21,9 @@ export interface Book {
   published_date: string;
   page_count: number;
   ratings_count: number;
-  image_links: string;
+  image_links: string[];
   currency_code: string;
-}
+} 
 
 export interface Category {
   id: number;
