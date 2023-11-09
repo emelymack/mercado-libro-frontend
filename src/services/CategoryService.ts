@@ -10,7 +10,7 @@ export interface Category{
     name:string;
     status:string;
     description:string;
-    image:string;
+    image_link:string;
 }
 
 export const getAllCategories = (): Promise<Category[]> => {

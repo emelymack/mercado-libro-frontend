@@ -72,7 +72,7 @@ const schema = z.object({
     .min(5, { message: "Debe tener al menos 5 o más caracteres" })
     .max(500, { message: "Limite máximo de caracteres" })
     .regex(/^[a-zA-Z0-9,.;\s@:]+$/),
-  // category: z.number(),
+  category: z.number(),
   isbn: z
     .string({ required_error: "Campo obligatorio" })
     .min(5, { message: "Debe tener 5 o más caracteres" })
@@ -148,7 +148,7 @@ const ProductManager = () => {
     getAllCategories()
       .then((categories) => {
         setCategories(categories);
-        console.log("Lista de categorias:", books);
+        console.log("Lista de categorias:", categories);
       })
       .catch((error) => {
         if (
@@ -265,10 +265,7 @@ const ProductManager = () => {
                             <Td>{book.publisher}</Td>
                             <Td>
                               {book.categories.map((category) => (
-                                <div key={category.id}>
-                                  <Text> {category.name}</Text>
-                                  <br />
-                                </div>
+                                  <Text key={category.id}> {category.name}</Text>
                               ))}
                             </Td>
                             <Td>
@@ -510,7 +507,31 @@ const ProductManager = () => {
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl isRequired id="description" paddingTop="20px" w="100%">
+
+            <FormControl id="category" w="50%" isInvalid={!!errors.category}>
+              <FormLabel>Categorias</FormLabel>
+              <Select
+                placeholder="Select option"
+                {...register("category")}
+                fontSize={{ base: "sm", md: "sm" }}
+              >
+                <div>
+                {categories && categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+                    </div>
+              </Select>
+
+              {errors.category && (
+                <FormErrorMessage fontSize="xs" color="red">
+                  {errors.category.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+
+            <FormControl isRequired id="autor" paddingTop="20px" w="100%">
               <div>
                 {authors.map((author, index) => (
                   <Tag key={index} variant="outline">
