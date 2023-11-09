@@ -14,7 +14,6 @@ import {
   Button,
   Container,
   Avatar,
-  background,
   Grid,
   GridItem,
   Box,
@@ -26,7 +25,6 @@ import {
   FormLabel,
   Textarea,
   Select,
-  useBreakpointValue,
   Center,
   Tag,
   TagLabel,
@@ -42,16 +40,14 @@ import {
   FormHelperText,
   NumberInput,
   NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   AlertTitle,
   AlertDescription,
   Card,
   CardHeader,
   Flex,
+  ButtonGroup,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Author, Book, getAllBooks, saveBook } from "../../services/BookService";
 import { Category, getAllCategories } from "../../services/CategoryService";
 import {
@@ -62,7 +58,7 @@ import {
   MdSave,
 } from "react-icons/md";
 import ml from "../../assets/ml.png";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -176,6 +172,7 @@ const ProductManager = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<RegisterDataForm>({
     resolver: zodResolver(schema),
@@ -277,6 +274,11 @@ const ProductManager = () => {
       setSuccessSave("");
     }, 10000);
   }
+
+  const handleReset = () => {
+    reset({ title: '', description: '', category: '', pagecount: '', isbn: '', language: '', published: '', publisher: '', currency: '', price: '', stock: '' });
+    setAuthors([]);
+  };
 
   return (
     <div className="title_admin">
@@ -484,7 +486,7 @@ const ProductManager = () => {
             <FormControl id="language" w="50%" isInvalid={!!errors.language}>
               <FormLabel>Lenguaje</FormLabel>
               <Select
-                placeholder="Select option"
+                placeholder="Seleccionar..."
                 {...register("language")}
                 fontSize={{ base: "sm", md: "sm" }}
               >
@@ -500,7 +502,7 @@ const ProductManager = () => {
               )}
             </FormControl>
 
-            <FormControl w="50%" isInvalid={!!errors.pagecount}>
+            <FormControl id="pagecount" w="50%" isInvalid={!!errors.pagecount}>
               <FormLabel>Número de páginas</FormLabel>
               <NumberInput>
                 <NumberInputField
@@ -516,7 +518,7 @@ const ProductManager = () => {
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl w="50%" isInvalid={!!errors.price}>
+            <FormControl id="price" w="50%" isInvalid={!!errors.price}>
               <FormLabel>Precio de venta</FormLabel>
               <NumberInput>
                 <NumberInputField
@@ -535,7 +537,7 @@ const ProductManager = () => {
             <FormControl id="currency" w="50%" isInvalid={!!errors.currency}>
               <FormLabel>Moneda país venta</FormLabel>
               <Select
-                placeholder="Select option"
+                placeholder="Seleccionar..."
                 {...register("currency")}
                 fontSize={{ base: "sm", md: "sm" }}
               >
@@ -596,7 +598,7 @@ const ProductManager = () => {
               )}
             </FormControl>
 
-            <FormControl w="50%" isInvalid={!!errors.stock}>
+            <FormControl id="stock" w="50%" isInvalid={!!errors.stock}>
               <FormLabel>Cantidad Stock</FormLabel>
               <NumberInput>
                 <NumberInputField
@@ -614,7 +616,7 @@ const ProductManager = () => {
             <FormControl id="category" w="50%" isInvalid={!!errors.category}>
               <FormLabel>Categorias</FormLabel>
               <Select
-                placeholder="Select option"
+                placeholder="Seleccionar..."
                 {...register("category")}
                 fontSize={{ base: "sm", md: "sm" }}
               >
@@ -662,21 +664,24 @@ const ProductManager = () => {
             </FormControl>
 
             <Center>
-              <Button
-                leftIcon={<MdSave />}
-                marginTop={8}
-                fontSize={{ base: "xl", md: "2xl" }}
-                w="40%"
-                type="submit"
-                bg="brand.violetLogo"
-                color="brand.blueLogo"
-                borderRadius="6px"
-                size="lg"
-                fontWeight="400"
-                _hover={{ bg: "brand.greenLogo", color: "white" }}
-              >
-                Guardar
-              </Button>
+              <ButtonGroup variant='outline' spacing='6'>
+                <Button
+                  leftIcon={<MdSave />}
+                 
+                 
+                  type="submit"
+                  bg="#8884FF"
+                  color="#ffff"
+                  borderRadius="6px"
+                  _hover={{ bg: '#ebedf0', color:'#8884FF', borderColor:'#8884FF',border:'5px' }}
+                  fontWeight="400"
+                 
+                >
+                  Guardar
+                </Button>
+                <Button  bg='#BFBFBF' borderRadius="6px" fontWeight="400" onClick={handleReset}>Cancelar</Button>
+              </ButtonGroup>
+
             </Center>
           </form>
         </VStack>
