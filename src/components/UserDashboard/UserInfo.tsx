@@ -3,8 +3,6 @@ import { getAllUsers, patchUser } from "../../services/UserService";
 import {
   Badge,
   Box,
-  Flex,
-  Icon,
   Switch,
   Table,
   TableCaption,
@@ -18,20 +16,14 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { User } from "../../types/user";
-import {
-  CheckCircleIcon,
-  CheckIcon,
-  CircleIcon,
-  CloseIcon,
-  EditIcon,
-} from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import EditUserModal from "./EditUserModal";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import moment from "moment";
 
 const UserInfo = () => {
   const fontSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
-  const tableLayout = useBreakpointValue({ base: "auto", lg: "fixed" });
+  // const tableLayout = useBreakpointValue({ base: "auto", lg: "fixed" });
   const [users, setUsers] = useState<User[]>([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
@@ -40,14 +32,6 @@ const UserInfo = () => {
   const [tooltipVisibility, setTooltipVisibility] = useState<{
     [key: number]: boolean;
   }>({});
-
-  const handleMouseEnter = (id: number) => {
-    setTooltipVisibility((prev) => ({ ...prev, [id]: true }));
-  };
-
-  const handleMouseLeave = (id: number) => {
-    setTooltipVisibility((prev) => ({ ...prev, [id]: false }));
-  };
 
   const handleEdit = (id: number) => {
     setSelectedUserId(id);
@@ -77,7 +61,6 @@ const UserInfo = () => {
     setIsLoading(true);
     const updatedStatus = isActive ? "INACTIVE" : "ACTIVE";
     try {
-      // Suponiendo que 'patchUser' es una petición PATCH que actualiza el usuario
       const response = await patchUser(id, { status: updatedStatus });
       if (response.statusCode === 200) {
         console.log("Estado del usuario actualizado con éxito");
