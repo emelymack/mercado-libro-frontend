@@ -14,6 +14,7 @@ export interface EditUser {
   lastName?: string;
   email?: string;
   dateCreated?: string;
+  status?: "ACTIVE" | "INACTIVE";
 }
 
 export interface Role {
