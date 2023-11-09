@@ -1,7 +1,6 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Alert,
-  AlertDescription,
   AlertIcon,
   AlertTitle,
   Avatar,
@@ -18,7 +17,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
 } from "@chakra-ui/react";
 
 import { useNavigate } from "react-router-dom";

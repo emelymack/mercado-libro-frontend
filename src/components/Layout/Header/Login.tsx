@@ -59,6 +59,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<LoginDataForm>({
     resolver: zodResolver(schema),
@@ -83,6 +84,7 @@ const Login = () => {
         console.log("Datos del usuario:", response.data);
         const token = response.data?.token;
         const user = response.data?.user;
+        reset();
 
         if (token) {
           console.log("Token:", token);
@@ -107,7 +109,7 @@ const Login = () => {
           localStorage.setItem("isLogged", "true");
           dispatch(login());
           console.log("No eres administrador. Redireccionando...");
-          history("/"); // Redirigir a otra página si no es administrador
+          history("/");
         }
       }
     } catch (error) {
