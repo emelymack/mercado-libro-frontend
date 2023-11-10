@@ -7,6 +7,13 @@ import {
   CATEGORY_URL
 } from "./apiUrls";
 
+export interface GetBooksResponse {
+  content: Book[],
+  currentPage: number,
+  pageSize: number,
+  totalElements: number,
+  totalPages: number
+}
 export interface Book {
   id: number;
   title: string;
@@ -109,7 +116,7 @@ export const getAllCategory = (): Promise<Category[]> => {
     });
 };
 
-export const getBooksByCategory = (nameCategory: string): Promise<Book[]> => {
+export const getBooksByCategory = (nameCategory: string): Promise<GetBooksResponse> => {
   return httpService
     .get(`${BASE_URL}${BOOK_URL}?page=0&category=${nameCategory}`) 
     .then((response) => response.data)

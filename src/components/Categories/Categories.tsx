@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import ProductCard from "../Card/ProductCard";
 import { Center, Heading, Container, SimpleGrid} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Book, getBooksByCategory } from "../../services/BookService";
+import {  Book, getBooksByCategory, GetBooksResponse } from "../../services/BookService";
 
 
 
@@ -26,7 +26,7 @@ export const Categories = () => {
 
 
   // parseo de propiedad Authors
-  //const authors = libroCategoria && JSON.parse(libroCategoria.authors.replace(/'/g, '"'))
+  //const authors = libroCategoria && JSON.parse(libroCategoria.authors.replace(/'/g, '"'));
 
 
   useEffect(() => { 
@@ -37,7 +37,7 @@ export const Categories = () => {
       getBooksByCategory(categoryName)
       .then((res) => {
         console.log(res);
-        setLibroCategoria(res)
+        setLibroCategoria(res.content)
       })
     }
   }, []);
@@ -62,7 +62,8 @@ export const Categories = () => {
             <ProductCard
             img={product.image_links[0]}
             title={product.title}
-            author={product.authors[0]}
+            author={"Author"}
+            /* author={JSON.stringify(JSON.parse(product.authors.replace(/'/g, '"')))} */
             price={product.price}
             url={""}
              />
