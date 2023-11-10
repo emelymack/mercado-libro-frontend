@@ -17,7 +17,7 @@ export interface GetBooksResponse {
 export interface Book {
   id: number;
   title: string;
-  authors: string;
+  authors: Authors[];
   publisher: string;
   description: string;
   isbn: string;
@@ -31,6 +31,11 @@ export interface Book {
   image_links: string[];
   currency_code: string;
 } 
+
+export interface Authors {
+  name: string;
+  email: string;
+}
 
 export interface Category {
   id: number;

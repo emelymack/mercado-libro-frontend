@@ -28,7 +28,7 @@ px='0'>
   <Flex  align="center" justify="center">
     <Image
       maxW='124px'
-      src={image_links}
+      src={image_links[0]}
       alt='Green double couch with wooden legs'
       borderRadius='lg'
       boxShadow='lg'

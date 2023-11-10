@@ -44,7 +44,7 @@ const ProductCard = ({ id, image_links, title, authors, price, stock }: Book) =>
           {/* Titulo del libro */}
           <Heading size="md">{title}</Heading>
           {/* Nombre del autor */}
-          <Text noOfLines={2}>{authors}</Text>
+          <Text noOfLines={2}>{authors[0].name}</Text>
           {/* Precio */}
           <Text color="brand.blueLogo" fontSize="2xl" fontWeight={600}>
             ${price}

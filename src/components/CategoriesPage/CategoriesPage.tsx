@@ -2,8 +2,10 @@ import { useParams } from "react-router-dom";
 import ProductCard from "../Card/ProductCard";
 
 import { Center, Heading, Container, SimpleGrid } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../../context/hooks";
+import { getBooksByCategory } from "../../services/BookService";
+import { Book } from "../../types/product";
 
 const Productos = [
   {
@@ -118,9 +120,22 @@ const Productos = [
 
 export const Categories = () => {
   const params = useParams();
+  //const {categoryName} = useParams();
+  const [libroCategoria, setLibroCategoria] = useState<Book[]>([]);
   const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => { window.scrollTo(0, 0);
+  
+    if(params.categoryName) {
+      getBooksByCategory(params.categoryName)
+      .then((res) => {
+        console.log(res);
+        setLibroCategoria(res.content)
+      })
+    }
+  
+  },
+   []);
 
   return (
     <Container maxW="container.xl" bg="white.600" centerContent mb={20} className={`page ${isScrolling ? 'scroll' : ''}`}>
@@ -136,14 +151,14 @@ export const Categories = () => {
 
       <Center>
         <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} gap={5}>
-          {Productos.map((producto) => (
+          {libroCategoria.map((producto) => (
             <ProductCard
               id={producto.id}
-              img={producto.imagen}
-              title={producto.titulo}
-              author={producto.autor}
-              price={producto.precio}
-              url=""
+              image_links={producto.image_links}
+              title={producto.title}
+              authors={producto.authors}
+              price={producto.price}
+              stock={1}
             />
           ))}
         </SimpleGrid>

@@ -16,7 +16,7 @@ export interface ProductDetail extends Product {
 export interface Book {
   id: number;
   title: string;
-  authors: string;
+  authors: Authors[];
   publisher: string;
   description: string;
   isbn: string;
@@ -39,7 +39,7 @@ interface Category {
   image_link: string;
 }
 
-export interface Author {
+export interface Authors {
   name: string;
   email: string;
 }
