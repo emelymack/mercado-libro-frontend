@@ -16,12 +16,13 @@ const CartButton = ({onClick, ref}: Props) => {
         <Text 
           bg={'brand.blueLogo'} 
           color={'white'} 
-          fontWeight={600} 
+          fontWeight={600}
+          fontSize={15} 
           pos={'absolute'} 
-          bottom={8}
+          bottom={'75%'}
           right={2} 
-          w={'25px'} 
-          h={'25px'} 
+          w={'22px'} 
+          h={'22px'} 
           textAlign={'center'} 
           borderRadius={'full'}
           zIndex={1}

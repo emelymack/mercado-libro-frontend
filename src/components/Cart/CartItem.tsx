@@ -40,7 +40,7 @@ export const CartItem = (props: CartItemProps) => {
         display={{ base: 'flex' }}
         flexDir={'column'}
       >
-        <QuantityInput quantity={quantity} />
+        <QuantityInput quantity={quantity}  />
         <Link fontSize="sm" textDecor="underline" mt={2} color={'red.500'}>
           Eliminar
         </Link>
