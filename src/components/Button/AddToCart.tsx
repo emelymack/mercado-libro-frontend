@@ -1,7 +1,9 @@
-import { Alert, AlertIcon, AlertTitle, Button, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react"
+import { Button, Image, useDisclosure } from "@chakra-ui/react"
 import iconCart from '../../assets/icons/icon-add-cart.svg'
 import { useAppDispatch, useAppSelector } from "../../context/hooks"
 import { fetchProduct } from "../../context/slices/cartSlice"
+import ModalSuccess from "../Modal/ModalSuccess"
+import ModalError from "../Modal/ModalError"
 
 interface Props {
   id: number,
@@ -11,13 +13,18 @@ interface Props {
 const AddToCart = ({id, stock, orderQty}: Props) => {
   const dispatch = useAppDispatch()
   const items = useAppSelector((state)=> state.cart)
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure()
+  const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure()
 
-  const addItemToCart = () => {
+  const addItemToCart = async () => {
     try {
-      dispatch(fetchProduct({id: id, orderQty: orderQty}))
-      onOpen()
-      console.log(items);
+      const isItemInCart = items.items.some((item) => item.product.id === id)
+      if(!isItemInCart) {
+        dispatch(fetchProduct({id: id, orderQty: orderQty}))
+        onOpenSuccess()
+      } else {
+        onOpenError()
+      }   
     } catch {
       console.error('No se pudo agregar el producto.') 
     }
@@ -37,29 +44,8 @@ const AddToCart = ({id, stock, orderQty}: Props) => {
       >
         Agregar <Image src={iconCart} ps={1} w={8} mb={1} />
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay  />
-          <ModalContent bg={"brand.greenLogo"} color={'white'}>
-            <ModalCloseButton  />
-            <ModalBody mt={8} py={10}>
-              <Alert
-                bg={"brand.greenLogo"}
-                status="success"
-                variant="subtle"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-                textAlign="center"
-                height="auto"
-              >
-                <AlertIcon boxSize="40px" mr={0} />
-                <AlertTitle mt={4} mb={1} fontSize="lg">
-                  ¡Se agregó el producto al carrito!
-                </AlertTitle>
-              </Alert>
-            </ModalBody>
-          </ModalContent>
-      </Modal>
+      <ModalSuccess isOpen={isOpenSuccess} onClose={onCloseSuccess} title="¡Se agregó el producto al carrito!" />
+      <ModalError isOpen={isOpenError} onClose={onCloseError} title="Ya existe este producto en el carrito." />
     </>
   )
 }

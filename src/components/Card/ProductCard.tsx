@@ -63,7 +63,7 @@ const ProductCard = ({ id, image_links, title, authors, price, stock }: Book) =>
         >
           Ver más
         </Button>
-        <AddToCart stock={stock} />
+        <AddToCart id={id} stock={stock} orderQty={1} />
       </CardFooter>
     </Card>
   );
