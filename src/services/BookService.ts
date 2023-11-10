@@ -4,8 +4,47 @@ import {
   BOOK_URL,
   CREATE_BOOK_URL,
   GET_ALL_BOOK_URL,
+  CATEGORY_URL
 } from "./apiUrls";
-import { Book } from "../types/product";
+
+export interface GetBooksResponse {
+  content: Book[],
+  currentPage: number,
+  pageSize: number,
+  totalElements: number,
+  totalPages: number
+}
+export interface Book {
+  id: number;
+  title: string;
+  authors: string;
+  publisher: string;
+  description: string;
+  isbn: string;
+  language: string;
+  price: number;
+  stock: number;
+  categories: Category[];
+  published_date: string;
+  page_count: number;
+  ratings_count: number;
+  image_links: string[];
+  currency_code: string;
+} 
+
+export interface Category {
+  id: number;
+  name: string;
+  status: string;
+  description: string;
+  image_link: string;
+}
+
+
+export interface Author {
+  name: string;
+  email: string;
+}
 
 export const getBookById = (id: number): Promise<Book> => {
   return httpService
@@ -61,9 +100,25 @@ export const getAllBooks = (): Promise<Book[]> => {
     });
 };
 
-export const getBooksByCategory = (category: string): Promise<Book[]> => {
+export const getAllCategory = (): Promise<Category[]> => {
   return httpService
-    .get(`${BASE_URL}${GET_ALL_BOOK_URL}/${category}`)
+    .get(`${BASE_URL}${CATEGORY_URL}`)
+    .then((response) => {
+      if (Array.isArray(response.data)) {
+        console.log(response.data)
+        return response.data as Category[];
+      } else {
+        throw new Error("La respuesta no es un array de Categorias");
+      }
+    })
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};
+
+export const getBooksByCategory = (nameCategory: string): Promise<GetBooksResponse> => {
+  return httpService
+    .get(`${BASE_URL}${BOOK_URL}?page=0&category=${nameCategory}`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
