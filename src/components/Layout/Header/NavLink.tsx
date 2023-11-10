@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Link } from '@chakra-ui/react'
 import React from 'react'
 
 interface Props {
@@ -10,7 +10,7 @@ const NavLink = (props: Props) => {
   const { children } = props
 
   return (
-    <Box
+    <Link
       as="a"
       px={1}
       py={1}
@@ -32,10 +32,10 @@ const NavLink = (props: Props) => {
       fontWeight={600}
       fontSize={17}
       href={props.url}
-    
+      
     >
       {children}
-    </Box>
+    </Link>
   )
 }
 

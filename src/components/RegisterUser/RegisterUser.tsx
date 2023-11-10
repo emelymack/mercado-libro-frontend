@@ -335,7 +335,7 @@ const RegisterUser = () => {
           }}
         >
           <ModalOverlay />
-          <ModalContent bg={"brand.greenLogo"}>
+          <ModalContent bg={"brand.greenLogo"} color={'white'}>
             <ModalHeader textAlign="center">Registro Exitoso</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

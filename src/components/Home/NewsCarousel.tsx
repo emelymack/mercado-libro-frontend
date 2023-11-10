@@ -1,5 +1,6 @@
 import ProductsCarousel from '../ProductsCarousel'
 import img from '../../assets/img/el-corazon-de-piedra-verde 1.png'
+import { Box } from '@chakra-ui/react'
 
 const products = [
   {
@@ -49,7 +50,9 @@ const products = [
 
 const NewsCarousel = () => {
   return (
-    <ProductsCarousel title='Novedades de octubre' products={products} />
+    <Box id='novedades'>
+      <ProductsCarousel title='Novedades de octubre' products={products} />
+    </Box>
   )
 }
 

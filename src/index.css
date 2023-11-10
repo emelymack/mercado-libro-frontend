@@ -35,20 +35,32 @@
   width: 100%;
   z-index: 2;
 }
-header.scroll {
+.header-index.scroll {
   position: fixed;
   width: 100%;
-  z-index: 5;
+  z-index: 100;
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color: rgba(136, 132, 255, 0.5);
+  background-color: rgba(136, 132, 255, .9);
 }
-header .logo {
+.header-index .logo {
   transition: width 0.35s ease-in-out;
 }
-header.scroll .logo {
+.header-index.scroll .logo {
   width: 140px;
 }
+
+@media(max-width: 991px) {
+  .header-index {
+    background-color: var(--primary);
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .page {
+    padding-top: 93px !important;
+  }
+} 
 
 .page {
   padding-top: 127px;

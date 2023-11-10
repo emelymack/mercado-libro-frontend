@@ -33,20 +33,20 @@ import Cart from "../../Cart";
 const Links = [
   {
     name: "Novedades",
-    url: "",
+    url: "#novedades",
   },
   {
     name: "Más vendidos",
-    url: "",
+    url: "#masVendidos",
   },
   // {
   //   name: "eBooks",
   //   url: "",
   // },
-  {
-    name: "Editoriales",
-    url: "",
-  },
+  // {
+  //   name: "Editoriales",
+  //   url: "",
+  // },
 ];
 
 const Header = () => {
@@ -69,7 +69,7 @@ const Header = () => {
               <LinkTo to="/">
                 <Image
                   src={logo}
-                  alt="Dan Abramov"
+                  alt="Mercado Libro"
                   boxSize={{ base: 160, md: 200 }}
                   className="logo"
                 />
@@ -85,7 +85,7 @@ const Header = () => {
                 spacing={4}
                 display={{ base: "none", lg: "flex" }}
                 ms={2}
-                me={{ base: 3, lg: 0, xl: 3 }}
+                me={{ base: 3, lg: 0 }}
               >
                 <Menu>
                   <MenuButton
@@ -132,7 +132,7 @@ const Header = () => {
 
                 {!isLogged ? <Login /> : <MyAccount />}
               </HStack>
-              <Box ms={2}>
+              <Box ms={0}>
                 <Button
                   bg={"none"}
                   px={{ base: 2, md: 3 }}

@@ -32,7 +32,7 @@ const Links = [
 const Footer = () => {
   return (
     <footer>
-      <Container maxW={'container.xl'} py={10}>
+      <Container maxW={'container.xl'} py={10} px={{base: 5, md: 5, lg: 12}}>
         <SimpleGrid columns={{sm: 2, md: 4}} spacing='20px'>
           <Flex flexDir={'column'} alignItems={{base: 'center', md: 'start'}}>
             <Heading as='h5' size={'md'} mb={3}>
