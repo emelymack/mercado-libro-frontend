@@ -72,6 +72,7 @@ const RegisterUser = () => {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<RegisterDataForm>({
     resolver: zodResolver(schema),
@@ -330,6 +331,7 @@ const RegisterUser = () => {
           isOpen={isSuccessModalOpen}
           onClose={() => {
             setIsSuccessModalOpen(false);
+            reset();
           }}
         >
           <ModalOverlay />

@@ -1,4 +1,8 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Box,
   Button,
   Center,
@@ -15,6 +19,7 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Spacer,
@@ -59,6 +64,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<LoginDataForm>({
     resolver: zodResolver(schema),
@@ -67,6 +73,8 @@ const Login = () => {
   const history = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const onSubmit = async (data: LoginDataForm) => {
     console.log(data);
     setIsLoading(true);
@@ -83,6 +91,7 @@ const Login = () => {
         console.log("Datos del usuario:", response.data);
         const token = response.data?.token;
         const user = response.data?.user;
+        reset();
 
         if (token) {
           console.log("Token:", token);
@@ -107,20 +116,23 @@ const Login = () => {
           localStorage.setItem("isLogged", "true");
           dispatch(login());
           console.log("No eres administrador. Redireccionando...");
-          history("/"); // Redirigir a otra página si no es administrador
+          history("/");
         }
       }
     } catch (error) {
       const err = error as { statusCode: number };
-      if (err.statusCode === 403) {
-        window.alert("Credenciales inválidas.");
-        console.log("Credenciales inválidas.");
-        // TODO: Mostrar un mensaje que las credenciales son inválidas
+      if (err.statusCode === 401) {
+        setErrorMessage(
+          "Credenciales inválidas. Por favor, intente nuevamente."
+        );
+        setIsErrorModalOpen(true);
+      } else {
+        setErrorMessage("Error desconocido. Por favor, intente más tarde.");
+        setIsErrorModalOpen(true);
       }
       console.error("Error en el inicio de sesión:", error);
-      // TODO: Actualizar el estado para mostrar un mensaje de error
     } finally {
-      setIsLoading(false); // Asegúrate de que isLoading se actualice incluso si hay un error
+      setIsLoading(false);
     }
   };
 
@@ -315,6 +327,61 @@ const Login = () => {
         </ModalContent>
         {isLoading ? <CustomLoading /> : null}
       </Modal>
+      {/* Modal para mostrar errores */}
+      {isErrorModalOpen && (
+        <Modal
+          isOpen={isErrorModalOpen}
+          onClose={() => setIsErrorModalOpen(false)}
+          isCentered
+          motionPreset="scale"
+        >
+          <ModalOverlay />
+          <ModalContent
+            mx={4}
+            maxW={{ base: "90%", sm: "80%", md: "70%", lg: "40%" }}
+            w="auto"
+          >
+            <ModalHeader
+              bg={"brand.redLogo"}
+              textAlign="center"
+              fontSize="2xl"
+              color={"white"}
+            >
+              Error de Inicio de Sesión
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Alert
+                bg={"white"}
+                status="error"
+                variant="subtle"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                textAlign="center"
+                height="200px"
+              >
+                <AlertIcon boxSize="60px" mr={0} />
+                <AlertTitle mt={4} mb={1} fontSize="2xl">
+                  Error:
+                </AlertTitle>
+                <AlertDescription maxWidth="sm">
+                  {errorMessage}
+                </AlertDescription>
+              </Alert>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                colorScheme="red"
+                mr={3}
+                onClick={() => setIsErrorModalOpen(false)}
+              >
+                Cerrar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </>
   );
 };
