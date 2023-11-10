@@ -1,10 +1,14 @@
 import { Button, HStack, Input, useColorMode, useColorModeValue, useNumberInput } from '@chakra-ui/react'
 
-const QuantityInput = () => {
+interface Props {
+  quantity: number,
+  onChange: (value:number) => void
+}
+const QuantityInput = ({onChange, quantity}: Props) => {
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
   useNumberInput({
     step: 1,
-    defaultValue: 1,
+    defaultValue: quantity,
     min: 1,
     max: 10,
     precision: 0,
@@ -16,9 +20,10 @@ const QuantityInput = () => {
 
   return (
     <HStack maxW='150px'>
-      <Button {...dec}>-</Button>
-      <Input borderColor={useColorModeValue('brand.greenLogo', 'brand.violetLogo')} color={useColorModeValue('brand.blueLogo', 'white')} {...input} />
-      <Button {...inc}>+</Button>
+      <Button {...dec} onClick={() => onChange(quantity - 1)} >-</Button>
+      <Input borderColor={useColorModeValue('brand.greenLogo', 'brand.violetLogo')} color={useColorModeValue('brand.blueLogo', 'white')} {...input} 
+      />
+      <Button {...inc} onClick={() => onChange(quantity + 1)} >+</Button>
     </HStack>
   )
 }

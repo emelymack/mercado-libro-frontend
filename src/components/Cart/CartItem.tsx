@@ -4,10 +4,10 @@ import QuantityInput from '../Input/QuantityInput'
 
 type CartItemProps = {
   name: string
-  description: string
+  author?: string
   quantity: number,
   price: number,
-  currency: string
+  // currency: string
   imageUrl: string
   onChangeQuantity?: (quantity: number) => void
   onClickDelete?: () => void
@@ -40,7 +40,7 @@ export const CartItem = (props: CartItemProps) => {
         display={{ base: 'flex' }}
         flexDir={'column'}
       >
-        <QuantityInput />
+        <QuantityInput quantity={quantity} />
         <Link fontSize="sm" textDecor="underline" mt={2} color={'red.500'}>
           Eliminar
         </Link>

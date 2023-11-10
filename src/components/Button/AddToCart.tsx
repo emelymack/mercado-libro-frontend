@@ -4,17 +4,17 @@ import { useAppDispatch, useAppSelector } from "../../context/hooks"
 import { fetchProduct } from "../../context/slices/cartSlice"
 
 interface Props {
-  id:number,
-  stock: number
+  id: number,
+  stock: number,
+  orderQty: number
 }
-const AddToCart = ({id, stock}: Props) => {
+const AddToCart = ({id, stock, orderQty}: Props) => {
   const dispatch = useAppDispatch()
   const items = useAppSelector((state)=> state.cart)
 
   const addItemToCart = () => {
-    dispatch(fetchProduct(id, 2))
+    dispatch(fetchProduct({id: id, orderQty: orderQty}))
     console.log(items);
-    
   }
 
   return (

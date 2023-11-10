@@ -14,7 +14,7 @@ const initialState: Props = {
   items: []
 };
 
-export const fetchProduct = createAsyncThunk("cart/getProduct", async (id,orderQty, thunk)=> {
+export const fetchProduct = createAsyncThunk("cart/getProduct", async ({id,orderQty}) => {
   const book = await getBookById(id)
   return { product: book, quantity: orderQty }
 })
@@ -35,7 +35,7 @@ export const cartSlice = createSlice({
     .addCase(fetchProduct.fulfilled, (state,action) => {
       console.log(action.payload);
       
-      // state.items.push(action.payload)
+      state.items.push(action.payload)
     })
   }
 });

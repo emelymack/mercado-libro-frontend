@@ -1,4 +1,4 @@
-import { Box, Container, Heading, Image, Link, SimpleGrid, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Container, Stack } from '@chakra-ui/react'
 import BreadcrumbNav from './Breadcrumb'
 import { useAppSelector } from '../../context/hooks'
 import QuantityInput from '../Input/QuantityInput'
@@ -9,9 +9,8 @@ import { useEffect, useState } from 'react'
 import { Book } from '../../types/product'
 import { getBookById } from '../../services/BookService'
 import { useParams } from 'react-router-dom'
-import { formatDateMonthYYYY, googleSearch } from '../../utils/functions'
 import CustomLoading from '../CustomLoading/CustomLoading'
-import { Title } from '../Title'
+import ProductData from './ProductData'
 
 interface Product {
   book: Book | undefined,
@@ -22,13 +21,14 @@ const ProductPage = () => {
   const {productId} = useParams()
   const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
 
+  const [orderQty, setOrderQty] = useState(1);  
+
   // parseo de propiedad Authors
   const authors = product.book && JSON.parse(product.book.authors.replace(/'/g, '"'))
 
 
   useEffect(() => { 
     window.scrollTo(0, 0); 
-    console.log(product.book);
     
     if(productId) {
       setProduct({...product, isLoading: true})
@@ -39,6 +39,7 @@ const ProductPage = () => {
       })
     }
   }, [productId]);
+  
 
   if(product.isLoading) return ( 
     <Box h={'calc(100vh - 130px)'} display={'flex'} alignItems={'center'} justifyContent={'center'}>
@@ -52,38 +53,13 @@ const ProductPage = () => {
         {product.book && (
           <>
             <BreadcrumbNav category={product.book.categories[0].name} bookTitle={product.book.title} />
-            <SimpleGrid columns={{base:1, md: 2}} spacing={10} mt={6} gap={{base: 6, lg: 12}}>
-              <Box display={'flex'} justifyContent={{base: 'center', lg: 'flex-end'}} >
-                <Image src={product.book.image_links[0]} boxSize={'300px'} h={'auto'}/>
-              </Box>
-              <Box w={{base: '100%', lg: '75%'}} px={{base: 6, lg: 0}}>
-                {/* Titulo */}
-                <Box w={{lg: '90%'}}>
-                  <Title htmlElement={'h3'}  noOfLines={3} text={product.book.title} capitalize fw={700} />
-                </Box>
-                
-                {/* Autor */}
-                <Text mt={2} fontSize={'lg'} fontWeight={600} textDecor={'underline'}>
-                  <Link href={googleSearch(`${authors[0].name}`)} isExternal>{authors[0].name}</Link>
-                </Text>
-
-                {/* Editorial y fecha publicación */}
-                <Text>
-                  <Link href={googleSearch(`${product.book.publisher}`)} isExternal textTransform={'uppercase'}>{product.book.publisher}</Link>, {product.book.published_date && formatDateMonthYYYY(product.book.published_date)}
-                </Text>
-
-                {/* Precio */}
-                <Text color={useColorModeValue('brand.blueLogo', '#b9b6ff')} fontWeight={800} fontSize={'4xl'} mt={{base: 2, lg:8}}>
-                  ${product.book.price}
-                </Text>
-
-                {/* Botones */}
-                <Stack direction={{base: 'column', lg: 'row'}} alignItems={'center'} spacing={{base: 5, lg: 10}} mt={4}>
-                  <QuantityInput />
-                  <AddToCart id={product.book.id} stock={product.book.stock} />
-                </Stack>
-              </Box>
-            </SimpleGrid>
+            <ProductData book={product.book}>
+              {/* Botones */}
+              <Stack direction={{base: 'column', lg: 'row'}} alignItems={'center'} spacing={{base: 5, lg: 10}} mt={4}>
+                <QuantityInput quantity={orderQty} onChange={setOrderQty} />
+                <AddToCart id={product.book.id} stock={product.book.stock} orderQty={orderQty} />
+              </Stack>
+            </ProductData>
             
             {/* Detalles de producto */}
             <Details 
