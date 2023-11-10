@@ -112,6 +112,7 @@ const components = {
   },
 };
 
+
 const fonts = {
   heading: `'Gabarito', sans-serif`,
   body: `'Gabarito', sans-serif`,
@@ -125,6 +126,13 @@ const theme = extendTheme({
   colors,
   fonts,
   components,
+  // styles: {
+  //   global: ({ colorMode }) => ({
+  //     body: {
+  //       bg: colorMode === 'dark' ? 'red' : 'white', // Ajusta el fondo de la página según el modo
+  //     },
+  //   }),
+  // }
 });
 
 export default theme;

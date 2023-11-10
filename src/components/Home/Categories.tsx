@@ -38,7 +38,7 @@ const categories = [
 
 const Categories = () => {
   return (
-    <Box px={{'base': 10, 'md': 20}} my={20}>
+    <Box px={{'base': 5, 'md': 20}} my={20}>
       <SimpleGrid columns={{'base': 1, 'md': 2, 'lg': 3 }} spacingX={6} spacingY={7}>
         {categories.map((item) => (
           <Link to={`/category/${item.title}`}>

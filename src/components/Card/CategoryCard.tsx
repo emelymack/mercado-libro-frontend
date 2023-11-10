@@ -1,9 +1,12 @@
-import { Card, CardBody, Stack, Heading, Image, Box, CardHeader } from '@chakra-ui/react'
+import { Card, CardBody, Stack, Heading, Image, Box, CardHeader, useColorModeValue } from '@chakra-ui/react'
 import { Category } from '../../types/category'
+import { useState } from 'react'
 
 const CategoryCard = ({img, title}: Category) => {
+  const [ isHovering, setIsHovering ]= useState(false)
+
   return (
-    <Card variant={'categoryCard'} w={'auto'} py={2}>
+    <Card variant={'categoryCard'} w={'auto'} h={'100%'} py={2} onMouseOver={()=>setIsHovering(true)} onMouseOut={()=>setIsHovering(false)}>
       <CardHeader>
         <Box display={'flex'} justifyContent={'center'}>
           <Image
@@ -19,7 +22,7 @@ const CategoryCard = ({img, title}: Category) => {
         <Stack mt='1' spacing='1'>
           <Heading 
             fontSize={22}
-            color={'brand.greenLogo'} 
+            color={!isHovering ? 'brand.greenLogo': useColorModeValue('brand.blueLogo', 'white')} 
             textTransform={'uppercase'} 
             fontWeight={900}
             textAlign={'center'}

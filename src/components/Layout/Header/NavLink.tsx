@@ -1,4 +1,4 @@
-import { Box, Link } from '@chakra-ui/react'
+import { Box, Link, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 
 interface Props {
@@ -28,7 +28,7 @@ const NavLink = (props: Props) => {
           transform: 'scaleX(1)' 
         }
       }}
-      color={'var(--secondary)'}
+      color={useColorModeValue('brand.blueLogo', 'white')}
       fontWeight={600}
       fontSize={17}
       href={props.url}

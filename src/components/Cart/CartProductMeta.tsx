@@ -9,6 +9,7 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react'
 import { PriceTag } from './PriceTag'
+import { Title } from '../Title'
 
 export type CartProductMetaProps = {
   name: string
@@ -33,7 +34,7 @@ export const CartProductMeta = (props: CartProductMetaProps) => {
       />
       <Box pt="4" w={'45%'}>
         <Stack spacing="0.5" >
-          <Text fontWeight="700" color={'brand.blueLogo'} fontSize={'md'} noOfLines={2}>{name}</Text>
+          <Title htmlElement={'h5'} size={'md'} noOfLines={2} text={name} />
           <PriceTag price={price} currency={currency} fontSize='xl' />
         </Stack>
       </Box>

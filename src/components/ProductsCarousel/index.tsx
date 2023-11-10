@@ -5,19 +5,19 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import ProductCard from "../Card/ProductCard";
-import { Box } from "@chakra-ui/react";
+import { Box, useColorMode } from "@chakra-ui/react";
 import { Book } from "../../types/product";
 
 interface Props {
   title: string;
-  titleColor?: 'green' | 'blue';
   products: Book[];
 }
 
-const ProductsCarousel = ({ title, products, titleColor }: Props) => {
+const ProductsCarousel = ({ title, products }: Props) => {  
+  
   return (
     <Box>
-      <Title htmlElement={"h2"} size="lg" text={title} color={titleColor ?? 'blue'} />
+      <Title htmlElement={"h2"} size="lg" text={title} />
       <Box mt={8} px={{base: 6, lg: 10}} position={"relative"}>
         <Swiper
           breakpoints={{

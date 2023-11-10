@@ -46,9 +46,10 @@ interface PriceProps {
 
 const Price = (props: PriceProps) => {
   const { isOnSale, children, textProps, fontSize } = props
-  const defaultColor = mode('gray.700', 'gray.400')
+  const defaultColor = mode('brand.blueLogo', 'gray.200')
   const onSaleColor = mode('gray.400', 'gray.700')
-  const color = isOnSale ? onSaleColor : 'brand.blueLogo'
+  const color = isOnSale ? onSaleColor : defaultColor
+  
   return (
     <Text
       as="span"
