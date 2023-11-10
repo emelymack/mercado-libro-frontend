@@ -5,6 +5,7 @@ import {
   AlertTitle,
   Avatar,
   Button,
+  Flex,
   Menu,
   MenuButton,
   MenuDivider,
@@ -17,6 +18,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
 } from "@chakra-ui/react";
 
 import { useNavigate } from "react-router-dom";
@@ -37,15 +39,20 @@ const MyAccount = () => {
     setIsLogoutModalOpen(true); // Abre el modal de confirmación
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsLoading(true);
-    setTimeout(() => {
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       dispatch(logout());
       clearLocalStorage();
       history("/");
+    } catch (error) {
+      console.error("Error during logout:", error);
+    } finally {
       setIsLoading(false);
       setIsLogoutModalOpen(false);
-    }, 1000);
+    }
   };
 
   const initials = `${name} ${lastName}`;
@@ -53,16 +60,12 @@ const MyAccount = () => {
   return (
     <>
       <Menu>
-        <MenuButton
-          as={Button}
-          bg={"none"}
-          style={{ color: "var(--secondary)" }}
-          ps={3}
-          pe={2}
-          rightIcon={<ChevronDownIcon />}
-        >
-          <Avatar size="sm" name={initials} mr={2} />
-          MI CUENTA
+        <MenuButton as={Button} bg="none" _focus={{ boxShadow: "none" }}>
+          <Flex align="center">
+            <Avatar size="sm" name={initials} mr={2} />
+            <Text>Mi Cuenta</Text>
+            <ChevronDownIcon />
+          </Flex>
         </MenuButton>
         <MenuList>
           <MenuItem>Mis pedidos</MenuItem>
@@ -74,15 +77,28 @@ const MyAccount = () => {
         <Modal
           isOpen={isLogoutModalOpen}
           onClose={() => setIsLogoutModalOpen(false)}
+          isCentered
+          motionPreset="scale"
         >
           <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Cerrar Sesión</ModalHeader>
+          <ModalContent
+            mx={4}
+            maxW={{ base: "90%", sm: "80%", md: "70%", lg: "40%" }}
+            w="auto"
+          >
+            <ModalHeader
+              bg={"brand.greenLogo"}
+              textAlign="center"
+              fontSize="2xl"
+              color={"white"}
+            >
+              Cerrar Sesión
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Alert
-                bg={"brand.greenLogo"}
-                status="warning"
+                bg={"white"}
+                status="error"
                 variant="subtle"
                 flexDirection="column"
                 alignItems="center"
@@ -90,17 +106,14 @@ const MyAccount = () => {
                 textAlign="center"
                 height="200px"
               >
-                <AlertIcon boxSize="40px" mr={0} />
-                <AlertTitle mt={4} mb={1} fontSize="lg">
+                <AlertIcon boxSize="60px" mr={0} />
+                <AlertTitle mt={4} mb={1} fontSize="2xl">
                   ¿Estás seguro que deseas cerrar sesión?
                 </AlertTitle>
-                {/* <AlertDescription maxWidth="sm">
-                  {modalMessage}
-                </AlertDescription> */}
               </Alert>
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="red" onClick={handleLogout}>
+              <Button colorScheme="red" mr={3} onClick={handleLogout}>
                 Confirmar
               </Button>
               <Button onClick={() => setIsLogoutModalOpen(false)}>
@@ -108,9 +121,9 @@ const MyAccount = () => {
               </Button>
             </ModalFooter>
           </ModalContent>
+          {isLoading ? <CustomLoading /> : null}
         </Modal>
       )}
-      {isLoading ? <CustomLoading /> : null}
     </>
   );
 };

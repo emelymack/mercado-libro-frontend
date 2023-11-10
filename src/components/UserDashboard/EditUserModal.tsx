@@ -2,13 +2,9 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Box,
   Button,
-  //   Center,
-  Flex,
   FormControl,
   FormErrorMessage,
-  HStack,
   Input,
   Modal,
   ModalBody,
@@ -114,14 +110,14 @@ const EditUserModal = ({
   return (
     <Modal isOpen={!!isOpen} onClose={onClose} isCentered size="2xl">
       <ModalOverlay bg="blackAlpha.300" backdropBlur="2px" />
-      <ModalContent
-        m={4}
-        p={{ base: 4, md: 6 }}
-        bg={"brand.violetLogo50"}
-        borderRadius="lg"
-        shadow="xl"
-      >
-        <ModalHeader textAlign="center" fontSize="2xl" color={"brand.blueLogo"}>
+      <ModalContent m={4} p={{ base: 4, md: 6 }} borderRadius="lg" shadow="xl">
+        <ModalHeader
+          mt={8}
+          bg={"brand.greenLogo"}
+          textAlign="center"
+          fontSize="2xl"
+          color={"white"}
+        >
           Editar Usuario
         </ModalHeader>
         <ModalCloseButton />
@@ -130,7 +126,13 @@ const EditUserModal = ({
             <form onSubmit={handleFormSubmit(onSubmit)}>
               <FormControl id="name" isInvalid={!!errors.name} mt={6} mb={6}>
                 <Input
-                  variant="outline"
+                  fontSize={{ base: "lg", md: "xl" }}
+                  padding={4}
+                  type="text"
+                  h={"auto"}
+                  bg="white"
+                  borderColor="#d8dee4"
+                  borderRadius="6px"
                   placeholder="Nombre"
                   {...register("name")}
                   size="md"
@@ -139,6 +141,13 @@ const EditUserModal = ({
               </FormControl>
               <FormControl id="lastName" isInvalid={!!errors.lastName} mb={6}>
                 <Input
+                  fontSize={{ base: "lg", md: "xl" }}
+                  padding={4}
+                  type="text"
+                  h={"auto"}
+                  bg="white"
+                  borderColor="#d8dee4"
+                  borderRadius="6px"
                   variant="outline"
                   placeholder="Apellido"
                   {...register("lastName")}
@@ -148,7 +157,13 @@ const EditUserModal = ({
               </FormControl>
               <FormControl id="email" isInvalid={!!errors.email} mb={6}>
                 <Input
-                  variant="outline"
+                  fontSize={{ base: "lg", md: "xl" }}
+                  padding={4}
+                  type="email"
+                  h={"auto"}
+                  bg="white"
+                  borderColor="#d8dee4"
+                  borderRadius="6px"
                   placeholder="Email"
                   {...register("email")}
                   size="md"
@@ -156,6 +171,7 @@ const EditUserModal = ({
                 <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
               </FormControl>
               <Button
+                fontSize={{ base: "xl", md: "2xl" }}
                 mt={4}
                 w="full"
                 bg={"brand.blueLogo"}
@@ -168,6 +184,7 @@ const EditUserModal = ({
                 Guardar Cambios
               </Button>
               <Button
+                fontSize={{ base: "xl", md: "2xl" }}
                 mt={4}
                 w="full"
                 variant="outline"
