@@ -31,7 +31,8 @@ header {
   padding-top: 32px;
   padding-bottom: 32px;
   transition: all .5s ease-in-out;
-  position: relative;
+  position: fixed;
+  width: 100%;
   z-index: 2;
 }
 header.scroll {
@@ -49,8 +50,11 @@ header.scroll .logo {
   width: 140px;
 }
 
+.page {
+  padding-top: 127px;
+}
 .page.scroll {
-  padding-top: 100px;
+  padding-top: 80px;
 }
 
 footer {
