@@ -87,6 +87,7 @@ const MyAccount = () => {
             w="auto"
           >
             <ModalHeader
+              w={"100%"}
               bg={"brand.greenLogo"}
               textAlign="center"
               fontSize="2xl"

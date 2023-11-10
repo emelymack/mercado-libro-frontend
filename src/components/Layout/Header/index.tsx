@@ -56,7 +56,7 @@ const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <header className={isScrolling ? "scroll" : ""}>
+    <header className={`header-index ${isScrolling ? "scroll" : ""}`}>
       <Box px={{ base: 6, md: 10, xl: 20 }} color={"var(--secondary)"}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <HStack
