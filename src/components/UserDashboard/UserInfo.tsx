@@ -88,7 +88,7 @@ const UserInfo = () => {
         justifyContent="center"
         overflowX="auto"
       >
-        <Table variant="simple" size="md">
+        <Table variant="simple" size="md" mt={40}>
           <TableCaption>Usuarios Registrados en Mercado Libro</TableCaption>
           <Thead>
             <Tr>
