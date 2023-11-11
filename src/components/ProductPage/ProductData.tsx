@@ -11,7 +11,7 @@ interface Props {
 const ProductData = ({book, children}: Props) => {
 
   // parseo de propiedad Authors
-  const authors = book && JSON.parse(book.authors.replace(/'/g, '"'))
+  // const authors = book && JSON.parse(book.authors.replace(/'/g, '"'))
 
 
   return (
