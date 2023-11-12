@@ -78,7 +78,7 @@ const schema = z.object({
     .string({ required_error: "Campo obligatorio" })
     .min(5, { message: "Debe tener 5 o más caracteres" })
     .max(50)
-    .regex(/^[a-zA-Z0-9,.;\s@:]+$/),
+    .regex(/^[a-zA-Z0-9,.;_-\s@:]+$/),
   language: z
     .string({ required_error: "Campo obligatorio" })
     .min(1, { message: "Campo obligatorio" }),
@@ -124,6 +124,7 @@ const ProductManager = () => {
   const [author, setAuthor] = useState<Author>(initialAuthor);
   const [errorSave, setErrorSave] = useState<string>("");
   const [successSave, setSuccessSave] = useState<string>("");
+  const [book,setBook]= useState<Book>();
 
   useEffect(() => {
     getAllBooks()
@@ -173,6 +174,7 @@ const ProductManager = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<RegisterDataForm>({
     resolver: zodResolver(schema),
@@ -280,6 +282,26 @@ const ProductManager = () => {
     setAuthors([]);
   };
 
+  const editBook = (book:Book) => {
+    console.log(book);
+    console.log(book.categories);
+    console.log(book.stock.toString());
+    setBook(book);
+
+    setValue('title', book.title);
+    setValue('description', book.description);
+    setValue('category', "1");
+    setValue('pagecount', book.page_count.toString());
+    setValue('isbn', book.isbn);
+    setValue('language', book.language);
+    setValue('published', book.published_date);
+    setValue('publisher', book.publisher);
+    setValue('currency', book.currency_code);
+    setValue('price', book.price.toString());
+    setValue('stock', '77');
+    
+  }
+
   return (
     <div className="title_admin">
       <Container maxW="6xl">
@@ -377,6 +399,7 @@ const ProductManager = () => {
                                   rightIcon={<MdEditDocument />}
                                   colorScheme="gray"
                                   variant="outline"
+                                  onClick={() =>editBook(book)}
                                 >
                                   Editar
                                 </Button>
@@ -507,7 +530,7 @@ const ProductManager = () => {
               <NumberInput>
                 <NumberInputField
                   {...register("pagecount")}
-                  placeholder="Ingresa un número con hasta dos decimales"
+                  placeholder="Ingresa un número"
                   _placeholder={{ color: "gray.120" }}
                   borderColor="#d8dee4"
                   borderRadius="6px"
@@ -602,6 +625,8 @@ const ProductManager = () => {
               <FormLabel>Cantidad Stock</FormLabel>
               <NumberInput>
                 <NumberInputField
+                type="stock"
+                autoComplete="stock"
                   {...register("stock")}
                   borderColor="#d8dee4"
                   borderRadius="6px"
