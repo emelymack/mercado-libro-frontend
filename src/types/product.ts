@@ -2,7 +2,7 @@ export interface Product {
   id: string,
   img: string,
   title: string,
-  author: string,
+  author: [],
   price: number,
   url: string
 }
@@ -16,7 +16,7 @@ export interface ProductDetail extends Product {
 export interface Book {
   id: number;
   title: string;
-  authors: string;
+  authors: [];
   publisher: string;
   description: string;
   isbn: string;

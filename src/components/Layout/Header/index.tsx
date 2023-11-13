@@ -53,7 +53,7 @@ const Links = [
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLogged] = useState<boolean>(false);
+  const [isLogged] = useState<boolean>(true);
   const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
   const { colorMode, toggleColorMode } = useColorMode();
 

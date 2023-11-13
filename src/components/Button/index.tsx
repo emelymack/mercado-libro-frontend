@@ -7,5 +7,5 @@ interface Props {
   text: string
 }
 export const SecondaryButton = ({onClick, text}: Props) => (
-  <Button onClick={onClick} color={useColorModeValue('brand.blueLogo', 'white')}>{text}</Button>
+  <Button onClick={onClick} className={useColorModeValue('secondaryBtn', 'white')} color={useColorModeValue('brand.blueLogo', 'white')}>{text}</Button>
 )

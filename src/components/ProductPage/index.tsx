@@ -24,7 +24,8 @@ const ProductPage = () => {
   const [orderQty, setOrderQty] = useState(1);  
 
   // parseo de propiedad Authors
-  const authors = product.book && JSON.parse(product.book.authors.replace(/'/g, '"'))
+  const authors = product.book?.authors
+  // && JSON.parse(product.book.authors.replace(/'/g, '"'))
 
 
   useEffect(() => { 
@@ -52,7 +53,7 @@ const ProductPage = () => {
       <Box py={8} mb={20}>
         {product.book && (
           <>
-            <BreadcrumbNav category={product.book.categories[0].name} bookTitle={product.book.title} />
+            <BreadcrumbNav category={product.book.categories[0]?.name} bookTitle={product.book.title} />
             <ProductData book={product.book}>
               {/* Botones */}
               <Stack direction={{base: 'column', lg: 'row'}} alignItems={'center'} spacing={{base: 5, lg: 10}} mt={4}>
