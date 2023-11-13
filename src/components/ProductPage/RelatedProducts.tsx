@@ -6,42 +6,42 @@ const products = [
     id: 6,
     image_links: [img],
     title: "El corazón de piedra verde",
-    author: "Salvador de Madariaga",
+    author: [{name: "Salvador de Madariaga", email:  ""}],
     price: 12500,
     url: ""
   },{
     id: 7,
     image_links: [img],
     title: "El corazón de piedra verde",
-    author: "Salvador de Madariaga",
+    author: [{name: "Salvador de Madariaga", email:  ""}],
     price: 12500,
     url: ""
   },{
     id: 8,
     image_links: [img],
     title: "El corazón de piedra verde",
-    author: "Salvador de Madariaga",
+    author: [{name: "Salvador de Madariaga", email:  ""}],
     price: 12500,
     url: ""
   },{
     id: 9,
     image_links: [img],
     title: "El corazón de piedra verde",
-    author: "Salvador de Madariaga",
+    author: [{name: "Salvador de Madariaga", email:  ""}],
     price: 12500,
     url: ""
   },{
     id: 10,
     image_links: [img],
     title: "El corazón de piedra verde",
-    author: "Salvador de Madariaga",
+    author: [{name: "Salvador de Madariaga", email:  ""}],
     price: 12500,
     url: ""
   },{
     id: 11,
     image_links: [img],
     title: "El corazón de piedra verde",
-    author: "Salvador de Madariaga",
+    author: [{name: "Salvador de Madariaga", email:  ""}],
     price: 12500,
     url: ""
   },

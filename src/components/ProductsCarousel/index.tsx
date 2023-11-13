@@ -37,7 +37,8 @@ const ProductsCarousel = ({ title, products }: Props) => {
           className="productsSwiper"
           loop={true}
         >
-          {products.map((item) => (
+          {products.map((item) => { console.log(item)
+            return (
             <SwiperSlide>
               <ProductCard
                 id={item.id}
@@ -47,7 +48,7 @@ const ProductsCarousel = ({ title, products }: Props) => {
                 price={item.price}
               />
             </SwiperSlide>
-          ))}
+          )})}
         </Swiper>
       </Box>
     </Box>

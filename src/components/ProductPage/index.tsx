@@ -54,22 +54,24 @@ const ProductPage = () => {
           <>
             <BreadcrumbNav category={product.book.categories[0]?.name} bookTitle={product.book.title} />
             <ProductData book={product.book}>
+              {/* Detalles de producto */}
+              <Details 
+                description={product.book.description} 
+                language={product.book.language}
+                page_count={product.book.page_count}
+                published_date={product.book.published_date}
+                publisher={product.book.publisher}
+                authors={product.book.authors}
+              />
+
               {/* Botones */}
-              <Stack direction={{base: 'column', lg: 'row'}} alignItems={'center'} spacing={{base: 5, lg: 10}} mt={4}>
+              <Stack direction={{base: 'column', lg: 'row'}} alignItems={'center'} spacing={{base: 5, lg: 10}} mt={8}>
                 <QuantityInput quantity={orderQty} onChange={setOrderQty} />
                 <AddToCart id={product.book.id} stock={product.book.stock} orderQty={orderQty} />
               </Stack>
             </ProductData>
             
-            {/* Detalles de producto */}
-            <Details 
-              description={product.book.description} 
-              language={product.book.language}
-              page_count={product.book.page_count}
-              published_date={product.book.published_date}
-              publisher={product.book.publisher}
-              author={product.book.authors}
-            />
+            
 
             {/* Productos relacionados */}
             <Box px={{base: 6, lg: 8}} mt={20}>
