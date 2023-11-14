@@ -100,10 +100,14 @@ export const patchUser = async (
   }
 };
 
-export const getAllUsers = async (): Promise<CustomResponse<User[]>> => {
+export const getAllUsers = async (
+  pageNumber?: number,
+  pageSize?: number
+): Promise<CustomResponse<User[]>> => {
   try {
-    const response = await httpService.get(`${BASE_URL}${GET_ALL_USERS_URL}`);
-
+    const response = await httpService.get(
+      `${BASE_URL}${GET_ALL_USERS_URL}?page=${pageNumber}&size=${pageSize}`
+    );
     if (Array.isArray(response.data.content)) {
       return {
         statusCode: response.status,

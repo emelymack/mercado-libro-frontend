@@ -20,6 +20,7 @@ import { EditIcon } from "@chakra-ui/icons";
 import EditUserModal from "./EditUserModal";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import moment from "moment";
+import Pagination from "../../utils/Pagination";
 
 const UserInfo = () => {
   const fontSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
@@ -32,6 +33,9 @@ const UserInfo = () => {
   const [tooltipVisibility, setTooltipVisibility] = useState<{
     [key: number]: boolean;
   }>({});
+  const [pageNumber, setPageNumber] = useState<number>(0);
+  const [pageSize] = useState<number>(10);
+  const [totalElements, setTotalElements] = useState<number>(26);
 
   const handleEdit = (id: number) => {
     setSelectedUserId(id);
@@ -42,8 +46,9 @@ const UserInfo = () => {
     setIsLoading(true);
     const fetchUsers = async () => {
       try {
-        const response = await getAllUsers();
+        const response = await getAllUsers(pageNumber, pageSize);
         if (response.statusCode === 200 && response.data) {
+          // setTotalElements(response.data.length);
           setUsers(response.data);
         } else {
           console.error("Failed to fetch users:", response.errorMessage);
@@ -55,7 +60,11 @@ const UserInfo = () => {
       }
     };
     fetchUsers();
-  }, [reloadKey]);
+  }, [reloadKey, pageNumber, pageSize]);
+
+  console.log("Usuarios aca--->>", users);
+  console.log("Largo users aca--->>", users.length);
+  console.log("Elementos aca--->>", totalElements);
 
   const handleToggleStatus = async (id: number, isActive: boolean) => {
     setIsLoading(true);
@@ -206,7 +215,14 @@ const UserInfo = () => {
             ))}
           </Tbody>
         </Table>
+        <Pagination
+          pageNumber={pageNumber}
+          pageSize={pageSize}
+          totalElements={totalElements}
+          onPageChange={(newPage) => setPageNumber(newPage)}
+        />
       </Box>
+
       {isLoading && <CustomLoading />}
       {isEditModalOpen && selectedUserId && (
         <EditUserModal
