@@ -10,6 +10,12 @@ const Cart = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef: any = React.useRef();
   const cartData = useAppSelector((state) => state.cart.items)
+  
+  React.useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartData))
+    
+  }, [cartData])
+  
 
   return (
     <>

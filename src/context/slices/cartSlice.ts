@@ -10,9 +10,15 @@ interface Item {
 interface Props {
   items: Item[]
 }
-const initialState: Props = {
-  items: []
-};
+
+// @ts-ignore
+const initialState: Props = () => {
+  if(localStorage.getItem('cart')) {  
+    // @ts-ignore  
+    return { items: JSON.parse(localStorage.getItem('cart')) }
+  } 
+  return {items: []}
+}
 
 interface PropsFetchProduct {
   id: number,

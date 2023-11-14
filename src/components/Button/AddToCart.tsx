@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "../../context/hooks"
 import { fetchProduct } from "../../context/slices/cartSlice"
 import ModalSuccess from "../Modal/ModalSuccess"
 import ModalError from "../Modal/ModalError"
-import { getBookById } from "../../services/BookService"
 
 interface Props {
   id: number,
