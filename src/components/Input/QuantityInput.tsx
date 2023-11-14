@@ -1,4 +1,4 @@
-import { Button, HStack, Input, useColorMode, useColorModeValue, useNumberInput } from '@chakra-ui/react'
+import { Button, HStack, Input, useColorModeValue, useNumberInput } from '@chakra-ui/react'
 
 interface Props {
   quantity: number,

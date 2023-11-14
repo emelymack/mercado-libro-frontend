@@ -14,21 +14,30 @@ const initialState: Props = {
   items: []
 };
 
-export const fetchProduct = createAsyncThunk("cart/getProduct", async ({id,orderQty}) => {
+interface PropsFetchProduct {
+  id: number,
+  orderQty: number
+}
+export const fetchProduct = createAsyncThunk("cart/getProduct", async ({id,orderQty}: PropsFetchProduct) => {
   const book = await getBookById(id)
   return { product: book, quantity: orderQty }
 })
-
-// export const fetchProductById = createAsyncThunk("cartItems/getBook", getBookById)
 
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    // addItem: (state, action: PayloadAction<AddItemProps>) => {
-    //   console.log(action);
-      
-    // }
+    updateItem: (state,action: PayloadAction<PropsFetchProduct>) => {
+      state.items.map((item) => {
+        if(item.product.id === action.payload.id) {
+          item.quantity = action.payload.orderQty
+        }
+      })
+    },
+
+    deleteItem: (state,action: PayloadAction<{id:number}>) => {  
+      state.items = state.items.filter((item) => item.product.id !== action.payload.id)
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -40,6 +49,6 @@ export const cartSlice = createSlice({
   }
 });
 
-// export const { addItem } = cartSlice.actions
+export const { updateItem, deleteItem } = cartSlice.actions
 
 export default cartSlice.reducer;
