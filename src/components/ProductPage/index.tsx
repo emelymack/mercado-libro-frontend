@@ -23,10 +23,6 @@ const ProductPage = () => {
 
   const [orderQty, setOrderQty] = useState(1);  
 
-  // parseo de propiedad Authors
-  // const authors = product.book && JSON.parse(product.book.authors.replace(/'/g, '"'))
-
-
   useEffect(() => { 
     window.scrollTo(0, 0); 
     
@@ -70,8 +66,6 @@ const ProductPage = () => {
                 <AddToCart id={product.book.id} stock={product.book.stock} orderQty={orderQty} />
               </Stack>
             </ProductData>
-            
-            
 
             {/* Productos relacionados */}
             <Box px={{base: 6, lg: 8}} mt={20}>

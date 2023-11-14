@@ -12,7 +12,10 @@ interface Props {
 }
 
 const setColor = (titleColor?: string) => {
-  if(titleColor) return titleColor;
+  if(titleColor) {
+    if (titleColor === 'green') return 'brand.greenLogo'
+    if(titleColor === 'blue') return 'brand.blueLogo'
+  };
   return mode('brand.blueLogo', '#a4a0ff')
 }
 
