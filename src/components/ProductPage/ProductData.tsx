@@ -15,7 +15,7 @@ const ProductData = ({book, children}: Props) => {
       <Box display={'flex'} justifyContent={{base: 'center', lg: 'flex-end'}} pe={5}>
         <Image src={book.image_links[0]} boxSize={'400px'} h={'500px'}/>
       </Box>
-      <Box w={{base: '100%', lg: '75%'}} px={{base: 6, lg: 0}}>
+      <Box w={{base: '100%', lg: '90%'}} px={{base: 6, lg: 0}}>
         {/* Titulo */}
         <Box w={{lg: '90%'}} mb={2}>
           <Title htmlElement={'h3'}  noOfLines={3} text={book.title} capitalize fw={700} />

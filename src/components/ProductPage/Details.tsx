@@ -1,4 +1,4 @@
-import { Accordion, AccordionIcon, AccordionItem, AccordionPanel, AccordionHeader, Box, Heading, SimpleGrid, Table, TableContainer, Tbody, Td, Text, Tr, AccordionButton, useColorModeValue } from "@chakra-ui/react"
+import { Accordion, AccordionIcon, AccordionItem, AccordionPanel, Box, Table, TableContainer, Tbody, Td, Text, Tr, AccordionButton, useColorModeValue } from "@chakra-ui/react"
 import { formatDateDDMMYYYY } from "../../utils/functions"
 import { Author } from "../../services/BookService"
 
@@ -13,7 +13,7 @@ interface Props {
 const Details = (props: Props) => {
 
   return (
-    <Accordion defaultIndex={[0]} allowMultiple>
+    <Accordion defaultIndex={[0]} allowToggle>
       <AccordionItem py={2} >
         <h2>
           <AccordionButton px={0}>

@@ -50,6 +50,7 @@ const ProductPage = () => {
           <>
             <BreadcrumbNav category={product.book.categories[0]?.name} bookTitle={product.book.title} />
             <ProductData book={product.book}>
+              
               {/* Detalles de producto */}
               <Details 
                 description={product.book.description} 
