@@ -138,3 +138,14 @@ export const saveBook = (book: Book): Promise<Book> => {
       throw new Error(error.response?.data?.message);
     });
 };
+
+//http://localhost:8080/v1/api/book?selection=newer&page=0
+
+export const getNewBooks = (filtro: string): Promise<GetBooksResponse> => {
+  return httpService
+    .get(`${BASE_URL}${BOOK_URL}?selection=${filtro}&page=0`) 
+    .then((response) => response.data)
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};

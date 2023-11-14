@@ -5,15 +5,30 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import ProductCard from "../Card/ProductCard";
-import { Box, useColorMode } from "@chakra-ui/react";
+import { Box} from "@chakra-ui/react";
 import { Book } from "../../types/product";
+import { useEffect, useState } from "react";
+import { getNewBooks } from "../../services/BookService";
 
 interface Props {
   title: string;
-  products: Book[];
+  filtro: string
+
 }
 
-const ProductsCarousel = ({ title, products }: Props) => {  
+const ProductsCarousel = ({ title, filtro}: Props) => {  
+  const [newBook, setNewBook] = useState<Book[]>([]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    getNewBooks(filtro)
+    .then((res) => {
+      console.log(res);
+      setNewBook(res.content);
+    });
+  }, []);
+
   
   return (
     <Box>
@@ -37,16 +52,16 @@ const ProductsCarousel = ({ title, products }: Props) => {
           className="productsSwiper"
           loop={true}
         >
-          {products.map((item) => { console.log(item)
+          {newBook?.map((item) => { console.log(item)
             return (
             <SwiperSlide>
               <ProductCard
-                id={item.id}
-                image_links={item.image_links}
-                title={item.title}
-                authors={item.authors}
-                price={item.price}
-              />
+                  id={item.id}
+                  image_links={item.image_links}
+                  title={item.title}
+                  authors={item.authors}
+                  price={item.price}
+                  stock={item.stock}      />
             </SwiperSlide>
           )})}
         </Swiper>
