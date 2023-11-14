@@ -104,6 +104,7 @@ const Header = () => {
                     rightIcon={<ChevronDownIcon />}
                     bg={"none"}
                     color={useColorModeValue('brand.blueLogo', 'white')}
+                    _active={{bg: 'white'}}
                   >
                     Categorías
                   </MenuButton>
@@ -111,7 +112,7 @@ const Header = () => {
                   <MenuList color={useColorModeValue('brand.blueLogo', 'white')}>
                   {categorias?.map((item) => (
                     <Link to={`/category/${item?.name}`}>
-                      <MenuItem>
+                      <MenuItem fontWeight={500} _hover={{bg: 'brand.violetLogo25'}}>
                         {item?.name}
                       </MenuItem>
                     </Link>
