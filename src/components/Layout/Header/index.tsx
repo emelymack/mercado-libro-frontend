@@ -11,6 +11,7 @@ import {
   MenuItem,
   useDisclosure,
   useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -20,62 +21,69 @@ import {
   SunIcon,
 } from "@chakra-ui/icons";
 import logo from "../../../assets/Logo.svg";
+import logoWhite from "../../../assets/logo-white.svg";
 import searchIcon from "../../../assets/icons/icon-search.svg";
-import cartIcon from "../../../assets/icons/icon-cart.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "./Login";
 import MyAccount from "./MyAccount";
 import NavLink from "./NavLink";
 import NavMenu from "./Mobile/NavMenu";
 import { Link, Link as LinkTo } from "react-router-dom";
-import { useEffect } from "react";
+import { useAppSelector } from "../../../context/hooks";
+import Cart from "../../Cart";
+import { Category, getAllCategory } from "../../../services/BookService";
 
 const Links = [
   {
     name: "Novedades",
-    url: "",
+    url: "#novedades",
   },
   {
     name: "Más vendidos",
-    url: "",
+    url: "#masVendidos",
   },
-  {
-    name: "eBooks",
-    url: "",
-  },
-  {
-    name: "Editoriales",
-    url: "",
-  },
+  // {
+  //   name: "eBooks",
+  //   url: "",
+  // },
+  // {
+  //   name: "Editoriales",
+  //   url: "",
+  // },
 ];
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLogged] = useState<boolean>(false);
-  const [isScrolling, setIsScrolling] = useState<boolean>(false);
+  const isLogged = useAppSelector((state) => state.auth.isLogged);
+  const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
   const { colorMode, toggleColorMode } = useColorMode();
+  const [categoria, setCategoria] = useState<Category[]>([]);
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      window.scrollY > 0 ? setIsScrolling(true) : setIsScrolling(false);
-    });
+
+    getAllCategory ()
+    .then((res) => {
+    console.log(res);
+    setCategoria(res)
+    })
 
     return () => {};
   }, []);
 
+
   return (
-    <header className={isScrolling ? "scroll" : ""}>
-      <Box px={{ base: 6, md: 20 }} color={"var(--secondary)"}>
+    <header className={`header-index ${isScrolling ? "scroll" : ""}`}>
+      <Box px={{ base: 6, md: 10, xl: 20 }} color={"var(--secondary)"}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <HStack
-            spacing={8}
+            spacing={{ base: 3, md: 8 }}
             alignItems={"center"}
             justifyContent={"space-between"}
             w={"100%"}
           >
             <Box>
               <LinkTo to="/">
-                <Image src={logo} alt="Dan Abramov" boxSize={200} className="logo" />
+                <Image src={useColorModeValue(logo, logoWhite)} alt="Mercado Libro" boxSize={{base: 160, md: 200}} className="logo" />
               </LinkTo>
             </Box>
             <Box
@@ -88,44 +96,30 @@ const Header = () => {
                 spacing={4}
                 display={{ base: "none", lg: "flex" }}
                 ms={2}
-                me={3}
+                me={{ base: 3, lg: 0 }}
               >
                 <Menu>
+                
                   <MenuButton
                     as={Button}
                     rightIcon={<ChevronDownIcon />}
                     bg={"none"}
-                    color={"var(--secondary)"}
+                    color={useColorModeValue('brand.blueLogo', 'white')}
                   >
                     Categorías
                   </MenuButton>
-                  <MenuList>
+                  
+                  <MenuList color={useColorModeValue('brand.blueLogo', 'white')}>
+                  {categoria?.map((item) => (
                     <MenuItem>
-                      <Link to={`/category/Literatura`}>Literatura</Link>
+                  
+                      <Link to={`/category/${item?.name}`}>{item?.name}</Link>
+                      
                     </MenuItem>
-                    <MenuItem>
-                      <Link to={`/category/Ciencia, historia y sociedad`}>
-                        Ciencia, historia y sociedad
-                      </Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link to={`/category/Salud y bienestar`}>
-                        Salud y bienestar
-                      </Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link to={`/category/Infantiles`}>Infantiles</Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link to={`/category/Cómic y novela gráfica`}>
-                        Cómic y novela gráfica
-                      </Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link to={`/category/Más vendidos`}>Más vendidos</Link>
-                    </MenuItem>
-                    {/* <MenuDivider /> */}
+                    ))}
                   </MenuList>
+                
+                  
                 </Menu>
                 <Menu>
                   <MenuButton
@@ -142,34 +136,33 @@ const Header = () => {
                     </MenuItem>
                   </MenuList>
                 </Menu>
+                
                 {Links.map((link) => (
                   <NavLink key={link.name} url={link.url}>
                     {link.name}
                   </NavLink>
                 ))}
+                
 
                 {!isLogged ? <Login /> : <MyAccount />}
               </HStack>
-              <Box ms={3}>
+              <Box ms={0}>
                 <Button
                   bg={"none"}
                   px={{ base: 2, md: 3 }}
                   className="headerBtn"
                 >
-                  <Image src={searchIcon} boxSize={{ base: 20, md: 12 }} />
+                  <Image src={searchIcon} boxSize={{ base: "50px" }} />
                 </Button>
               </Box>
-              <Box>
-                <Button
-                  bg={"none"}
-                  ps={0}
-                  pe={{ base: 2, md: 3 }}
-                  className="headerBtn"
-                >
-                  <Image src={cartIcon} boxSize={{ base: 20, md: 12 }} />
-                </Button>
+              <Box me={1}>
+                <Cart />
               </Box>
-              <Button onClick={toggleColorMode} borderRadius={"full"}>
+              <Button
+                onClick={toggleColorMode}
+                borderRadius={"full"}
+                size={{ base: "sm", md: "md" }}
+              >
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
               <IconButton
@@ -185,7 +178,7 @@ const Header = () => {
                 }
                 aria-label={"Abrir menú"}
                 display={{ lg: "none" }}
-                ms={1}
+                ms={3}
                 onClick={isOpen ? onClose : onOpen}
               />
             </Box>

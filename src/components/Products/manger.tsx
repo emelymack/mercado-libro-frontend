@@ -49,7 +49,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Author, Book, getAllBooks, saveBook } from "../../services/BookService";
-import { Category, getAllCategories } from "../../services/CategoryService";
 import {
   MdDelete,
   MdEditDocument,
@@ -61,6 +60,7 @@ import ml from "../../assets/ml.png";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { getAllCategories, Category } from "../../services/CategoryService";
 
 const schema = z.object({
   title: z
@@ -129,13 +129,13 @@ const ProductManager = () => {
   useEffect(() => {
     getAllBooks()
       .then((books) => {
-        books.forEach((book) => {
+        /*books.forEach((book) => {
           try {
-            book.authors = JSON.parse(book.authors.replace(/'/g, '"'));
+            book.authors = book.authors //;JSON.parse(book.authors.replace(/'/g, '"'));
           } catch (error) {
             console.error("Error al parsear autores:", error);
           }
-        });
+        });*/
 
         setBooks(books);
         console.log("Lista de libros:", books);
@@ -212,7 +212,7 @@ const ProductManager = () => {
     var book: Book = {
       id: data.id,
       title: data.title,
-      authors: JSON.stringify(authors),
+      authors: authors,
       publisher: data.publisher,
       description: data.description,
       isbn: data.isbn,
@@ -373,8 +373,8 @@ const ProductManager = () => {
                             <Td>{book.title}</Td>
                             <Td>
                               {Array.isArray(book.authors) &&
-                                book.authors.map((author) => (
-                                  <Tag key={author.id} variant="outline">
+                                book.authors.map((author, index) => (
+                                  <Tag key={index} variant="outline">
                                     <TagLabel>{author.name}</TagLabel>
                                     <TagRightIcon as={MdPerson} />
                                   </Tag>

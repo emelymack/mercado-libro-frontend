@@ -1,22 +1,30 @@
-import { As, Heading } from "@chakra-ui/react";
+import { As, Heading, useColorModeValue as mode } from "@chakra-ui/react";
 
 interface Props {
   htmlElement: As,
-  size: string,
+  size?: string,
   noOfLines?: number,
   align?: 'start' | 'center' | 'end',
-  text: string
+  text: string,
+  color?: 'green' | 'blue' | 'brand.violetLogo',
+  capitalize?: boolean,
+  fw?: number,
 }
 
-export const Title = ({htmlElement, size, noOfLines, align, text}: Props) => (
+const setColor = (titleColor?: string) => {
+  if(titleColor) return titleColor;
+  return mode('brand.blueLogo', '#a4a0ff')
+}
+
+export const Title = ({htmlElement, size, noOfLines, align, text, color, capitalize, fw}: Props) => (
   <Heading 
     as={htmlElement} 
     size={size} 
     noOfLines={noOfLines} 
     textAlign={align} 
-    textTransform={"uppercase"} 
-    color={'var(--secondary)'}
-    fontWeight={900}
+    textTransform={capitalize ? "capitalize" : "uppercase"} 
+    color={setColor(color)}
+    fontWeight={fw ?? 900}
   >
     {text}
   </Heading>

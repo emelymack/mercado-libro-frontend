@@ -32,7 +32,7 @@ const Links = [
 const Footer = () => {
   return (
     <footer>
-      <Container maxW={'container.xl'} py={10}>
+      <Container maxW={'container.xl'} py={10} px={{base: 5, md: 5, lg: 12}}>
         <SimpleGrid columns={{sm: 2, md: 4}} spacing='20px'>
           <Flex flexDir={'column'} alignItems={{base: 'center', md: 'start'}}>
             <Heading as='h5' size={'md'} mb={3}>
@@ -49,14 +49,14 @@ const Footer = () => {
             </Box>
           </Flex>
           <Box display={'flex'} flexDir={'column'} alignItems={{base: 'center', md: 'start'}}>
-            <Link href='tel:+5491111111' mb={1}><PhoneIcon me={1} /> +54 9 111 1111</Link>
-            <Link href='mailto:mercadolibro@mail.com' textDecor={'underline'}><EmailIcon me={2} />mercadolibro@mail.com</Link>
+            <Link className='footerLink' href='tel:+5491111111' mb={1}><PhoneIcon me={1} /> +54 9 111 1111</Link>
+            <Link className='footerLink' href='mailto:mercadolibro@mail.com' textDecor={'underline'}><EmailIcon me={2} />mercadolibro@mail.com</Link>
           </Box>
           <Box display={'flex'} flexDir={'column'} alignItems={{base: 'center', md: 'start'}}>
-            <Link href='' mb={1}>Iniciar sesión</Link>
-            <Link href='' mb={1}>Registrarse</Link>
-            <Link href='' mb={1}>Preguntas Frecuentes</Link>
-            <Link href='' mb={1}>Categorías</Link>
+            <Link className='footerLink' href='' mb={1}>Iniciar sesión</Link>
+            <Link className='footerLink' href='' mb={1}>Registrarse</Link>
+            <Link className='footerLink' href='' mb={1}>Preguntas Frecuentes</Link>
+            <Link className='footerLink' href='' mb={1}>Categorías</Link>
           </Box>
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
             <Image src={logo} w={{base: '50%', md: '75%'}} />

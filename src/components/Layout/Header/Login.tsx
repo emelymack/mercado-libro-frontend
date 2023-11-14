@@ -1,4 +1,8 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Box,
   Button,
   Center,
@@ -15,6 +19,7 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Spacer,
@@ -30,6 +35,12 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Link as LinkTo, useNavigate } from "react-router-dom";
+import { loginUser } from "../../../services/LoginService";
+import CustomLoading from "../../CustomLoading/CustomLoading";
+import setLocalStorageItem from "../../../utils/setStorage";
+import { useAppDispatch } from "../../../context/hooks";
+import { setUser } from "../../../context/slices/userSlice";
+import { login } from "../../../context/slices/authSlice";
 
 const schema = z.object({
   email: z
@@ -43,6 +54,7 @@ const schema = z.object({
 type LoginDataForm = z.infer<typeof schema>;
 
 const Login = () => {
+  const dispatch = useAppDispatch();
   const breakpointValue = useBreakpointValue({
     base: "base",
     sm: "sm",
@@ -52,18 +64,76 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<LoginDataForm>({
     resolver: zodResolver(schema),
   });
 
   const history = useNavigate();
-
   const [showPassword, setShowPassword] = useState(false);
-
-  const onSubmit = (data: LoginDataForm) => {
-    console.info(data);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const onSubmit = async (data: LoginDataForm) => {
+    console.log(data);
+    setIsLoading(true);
     onOpen();
+
+    try {
+      const response = await loginUser({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (response.statusCode === 200) {
+        console.log("Inicio de sesión exitoso");
+        console.log("Datos del usuario:", response.data);
+        const token = response.data?.token;
+        const user = response.data?.user;
+        reset();
+
+        if (token) {
+          console.log("Token:", token);
+          setLocalStorageItem("token", token);
+        }
+        if (user) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ name: user.name, lastName: user.lastName })
+          );
+          dispatch(setUser({ name: user.name, lastName: user.lastName }));
+        }
+        const isAdmin = response.data?.user?.roles.some(
+          (role) => role.description === "ADMIN"
+        );
+
+        if (isAdmin) {
+          localStorage.setItem("isLogged", "true");
+          dispatch(login());
+          history("/userDashboard");
+        } else {
+          localStorage.setItem("isLogged", "true");
+          dispatch(login());
+          console.log("No eres administrador. Redireccionando...");
+          history("/");
+        }
+      }
+    } catch (error) {
+      const err = error as { statusCode: number };
+      if (err.statusCode === 401) {
+        setErrorMessage(
+          "Credenciales inválidas. Por favor, intente nuevamente."
+        );
+        setIsErrorModalOpen(true);
+      } else {
+        setErrorMessage("Error desconocido. Por favor, intente más tarde.");
+        setIsErrorModalOpen(true);
+      }
+      console.error("Error en el inicio de sesión:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleClickPassword = () => {
@@ -255,7 +325,63 @@ const Login = () => {
             </VStack>
           </ModalBody>
         </ModalContent>
+        {isLoading ? <CustomLoading /> : null}
       </Modal>
+      {/* Modal para mostrar errores */}
+      {isErrorModalOpen && (
+        <Modal
+          isOpen={isErrorModalOpen}
+          onClose={() => setIsErrorModalOpen(false)}
+          isCentered
+          motionPreset="scale"
+        >
+          <ModalOverlay />
+          <ModalContent
+            mx={4}
+            maxW={{ base: "90%", sm: "80%", md: "70%", lg: "40%" }}
+            w="auto"
+          >
+            <ModalHeader
+              bg={"brand.redLogo"}
+              textAlign="center"
+              fontSize="2xl"
+              color={"white"}
+            >
+              Error de Inicio de Sesión
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Alert
+                bg={"white"}
+                status="error"
+                variant="subtle"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                textAlign="center"
+                height="200px"
+              >
+                <AlertIcon boxSize="60px" mr={0} />
+                <AlertTitle mt={4} mb={1} fontSize="2xl">
+                  Error:
+                </AlertTitle>
+                <AlertDescription maxWidth="sm">
+                  {errorMessage}
+                </AlertDescription>
+              </Alert>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                colorScheme="red"
+                mr={3}
+                onClick={() => setIsErrorModalOpen(false)}
+              >
+                Cerrar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </>
   );
 };

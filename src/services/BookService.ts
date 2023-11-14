@@ -4,13 +4,21 @@ import {
   BOOK_URL,
   CREATE_BOOK_URL,
   GET_ALL_BOOK_URL,
+  CATEGORY_URL
 } from "./apiUrls";
 import axios from "axios";
 
+export interface GetBooksResponse {
+  content: Book[],
+  currentPage: number,
+  pageSize: number,
+  totalElements: number,
+  totalPages: number
+}
 export interface Book {
   id: number;
   title: string;
-  authors: string;
+  authors: Authors[];
   publisher: string;
   description: string;
   isbn: string;
@@ -23,15 +31,21 @@ export interface Book {
   ratings_count: number;
   image_links: string[];
   currency_code: string;
+} 
+
+export interface Authors {
+  name: string;
+  email: string;
 }
 
-interface Category {
+export interface Category {
   id: number;
   name: string;
   status: string;
   description: string;
   image_link: string;
 }
+
 
 export interface Author {
   name: string;
@@ -81,8 +95,8 @@ export const getAllBooks = (): Promise<Book[]> => {
   return httpService
     .get(`${BASE_URL}${GET_ALL_BOOK_URL}`)
     .then((response) => {
-      if (Array.isArray(response.data)) {
-        return response.data as Book[];
+      if (Array.isArray(response.data.content)) {
+        return response.data.content as Book[];
       } else {
         throw new Error("La respuesta no es un array de libros");
       }
@@ -92,9 +106,25 @@ export const getAllBooks = (): Promise<Book[]> => {
     });
 };
 
-export const getBooksByCategory = (category: string): Promise<Book[]> => {
+export const getAllCategory = (): Promise<Category[]> => {
   return httpService
-    .get(`${BASE_URL}${GET_ALL_BOOK_URL}/${category}`)
+    .get(`${BASE_URL}${CATEGORY_URL}`)
+    .then((response) => {
+      if (Array.isArray(response.data)) {
+        console.log(response.data)
+        return response.data as Category[];
+      } else {
+        throw new Error("La respuesta no es un array de Categorias");
+      }
+    })
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};
+
+export const getBooksByCategory = (nameCategory: string): Promise<GetBooksResponse> => {
+  return httpService
+    .get(`${BASE_URL}${BOOK_URL}?page=0&category=${nameCategory}`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
@@ -115,5 +145,16 @@ export const saveBook = (book: Book): Promise<Book> => {
       } else {
         throw error;
       }
+    });
+};
+
+//http://localhost:8080/v1/api/book?selection=newer&page=0
+
+export const getNewBooks = (filtro: string): Promise<GetBooksResponse> => {
+  return httpService
+    .get(`${BASE_URL}${BOOK_URL}?selection=${filtro}&page=0`) 
+    .then((response) => response.data)
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
     });
 };
