@@ -42,8 +42,6 @@ export const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder
     .addCase(fetchProduct.fulfilled, (state,action) => {
-      console.log(action.payload);
-      
       state.items.push(action.payload)
     })
   }

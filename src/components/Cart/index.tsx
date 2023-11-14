@@ -40,6 +40,7 @@ const Cart = () => {
                         quantity={item.quantity}
                         price={item.product.price}
                         imageUrl={item.product.image_links[0]}  
+                        stock={item.product.stock}
                       />
                     ))}
                   </Stack>

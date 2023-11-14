@@ -12,10 +12,11 @@ type CartItemProps = {
   author?: string
   quantity: number,
   price: number,
-  imageUrl: string
+  imageUrl: string,
+  stock: number
 }
 
-export const CartItem = ({ id, name, quantity, price, imageUrl }: CartItemProps) => {
+export const CartItem = ({ id, name, quantity, price, imageUrl, stock }: CartItemProps) => {
   const dispatch = useAppDispatch()
   const [ itemQty, setItemQty ] = useState(quantity)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -46,7 +47,7 @@ export const CartItem = ({ id, name, quantity, price, imageUrl }: CartItemProps)
           display={{ base: 'flex' }}
           flexDir={'column'}
         >
-          <QuantityInput quantity={itemQty} onChange={setItemQty} />
+          <QuantityInput stock={stock} quantity={itemQty} onChange={setItemQty} />
           <Link fontSize="sm" textDecor="underline" mt={2} color={'red.500'} onClick={onOpen}>
             Eliminar
           </Link>

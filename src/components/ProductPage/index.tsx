@@ -63,7 +63,7 @@ const ProductPage = () => {
 
               {/* Botones */}
               <Stack direction={{base: 'column', lg: 'row'}} alignItems={'center'} spacing={{base: 5, lg: 10}} mt={8}>
-                <QuantityInput quantity={orderQty} onChange={setOrderQty} />
+                <QuantityInput quantity={orderQty} onChange={setOrderQty} stock={product.book.stock} />
                 <AddToCart id={product.book.id} stock={product.book.stock} orderQty={orderQty} />
               </Stack>
             </ProductData>

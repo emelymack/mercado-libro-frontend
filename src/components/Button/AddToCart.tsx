@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../context/hooks"
 import { fetchProduct } from "../../context/slices/cartSlice"
 import ModalSuccess from "../Modal/ModalSuccess"
 import ModalError from "../Modal/ModalError"
+import { getBookById } from "../../services/BookService"
 
 interface Props {
   id: number,
@@ -19,6 +20,7 @@ const AddToCart = ({id, stock, orderQty}: Props) => {
   const addItemToCart = async () => {
     try {
       const isItemInCart = items.items.some((item) => item.product.id === id)
+
       if(!isItemInCart) {
         dispatch(fetchProduct({id: id, orderQty: orderQty}))
         onOpenSuccess()
