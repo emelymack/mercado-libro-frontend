@@ -1,4 +1,4 @@
-import { Box, Button, Flex, IconButton, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, IconButton, Text, Tooltip } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 interface PaginationProps {

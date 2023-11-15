@@ -3,7 +3,7 @@ import { BASE_URL, GET_ALL_USERS_URL, USER_URL } from "./apiUrls";
 
 import { CustomResponse } from "../types/customResponse";
 import axios from "axios";
-import { EditUser, User } from "../types/user";
+import { EditUser, GetAllUsersParams, User } from "../types/user";
 
 export const getUserById = async (
   id: number
@@ -101,17 +101,23 @@ export const patchUser = async (
 };
 
 export const getAllUsers = async (
-  pageNumber?: number,
-  pageSize?: number
+  params: GetAllUsersParams
 ): Promise<CustomResponse<User[]>> => {
+  let url = `${BASE_URL}${GET_ALL_USERS_URL}?`;
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+
   try {
-    const response = await httpService.get(
-      `${BASE_URL}${GET_ALL_USERS_URL}?page=${pageNumber}&size=${pageSize}`
-    );
+    const response = await httpService.get(url);
     if (Array.isArray(response.data.content)) {
       return {
         statusCode: response.status,
         data: response.data.content as User[],
+        totalElements: response.data.totalElements,
       };
     } else {
       throw new Error("La respuesta no es un array de usuarios");
