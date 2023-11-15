@@ -36,7 +36,7 @@ export const CartItem = ({ id, name, quantity, price, imageUrl, stock }: CartIte
           name={name}
           image={imageUrl}
           price={price}
-          currency='usd'
+          currency='ARS'
         />
 
         <Flex

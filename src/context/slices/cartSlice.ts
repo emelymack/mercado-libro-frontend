@@ -8,16 +8,22 @@ interface Item {
 }
 
 interface Props {
-  items: Item[]
+  items: Item[],
+  total: number,
+  shipping: {
+    type: 'ENVIO_DOMICILIO' | 'RETIRO_SUCURSAL' | null,
+    price: number,
+    postalCode: number
+  }
 }
 
 // @ts-ignore
 const initialState: Props = () => {
   if(localStorage.getItem('cart')) {  
     // @ts-ignore  
-    return { items: JSON.parse(localStorage.getItem('cart')) }
+    return { items: JSON.parse(localStorage.getItem('cart')), total: 0, shipping: { type: null, price: 0, postalCode: 0 } }
   } 
-  return {items: []}
+  return { items: [], total: 0, shipping: { type: null, price: 0, postalCode: 0 } }
 }
 
 interface PropsFetchProduct {
@@ -43,6 +49,10 @@ export const cartSlice = createSlice({
 
     deleteItem: (state,action: PayloadAction<{id:number}>) => {  
       state.items = state.items.filter((item) => item.product.id !== action.payload.id)
+    },
+
+    setShippingPrice: (state,action: PayloadAction<{price: number, type: "ENVIO_DOMICILIO" | "RETIRO_SUCURSAL", postalCode: number}>) => {      
+      state.shipping = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -53,6 +63,6 @@ export const cartSlice = createSlice({
   }
 });
 
-export const { updateItem, deleteItem } = cartSlice.actions
+export const { updateItem, deleteItem, setShippingPrice } = cartSlice.actions
 
 export default cartSlice.reducer;

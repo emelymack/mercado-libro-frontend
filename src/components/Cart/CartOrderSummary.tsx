@@ -1,21 +1,17 @@
 import {
-  Box,
   Button,
   Flex,
-  HStack,
   Heading,
-  Input,
   Link,
-  Radio,
-  Spinner,
   Stack,
   Text,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
 import { FaArrowRight } from 'react-icons/fa'
 import { formatPrice } from './PriceTag'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import Shipping from './Shipping'
+import { useAppSelector } from '../../context/hooks'
 
 type OrderSummaryItemProps = {
   label: string
@@ -37,6 +33,28 @@ const OrderSummaryItem = (props: OrderSummaryItemProps) => {
 
 export const CartOrderSummary = () => {
   const [ showShippingMenu, setShowShippingMenu ] = useState(false)
+  const cartState = useAppSelector((state) => state.cart)
+
+  const calcSubtotal = () => {
+    let subtotal = 0
+    cartState.items.map((item) => {
+      subtotal += item.product.price
+    })
+    return subtotal
+  }
+
+  const calcTotal = () => {
+    let total = 0
+    cartState.items.map((item) => {
+      total += item.product.price
+    })
+
+    if(showShippingMenu) {
+      total += cartState.shipping.price
+    }
+    return total
+  }
+
 
   return (
     <Stack spacing="8" borderWidth="1px" rounded="lg" py={8} px={5} width="full">
@@ -44,7 +62,7 @@ export const CartOrderSummary = () => {
 
       <Stack spacing="6">
         {/* Subtotal */}
-        <OrderSummaryItem label="Subtotal (sin envío)" value={formatPrice(597)} />
+        <OrderSummaryItem label="Subtotal (sin envío)" value={formatPrice(calcSubtotal())} />
 
         {/* Envío */}
         <OrderSummaryItem label="Envío a domicilio">
@@ -60,7 +78,7 @@ export const CartOrderSummary = () => {
             Total
           </Text>
           <Text fontSize="xl" fontWeight="extrabold">
-            {formatPrice(597)}
+            {formatPrice(calcTotal())}
           </Text>
         </Flex>
       </Stack>
