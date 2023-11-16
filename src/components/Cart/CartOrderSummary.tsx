@@ -38,16 +38,13 @@ export const CartOrderSummary = () => {
   const calcSubtotal = () => {
     let subtotal = 0
     cartState.items.map((item) => {
-      subtotal += item.product.price
+      subtotal += item.product.price * item.quantity
     })
     return subtotal
   }
 
   const calcTotal = () => {
-    let total = 0
-    cartState.items.map((item) => {
-      total += item.product.price
-    })
+    let total = calcSubtotal()
 
     if(showShippingMenu) {
       total += cartState.shipping.price

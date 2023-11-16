@@ -1,11 +1,7 @@
 import {
   Box,
-  HStack,
-  Icon,
   Image,
-  Link,
   Stack,
-  Text,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
 import { PriceTag } from './PriceTag'

@@ -24,9 +24,7 @@ const ProductCard = ({ id, image_links, title, authors, price, stock }: Book) =>
   }
 
   return (
-    <Card variant={"productCard"} w={"auto"} _hover={{
-            backgroundColor: useColorModeValue('brand.violetLogo25', 'brand.violetLogo50'),
-          }}>
+    <Card variant={"productCard"} w={"auto"} h={'100%'} _hover={{ backgroundColor: useColorModeValue('brand.violetLogo25', 'brand.violetLogo50'), }}>
       <CardHeader py={2}>
         <Box display={"flex"} justifyContent={"center"}>
           <Image
