@@ -53,7 +53,7 @@ const Cart = () => {
                 </Stack>
 
                 <Flex direction="column" align="center" flex="1">
-                  <CartOrderSummary />
+                  <CartOrderSummary onCloseCart={onClose} />
                   <HStack mt="6" fontWeight="semibold">
                     <p>o</p>
                     <Link to={'#'} onClick={onClose}>Seguir comprando</Link>

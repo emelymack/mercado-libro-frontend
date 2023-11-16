@@ -1,22 +1,27 @@
 import { Box, Button, Flex, HStack, Input, Link, Radio, RadioGroup, Spinner, Stack, Text, useColorModeValue } from '@chakra-ui/react'
-import {useState, useRef, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import { useAppDispatch } from '../../context/hooks'
 import { setShippingPrice } from '../../context/slices/cartSlice'
 
+
 const Shipping = () => {
   const [results, setResults ] = useState({isLoading: false, isShown: false})
-  const inputRef = useRef()
-  const [shippingValue, setShippingValue] = useState<'ENVIO_DOMICILIO'| 'RETIRO_SUCURSAL'>('RETIRO_SUCURSAL')
+  const [shippingType, setShippingType] = useState<'ENVIO_DOMICILIO'| 'RETIRO_SUCURSAL' | null>('RETIRO_SUCURSAL')
+  const [ postalCode, setPostalCode ] = useState('')
+  const [ displayError, setDisplayError ] = useState<'block' | 'none'>('none')
   const dispatch = useAppDispatch()
 
   const handleSearch = () => {
-    if(inputRef.current.value.length >= 4) {
+    if(postalCode.length >= 4) {
       setResults({isShown:false, isLoading: true})
+      setDisplayError('none')
+      dispatch(setShippingPrice({ type: shippingType, price: 0, postalCode: Number(postalCode) }))
       setTimeout(()=> {
         setResults({isLoading:false, isShown:true})
       }, 1500)
     } else {
       setResults({isShown:false, isLoading: false})
+      setDisplayError('block')
     }
   }
 
@@ -30,16 +35,19 @@ const Shipping = () => {
   const shippingDate = dayOfWeek + ' ' + (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month
 
   useEffect(()=> {
-    const price = shippingValue === 'ENVIO_DOMICILIO' ? 2800 : 0
-    dispatch(setShippingPrice({ type: shippingValue, price: price, postalCode: inputRef.current.value }))
-  }, [shippingValue])
+    const price = shippingType === 'ENVIO_DOMICILIO' ? 2800 : 0
+    dispatch(setShippingPrice({ type: shippingType, price: price, postalCode: Number(postalCode) }))
+  }, [shippingType])
 
   return (
     <Stack>
       <Box border={'1px solid'} borderColor={'gray.400'} borderRadius={'md'} py={5} px={4}>
         <Flex>
           <Box w={'100%'} me={3} >
-            <Input placeholder='Código postal' size='md' ref={inputRef} color={useColorModeValue('brand.blueLogo','white')} _placeholder={{color: useColorModeValue('brand.blueLogo','white')}} />
+            <Input placeholder='Código postal' size='md' onChange={(e) => setPostalCode(e.target.value)} color={useColorModeValue('brand.blueLogo','white')} _placeholder={{color: useColorModeValue('brand.blueLogo','white')}} />
+
+            <Text display={displayError} fontSize={'small'} color={'red.500'}>Ingrese un código postal válido.</Text>
+
             <Link href='https://www.correoargentino.com.ar/formularios/cpa' isExternal fontSize='xs' color={'gray.500'} mt={1}>No sé mi código postal</Link>
           </Box>
           <Button variant={'brandSecondary'} borderColor={useColorModeValue('brand.greenLogo', 'white')} color={useColorModeValue('brand.greenLogo','white')} onClick={()=> handleSearch()}>ok</Button>
@@ -47,7 +55,7 @@ const Shipping = () => {
         <Box mt={4} display={results.isLoading || results.isShown ? 'block' : 'none'}>
           {results.isLoading && <Flex justifyContent={'center'}><Spinner alignSelf={'center'} /></Flex>}
           {results.isShown && (
-            <RadioGroup onChange={setShippingValue} value={shippingValue} display={'flex'} gap={5} flexDir={'column'}>
+            <RadioGroup onChange={setShippingType} value={shippingType} display={'flex'} gap={5} flexDir={'column'}>
               <Radio size='lg' value='ENVIO_DOMICILIO' name='shippingOptions' colorScheme='auto' bg='brand.greenLogo' borderColor={'brand.greenLogo'}>
                 <Box ms={1}>
                   <HStack display={'flex'} justifyContent={'space-between'} w={'338px'}>
@@ -63,7 +71,7 @@ const Shipping = () => {
                   <Text fontSize={'xs'} color={'gray.00'}>Llega el {shippingDate}</Text>
                 </Box>
               </Radio>
-              <Radio size='lg' value='RETIRO_SUCURSAL' name='shippingOptions' colorScheme='auto' bg='brand.greenLogo' borderColor={'brand.greenLogo'}>
+              <Radio size='lg' value='RETIRO_SUCURSAL' name='shippingOptions' colorScheme='auto' bg='brand.greenLogo' borderColor={'brand.greenLogo'} defaultChecked>
                 <Box ms={1}>
                   <HStack display={'flex'} justifyContent={'space-between'} w={'338px'}>
                     <Box fontSize={14} fontWeight={500}>

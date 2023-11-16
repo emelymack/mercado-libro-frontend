@@ -78,7 +78,7 @@ const Login = () => {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const onSubmit = async (data: LoginDataForm) => {
-    console.log(data);
+
     setIsLoading(true);
     onOpen();
 
