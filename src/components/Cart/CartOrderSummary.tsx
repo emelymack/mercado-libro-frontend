@@ -1,20 +1,15 @@
 import {
-  Box,
   Button,
   Flex,
-  HStack,
   Heading,
-  Input,
   Link,
-  Radio,
-  Spinner,
   Stack,
   Text,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
 import { FaArrowRight } from 'react-icons/fa'
 import { formatPrice } from './PriceTag'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import Shipping from './Shipping'
 
 type OrderSummaryItemProps = {

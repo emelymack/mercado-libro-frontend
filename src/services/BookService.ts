@@ -4,7 +4,8 @@ import {
   BOOK_URL,
   CREATE_BOOK_URL,
   GET_ALL_BOOK_URL,
-  CATEGORY_URL
+  CATEGORY_URL,
+  INVOICE_URL
 } from "./apiUrls";
 
 export interface GetBooksResponse {
@@ -141,7 +142,7 @@ export const saveBook = (book: Book): Promise<Book> => {
 
 //http://localhost:8080/v1/api/book?selection=newer&page=0
 
-export const getNewBooks = (): Promise<GetBooksResponse> => {
+export const getNewBooks = async (): Promise<GetBooksResponse> => {
   return httpService
     .get(`${BASE_URL}${BOOK_URL}?selection=newer&page=0`) 
     .then((response) => response.data)
@@ -150,9 +151,18 @@ export const getNewBooks = (): Promise<GetBooksResponse> => {
     });
 };
 
-export const getNewBooksByCategory = (category:string): Promise<GetBooksResponse> => {
+export const getNewBooksByCategory = async (category:string): Promise<GetBooksResponse> => {
   return httpService
     .get(`${BASE_URL}${BOOK_URL}?selection=newer&category=${category}&page=0`) 
+    .then((response) => response.data)
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};
+
+export const getBestSellers = async (): Promise<Book[]> => {
+  return httpService
+    .get(`${BASE_URL}${INVOICE_URL}/bestsellers`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
