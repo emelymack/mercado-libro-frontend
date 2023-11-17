@@ -3,13 +3,15 @@ import scrollReducer from "../context/slices/scrollSlice";
 import userReducer from "../context/slices/userSlice";
 import authSlice from "./slices/authSlice";
 import cartReducer from '../context/slices/cartSlice'
+import checkoutReducer from '../context/slices/checkoutSlice'
 
 export const store = configureStore({
   reducer: {
     scroll: scrollReducer,
     user: userReducer,
     auth: authSlice,
-    cart: cartReducer
+    cart: cartReducer,
+    checkout: checkoutReducer
   },
 });
 

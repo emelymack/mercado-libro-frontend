@@ -1,6 +1,5 @@
-import { Box, Container, Stack } from '@chakra-ui/react'
+import { Box, Stack } from '@chakra-ui/react'
 import BreadcrumbNav from './Breadcrumb'
-import { useAppSelector } from '../../context/hooks'
 import QuantityInput from '../Input/QuantityInput'
 import AddToCart from '../Button/AddToCart'
 import Details from './Details'
@@ -11,6 +10,7 @@ import { getBookById } from '../../services/BookService'
 import { useParams } from 'react-router-dom'
 import CustomLoading from '../CustomLoading/CustomLoading'
 import ProductData from './ProductData'
+import PageContainer from '../Layout/PageContainer'
 
 interface Product {
   book: Book | undefined,
@@ -19,7 +19,6 @@ interface Product {
 const ProductPage = () => {
   const [product, setProduct] = useState<Product>({book: undefined, isLoading: true})
   const {productId} = useParams()
-  const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
 
   const [orderQty, setOrderQty] = useState(1);  
 
@@ -44,7 +43,7 @@ const ProductPage = () => {
   )
 
   return (
-    <Container maxW={'container.xl'} className={`page ${isScrolling ? 'scroll' : ''}`}>
+    <PageContainer>
       <Box py={8} mb={20}>
         {product.book && (
           <>
@@ -75,9 +74,8 @@ const ProductPage = () => {
           </>
         )}
         
-      </Box>
-      
-    </Container>
+      </Box>  
+    </PageContainer>
   )
 }
 

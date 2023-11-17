@@ -25,7 +25,7 @@ export const Title = ({htmlElement, size, noOfLines, align, text, color, capital
     size={size} 
     noOfLines={noOfLines} 
     textAlign={align} 
-    textTransform={capitalize ? "capitalize" : "uppercase"} 
+    textTransform={capitalize ? "none" : "uppercase"} 
     color={setColor(color)}
     fontWeight={fw ?? 900}
   >

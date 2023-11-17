@@ -6,7 +6,8 @@ interface Props {
   type?: string,
   placeholder: string,
   autoComplete?: string,
-  control: Control<any>
+  control: Control<any>,
+  [x:string]: any
 }
 const CustomInput = ({control, name, type, placeholder, autoComplete, ...otherProps}: Props) => {
   return (
