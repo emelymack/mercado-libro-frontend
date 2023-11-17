@@ -117,6 +117,10 @@ footer {
   color: var(--primary) !important;
 }
 
+.swiper-slide {
+  height: auto !important;
+}
+
 .swiper .swiper-button-prev::after,
 .swiper .swiper-button-next::after {
   color: var(--highlight);
