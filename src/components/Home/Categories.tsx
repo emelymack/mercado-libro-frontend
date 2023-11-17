@@ -38,11 +38,7 @@ import { Title } from "../Title";
   },
 ] */
 
-interface Props {
-  title: string;
-}
-
-export const Categories = ({ title }: Props) => {
+export const Categories = () => {
   const [categoria, setCategoria] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -56,7 +52,7 @@ export const Categories = ({ title }: Props) => {
 
   return (
     <Box px={{ base: 5, md: 20 }} my={20}>
-      <Title htmlElement={"h2"} size="lg" text={"Categorias"} />
+      <Title htmlElement={"h2"} size="lg" text={"Categorías"} align="center" />
       <SimpleGrid
         pt={8}
         columns={{ base: 1, md: 2, lg: 3 }}

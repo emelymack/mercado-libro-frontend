@@ -23,10 +23,6 @@ const ProductPage = () => {
 
   const [orderQty, setOrderQty] = useState(1);  
 
-  // parseo de propiedad Authors
-  // const authors = product.book && JSON.parse(product.book.authors.replace(/'/g, '"'))
-
-
   useEffect(() => { 
     window.scrollTo(0, 0); 
     
@@ -54,6 +50,7 @@ const ProductPage = () => {
           <>
             <BreadcrumbNav category={product.book.categories[0]?.name} bookTitle={product.book.title} />
             <ProductData book={product.book}>
+
               {/* Detalles de producto */}
               <Details 
                 description={product.book.description} 
@@ -70,12 +67,10 @@ const ProductPage = () => {
                 <AddToCart id={product.book.id} stock={product.book.stock} orderQty={orderQty} />
               </Stack>
             </ProductData>
-            
-            
 
             {/* Productos relacionados */}
             <Box px={{base: 6, lg: 8}} mt={20}>
-              <RelatedProducts />
+              <RelatedProducts categoryName={product.book.categories[0].name} />
             </Box>
           </>
         )}

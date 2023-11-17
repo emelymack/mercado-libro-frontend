@@ -57,14 +57,13 @@ const Header = () => {
   const isLogged = useAppSelector((state) => state.auth.isLogged);
   const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
   const { colorMode, toggleColorMode } = useColorMode();
-  const [categoria, setCategoria] = useState<Category[]>([]);
+  const [categorias, setCategorias] = useState<Category[]>([]);
 
   useEffect(() => {
 
     getAllCategory ()
     .then((res) => {
-    console.log(res);
-    setCategoria(res)
+    setCategorias(res)
     })
 
     return () => {};
@@ -73,7 +72,7 @@ const Header = () => {
 
   return (
     <header className={`header-index ${isScrolling ? "scroll" : ""}`}>
-      <Box px={{ base: 6, md: 10, xl: 20 }} color={"var(--secondary)"}>
+      <Box px={{ base: 4, md: 10, xl: 20 }} color={"var(--secondary)"}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <HStack
             spacing={{ base: 3, md: 8 }}
@@ -83,7 +82,7 @@ const Header = () => {
           >
             <Box>
               <LinkTo to="/">
-                <Image src={useColorModeValue(logo, logoWhite)} alt="Mercado Libro" boxSize={{base: 160, md: 200}} className="logo" />
+                <Image src={useColorModeValue(logo, logoWhite)} alt="Mercado Libro" boxSize={{base: 160, lg: 200}} pe={{base: 2, lg: 0}} className="logo" />
               </LinkTo>
             </Box>
             <Box
@@ -105,17 +104,18 @@ const Header = () => {
                     rightIcon={<ChevronDownIcon />}
                     bg={"none"}
                     color={useColorModeValue('brand.blueLogo', 'white')}
+                    _active={{bg: 'white'}}
                   >
                     Categorías
                   </MenuButton>
                   
                   <MenuList color={useColorModeValue('brand.blueLogo', 'white')}>
-                  {categoria?.map((item) => (
-                    <MenuItem>
-                  
-                      <Link to={`/category/${item?.name}`}>{item?.name}</Link>
-                      
-                    </MenuItem>
+                  {categorias?.map((item) => (
+                    <Link to={`/category/${item?.name}`}>
+                      <MenuItem fontWeight={500} _hover={{bg: 'brand.violetLogo25'}}>
+                        {item?.name}
+                      </MenuItem>
+                    </Link>
                     ))}
                   </MenuList>
                 
@@ -143,8 +143,9 @@ const Header = () => {
                   </NavLink>
                 ))}
                 
-
-                {!isLogged ? <Login /> : <MyAccount />}
+                <Box me={5} ms={2}>
+                  {!isLogged ? <Login /> : <MyAccount />}
+                </Box>
               </HStack>
               <Box ms={0}>
                 <Button

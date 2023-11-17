@@ -41,6 +41,7 @@ import setLocalStorageItem from "../../../utils/setStorage";
 import { useAppDispatch } from "../../../context/hooks";
 import { setUser } from "../../../context/slices/userSlice";
 import { login } from "../../../context/slices/authSlice";
+import CustomInput from "../../Input/CustomInput";
 
 const schema = z.object({
   email: z
@@ -62,6 +63,7 @@ const Login = () => {
     lg: "lg",
   });
   const {
+    control,
     register,
     handleSubmit,
     reset,
@@ -158,21 +160,22 @@ const Login = () => {
         }
       >
         <ModalOverlay />
-        <ModalContent w={"600px"}>
+        <ModalContent w={{ base: '80vw', lg: "650px"}} px={5}>
           <ModalHeader
-            paddingTop={10}
+            paddingTop={12}
             textAlign={"center"}
             bg={"#FFFFFF"}
-            color={"var(--secondary)"}
+            color={"brand.greenLogo"}
             fontWeight={800}
-            fontSize={"2xl"}
+            fontSize={"3xl"}
           >
             ACCEDÉ A MERCADO LIBRO
           </ModalHeader>
-          <ModalCloseButton color={"#000000"} />
+          <ModalCloseButton color={"brand.greenLogo"} fontSize={"lg"} />
           <ModalBody bg={"#FFFFFF"}>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-              <Flex paddingTop={5}>
+              {/* Login con Google y Facebook */}
+              {/* <Flex paddingTop={2} gap={3}>
                 <Button
                   h={14}
                   bg={"#D9D9D9"}
@@ -182,7 +185,6 @@ const Login = () => {
                 >
                   Iniciar sesión con Google
                 </Button>
-                <Spacer />
                 <Button
                   h={14}
                   bg={"#D9D9D9"}
@@ -192,32 +194,22 @@ const Login = () => {
                 >
                   Iniciar sesión con Facebook
                 </Button>
-              </Flex>
+              </Flex> */}
               <Flex direction="column" align="center" paddingTop={4}>
-                <Box w={"90%"}>
+                <Box w={"100%"}>
                   <FormControl
                     id="email"
-                    paddingTop="20px"
                     w="100%"
                     isInvalid={!!errors.email}
                   >
-                    <Input
-                      padding={3}
-                      fontSize={{ base: "lg", md: "xl" }}
-                      h={"auto"}
-                      placeholder={
-                        breakpointValue === "base"
-                          ? "Correo electrónico"
-                          : "Dirección de correo electrónico"
-                      }
+                    <CustomInput 
+                      control={control}
+                      name="email"
+                      placeholder={breakpointValue === "base"
+                      ? "Correo electrónico"
+                      : "Dirección de correo electrónico"}
                       autoComplete="email"
                       type="email"
-                      {...register("email")}
-                      bg="#D9D9D9"
-                      borderColor="#d8dee4"
-                      size="sm"
-                      borderRadius="6px"
-                      _placeholder={{ color: "#000000" }}
                     />
                     {errors.email && (
                       <FormErrorMessage fontSize="lg" color="red">
@@ -233,21 +225,13 @@ const Login = () => {
                     isInvalid={!!errors.password}
                   >
                     <InputGroup>
-                      <Input
-                        padding={3}
-                        fontSize={{ base: "lg", md: "xl" }}
-                        h={"auto"}
+                      <CustomInput 
+                        control={control}
+                        name="password"
                         placeholder="Contraseña"
                         type={showPassword ? "text" : "password"}
-                        {...register("password")}
-                        bg="#D9D9D9"
-                        color="#003844"
-                        borderColor="#d8dee4"
-                        size="sm"
-                        borderRadius="6px"
                         autoComplete="new-password"
-                        _placeholder={{ color: "#000000" }}
-                      />
+                      /> 
 
                       <InputRightElement padding={7}>
                         <IconButton
@@ -276,26 +260,22 @@ const Login = () => {
               </Flex>
               <HStack
                 fontSize={{ base: "lg", md: "xl" }}
-                spacing="1"
+                mt={2}
                 w="100%"
                 justifyContent="flex-start"
               >
-                <Link isExternal color="#006C67" href="#">
+                <Link isExternal color="#006C67" href="#" fontSize={'smaller'}>
                   ¿Olvidaste tu contraseña?
                 </Link>
               </HStack>
               <Center>
                 <Button
-                  marginTop={8}
-                  fontSize={{ base: "md", md: "lg" }}
-                  w="40%"
                   type="submit"
-                  bg="#8884FF"
-                  color="#003844"
-                  borderRadius="6px"
-                  size="lg"
-                  fontWeight="700"
-                  _hover={{ bg: "#003844", color: "white" }}
+                  variant={'brandPrimary'}
+                  py={5}
+                  px={10}
+                  mt={7}
+                  fontSize={'larger'}
                 >
                   INICIAR SESIÓN
                 </Button>
@@ -303,9 +283,9 @@ const Login = () => {
             </form>
 
             <VStack>
-              <Center paddingTop={10}>
+              <Center pt={10} pb={5}>
                 <HStack
-                  fontSize={{ base: "lg", md: "xl" }}
+                  fontSize='lg'
                   spacing="1"
                   w="100%"
                 >

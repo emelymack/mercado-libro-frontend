@@ -5,67 +5,60 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import ProductCard from "../Card/ProductCard";
-import { Box} from "@chakra-ui/react";
+import { Box, Spinner} from "@chakra-ui/react";
 import { Book } from "../../types/product";
 import { useEffect, useState } from "react";
-import { getNewBooks } from "../../services/BookService";
 
 interface Props {
   title: string;
-  filtro: string
-
+  products: Book[]
 }
 
-const ProductsCarousel = ({ title, filtro}: Props) => {  
-  const [newBook, setNewBook] = useState<Book[]>([]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
-    getNewBooks(filtro)
-    .then((res) => {
-      console.log(res);
-      setNewBook(res.content);
-    });
-  }, []);
-
+const ProductsCarousel = ({ title, products }: Props) => { 
+  const [ isLoading, setIsLoading ] = useState(true) 
   
+  useEffect(()=> {
+    products.length > 0 ? setIsLoading(false) : setIsLoading(true)  
+  },[products])
+
   return (
     <Box>
       <Title htmlElement={"h2"} size="lg" text={title} />
-      <Box mt={8} px={{base: 6, lg: 10}} position={"relative"}>
-        <Swiper
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-            },
-            992: {
-              slidesPerView: 3,
-            },
-            1200: {
-              slidesPerView: 4,
-            },
-          }}
-          spaceBetween={20}
-          navigation={true}
-          modules={[Navigation]}
-          className="productsSwiper"
-          loop={true}
-        >
-          {newBook?.map((item) => { console.log(item)
-            return (
-            <SwiperSlide>
-              <ProductCard
-                  id={item.id}
-                  image_links={item.image_links}
-                  title={item.title}
-                  authors={item.authors}
-                  price={item.price}
-                  stock={item.stock}      />
-            </SwiperSlide>
-          )})}
-        </Swiper>
-      </Box>
+      { isLoading ? (
+        <Box display={'flex'} justifyContent={'center'} mt={20}>
+          <Spinner size={'xl'} thickness='4px' color="brand.violetLogo" /> 
+        </Box>
+        ) : (
+        <Box mt={8} px={{base: 6, lg: 10}} position={"relative"}>
+          <Swiper
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+              },
+              992: {
+                slidesPerView: 3,
+              },
+              1200: {
+                slidesPerView: 4,
+              },
+            }}
+            spaceBetween={20}
+            navigation={true}
+            modules={[Navigation]}
+            className="productsSwiper"
+            loop={true}
+          >
+            {products?.map((item) => (
+              <SwiperSlide key={item.id}>
+                <ProductCard
+                  {...item}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Box>
+      ) }
+      
     </Box>
   );
 };

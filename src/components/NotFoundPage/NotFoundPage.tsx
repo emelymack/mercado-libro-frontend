@@ -1,4 +1,4 @@
-import { Box, Image } from "@chakra-ui/react";
+import { Box, Heading, Image } from "@chakra-ui/react";
 import images from "../../types/images";
 
 const NotFoundPage = () => {
@@ -6,18 +6,26 @@ const NotFoundPage = () => {
 
   return (
     <Box
-      h="100vh"
-      w="100vw"
       display="flex"
+      flexDir={'column'}
       alignItems="center"
       justifyContent="center"
       overflow="hidden"
+      bg={'brand.blueLogo'}
+      pt={'170px'}
+      
+      // backgroundImage={randomImage}
+      // backgroundRepeat={"no-repeat"}
+      // backgroundSize={'100%'}
     >
+      <Heading color={'white'}>¡Ups! La página que estás buscando no existe...</Heading>
       <Image
+        pt={5}
         src={randomImage}
         alt="Not Found"
         objectFit="cover"
-        // boxSize="150px"
+        boxSize="550px"
+        mb={5}
       />
     </Box>
   );

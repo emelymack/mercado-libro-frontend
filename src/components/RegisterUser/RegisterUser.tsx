@@ -35,6 +35,8 @@ import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
 import { createUser } from "../../services/RegisterService";
 import { useNavigate } from "react-router-dom";
 import CustomLoading from "../CustomLoading/CustomLoading";
+import { Title } from "../Title";
+import CustomInput from "../Input/CustomInput";
 
 const schema = z
   .object({
@@ -69,6 +71,7 @@ const RegisterUser = () => {
     lg: "lg",
   });
   const {
+    control,
     register,
     handleSubmit,
     setValue,
@@ -130,11 +133,12 @@ const RegisterUser = () => {
   };
 
   return (
-    <Center>
+    <Center pt={20}>
       <Card
-        bg="brand.violetLogo50"
+        bg="brand.violetLogo25"
         variant="outline"
         borderColor="#d8dee4"
+        borderRadius={20}
         maxW={
           breakpointValue === "base"
             ? "90%"
@@ -147,33 +151,18 @@ const RegisterUser = () => {
           transition: "none",
         }}
         marginY={20}
+        py={5}
       >
-        <CardBody padding={10}>
+        <CardBody py={10} px={{base:10, lg:20}}>
           <VStack spacing={6}>
-            <Heading
-              as="h1"
-              fontWeight="800"
-              fontSize={{ base: "2xl", md: "4xl" }}
-              letterSpacing="-0.5px"
-              color={"brand.blueLogo"}
-            >
-              Registro
-            </Heading>
-            <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+            <Title text="Registro" htmlElement={"h1"} size="xl" color="green" />
+            <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%", marginTop: 20 }}>
               <FormControl id="name" w="100%" isInvalid={!!errors.name}>
-                <Input
-                  variant="unstyled"
-                  autoComplete="name"
-                  padding={3}
-                  fontSize={{ base: "lg", md: "xl" }}
-                  h={"auto"}
-                  placeholder="Nombre Y Apellido"
-                  type="name"
-                  {...register("name")}
-                  bg="white"
-                  borderColor="#d8dee4"
-                  size="sm"
-                  borderRadius="6px"
+                <CustomInput 
+                  control={control}
+                  name="name"
+                  placeholder="Nombre y Apellido"
+
                 />
                 {errors.name && (
                   <FormErrorMessage fontSize="lg" color="red">
@@ -187,10 +176,9 @@ const RegisterUser = () => {
                 w="100%"
                 isInvalid={!!errors.email}
               >
-                <Input
-                  padding={3}
-                  fontSize={{ base: "lg", md: "xl" }}
-                  h={"auto"}
+                <CustomInput 
+                  control={control}
+                  name="email"
                   placeholder={
                     breakpointValue === "base"
                       ? "Correo electrónico"
@@ -198,11 +186,6 @@ const RegisterUser = () => {
                   }
                   autoComplete="email"
                   type="email"
-                  {...register("email")}
-                  bg="white"
-                  borderColor="#d8dee4"
-                  size="sm"
-                  borderRadius="6px"
                 />
                 {errors.email && (
                   <FormErrorMessage fontSize="lg" color="red">
@@ -217,7 +200,15 @@ const RegisterUser = () => {
                 isInvalid={!!errors.password}
               >
                 <InputGroup>
-                  <Input
+                  <CustomInput 
+                    control={control}
+                    name="password"
+                    placeholder="Contraseña"
+                    type={showPassword ? "text" : "password"}
+                    // {...register("password")}
+                    autoComplete="new-password"
+                  />
+                  {/* <Input
                     padding={3}
                     fontSize={{ base: "lg", md: "xl" }}
                     h={"auto"}
@@ -230,7 +221,7 @@ const RegisterUser = () => {
                     size="sm"
                     borderRadius="6px"
                     autoComplete="new-password"
-                  />
+                  /> */}
 
                   <InputRightElement padding={7}>
                     <IconButton
@@ -262,7 +253,14 @@ const RegisterUser = () => {
                 isInvalid={!!errors.confirmPassword}
               >
                 <InputGroup>
-                  <Input
+                  <CustomInput 
+                    control={control}
+                    name="confirmPassword"
+                    placeholder="Confirma tu contraseña"
+                    type={showConfirmPassword ? "text" : "password"}
+                    autoComplete="off"
+                  />
+                  {/* <Input
                     padding={3}
                     fontSize={{ base: "lg", md: "xl" }}
                     h={"auto"}
@@ -275,7 +273,7 @@ const RegisterUser = () => {
                     size="sm"
                     autoComplete="off"
                     borderRadius="6px"
-                  />
+                  /> */}
                   <InputRightElement padding={7}>
                     <IconButton
                       aria-label="Mostrar contraseña"
@@ -299,24 +297,20 @@ const RegisterUser = () => {
                   </FormErrorMessage>
                 )}
               </FormControl>
-              <Center>
+              <Center mt={10}>
                 <Button
-                  marginTop={8}
-                  fontSize={{ base: "xl", md: "2xl" }}
-                  w="40%"
+                  variant={'brandPrimary'}
                   type="submit"
-                  bg="brand.violetLogo"
-                  color="brand.blueLogo"
-                  borderRadius="6px"
-                  size="lg"
-                  fontWeight="400"
-                  _hover={{ bg: "brand.greenLogo", color: "white" }}
+                  fontSize={'x-large'}
+                  py={6}
+                  px={10}
+                  _hover={{fontSize: 'auto', backgroundColor: 'brand.violetLogo' }}
                 >
                   Registrate
                 </Button>
               </Center>
             </form>
-            <Center paddingTop={20}>
+            <Center paddingTop={10}>
               <HStack fontSize={{ base: "lg", md: "xl" }} spacing="1" w="100%">
                 <Link isExternal color="#006C67" href="#">
                   ¿Ya tienes una cuenta? Inicia sesión.

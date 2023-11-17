@@ -1,4 +1,4 @@
-import { Accordion, AccordionIcon, AccordionItem, AccordionPanel, AccordionHeader, Box, Heading, SimpleGrid, Table, TableContainer, Tbody, Td, Text, Tr, AccordionButton } from "@chakra-ui/react"
+import { Accordion, AccordionIcon, AccordionItem, AccordionPanel, Box, Table, TableContainer, Tbody, Td, Text, Tr, AccordionButton, useColorModeValue } from "@chakra-ui/react"
 import { formatDateDDMMYYYY } from "../../utils/functions"
 import { Author } from "../../services/BookService"
 
@@ -13,12 +13,12 @@ interface Props {
 const Details = (props: Props) => {
 
   return (
-    <Accordion defaultIndex={[0]} allowMultiple>
+    <Accordion defaultIndex={[0]} allowToggle>
       <AccordionItem py={2} >
         <h2>
           <AccordionButton px={0}>
             <Box as="span" flex='1' textAlign='left'>
-              <Text color={'brand.greenLogo'} fontWeight={700} fontSize={"lg"}>Descripción</Text>
+              <Text color={useColorModeValue('brand.greenLogo', '#b9b6ff')} fontWeight={700} fontSize={"lg"}>Descripción</Text>
             </Box>
             <AccordionIcon color={'brand.greenLogo'} />
           </AccordionButton>
@@ -32,7 +32,7 @@ const Details = (props: Props) => {
         <h2>
           <AccordionButton px={0}>
             <Box as="span" flex='1' textAlign='left'>
-              <Text color={'brand.greenLogo'} fontWeight={700} fontSize={"lg"}>Detalles del producto</Text>
+              <Text color={useColorModeValue('brand.greenLogo', '#b9b6ff')} fontWeight={700} fontSize={"lg"}>Detalles del producto</Text>
             </Box>
             <AccordionIcon color={'brand.greenLogo'} />
           </AccordionButton>

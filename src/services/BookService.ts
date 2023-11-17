@@ -150,9 +150,18 @@ export const saveBook = (book: Book): Promise<Book> => {
 
 //http://localhost:8080/v1/api/book?selection=newer&page=0
 
-export const getNewBooks = (filtro: string): Promise<GetBooksResponse> => {
+export const getNewBooks = (): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?selection=${filtro}&page=0`) 
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&page=0`) 
+    .then((response) => response.data)
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};
+
+export const getNewBooksByCategory = (category:string): Promise<GetBooksResponse> => {
+  return httpService
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&category=${category}&page=0`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
