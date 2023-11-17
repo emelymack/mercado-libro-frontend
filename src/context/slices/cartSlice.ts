@@ -18,12 +18,10 @@ interface Props {
 }
 
 // @ts-ignore
-const initialState: Props = () => {
-  if(localStorage.getItem('cart')) {  
-    // @ts-ignore  
-    return { items: JSON.parse(localStorage.getItem('cart')), total: 0, shipping: { type: null, price: 0, postalCode: 0 } }
-  } 
-  return { items: [], total: 0, shipping: { type: null, price: 0, postalCode: 0 } }
+const initialState: Props = { 
+  items: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [], 
+  total: 0, 
+  shipping: { type: null, price: 0, postalCode: 0 },
 }
 
 interface PropsFetchProduct {
