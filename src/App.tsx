@@ -15,6 +15,7 @@ import UserInfo from "./components/UserDashboard/UserInfo";
 import { login } from "./context/slices/authSlice";
 import { setUser } from "./context/slices/userSlice";
 import QuestionsPage from "./components/QuestionsPage/QuestionsPage";
+import NewsPage from "./components/NewsPage/NewsPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -55,6 +56,7 @@ function App() {
           <Route path="/userDashboard" element={<UserInfo />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/questions" element={<QuestionsPage />} />
+          <Route path="/novedades" element={<NewsPage />} />
         </Routes>
       </Layout>
     </div>

@@ -36,7 +36,7 @@ import { Category, getAllCategory } from "../../../services/BookService";
 const Links = [
   {
     name: "Novedades",
-    url: "#novedades",
+    url: "/novedades",
   },
   {
     name: "Más vendidos",
