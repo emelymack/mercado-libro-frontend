@@ -35,7 +35,7 @@ export const NewsPage = () => {
     
     return (
       <Container maxW="container.xl" bg="white.600" mb={20} className={`page ${isScrolling ? 'scroll' : ''}`}>
-       <BreadcrumbNav novedades={"librosNew"} /> 
+       <BreadcrumbNav novedades={"Novedades"} /> 
         <Heading
           size="3xl"
           fontWeight={900}
