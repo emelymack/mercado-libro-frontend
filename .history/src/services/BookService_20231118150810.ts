@@ -148,7 +148,7 @@ export const saveBook = (book: Book): Promise<Book> => {
 
 export const getNewBooks = (): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?releases=true&page=0`) 
+    .get(`${BASE_URL}${BOOK_URL}?keyword=stephen&page=0`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
@@ -157,7 +157,7 @@ export const getNewBooks = (): Promise<GetBooksResponse> => {
 
 export const getNewBooksByCategory = (category:string): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?releases=true&category=${category}&page=0`) 
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&category=${category}&page=0`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);

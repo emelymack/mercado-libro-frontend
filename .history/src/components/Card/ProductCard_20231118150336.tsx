@@ -28,7 +28,7 @@ const ProductCard = ({ id, images, title, authors, price, stock }: Book) => {
       <CardHeader py={2}>
         <Box display={"flex"} justifyContent={"center"}>
           <Image
-            src={images[0].url}
+            src={images}
             maxH={200}
             w={"auto"}
             alt={title}

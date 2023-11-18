@@ -28,14 +28,9 @@ export interface Book {
   published_date: string;
   page_count: number;
   ratings_count: number;
-  images: Image[];
+  image_links: string[];
   currency_code: string;
 } 
-
-interface Image {
-  id: number;
-  url: string;
-}
 
 export interface Authors {
   name: string;
@@ -157,7 +152,7 @@ export const getNewBooks = (): Promise<GetBooksResponse> => {
 
 export const getNewBooksByCategory = (category:string): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?releases=true&category=${category}&page=0`) 
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&category=${category}&page=0`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);

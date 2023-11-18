@@ -169,20 +169,11 @@ export const Categories = () => {
             {librosCategoria.map((producto) => (
               <ProductCard
                 id={producto.id}
-                publisher={producto.publisher}
-                isbn={producto.isbn}
-                description={producto.description}
-                published_date={producto.published_date}
-                categories={producto.categories}
-                language={producto.language}
-                page_count={producto.page_count}
-                ratings_count={producto.ratings_count}
-                currency_code={producto.currency_code}
                 images={producto.images}
                 title={producto.title}
                 authors={producto.authors}
                 price={producto.price}
-                stock={producto.stock}
+                stock={1}
               />
             ))}
           </SimpleGrid>
