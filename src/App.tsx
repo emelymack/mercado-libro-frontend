@@ -14,6 +14,7 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import UserInfo from "./components/UserDashboard/UserInfo";
 import { login } from "./context/slices/authSlice";
 import { setUser } from "./context/slices/userSlice";
+import QuestionsPage from "./components/QuestionsPage/QuestionsPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -53,6 +54,7 @@ function App() {
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/userDashboard" element={<UserInfo />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route path="/questions" element={<QuestionsPage />} />
         </Routes>
       </Layout>
     </div>

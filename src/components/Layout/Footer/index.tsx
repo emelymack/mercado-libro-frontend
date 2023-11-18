@@ -55,7 +55,7 @@ const Footer = () => {
           <Box display={'flex'} flexDir={'column'} alignItems={{base: 'center', md: 'start'}}>
             <Link className='footerLink' href='' mb={1}>Iniciar sesión</Link>
             <Link className='footerLink' href='' mb={1}>Registrarse</Link>
-            <Link className='footerLink' href='' mb={1}>Preguntas Frecuentes</Link>
+            <Link className='footerLink' href={`/questions`} mb={1}>Preguntas Frecuentes</Link>
             <Link className='footerLink' href='' mb={1}>Categorías</Link>
           </Box>
           <Box display={'flex'} alignItems={'center'} justifyContent={'center'}>
