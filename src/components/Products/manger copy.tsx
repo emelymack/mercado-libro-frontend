@@ -72,13 +72,13 @@ const schema = z.object({
     .string({ required_error: "Campo obligatorio" })
     .min(5, { message: "Debe tener al menos 5 o más caracteres" })
     .max(500, { message: "Limite máximo de caracteres" })
-    .regex(/^[a-zñÑA-Z0-9áéíóúÁÉÍÓÚ,.;\s@:]+$/),
+    .regex(/^[a-zA-Z0-9,.;\s@:]+$/),
   category: z.string(),
   isbn: z
     .string({ required_error: "Campo obligatorio" })
     .min(5, { message: "Debe tener 5 o más caracteres" })
     .max(50)
-    .regex(/^(?:\d[\ -]?){13}$/),
+    .regex(/^[a-zA-Z0-9,.;_-\s@:]+$/),
   language: z
     .string({ required_error: "Campo obligatorio" })
     .min(1, { message: "Campo obligatorio" }),
@@ -115,7 +115,7 @@ const initialAuthor: Author = {
   email: '',
 };
 
-const ProductManager = () => {
+const ProductManagerCopy = () => {
   const [error, setError] = useState<string>("");
   const [books, setBooks] = useState<Book[]>();
   const [categories, setCategories] = useState<Category[]>();
@@ -182,35 +182,24 @@ const ProductManager = () => {
 
   const onSubmit = (data: RegisterDataForm) => {
     console.log("save all info!!!");
-    try {
-      const book = mapDatoToBook(data);
-      console.log(book);
-      
-      saveBook(book).then((response) => {
+    saveBook(mapDatoToBook(data)).then((response) => {
 
-        console.log(response);
-        setSuccessSave("ok!!");
-        startTimer();
-      })
-        .catch((error) => {
-          console.log(error);
-          
-          if (error.statusCode === 400) {
-            if (error.data["validation-error"]) {
-              const errorListItems = error.data["validation-error"].map((err: any) => {
-                return `<li>El campo <strong> ${err.field}</strong> ${err.message} </li>`;
-              }).join('');
-              setErrorSave(errorListItems.toString());
-            }
-          } else {
-            setErrorSave("No se pudo guardar la información de Libro");
+      console.log(response);
+      setSuccessSave("ok!!");
+      startTimer();
+    })
+      .catch((error) => {
+        if (error.statusCode === 400) {
+          if (error.data["validation-error"]) {
+            const errorListItems = error.data["validation-error"].map((err: any) => {
+              return `<li>El campo <strong> ${err.field}</strong> ${err.message} </li>`;
+            }).join('');
+            setErrorSave(errorListItems.toString());
           }
-        });
-    } catch (error) {
-      console.log(error);
-      
-    }
-    
+        } else {
+          setErrorSave("No se pudo guardar la información de Libro");
+        }
+      });
   };
 
   function mapDatoToBook(data: any) {
@@ -301,7 +290,7 @@ const ProductManager = () => {
 
     setValue('title', book.title);
     setValue('description', book.description);
-    setValue('category', book.categories[0].id.toString());
+    setValue('category', "1");
     setValue('pagecount', book.page_count.toString());
     setValue('isbn', book.isbn);
     setValue('language', book.language);
@@ -309,7 +298,7 @@ const ProductManager = () => {
     setValue('publisher', book.publisher);
     setValue('currency', book.currency_code);
     setValue('price', book.price.toString());
-    setValue('stock', book.stock.toString());
+    setValue('stock', '77');
     
   }
 
@@ -509,10 +498,6 @@ const ProductManager = () => {
                 size="sm"
                 borderColor="#d8dee4"
                 borderRadius="6px"
-                max={13}
-                maxLength={15}
-                placeholder="0-123-45678-9"
-                _placeholder={{ color: "gray.120" }}
               />
               {errors.isbn && (
                 <FormErrorMessage fontSize="xs" color="red">
@@ -527,9 +512,9 @@ const ProductManager = () => {
                 placeholder="Seleccionar..."
                 {...register("language")}
                 fontSize={{ base: "sm", md: "sm" }}>
-                <option value="ES">Español</option>
-                <option value="ENG">Ingles</option>
-                <option value="FR">Frances</option>
+                <option value="Español">Español</option>
+                <option value="Ingles">Ingles</option>
+                <option value="Frances">Frances</option>
               </Select>
               {errors.language && (
                 <FormErrorMessage fontSize="xs" color="red">
@@ -540,8 +525,15 @@ const ProductManager = () => {
 
             <FormControl id="pagecount" w="50%" isInvalid={!!errors.pagecount}>
               <FormLabel>Número de páginas</FormLabel>
-              <Input type="number" {...register('pagecount')}  borderColor="#d8dee4"
-                  borderRadius="6px"/>   
+              <NumberInput>
+                <NumberInputField
+                  {...register("pagecount")}
+                  placeholder="Ingresa un número"
+                  _placeholder={{ color: "gray.120" }}
+                  borderColor="#d8dee4"
+                  borderRadius="6px"
+                />
+              </NumberInput>
               <FormErrorMessage>
                 {errors.pagecount && errors.pagecount.message}
               </FormErrorMessage>
@@ -549,8 +541,15 @@ const ProductManager = () => {
 
             <FormControl id="price" w="50%" isInvalid={!!errors.price}>
               <FormLabel>Precio de venta</FormLabel>
-              <Input type="number" {...register('price')}  borderColor="#d8dee4"
-                  borderRadius="6px"/> 
+              <NumberInput>
+                <NumberInputField
+                  {...register("price")}
+                  placeholder="Ingresa un número con hasta dos decimales"
+                  _placeholder={{ color: "gray.120" }}
+                  borderColor="#d8dee4"
+                  borderRadius="6px"
+                />
+              </NumberInput>
               <FormErrorMessage>
                 {errors.price && errors.price.message}
               </FormErrorMessage>
@@ -622,8 +621,15 @@ const ProductManager = () => {
 
             <FormControl id="stock" w="50%" isInvalid={!!errors.stock}>
               <FormLabel>Cantidad Stock</FormLabel>
-              <Input type="number" {...register('stock')}  borderColor="#d8dee4"
-                  borderRadius="6px"/> 
+              <NumberInput>
+                <NumberInputField
+                type="stock"
+                autoComplete="stock"
+                  {...register("stock")}
+                  borderColor="#d8dee4"
+                  borderRadius="6px"
+                />
+              </NumberInput>
               <FormErrorMessage>
                 {errors.stock && errors.stock.message}
               </FormErrorMessage>
@@ -656,6 +662,7 @@ const ProductManager = () => {
             <FormControl isRequired id="autor" paddingTop="20px" w="100%">
               <div>
                 {authors.map((author, index) => (
+
                   <Card maxW='250px' key={index}>
                     <CardHeader>
                       <Flex>
@@ -669,6 +676,9 @@ const ProductManager = () => {
                       </Flex>
                     </CardHeader>
                   </Card>
+
+
+
                 ))}
               </div>
               <Button leftIcon={<MdPerson />} mt={2} onClick={onOpen}>
