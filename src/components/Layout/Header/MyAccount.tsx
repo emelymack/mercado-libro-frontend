@@ -62,7 +62,7 @@ const MyAccount = () => {
       <Menu>
         <MenuButton as={Button} bg="none" _focus={{ boxShadow: "none" }}>
           <Flex align="center">
-            <Avatar size="sm" name={initials} mr={2} bg={'brand.greenLogo'} />
+            <Avatar size="sm" name={initials} mr={2} bg={"brand.greenLogo"} />
             <Text>Mi Cuenta</Text>
             <ChevronDownIcon ms={1} />
           </Flex>

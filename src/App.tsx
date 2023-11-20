@@ -15,6 +15,7 @@ import UserInfo from "./components/UserDashboard/UserInfo";
 import { login } from "./context/slices/authSlice";
 import { setUser } from "./context/slices/userSlice";
 import CheckoutPage from "./components/CheckoutPage";
+import BookListSearch from "./components/SearchBar/BookListSearch";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -54,6 +55,10 @@ function App() {
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/userDashboard" element={<UserInfo />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route
+            path="/books/search/:searchTerm"
+            element={<BookListSearch />}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
