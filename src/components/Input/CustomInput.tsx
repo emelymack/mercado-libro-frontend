@@ -22,7 +22,6 @@ const CustomInput = ({control, name, type, placeholder, autoComplete, ...otherPr
           h={"auto"}
           placeholder={placeholder}
           type={type ?? 'text'}
-          // bg="rgba(217, 217, 217, .8)"
           bg={'brand.violetLogo50'}
           color="#003844"
           borderColor="#d8dee4"
@@ -33,6 +32,7 @@ const CustomInput = ({control, name, type, placeholder, autoComplete, ...otherPr
           autoComplete={autoComplete}
           _placeholder={{ color: "brand.blueLogo",  }}
           {...otherProps}
+          _disabled={{opacity: .7}}
         />
       )}
     />
