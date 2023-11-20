@@ -15,6 +15,7 @@ import { useAppSelector } from '../../context/hooks'
 import { useNavigate } from 'react-router-dom'
 import ModalError from '../Modal/ModalError'
 import OrderSummaryItem from './OrderSummaryItem'
+import { calcSubtotal } from '../../utils/functions'
 
 interface Props {
   onCloseCart: () => void
@@ -27,16 +28,8 @@ export const CartOrderSummary = ({onCloseCart}: Props) => {
   const { onOpen: onOpenError, isOpen: isOpenError, onClose: onCloseError } = useDisclosure()
   const [ errorModalTxt, setErrorModalTxt ] = useState('')
 
-  const calcSubtotal = () => {
-    let subtotal = 0
-    cartState.items.map((item) => {
-      subtotal += item.product.price * item.quantity
-    })
-    return subtotal
-  }
-
   const calcTotal = () => {
-    let total = calcSubtotal()
+    let total = calcSubtotal(cartState.items)
 
     total += cartState.shipping.price
     return total
@@ -64,7 +57,7 @@ export const CartOrderSummary = ({onCloseCart}: Props) => {
 
       <Stack spacing="6">
         {/* Subtotal */}
-        <OrderSummaryItem label="Subtotal (sin envío)" value={formatPrice(calcSubtotal())} />
+        <OrderSummaryItem label="Subtotal (sin envío)" value={formatPrice(calcSubtotal(cartState.items))} />
 
         {/* Envío */}
         <OrderSummaryItem label="Envío a domicilio">

@@ -1,3 +1,5 @@
+import { CartItem } from "../types/product";
+
 // obtener fecha en formato DD/MM/YYYY
 export function formatDateDDMMYYYY(dateString: string) {
   const date = new Date(dateString);
@@ -38,4 +40,12 @@ export function formatDateMonthYYYY(date: string) {
 export const googleSearch = (str: string) => {
   const searchStr = str.split(' ').join('+')
   return `https://www.google.com/search?q=${searchStr}`
+}
+
+export const calcSubtotal = (items: CartItem[]) => {
+  let subtotal = 0
+  items?.map((item) => {
+    subtotal += item.product.price * item.quantity
+  })
+  return subtotal
 }

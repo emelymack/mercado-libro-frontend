@@ -1,6 +1,3 @@
-// import { useEffect } from "react"
-// import { useAppSelector } from "../../context/hooks"
-// import { useNavigate } from "react-router-dom"
 import PageContainer from "../Layout/PageContainer"
 import { Box, Button, Divider, Flex, Grid, GridItem, HStack, Image, Radio, RadioGroup, Select, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Textarea, useBreakpointValue, useColorModeValue } from "@chakra-ui/react"
 import { Title } from "../Title"
@@ -8,6 +5,8 @@ import CustomInput from "../Input/CustomInput"
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+
+import CartData from './CartData'
 
 import mailIcon from '../../assets/icons/icon-mail.svg'
 import locationIcon from '../../assets/icons/icon-location.svg'
@@ -32,6 +31,11 @@ const CheckoutPage = () => {
     lg: "lg",
   });
 
+  const handleSecondStep = () => {
+    setTabIndex(1)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <PageContainer>
       <Box mt={12} mb={20}> 
@@ -39,7 +43,7 @@ const CheckoutPage = () => {
 
         <Grid
           templateRows='repeat(1, 1fr)'
-          templateColumns='repeat(3, 1fr)'
+          templateColumns={{base: 'repeat(1, 1fr)', lg: 'repeat(3, 1fr)'}}
           gap={0}
           mt={5}
         >
@@ -127,14 +131,14 @@ const CheckoutPage = () => {
                   </Box>
 
                   <Flex justifyContent={"flex-end"} mt={10}>
-                    <Button variant='brandPrimary' py={6} px={7} fontSize={'xl'} _hover={{fontSize: 'xl', bg: 'brand.violetLogo'}} onClick={()=>setTabIndex(1)}>Continuar</Button>
+                    <Button variant='brandPrimary' py={6} px={7} fontSize={'xl'} _hover={{fontSize: 'xl', bg: 'brand.violetLogo'}} onClick={()=>handleSecondStep()}>Continuar</Button>
                   </Flex>
                   
                 </TabPanel>
 
 
                 {/* Panel Pago */}
-                <TabPanel me={10}>
+                <TabPanel me={{base: 0, lg: 10}}>
                   <Box border={'2px solid'} borderColor={'brand.greenLogo'} borderRadius={8}>
                     <Flex alignItems={"center"} p={5} fontSize={'lg'}>
                       <Image src={mailIcon} w={'40px'} h={'40px'} me={5} />
@@ -217,8 +221,8 @@ const CheckoutPage = () => {
 
           
           {/* Resumen de compra */}
-          <GridItem colSpan={1} bg='papayawhip'>
-            
+          <GridItem colSpan={1}>
+            <CartData />
           </GridItem>
         </Grid>
       </Box>

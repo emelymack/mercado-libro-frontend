@@ -1,14 +1,9 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Book } from "../../types/product";
+import { CartItem } from "../../types/product";
 import { getBookById } from "../../services/BookService";
 
-interface Item {
-  product: Book,
-  quantity: number
-}
-
 interface Props {
-  items: Item[],
+  items: CartItem[],
   total: number,
   shipping: {
     type: 'ENVIO_DOMICILIO' | 'RETIRO_SUCURSAL' | null,

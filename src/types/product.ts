@@ -48,3 +48,8 @@ export interface Authors {
   name: string;
   email: string;
 }
+
+export interface CartItem {
+  product: Book,
+  quantity: number
+}

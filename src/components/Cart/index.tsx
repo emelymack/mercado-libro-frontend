@@ -13,7 +13,6 @@ const Cart = () => {
   
   React.useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartData))
-    
   }, [cartData])
   
 
