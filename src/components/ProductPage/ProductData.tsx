@@ -13,7 +13,7 @@ const ProductData = ({book, children}: Props) => {
   return (
     <SimpleGrid columns={{base:1, md: 2}} spacing={10} mt={6} gap={{base: 6, lg: 12}}>
       <Box display={'flex'} justifyContent={{base: 'center', lg: 'flex-end'}} pe={5}>
-        <Image src={book.image_links[0]} boxSize={'400px'} h={'500px'}/>
+        <Image src={book.image_links} boxSize={'400px'} h={'500px'}/>
       </Box>
       <Box w={{base: '100%', lg: '90%'}} px={{base: 6, lg: 0}}>
         {/* Titulo */}

@@ -28,9 +28,9 @@ const ProductPage = () => {
     
     if(productId) {
       setProduct({...product, isLoading: true})
+      setOrderQty(1)
       getBookById(Number(productId))
       .then((res) => {
-        console.log(res);
         setProduct({book: res, isLoading: false})
       })
     }
