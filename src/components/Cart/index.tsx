@@ -45,7 +45,7 @@ const Cart = () => {
                         name={item.product.title}
                         quantity={item.quantity}
                         price={item.product.price}
-                        imageUrl={item.product.image_links}  
+                        imageUrl={item.product.images[0].url}  
                         stock={item.product.stock}
                       />
                     ))}

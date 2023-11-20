@@ -6,6 +6,7 @@ import {
   GET_ALL_BOOK_URL,
   CATEGORY_URL
 } from "./apiUrls";
+import { Book } from "../types/product";
 
 export interface GetBooksResponse {
   content: Book[],
@@ -14,23 +15,6 @@ export interface GetBooksResponse {
   totalElements: number,
   totalPages: number
 }
-export interface Book {
-  id: number;
-  title: string;
-  authors: Authors[];
-  publisher: string;
-  description: string;
-  isbn: string;
-  language: string;
-  price: number;
-  stock: number;
-  categories: Category[];
-  published_date: string;
-  page_count: number;
-  ratings_count: number;
-  image_links: string;
-  currency_code: string;
-} 
 
 export interface Authors {
   name: string;
