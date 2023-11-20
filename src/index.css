@@ -252,3 +252,8 @@ footer {
 .chakra-numberinput__field{
   border-color: #003844 !important;
 }
+
+.admin_products{
+  padding-top: 150px;
+  padding-bottom: 150px
+}
