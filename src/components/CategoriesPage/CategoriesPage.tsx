@@ -7,7 +7,6 @@ import { useAppSelector } from "../../context/hooks";
 import { getBooksByCategory } from "../../services/BookService";
 import { Book } from "../../types/product";
 import CustomLoading from "../CustomLoading/CustomLoading";
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import BreadcrumbNav from "./BreadcrumbNav";
 
 
@@ -67,7 +66,7 @@ export const Categories = () => {
                 page_count={producto.page_count}
                 ratings_count={producto.ratings_count}
                 currency_code={producto.currency_code}
-                image_links={producto.image_links}
+                images={producto.images}
                 title={producto.title}
                 authors={producto.authors}
                 price={producto.price}

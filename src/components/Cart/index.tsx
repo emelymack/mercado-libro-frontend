@@ -38,17 +38,18 @@ const Cart = () => {
               <Stack direction={{ base: 'column' }} spacing={{ base: 8 }} py={5} >
                 <Stack spacing={{ base: 8, md: 10 }} flex="2">
                   <Stack spacing={{ base: 3, md: 6 }}>
-                    {cartData.map((item) => (
+                    {cartData.map((item) => { console.log(item) 
+                    return (
                       <CartItem 
                         key={item.product.id}
                         id={item.product.id}
                         name={item.product.title}
                         quantity={item.quantity}
                         price={item.product.price}
-                        imageUrl={item.product.image_links}  
+                        imageUrl={item.product.images[0]?.url}  
                         stock={item.product.stock}
                       />
-                    ))}
+                    )})}
                   </Stack>
                 </Stack>
 
