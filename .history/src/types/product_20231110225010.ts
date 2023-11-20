@@ -27,7 +27,7 @@ export interface Book {
   published_date: string;
   page_count: number;
   ratings_count: number;
-  image_links: string;
+  image_links: string[];
   currency_code: string;
 }
 
@@ -37,11 +37,6 @@ interface Category {
   status: string;
   description: string;
   image_link: string;
-}
-
-interface Image {
-  id: number;
-  url: string;
 }
 
 export interface Authors {

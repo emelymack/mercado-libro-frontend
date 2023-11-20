@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import ProductCard from "../Card/ProductCard";
 
-import { Center, Heading, Container, SimpleGrid, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
+import { Center, Heading, Container, SimpleGrid, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../context/hooks";
 import { getBooksByCategory } from "../../services/BookService";
@@ -10,119 +10,9 @@ import CustomLoading from "../CustomLoading/CustomLoading";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import BreadcrumbNav from "./BreadcrumbNav";
 
-const Productos = [
-  {
-    id: 1,
-    titulo: "Libro1",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    id: 2,
-    titulo: "Libro2",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    id: 3,
-    titulo: "Libro3",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    id: 4,
-    titulo: "Libro4",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    id: 5,
-    titulo: "Libro5",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    id: 6,
-    titulo: "Libro6",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    id: 7,
-    titulo: "Libro7",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    id: 8,
-    titulo: "Libro8",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    id: 9,
-    titulo: "Libro9",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    id: 10,
-    titulo: "Libro10",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    id: 11,
-    titulo: "Libro11",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-  {
-    id: 12,
-    titulo: "Libro12",
-    imagen:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFfhFBFzppgkYJlztgiZ3luEU6q4x3IAyfjPX9cen1HzwseJtfUOiBsM4nXvKfdFkV5e0&usqp=CAU",
-    autor: "Lorem ipsum dolor.",
-    url: "",
-    precio: 10000,
-  },
-];
+
 
 export const Categories = () => {
-  // const params = useParams();
   const {categoryName} = useParams();
   const [ librosCategoria, setLibrosCategoria ] = useState<Book[]>([]);
   const [ isLoading, setIsLoading ] = useState(false)
@@ -134,7 +24,6 @@ export const Categories = () => {
     if(categoryName) {
       getBooksByCategory(categoryName)
       .then((res) => {
-        // console.log(res);
         setLibrosCategoria(res.content)
         setIsLoading(false)
       })
@@ -150,7 +39,7 @@ export const Categories = () => {
 
   return (
     <Container maxW="container.xl" bg="white.600" mb={20} className={`page ${isScrolling ? 'scroll' : ''}`}>
-      <BreadcrumbNav category={categoryName} />
+      <BreadcrumbNav category={`${categoryName}`} />
       <Heading
         size="3xl"
         fontWeight={900}
@@ -169,11 +58,20 @@ export const Categories = () => {
             {librosCategoria.map((producto) => (
               <ProductCard
                 id={producto.id}
+                publisher={producto.publisher}
+                isbn={producto.isbn}
+                description={producto.description}
+                published_date={producto.published_date}
+                categories={producto.categories}
+                language={producto.language}
+                page_count={producto.page_count}
+                ratings_count={producto.ratings_count}
+                currency_code={producto.currency_code}
                 image_links={producto.image_links}
                 title={producto.title}
                 authors={producto.authors}
                 price={producto.price}
-                stock={1}
+                stock={producto.stock}
               />
             ))}
           </SimpleGrid>

@@ -28,14 +28,9 @@ export interface Book {
   published_date: string;
   page_count: number;
   ratings_count: number;
-  image_links: string;
+  image_links: string[];
   currency_code: string;
 } 
-
-interface Image {
-  id: number;
-  url: string;
-}
 
 export interface Authors {
   name: string;
@@ -115,6 +110,7 @@ export const getAllCategory = (): Promise<Category[]> => {
     .get(`${BASE_URL}${CATEGORY_URL}`)
     .then((response) => {
       if (Array.isArray(response.data)) {
+        console.log(response.data)
         return response.data as Category[];
       } else {
         throw new Error("La respuesta no es un array de Categorias");
@@ -147,7 +143,7 @@ export const saveBook = (book: Book): Promise<Book> => {
 
 export const getNewBooks = (): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?releases=true&page=0`) 
+    .get(`${BASE_URL}${BOOK_URL}?keyword=stephen&page=0`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
@@ -156,7 +152,7 @@ export const getNewBooks = (): Promise<GetBooksResponse> => {
 
 export const getNewBooksByCategory = (category:string): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?releases=true&category=${category}&page=0`) 
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&category=${category}&page=0`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
