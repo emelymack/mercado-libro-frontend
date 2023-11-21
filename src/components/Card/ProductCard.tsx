@@ -15,6 +15,7 @@ import {
 import { Book } from "../../types/product";
 import { useNavigate } from "react-router-dom";
 import AddToCart from "../Button/AddToCart";
+import notFoundImg from '../../assets/img/404_3.jpg'
 
 const ProductCard = ({ id, images, title, authors, price, stock }: Book) => {
   const navigate = useNavigate()
@@ -28,7 +29,7 @@ const ProductCard = ({ id, images, title, authors, price, stock }: Book) => {
       <CardHeader py={2}>
         <Box display={"flex"} justifyContent={"center"}>
           <Image
-            src={images[0].url}
+            src={images[0].url ?? notFoundImg}
             maxH={200}
             w={"auto"}
             alt={title}

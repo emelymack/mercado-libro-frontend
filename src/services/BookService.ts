@@ -6,6 +6,7 @@ import {
   GET_ALL_BOOK_URL,
   CATEGORY_URL,
 } from "./apiUrls";
+import { Book } from "../types/product";
 
 export interface GetBooksResponse {
   content: Book[];
@@ -13,29 +14,6 @@ export interface GetBooksResponse {
   pageSize: number;
   totalElements: number;
   totalPages: number;
-}
-export interface Book {
-  image_link: string | undefined;
-  id: number;
-  title: string;
-  authors: Authors[];
-  publisher: string;
-  description: string;
-  isbn: string;
-  language: string;
-  price: number;
-  stock: number;
-  categories: Category[];
-  published_date: string;
-  page_count: number;
-  ratings_count: number;
-  images: Image[];
-  currency_code: string;
-}
-
-interface Image {
-  id: number;
-  url: string;
 }
 
 export interface Authors {
@@ -150,7 +128,7 @@ export const saveBook = (book: Book): Promise<Book> => {
 
 export const getNewBooks = (): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?releases=true&page=0`)
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&page=0`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
@@ -161,7 +139,7 @@ export const getNewBooksByCategory = (
   category: string
 ): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?releases=true&category=${category}&page=0`)
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&category=${category}&page=0`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);

@@ -40,7 +40,7 @@ interface Category {
   image_link: string;
 }
 
-interface Image {
+export interface Image {
   id: number;
   url: string;
 }

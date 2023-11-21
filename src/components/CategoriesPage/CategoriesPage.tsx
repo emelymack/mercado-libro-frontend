@@ -1,13 +1,12 @@
 import { useParams } from "react-router-dom";
 import ProductCard from "../Card/ProductCard";
 
-import { Center, Heading, Container, SimpleGrid, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
+import { Center, Heading, Container, SimpleGrid, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../context/hooks";
 import { getBooksByCategory } from "../../services/BookService";
 import { Book } from "../../types/product";
 import CustomLoading from "../CustomLoading/CustomLoading";
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import BreadcrumbNav from "./BreadcrumbNav";
 
 
@@ -24,7 +23,6 @@ export const Categories = () => {
     if(categoryName) {
       getBooksByCategory(categoryName)
       .then((res) => {
-        console.log(res);
         setLibrosCategoria(res.content)
         setIsLoading(false)
       })

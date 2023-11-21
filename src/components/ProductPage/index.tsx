@@ -26,15 +26,16 @@ const ProductPage = () => {
 
   const [orderQty, setOrderQty] = useState(1);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
-    if (productId) {
-      setProduct({ ...product, isLoading: true });
-      getBookById(Number(productId)).then((res) => {
-        console.log(res);
-        setProduct({ book: res, isLoading: false });
-      });
+  useEffect(() => { 
+    window.scrollTo(0, 0); 
+    
+    if(productId) {
+      setProduct({...product, isLoading: true})
+      setOrderQty(1)
+      getBookById(Number(productId))
+      .then((res) => {
+        setProduct({book: res, isLoading: false})
+      })
     }
   }, [productId]);
 
