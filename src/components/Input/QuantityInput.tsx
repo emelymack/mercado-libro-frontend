@@ -1,4 +1,5 @@
 import { Button, HStack, Input, useColorModeValue, useNumberInput } from '@chakra-ui/react'
+import { useEffect } from 'react'
 
 interface Props {
   quantity: number,
@@ -19,11 +20,22 @@ const QuantityInput = ({onChange, quantity, stock}: Props) => {
   const dec = getDecrementButtonProps()
   const input = getInputProps()
 
+  const handleChange = (operation: 'SUMA' | 'RESTA') => {
+    if(operation === 'SUMA' && quantity < 10) {
+      onChange(quantity + 1)
+    } 
+    if(operation === 'RESTA' && quantity > 1) {
+      onChange(quantity - 1)
+    } 
+  }
+
+  useEffect(() => {}, [quantity])
+
   return (
     <HStack maxW='150px'>
-      <Button {...dec} onClick={() => onChange(quantity - 1)} >-</Button>
+      <Button {...dec} onClick={() => handleChange('RESTA')} >-</Button>
       <Input borderColor={useColorModeValue('brand.greenLogo', 'brand.violetLogo')} color={useColorModeValue('brand.blueLogo', 'white')} {...input}  isDisabled _disabled={{ opacity: 1 }} />
-      <Button {...inc} onClick={() => onChange(quantity + 1)} >+</Button>
+      <Button {...inc} onClick={() => handleChange('SUMA')} >+</Button>
     </HStack>
   )
 }

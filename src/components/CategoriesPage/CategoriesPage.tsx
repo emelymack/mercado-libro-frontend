@@ -20,7 +20,6 @@ export const Categories = () => {
     if(categoryName) {
       getBooksByCategory(categoryName)
       .then((res) => {
-        // console.log(res);
         setLibrosCategoria(res.content)
         setIsLoading(false)
       })

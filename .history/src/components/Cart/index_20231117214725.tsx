@@ -5,7 +5,6 @@ import { CartOrderSummary } from './CartOrderSummary'
 import { Link } from 'react-router-dom'
 import CartButton from './CartButton'
 import { useAppSelector } from '../../context/hooks'
-import NotFoundImg from '../../assets/img/404_3.jpg'
 
 const Cart = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -14,6 +13,7 @@ const Cart = () => {
   
   React.useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartData))
+    
   }, [cartData])
   
 
@@ -38,18 +38,17 @@ const Cart = () => {
               <Stack direction={{ base: 'column' }} spacing={{ base: 8 }} py={5} >
                 <Stack spacing={{ base: 8, md: 10 }} flex="2">
                   <Stack spacing={{ base: 3, md: 6 }}>
-                    {cartData.map((item) => { console.log(item) 
-                    return (
+                    {cartData.map((item) => (
                       <CartItem 
                         key={item.product.id}
                         id={item.product.id}
                         name={item.product.title}
                         quantity={item.quantity}
                         price={item.product.price}
-                        imageUrl={item.product.image_links[0]?.url ?? NotFoundImg}  
+                        imageUrl={item.product.image_links[0]}  
                         stock={item.product.stock}
                       />
-                    )})}
+                    ))}
                   </Stack>
                 </Stack>
 
