@@ -11,7 +11,7 @@ const CartData = () => {
       {cartData.items.map((item) => (
         <Flex alignItems={"center"} justifyContent={"space-between"} mb={4}>
           <Flex alignItems={"center"} me={10}>
-            <Image src={item.product.images[0].url} h={'150px'} />
+            <Image src={item.product.image_links[0].url} h={'150px'} />
             <Box ms={4}>
               <Text color={'brand.blueLogo'} fontWeight={600} noOfLines={2}>{item.product.title}</Text>
               <Text color={'brand.blueLogo'} fontWeight={600} fontSize={'sm'} mt={2}>Cantidad: {item.quantity}</Text>

@@ -3,6 +3,7 @@ import { Book } from "../../types/product"
 import { ReactNode } from 'react'
 import { Title } from "../Title"
 import { formatDateMonthYYYY, googleSearch } from "../../utils/functions"
+import NotFoundImg from "../../assets/img/403_2.jpg"
 
 interface Props {
   book: Book,
@@ -13,7 +14,7 @@ const ProductData = ({book, children}: Props) => {
   return (
     <SimpleGrid columns={{base:1, md: 2}} spacing={10} mt={6} gap={{base: 6, lg: 12}}>
       <Box display={'flex'} justifyContent={{base: 'center', lg: 'flex-end'}} pe={5}>
-        <Image src={book.images[0].url} boxSize={'400px'} h={'500px'}/>
+        <Image src={book.image_links[0]?.url ?? NotFoundImg} boxSize={'400px'} h={'500px'}/>
       </Box>
       <Box w={{base: '100%', lg: '90%'}} px={{base: 6, lg: 0}}>
         {/* Titulo */}
