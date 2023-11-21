@@ -4,7 +4,8 @@ import {
   BOOK_URL,
   CREATE_BOOK_URL,
   GET_ALL_BOOK_URL,
-  CATEGORY_URL
+  CATEGORY_URL,
+  UPLOAD_IMAGEN_BOOK_URL
 } from "./apiUrls";
 import axios from "axios";
 
@@ -50,6 +51,11 @@ export interface Category {
 export interface Author {
   name: string;
   email: string;
+}
+
+export interface Response{
+  code:string;
+  message:string;
 }
 
 export const getBookById = (id: number): Promise<Book> => {
@@ -165,5 +171,22 @@ export const getNewBooksByCategory = (category:string): Promise<GetBooksResponse
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
+    });
+};
+
+export const saveImage = (formdData: FormData, bookID:number): Promise<Response> => {
+  return httpService
+    .post(`${BASE_URL}${UPLOAD_IMAGEN_BOOK_URL}/${bookID}`, formdData)
+    .then((response) => response.data)
+    .catch((error) => {
+      if (axios.isAxiosError(error)) {        
+        throw {
+          statusCode: error.response ? error.response.status : 500,
+          data: error.response ? error.response.data:null,
+          errorMessage: error.message,
+        };
+      } else {
+        throw error;
+      }
     });
 };

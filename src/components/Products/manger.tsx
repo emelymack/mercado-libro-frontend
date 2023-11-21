@@ -46,9 +46,11 @@ import {
   CardHeader,
   Flex,
   ButtonGroup,
+  CardBody,
+  Image,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { Author, Book, deleteBook, getAllBooks, saveBook, updateBook } from "../../services/BookService";
+import { Author, Book, deleteBook, getAllBooks, getBookById, saveBook, saveImage, updateBook } from "../../services/BookService";
 import {
   MdDelete,
   MdEditDocument,
@@ -116,6 +118,9 @@ const initialAuthor: Author = {
   email: '',
 };
 
+const inputFile = document.getElementById("file");
+const formData = new FormData();
+
 const ProductManager = () => {
   const [error, setError] = useState<string>("");
   const [books, setBooks] = useState<Book[]>();
@@ -133,8 +138,11 @@ const ProductManager = () => {
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
   const [selectedBookId, setSelectedBookId] = useState<number | null>(null);
   const [isModalAddAuthor, setIsModalAddAuthor] = useState<boolean>(false);
-  const [successDelete, setSuccessDelete] = useState<string>("");
   const [errorDelete, setErrorDelete] = useState<string>("");
+  const [isModalAddImage, setIsModalAddImage] = useState<boolean>(false);
+  const [imagenSeleccionada, setImagenSeleccionada] = useState(null);
+  const [successUpload, setSuccessUpload] = useState<string>("");
+
 
   useEffect(() => {
     setIsLoading(true);
@@ -356,8 +364,11 @@ const ProductManager = () => {
     setAuthors([]);
     setShowList(true);
     setEdit(false);
+    setIsModalAddImage(false);
+    setIsModalAddAuthor(false);
+    setIsModalDeleteOpen(false);
+    setSelectedBookId(null);
   };
-
 
   const editBook = (book: Book) => {
     setErrorSave("");
@@ -403,7 +414,6 @@ const ProductManager = () => {
         console.log(response);
         setSelectedBookId(null);
         setIsModalDeleteOpen(false);
-        setSuccessDelete(response?.message);
         startTimer();
         getListBooks();
         onClose();
@@ -416,14 +426,60 @@ const ProductManager = () => {
         });
     }
   }
+
   const cancelDeleteProduct = () => {
     setSelectedBookId(null);
     setIsModalAddAuthor(false);
     setIsModalDeleteOpen(false);
     onClose();
   }
-  
 
+  //upload file
+  const handleAddImage = () => {
+    onOpen();
+    setIsModalAddImage(true);
+    setIsModalAddAuthor(false);
+    setIsModalDeleteOpen(false);
+  }
+
+  const onSubmitFormImage = (event: any) => {
+    console.log("save image!!!");
+    console.log(event);
+    console.log(imagenSeleccionada);
+    const formData = new FormData();
+    formData.append('file', imagenSeleccionada);
+    saveImage(formData, book?.id).then((response) => {
+      setSuccessUpload("Imagen cargada exitosamente!!. Puede agregar más imagenes o cerrar la ventana.");
+      getDetailBookById();
+    }).catch((error) => {
+        console.log(error);
+      });
+
+  }
+
+  const handleImagenChange = (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    setImagenSeleccionada(file);
+  };
+
+  const handleCloseAddImage = () => {
+    onClose();
+    setSuccessUpload("");
+    setImagenSeleccionada(null);
+    setIsModalAddImage(false);
+    setIsModalAddAuthor(false);
+    setIsModalDeleteOpen(false);
+  }
+
+  function getDetailBookById() {
+    getBookById(book?.id).then((response:any) => {
+      setBook(response);
+    }).catch((error:any) => {
+        console.log(error);
+      });
+
+  }
 
   return (
 
@@ -803,6 +859,22 @@ const ProductManager = () => {
                 </Button>
               </FormControl>
 
+              <FormControl paddingTop="20px" w="100%">
+                <div>
+                  {book?.image_links.map((image, index) => (
+                    <Grid templateColumns='repeat(5, 1fr)' gap={6}>
+                      <GridItem w='100%'>
+                        <Image boxSize='200px' src={image?.url} alt={image.name} />
+                      </GridItem>
+                    </Grid>
+
+                  ))}
+                </div>
+                <Button leftIcon={<MdPerson />} mt={2} onClick={() => handleAddImage()}>
+                  Agregar imagen
+                </Button>
+              </FormControl>
+
               <Center>
                 <ButtonGroup variant='outline' spacing='6'>
                   <Button
@@ -884,6 +956,51 @@ const ProductManager = () => {
                 Confirmar
               </Button>
               <Button onClick={cancelDeleteProduct}>Cancelar</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
+
+      {isModalAddImage && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Agregar imagen al libro</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              {successUpload && <Alert status='success'>
+                <AlertIcon />
+                <AlertTitle>Información!</AlertTitle>
+                <AlertDescription><div dangerouslySetInnerHTML={{ __html: successUpload }} /> </AlertDescription>
+              </Alert>
+              }
+              <form>
+
+                <Box mb={4}>
+                  <label>Imagen:</label>
+                  <Input type="file" accept="image/*" onChange={handleImagenChange} />
+                  {imagenSeleccionada && <span>Imagen seleccionada: {imagenSeleccionada?.name}</span>}
+                </Box>
+
+              </form>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                leftIcon={<MdSave />}
+
+
+                type="submit"
+                bg="#8884FF"
+                color="#ffff"
+                borderRadius="6px"
+                _hover={{ bg: '#ebedf0', color: '#8884FF', borderColor: '#8884FF', border: '5px' }}
+                fontWeight="400"
+                onClick={onSubmitFormImage}
+              >
+                Guardar
+              </Button>
+              <Button onClick={handleCloseAddImage}>Cerrar</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
