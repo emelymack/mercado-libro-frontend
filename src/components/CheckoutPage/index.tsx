@@ -4,21 +4,23 @@ import { Title } from "../Title"
 import CustomInput from "../Input/CustomInput"
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CartData from './CartData'
 
 import mailIcon from '../../assets/icons/icon-mail.svg'
 import locationIcon from '../../assets/icons/icon-location.svg'
 import shippingIcon from '../../assets/icons/icon-shipping.svg'
+import { useAppSelector } from "../../context/hooks";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutPage = () => {
-  // const accessCheckout = useAppSelector((state) => state.checkout.access)
-  // const navigate = useNavigate()
+  const accessCheckout = useAppSelector((state) => state.checkout.access)
+  const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   if(!accessCheckout) navigate('/')
-  // }, [])
+  useEffect(() => {
+    if(!accessCheckout) navigate('/')
+  }, [])
   
   const { control, handleSubmit, reset, formState: { errors } } = useForm()
   const [tabIndex, setTabIndex] = useState(0)
