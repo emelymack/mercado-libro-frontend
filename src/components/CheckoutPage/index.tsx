@@ -11,11 +11,13 @@ import CartData from './CartData'
 import mailIcon from '../../assets/icons/icon-mail.svg'
 import locationIcon from '../../assets/icons/icon-location.svg'
 import shippingIcon from '../../assets/icons/icon-shipping.svg'
-import { useAppSelector } from "../../context/hooks";
+import { useAppDispatch, useAppSelector } from "../../context/hooks";
 import { useNavigate } from "react-router-dom";
+import { toggleAccess } from "../../context/slices/checkoutSlice";
 
 const CheckoutPage = () => {
   const accessCheckout = useAppSelector((state) => state.checkout.access)
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -37,6 +39,12 @@ const CheckoutPage = () => {
     setTabIndex(1)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
+  useEffect(() => {
+    return () => {
+      dispatch(toggleAccess())
+    }
+  }, [])
 
   return (
     <PageContainer>

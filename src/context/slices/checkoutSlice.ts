@@ -12,9 +12,12 @@ export const checkoutSlice = createSlice({
   name: "checkout",
   initialState,
   reducers: {
+    toggleAccess: (state) => {
+      state.access = !state.access
+    }
   }
 })
 
-export const {  } = checkoutSlice.actions
+export const { toggleAccess } = checkoutSlice.actions
 
 export default checkoutSlice.reducer;

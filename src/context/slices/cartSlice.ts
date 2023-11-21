@@ -12,8 +12,8 @@ interface Props {
   }
 }
 
-// @ts-ignore
 const initialState: Props = { 
+// @ts-ignore  
   items: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [], 
   total: 0, 
   shipping: { type: null, price: 0, postalCode: 0 },
@@ -46,6 +46,10 @@ export const cartSlice = createSlice({
 
     setShippingPrice: (state,action: PayloadAction<{price: number, type: "ENVIO_DOMICILIO" | "RETIRO_SUCURSAL", postalCode: number}>) => {      
       state.shipping = action.payload
+    },
+
+    setTotalPrice: (state, action: PayloadAction<number>) => {
+      state.total = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -56,6 +60,6 @@ export const cartSlice = createSlice({
   }
 });
 
-export const { updateItem, deleteItem, setShippingPrice } = cartSlice.actions
+export const { updateItem, deleteItem, setShippingPrice, setTotalPrice } = cartSlice.actions
 
 export default cartSlice.reducer;

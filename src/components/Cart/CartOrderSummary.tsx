@@ -11,11 +11,13 @@ import { FaArrowRight } from 'react-icons/fa'
 import { formatPrice } from './PriceTag'
 import { useState } from 'react'
 import Shipping from './Shipping'
-import { useAppSelector } from '../../context/hooks'
+import { useAppDispatch, useAppSelector } from '../../context/hooks'
 import { useNavigate } from 'react-router-dom'
 import ModalError from '../Modal/ModalError'
 import OrderSummaryItem from './OrderSummaryItem'
 import { calcSubtotal } from '../../utils/functions'
+import { toggleAccess } from '../../context/slices/checkoutSlice'
+import { setTotalPrice } from '../../context/slices/cartSlice'
 
 interface Props {
   onCloseCart: () => void
@@ -27,9 +29,18 @@ export const CartOrderSummary = ({onCloseCart}: Props) => {
   const navigate = useNavigate()
   const { onOpen: onOpenError, isOpen: isOpenError, onClose: onCloseError } = useDisclosure()
   const [ errorModalTxt, setErrorModalTxt ] = useState('')
+  const dispatch = useAppDispatch()
+
+  const calcSubtotal = () => {
+    let subtotal = 0
+    cartState.items?.map((item) => {
+      subtotal += item.product.price * item.quantity
+    })
+    return subtotal
+  }
 
   const calcTotal = () => {
-    let total = calcSubtotal(cartState.items)
+    let total = calcSubtotal()
 
     total += cartState.shipping.price
     return total
@@ -46,6 +57,8 @@ export const CartOrderSummary = ({onCloseCart}: Props) => {
       setShowShippingMenu(true)
       return 
     } else {
+      dispatch(setTotalPrice(calcTotal()))
+      dispatch(toggleAccess())
       navigate('/checkout')
       onCloseCart()
     }
