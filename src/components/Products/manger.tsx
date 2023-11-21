@@ -48,7 +48,7 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { Author, Book, getAllBooks, saveBook, updateBook } from "../../services/BookService";
+import { Author, Book, deleteBook, getAllBooks, saveBook, updateBook } from "../../services/BookService";
 import {
   MdDelete,
   MdEditDocument,
@@ -130,11 +130,16 @@ const ProductManager = () => {
   const [title, setTitle] = useState<string>("Registrar producto");
   const [showList, setShowList] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
+  const [selectedBookId, setSelectedBookId] = useState<number | null>(null);
+  const [isModalAddAuthor, setIsModalAddAuthor] = useState<boolean>(false);
+  const [successDelete, setSuccessDelete] = useState<string>("");
+  const [errorDelete, setErrorDelete] = useState<string>("");
 
   useEffect(() => {
     setIsLoading(true);
     getListBooks();
-   
+
   }, []);
 
   useEffect(() => {
@@ -187,7 +192,7 @@ const ProductManager = () => {
   function save(book: Book) {
     saveBook(book).then((response) => {
       console.log(response);
-      setSuccessSave("ok!!");
+      setSuccessSave("La información se guardo exitosamente!!");
       startTimer();
       setShowList(true);
       handleReset();
@@ -213,7 +218,7 @@ const ProductManager = () => {
   function update(book: Book) {
     updateBook(book?.id, book).then((response) => {
       console.log(response);
-      setSuccessSave("ok!!");
+      setSuccessSave("La información se guardo exitosamente!!");
       startTimer();
       setShowList(true);
       handleReset();
@@ -235,27 +240,27 @@ const ProductManager = () => {
   }
 
   function getListBooks() {
-    
+
     try {
       setIsLoading(true);
       getAllBooks()
-      .then((books) => {
-        setBooks(books);
-        console.log("Lista de libros:", books);
-      })
-      .catch((error) => {
-        if (
-          (error.response && error.response.status === 404) ||
-          error.response.status === 500
-        ) {
-          setError("No se encontraron libros.");
-        } else {
-          console.error("Error al obtener la lista de libros:", error);
-        }
-      });
+        .then((books) => {
+          setBooks(books);
+          console.log("Lista de libros:", books);
+        })
+        .catch((error) => {
+          if (
+            (error.response && error.response.status === 404) ||
+            error.response.status === 500
+          ) {
+            setError("No se encontraron libros.");
+          } else {
+            console.error("Error al obtener la lista de libros:", error);
+          }
+        });
     } catch (error) {
       console.error("Error al obtener la lista de libros:", error);
-    } finally{
+    } finally {
       setIsLoading(false);
     }
   }
@@ -296,6 +301,12 @@ const ProductManager = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef<HTMLInputElement>(null);
   const initialEmail = React.useRef<HTMLInputElement>(null);
+
+  const handleAddAuthor = () => {
+    onOpen();
+    setIsModalAddAuthor(true);
+    setIsModalDeleteOpen(false);
+  }
 
   const addAuthor = () => {
     console.log("saving!!!");
@@ -347,6 +358,7 @@ const ProductManager = () => {
     setEdit(false);
   };
 
+
   const editBook = (book: Book) => {
     setErrorSave("");
     setIsLoading(true);
@@ -374,13 +386,47 @@ const ProductManager = () => {
   }
 
   const handlerAddNewBook = () => {
-    console.log("new book!!");
-
     setShowList(false);
   }
 
+  // delete product
+  const handlerDeleteProduct = (id: number) => {
+    setSelectedBookId(id);
+    setIsModalAddAuthor(false);
+    setIsModalDeleteOpen(true);
+    onOpen();
+  }
+
+  const confirmDeleteProduct = () => {
+    if (selectedBookId) {
+      deleteBook(selectedBookId).then((response: any) => {
+        console.log(response);
+        setSelectedBookId(null);
+        setIsModalDeleteOpen(false);
+        setSuccessDelete(response?.message);
+        startTimer();
+        getListBooks();
+        onClose();
+        setSuccessSave("El libro se eliminó exitosamente!!");
+      })
+        .catch((error) => {
+          console.log(error);
+          setErrorDelete(error.message);
+          onClose();
+        });
+    }
+  }
+  const cancelDeleteProduct = () => {
+    setSelectedBookId(null);
+    setIsModalAddAuthor(false);
+    setIsModalDeleteOpen(false);
+    onClose();
+  }
+  
+
+
   return (
-    
+
     <div className="admin_products">
       {isLoading && <CustomLoading />}
       {showList ? (
@@ -422,12 +468,20 @@ const ProductManager = () => {
                 >
                   <AlertIcon boxSize='40px' mr={0} />
                   <AlertTitle mt={4} mb={1} fontSize='lg'>
-                    Información del producto almacenada exitosamente!
+                    Información
                   </AlertTitle>
                   <AlertDescription maxWidth='sm'>
-                    El producto registrado esta disponible para la venta
+                    {successSave}
                   </AlertDescription>
                 </Alert>}
+
+                {errorDelete && <Alert status='error'>
+                  <AlertIcon />
+                  <AlertTitle>Información!</AlertTitle>
+                  <AlertDescription><div dangerouslySetInnerHTML={{ __html: errorDelete }} /> </AlertDescription>
+                </Alert>
+                }
+
 
 
                 <div className="col-12 col-lg-8 offset-0 offset-lg-2">
@@ -464,8 +518,8 @@ const ProductManager = () => {
                               <Td>
                                 {book.categories.map((category) => (
                                   <Tag size="sm" borderRadius='full' key={category.id} variant="outline">
-                                  <TagLabel>{category.name}</TagLabel>
-                                </Tag>
+                                    <TagLabel>{category.name}</TagLabel>
+                                  </Tag>
                                 ))}
                               </Td>
                               <Td>
@@ -474,6 +528,7 @@ const ProductManager = () => {
                                     leftIcon={<MdDelete />}
                                     colorScheme="purple"
                                     variant="outline"
+                                    onClick={() => handlerDeleteProduct(book.id)}
                                   >
                                     Eliminar
                                   </Button>
@@ -743,7 +798,7 @@ const ProductManager = () => {
                     </Card>
                   ))}
                 </div>
-                <Button leftIcon={<MdPerson />} mt={2} onClick={onOpen}>
+                <Button leftIcon={<MdPerson />} mt={2} onClick={() => handleAddAuthor()}>
                   Agregar Autor
                 </Button>
               </FormControl>
@@ -773,44 +828,67 @@ const ProductManager = () => {
         </Container>
       )}
 
-
-
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Agregar Author</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            {existAuthor && (
-              <Alert status="warning">
-                <AlertIcon />
-                El Autor ya se encuentra registrado!!
-              </Alert>
-            )}
-            <FormControl>
-              <FormLabel>Nombre completo</FormLabel>
-              <Input type="text" id="author" name="author" ref={initialRef} />
-              {author.name.length == 0 && (
-                <FormHelperText color="red">Campo obligatorio</FormHelperText>
+      {isModalAddAuthor && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Agregar Author</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              {existAuthor && (
+                <Alert status="warning">
+                  <AlertIcon />
+                  El Autor ya se encuentra registrado!!
+                </Alert>
               )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>Email</FormLabel>
-              <Input type="text" id="author" name="author" ref={initialEmail} />
-              {author.email.length == 0 && (
-                <FormHelperText color="red">Campo obligatorio</FormHelperText>
-              )}
-            </FormControl>
-          </ModalBody>
+              <FormControl>
+                <FormLabel>Nombre completo</FormLabel>
+                <Input type="text" id="author" name="author" ref={initialRef} />
+                {author.name.length == 0 && (
+                  <FormHelperText color="red">Campo obligatorio</FormHelperText>
+                )}
+              </FormControl>
+              <FormControl>
+                <FormLabel>Email</FormLabel>
+                <Input type="text" id="author" name="author" ref={initialEmail} />
+                {author.email.length == 0 && (
+                  <FormHelperText color="red">Campo obligatorio</FormHelperText>
+                )}
+              </FormControl>
+            </ModalBody>
 
-          <ModalFooter>
-            <Button mr={1} onClick={addAuthor}>
-              Guardar
-            </Button>
-            <Button onClick={cancelAddAuthor}>Cancelar</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+            <ModalFooter>
+              <Button mr={1} onClick={addAuthor}>
+                Guardar
+              </Button>
+              <Button onClick={cancelAddAuthor}>Cancelar</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
+
+
+
+      {isModalDeleteOpen && selectedBookId && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Confirmarmación</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              Esta seguro de eliminar el producto?
+            </ModalBody>
+
+            <ModalFooter>
+              <Button mr={1} onClick={confirmDeleteProduct}>
+                Confirmar
+              </Button>
+              <Button onClick={cancelDeleteProduct}>Cancelar</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
+
     </div>
   );
 };
