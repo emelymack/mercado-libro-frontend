@@ -7,9 +7,11 @@ import {
   VStack,
   Heading,
   Center,
+  Button,
+  keyframes,
 } from "@chakra-ui/react";
 import { Book } from "../../services/BookService";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getAllBooksSearch } from "../../services/SearchServiceBook";
 import { useEffect, useState } from "react";
 import CustomLoading from "../CustomLoading/CustomLoading";
@@ -21,7 +23,15 @@ const BookListSearch = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { searchTerm } = useParams<{ searchTerm: string }>();
-
+  const [showButton, setShowButton] = useState<null | string>(null);
+  const slideIn = keyframes`
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+`;
   useEffect(() => {
     const fetchBooks = async () => {
       setIsLoading(true);
@@ -63,6 +73,9 @@ const BookListSearch = () => {
               boxShadow="md"
               p={4}
               minH="500px"
+              position="relative" // Agrega position relative para posicionar el botón absolutamente
+              onMouseEnter={() => setShowButton(book.id.toString())} // Muestra el botón cuando el mouse entra
+              onMouseLeave={() => setShowButton(null)} // Oculta el botón cuando el mouse sale
             >
               <Image
                 src={book.images[0].url}
@@ -78,6 +91,32 @@ const BookListSearch = () => {
                 <Text>Price: ${book.price}</Text>
                 <Text>Stock: {book.stock}</Text>
               </VStack>
+              {showButton === book.id.toString() && (
+                <Box
+                  position="absolute"
+                  top="0"
+                  bottom="0"
+                  left="0"
+                  right="0"
+                  bg="rgba(255, 255, 255, 0.8)"
+                  backdropFilter="blur(5px)"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  textAlign={"left"}
+                  borderWidth="2px"
+                  borderColor="brand.blueLogo"
+                  shadow="xl"
+                  p={6}
+                  borderRadius={2}
+                >
+                  <Link to={`/product/${book.id.toString()}`}>
+                    <Button animation={`${slideIn} 0.3s ease-out forwards`}>
+                      Ver detalles
+                    </Button>
+                  </Link>
+                </Box>
+              )}
             </Box>
           </GridItem>
         ))}

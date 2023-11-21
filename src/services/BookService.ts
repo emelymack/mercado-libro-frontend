@@ -15,6 +15,7 @@ export interface GetBooksResponse {
   totalPages: number;
 }
 export interface Book {
+  image_link: string | undefined;
   id: number;
   title: string;
   authors: Authors[];
