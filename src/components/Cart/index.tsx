@@ -38,7 +38,7 @@ const Cart = () => {
               <Stack direction={{ base: 'column' }} spacing={{ base: 8 }} py={5} >
                 <Stack spacing={{ base: 8, md: 10 }} flex="2">
                   <Stack spacing={{ base: 3, md: 6 }}>
-                    {cartData.map((item) => { console.log(item) 
+                    {cartData.map((item) => { 
                     return (
                       <CartItem 
                         key={item.product.id}

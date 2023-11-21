@@ -2,21 +2,23 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { CartItem } from "../../types/product";
 import { getBookById } from "../../services/BookService";
 
+interface ShippingProps {
+  type: 'ENVIO_DOMICILIO' | 'RETIRO_SUCURSAL' | null,
+  price: number,
+  postalCode: number,
+  date: string
+}
 interface Props {
   items: CartItem[],
   total: number,
-  shipping: {
-    type: 'ENVIO_DOMICILIO' | 'RETIRO_SUCURSAL' | null,
-    price: number,
-    postalCode: number
-  }
+  shipping: ShippingProps
 }
 
 const initialState: Props = { 
 // @ts-ignore  
   items: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [], 
   total: 0, 
-  shipping: { type: null, price: 0, postalCode: 0 },
+  shipping: { type: null, price: 0, postalCode: 0, date: '' },
 }
 
 interface PropsFetchProduct {
@@ -44,12 +46,16 @@ export const cartSlice = createSlice({
       state.items = state.items.filter((item) => item.product.id !== action.payload.id)
     },
 
-    setShippingPrice: (state,action: PayloadAction<{price: number, type: "ENVIO_DOMICILIO" | "RETIRO_SUCURSAL", postalCode: number}>) => {      
+    setShippingData: (state,action: PayloadAction<ShippingProps>) => {      
       state.shipping = action.payload
     },
 
     setTotalPrice: (state, action: PayloadAction<number>) => {
       state.total = action.payload
+    },
+
+    clearShippingData: (state) => {
+      state.shipping = { type: null, price: 0, postalCode: 0, date: '' }
     }
   },
   extraReducers: (builder) => {
@@ -60,6 +66,6 @@ export const cartSlice = createSlice({
   }
 });
 
-export const { updateItem, deleteItem, setShippingPrice, setTotalPrice } = cartSlice.actions
+export const { updateItem, deleteItem, setShippingData, setTotalPrice, clearShippingData } = cartSlice.actions
 
 export default cartSlice.reducer;

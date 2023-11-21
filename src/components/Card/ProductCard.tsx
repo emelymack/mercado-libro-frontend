@@ -16,6 +16,7 @@ import { Book } from "../../types/product";
 import { useNavigate } from "react-router-dom";
 import AddToCart from "../Button/AddToCart";
 import notFoundImg from '../../assets/img/404_3.jpg'
+import { formatPrice } from "../Cart/PriceTag";
 
 const ProductCard = ({ id, image_links, title, authors, price, stock }: Book) => {
   const navigate = useNavigate()
@@ -48,7 +49,7 @@ const ProductCard = ({ id, image_links, title, authors, price, stock }: Book) =>
           ))}
           {/* Precio */}
           <Text color="brand.blueLogo" fontSize="2xl" fontWeight={600}>
-            ${price}
+            {formatPrice(price)}
           </Text>
         </Stack>
       </CardBody>

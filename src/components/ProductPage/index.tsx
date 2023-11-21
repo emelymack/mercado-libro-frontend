@@ -69,7 +69,7 @@ const ProductPage = () => {
 
             {/* Productos relacionados */}
             <Box px={{base: 6, lg: 8}} mt={20}>
-              <RelatedProducts categoryName={product.book.categories[0].name} />
+              <RelatedProducts productId={product.book.id} categoryName={product.book.categories[0].name} />
             </Box>
           </>
         )}

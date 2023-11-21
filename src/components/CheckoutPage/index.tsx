@@ -14,17 +14,28 @@ import shippingIcon from '../../assets/icons/icon-shipping.svg'
 import { useAppDispatch, useAppSelector } from "../../context/hooks";
 import { useNavigate } from "react-router-dom";
 import { toggleAccess } from "../../context/slices/checkoutSlice";
+import { clearShippingData } from "../../context/slices/cartSlice";
 
 const CheckoutPage = () => {
   const accessCheckout = useAppSelector((state) => state.checkout.access)
+  const cartData = useAppSelector((state) => state.cart)
+  const userData = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   useEffect(() => {
     if(!accessCheckout) navigate('/')
+
+    return () => {
+      if(accessCheckout) {
+        dispatch(toggleAccess())
+        dispatch(clearShippingData())
+      }
+    }
   }, [])
   
-  const { control, handleSubmit, reset, formState: { errors } } = useForm()
+  // const { control, handleSubmit, reset, formState: { errors } } = useForm()
+  const { control } = useForm()
   const [tabIndex, setTabIndex] = useState(0)
   const [paymentMethod, setPaymentMethod] = useState<'TARJETA'| 'TRANSFERENCIA' | 'MERCADO_PAGO' | null>(null)
 
@@ -39,12 +50,6 @@ const CheckoutPage = () => {
     setTabIndex(1)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-
-  useEffect(() => {
-    return () => {
-      dispatch(toggleAccess())
-    }
-  }, [])
 
   return (
     <PageContainer>
@@ -83,14 +88,13 @@ const CheckoutPage = () => {
                         <Box ms={1}>
                           <HStack display={'flex'} justifyContent={'space-between'} alignItems={"center"}>
                             <Box fontWeight={500}>
-                              Envío a domicilio
+                              { cartData.shipping.type === 'ENVIO_DOMICILIO' ? 'Envío a domicilio' : 'Retiro por sucursal' }
                             </Box>
                             <Box  color={useColorModeValue('gray.700','whiteAlpha.700')}>
-                              $2800
+                              { cartData.shipping.price > 0 ? cartData.shipping.price : 'Gratis' }
                             </Box>
                           </HStack>
-                          {/* CAMBIAR FECHA!! */}
-                          <Text fontSize={'md'} color={'gray.00'}>Llega el lunes 16/10</Text>
+                          <Text fontSize={'md'} color={'gray.00'}>{ cartData.shipping.type === 'ENVIO_DOMICILIO' ? `Llega el ${cartData.shipping.date}` : 'Av. Fantasía 111, Buenos Aires' }</Text>
                         </Box>
                       </Radio>
                     </RadioGroup>
@@ -99,8 +103,8 @@ const CheckoutPage = () => {
                   {/* Datos del destinatario */}
                   <Box mt={8}>
                     <Title size="md" capitalize htmlElement={'h5'} text="Datos del destinatario" fw={700} />
-                    <CustomInput name="name" placeholder={"Nombre"} control={control} type="text" mt={2} />
-                    <CustomInput name="lastName" placeholder={"Apellido"} control={control} type="text" mt={2} />
+                    <CustomInput name="name" placeholder={"Nombre"} value={userData.name} control={control} type="text" mt={2} disabled />
+                    <CustomInput name="lastName" placeholder={"Apellido"} value={userData.lastName} control={control} type="text" mt={2} disabled />
                     <CustomInput name="phoneNumber" placeholder={"Teléfono"} control={control} type="tel" mt={2} />
                   </Box>
 
@@ -126,7 +130,7 @@ const CheckoutPage = () => {
                       gap={2}
                     >
                       <GridItem>
-                        <CustomInput name="postalCode" placeholder={"Código Postal"} control={control} type="text" mt={2} disabled />
+                        <CustomInput name="postalCode" placeholder={"Código Postal"} value={cartData.shipping.postalCode} control={control} type="text" mt={2} disabled />
                       </GridItem>
                       <GridItem>
                         <CustomInput name="province" placeholder={"Provincia"} control={control} type="text" mt={2} />
