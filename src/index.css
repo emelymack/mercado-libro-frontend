@@ -41,7 +41,7 @@
   z-index: 100;
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color: rgba(136, 132, 255, .9);
+  background-color: rgba(136, 132, 255, 0.9);
 }
 .header-index .logo {
   transition: width 0.35s ease-in-out;
@@ -50,7 +50,7 @@
   width: 140px;
 }
 
-@media(max-width: 991px) {
+@media (max-width: 991px) {
   .header-index {
     background-color: var(--primary);
     padding-top: 15px;
@@ -60,7 +60,7 @@
   .page {
     padding-top: 93px !important;
   }
-} 
+}
 
 .page {
   padding-top: 127px;
