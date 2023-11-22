@@ -37,8 +37,8 @@ const UserInfo = () => {
   const [tooltipVisibility, setTooltipVisibility] = useState<{
     [key: number]: boolean;
   }>({});
-  const [pageNumber, setPageNumber] = useState<number>(0);
-  const [pageSize] = useState<number>(10);
+  const [page, setPage] = useState<number>(0);
+  const [size] = useState<number>(10);
   const [totalElements, setTotalElements] = useState<number>(0);
   const [status, setStatus] = useState<string>("");
   const [orderDirection, setOrderDirection] = useState<string>("");
@@ -57,8 +57,8 @@ const UserInfo = () => {
     const fetchUsers = async () => {
       try {
         const response = await getAllUsers({
-          pageNumber,
-          pageSize,
+          page,
+          size,
         });
         if (response.statusCode === 200 && response.data) {
           setTotalElements(response.totalElements ?? 0);
@@ -73,7 +73,7 @@ const UserInfo = () => {
       }
     };
     fetchUsers();
-  }, [reloadKey, pageNumber, pageSize]);
+  }, [reloadKey, page, size]);
 
   const handleSearch = async () => {
     setIsLoading(true);
@@ -109,8 +109,8 @@ const UserInfo = () => {
     setIsLoading(true);
     try {
       const response = await getAllUsers({
-        pageNumber,
-        pageSize,
+        page,
+        size,
       });
       if (response.statusCode === 200 && response.data) {
         setTotalElements(response.totalElements ?? 0);
@@ -121,7 +121,7 @@ const UserInfo = () => {
     } catch (error) {
       console.error("Failed to fetch users:", error);
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -355,10 +355,10 @@ const UserInfo = () => {
           </Tbody>
         </Table>
         <Pagination
-          pageNumber={pageNumber}
-          pageSize={pageSize}
+          pageNumber={page}
+          pageSize={size}
           totalElements={totalElements}
-          onPageChange={(newPage) => setPageNumber(newPage)}
+          onPageChange={(newPage) => setPage(newPage)}
         />
       </Box>
 

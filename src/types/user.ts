@@ -24,8 +24,8 @@ export interface Role {
 }
 
 export interface GetAllUsersParams {
-  pageNumber?: number;
-  pageSize?: number;
+  page?: number;
+  size?: number;
   status?: string;
   orderDirection?: string;
   orderBy?: string;
