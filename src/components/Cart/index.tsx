@@ -5,6 +5,7 @@ import { CartOrderSummary } from './CartOrderSummary'
 import { Link } from 'react-router-dom'
 import CartButton from './CartButton'
 import { useAppSelector } from '../../context/hooks'
+import NotFoundImg from '../../assets/img/404_3.jpg'
 
 const Cart = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -46,7 +47,7 @@ const Cart = () => {
                         name={item.product.title}
                         quantity={item.quantity}
                         price={item.product.price}
-                        imageUrl={item.product.images[0]?.url}  
+                        imageUrl={item.product.image_links[0]?.url ?? NotFoundImg}  
                         stock={item.product.stock}
                       />
                     )})}

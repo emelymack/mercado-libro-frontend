@@ -27,8 +27,7 @@ export interface Book {
   published_date: string;
   page_count: number;
   ratings_count: number;
-  images: Image[];
-  image_link: string;
+  image_links: Image[];
   currency_code: string;
 }
 
