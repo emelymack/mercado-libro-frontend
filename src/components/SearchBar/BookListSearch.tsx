@@ -41,6 +41,7 @@ const BookListSearch = () => {
             keyword: searchTerm,
             page: 0,
           });
+          debugger;
           setBooks(response.data);
         } catch (error) {
           console.error("Error al buscar libros:", error);
@@ -78,7 +79,7 @@ const BookListSearch = () => {
               onMouseLeave={() => setShowButton(null)} // Oculta el botón cuando el mouse sale
             >
               <Image
-                src={book.images[0].url}
+                src={book.image_links[0].url}
                 alt={book.title}
                 objectFit="cover"
                 h="200px"
