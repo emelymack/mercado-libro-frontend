@@ -37,7 +37,7 @@ import SearchBar from "../../SearchBar/SearchBar";
 const Links = [
   {
     name: "Novedades",
-    url: "#novedades",
+    url: "/novedades",
   },
   {
     name: "Más vendidos",
