@@ -22,3 +22,14 @@ export interface Role {
   description: string;
   status: "ACTIVE" | "INACTIVE";
 }
+
+export interface GetAllUsersParams {
+  page?: number;
+  size?: number;
+  status?: string;
+  orderDirection?: string;
+  orderBy?: string;
+  name?: string;
+  lastName?: string;
+  email?: string;
+}

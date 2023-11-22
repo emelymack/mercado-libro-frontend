@@ -1,5 +1,9 @@
 export interface CustomResponse<T> {
   statusCode: number;
-  data: T | null;
+  data: T ;
   errorMessage?: string;
+  totalPages?: number;
+  totalElements?: number;
+  currentPage?: number;
+  pageSize?: number;
 }

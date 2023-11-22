@@ -1,42 +1,62 @@
 import {
-  Box,
   Button,
   Flex,
-  HStack,
   Heading,
-  Input,
   Link,
-  Radio,
-  Spinner,
   Stack,
   Text,
-  useColorModeValue as mode,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { FaArrowRight } from 'react-icons/fa'
 import { formatPrice } from './PriceTag'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import Shipping from './Shipping'
+import { useAppSelector } from '../../context/hooks'
+import { useNavigate } from 'react-router-dom'
+import ModalError from '../Modal/ModalError'
+import OrderSummaryItem from './OrderSummaryItem'
 
-type OrderSummaryItemProps = {
-  label: string
-  value?: string
-  children?: React.ReactNode
+interface Props {
+  onCloseCart: () => void
 }
-
-const OrderSummaryItem = (props: OrderSummaryItemProps) => {
-  const { label, value, children } = props
-  return (
-    <Flex justify="space-between" fontSize="sm">
-      <Text fontWeight="medium" color={mode('gray.600', 'gray.400')}>
-        {label}
-      </Text>
-      {value ? <Text fontWeight="medium">{value}</Text> : children}
-    </Flex>
-  )
-}
-
-export const CartOrderSummary = () => {
+export const CartOrderSummary = ({onCloseCart}: Props) => {
   const [ showShippingMenu, setShowShippingMenu ] = useState(false)
+  const cartState = useAppSelector((state) => state.cart)
+  const isUserLogged = useAppSelector((state) => state.auth.isLogged)
+  const navigate = useNavigate()
+  const { onOpen: onOpenError, isOpen: isOpenError, onClose: onCloseError } = useDisclosure()
+  const [ errorModalTxt, setErrorModalTxt ] = useState('')
+
+  const calcSubtotal = () => {
+    let subtotal = 0
+    cartState.items.map((item) => {
+      subtotal += item.product.price * item.quantity
+    })
+    return subtotal
+  }
+
+  const calcTotal = () => {
+    let total = calcSubtotal()
+
+    total += cartState.shipping.price
+    return total
+  }
+
+  const goToCheckout = () => {
+    if(!isUserLogged) {
+      setErrorModalTxt('Debes iniciar sesión para realizar una compra.')
+      onOpenError()
+      return
+    } else if(!cartState.shipping.postalCode) {
+      setErrorModalTxt('Debes seleccionar un método de envío.')
+      onOpenError()
+      setShowShippingMenu(true)
+      return 
+    } else {
+      navigate('/checkout')
+      onCloseCart()
+    }
+  }
 
   return (
     <Stack spacing="8" borderWidth="1px" rounded="lg" py={8} px={5} width="full">
@@ -44,7 +64,7 @@ export const CartOrderSummary = () => {
 
       <Stack spacing="6">
         {/* Subtotal */}
-        <OrderSummaryItem label="Subtotal (sin envío)" value={formatPrice(597)} />
+        <OrderSummaryItem label="Subtotal (sin envío)" value={formatPrice(calcSubtotal())} />
 
         {/* Envío */}
         <OrderSummaryItem label="Envío a domicilio">
@@ -60,13 +80,15 @@ export const CartOrderSummary = () => {
             Total
           </Text>
           <Text fontSize="xl" fontWeight="extrabold">
-            {formatPrice(597)}
+            {formatPrice(calcTotal())}
           </Text>
         </Flex>
       </Stack>
-      <Button variant="brandPrimary" size="lg" fontSize="md" rightIcon={<FaArrowRight />}>
+      <Button onClick={() => goToCheckout()} variant="brandPrimary" size="lg" fontSize="md" rightIcon={<FaArrowRight />}>
         Iniciar compra
       </Button>
+
+      <ModalError title={errorModalTxt} isOpen={isOpenError} onClose={onCloseError}  />
     </Stack>
   )
 }

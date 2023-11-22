@@ -3,6 +3,10 @@ import { getAllUsers, patchUser } from "../../services/UserService";
 import {
   Badge,
   Box,
+  Button,
+  Flex,
+  Input,
+  Select,
   Switch,
   Table,
   TableCaption,
@@ -16,10 +20,11 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { User } from "../../types/user";
-import { EditIcon } from "@chakra-ui/icons";
+import { EditIcon, SearchIcon } from "@chakra-ui/icons";
 import EditUserModal from "./EditUserModal";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import moment from "moment";
+import Pagination from "../../utils/Pagination";
 
 const UserInfo = () => {
   const fontSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
@@ -32,6 +37,15 @@ const UserInfo = () => {
   const [tooltipVisibility, setTooltipVisibility] = useState<{
     [key: number]: boolean;
   }>({});
+  const [page, setPage] = useState<number>(0);
+  const [size] = useState<number>(10);
+  const [totalElements, setTotalElements] = useState<number>(0);
+  const [status, setStatus] = useState<string>("");
+  const [orderDirection, setOrderDirection] = useState<string>("");
+  const [orderBy, setOrderBy] = useState<string>("");
+  const [nameSearch, setNameSearch] = useState<string>("");
+  const [lastNameSearch, setLastNameSearch] = useState<string>("");
+  const [emailSearch, setEmailSearch] = useState<string>("");
 
   const handleEdit = (id: number) => {
     setSelectedUserId(id);
@@ -42,8 +56,12 @@ const UserInfo = () => {
     setIsLoading(true);
     const fetchUsers = async () => {
       try {
-        const response = await getAllUsers();
+        const response = await getAllUsers({
+          page,
+          size,
+        });
         if (response.statusCode === 200 && response.data) {
+          setTotalElements(response.totalElements ?? 0);
           setUsers(response.data);
         } else {
           console.error("Failed to fetch users:", response.errorMessage);
@@ -55,7 +73,57 @@ const UserInfo = () => {
       }
     };
     fetchUsers();
-  }, [reloadKey]);
+  }, [reloadKey, page, size]);
+
+  const handleSearch = async () => {
+    setIsLoading(true);
+    try {
+      const response = await getAllUsers({
+        name: nameSearch,
+        lastName: lastNameSearch,
+        email: emailSearch,
+        status,
+        orderBy,
+        orderDirection,
+      });
+      if (response.statusCode === 200 && response.data) {
+        setTotalElements(response.totalElements ?? 0);
+        setUsers(response.data);
+      } else {
+        console.error("Failed to fetch users:", response.errorMessage);
+      }
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClear = async () => {
+    setNameSearch("");
+    setLastNameSearch("");
+    setEmailSearch("");
+    setStatus("");
+    setOrderBy("");
+    setOrderDirection("");
+    setIsLoading(true);
+    try {
+      const response = await getAllUsers({
+        page,
+        size,
+      });
+      if (response.statusCode === 200 && response.data) {
+        setTotalElements(response.totalElements ?? 0);
+        setUsers(response.data);
+      } else {
+        console.error("Failed to fetch users:", response.errorMessage);
+      }
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleToggleStatus = async (id: number, isActive: boolean) => {
     setIsLoading(true);
@@ -64,7 +132,6 @@ const UserInfo = () => {
       const response = await patchUser(id, { status: updatedStatus });
       if (response.statusCode === 200) {
         console.log("Estado del usuario actualizado con éxito");
-        // Refrescar la lista de usuarios
         setReloadKey((prev) => prev + 1);
       } else {
         console.error(
@@ -88,7 +155,88 @@ const UserInfo = () => {
         justifyContent="center"
         overflowX="auto"
       >
-        <Table variant="simple" size="md" mt={40}>
+        <Flex align="center" pt={40} paddingLeft={20} paddingRight={20}>
+          <Input
+            fontSize={fontSize}
+            placeholder="Buscar por nombre"
+            value={nameSearch}
+            onChange={(e) => setNameSearch(e.target.value)}
+            mr={2}
+          />
+
+          <Input
+            fontSize={fontSize}
+            placeholder="Buscar por apellido"
+            value={lastNameSearch}
+            onChange={(e) => setLastNameSearch(e.target.value)}
+            mr={2}
+          />
+
+          <Input
+            fontSize={fontSize}
+            placeholder="Buscar por correo electrónico"
+            value={emailSearch}
+            onChange={(e) => setEmailSearch(e.target.value)}
+            mr={2}
+          />
+
+          <Select
+            fontSize={fontSize}
+            placeholder="Seleccionar estado"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            mr={2}
+          >
+            <option value="ACTIVE">Activo</option>
+            <option value="INACTIVE">Inactivo</option>
+          </Select>
+
+          <Select
+            fontSize={fontSize}
+            placeholder="Ordenar por"
+            value={orderBy}
+            onChange={(e) => setOrderBy(e.target.value)}
+            mr={2}
+          >
+            <option value="ID">Id</option>
+            <option value="NAME">Nombre</option>
+            <option value="LAST_NAME">Apellido</option>
+            <option value="EMAIL">Correo electrónico</option>
+            <option value="STATUS">Estado</option>
+          </Select>
+
+          <Select
+            fontSize={fontSize}
+            placeholder="Dirección de orden"
+            value={orderDirection}
+            onChange={(e) => setOrderDirection(e.target.value)}
+            mr={2}
+          >
+            <option value="ASC">Ascendente</option>
+            <option value="DESC">Descendente</option>
+          </Select>
+
+          <Button
+            fontSize={fontSize}
+            ml={2}
+            w={"2xl"}
+            leftIcon={<SearchIcon />}
+            colorScheme="teal"
+            onClick={handleSearch}
+          >
+            Buscar
+          </Button>
+          <Button
+            onClick={handleClear}
+            colorScheme="gray"
+            fontSize={fontSize}
+            ml={2}
+            w={"2xl"}
+          >
+            Limpiar
+          </Button>
+        </Flex>
+        <Table variant="simple" size="md" mt={6}>
           <TableCaption>Usuarios Registrados en Mercado Libro</TableCaption>
           <Thead>
             <Tr>
@@ -206,7 +354,14 @@ const UserInfo = () => {
             ))}
           </Tbody>
         </Table>
+        <Pagination
+          pageNumber={page}
+          pageSize={size}
+          totalElements={totalElements}
+          onPageChange={(newPage) => setPage(newPage)}
+        />
       </Box>
+
       {isLoading && <CustomLoading />}
       {isEditModalOpen && selectedUserId && (
         <EditUserModal

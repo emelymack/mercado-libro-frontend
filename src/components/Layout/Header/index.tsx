@@ -22,7 +22,7 @@ import {
 } from "@chakra-ui/icons";
 import logo from "../../../assets/Logo.svg";
 import logoWhite from "../../../assets/logo-white.svg";
-import searchIcon from "../../../assets/icons/icon-search.svg";
+// import searchIcon from "../../../assets/icons/icon-search.svg";
 import { useEffect, useState } from "react";
 import Login from "./Login";
 import MyAccount from "./MyAccount";
@@ -32,6 +32,7 @@ import { Link, Link as LinkTo } from "react-router-dom";
 import { useAppSelector } from "../../../context/hooks";
 import Cart from "../../Cart";
 import { Category, getAllCategory } from "../../../services/BookService";
+import SearchBar from "../../SearchBar/SearchBar";
 
 const Links = [
   {
@@ -60,15 +61,12 @@ const Header = () => {
   const [categorias, setCategorias] = useState<Category[]>([]);
 
   useEffect(() => {
-
-    getAllCategory ()
-    .then((res) => {
-    setCategorias(res)
-    })
+    getAllCategory().then((res) => {
+      setCategorias(res);
+    });
 
     return () => {};
   }, []);
-
 
   return (
     <header className={`header-index ${isScrolling ? "scroll" : ""}`}>
@@ -82,7 +80,13 @@ const Header = () => {
           >
             <Box>
               <LinkTo to="/">
-                <Image src={useColorModeValue(logo, logoWhite)} alt="Mercado Libro" boxSize={{base: 160, lg: 200}} pe={{base: 2, lg: 0}} className="logo" />
+                <Image
+                  src={useColorModeValue(logo, logoWhite)}
+                  alt="Mercado Libro"
+                  boxSize={{ base: 160, lg: 200 }}
+                  pe={{ base: 2, lg: 0 }}
+                  className="logo"
+                />
               </LinkTo>
             </Box>
             <Box
@@ -98,36 +102,38 @@ const Header = () => {
                 me={{ base: 3, lg: 0 }}
               >
                 <Menu>
-                
                   <MenuButton
                     as={Button}
                     rightIcon={<ChevronDownIcon />}
                     bg={"none"}
-                    color={useColorModeValue('brand.blueLogo', 'white')}
-                    _active={{bg: 'white'}}
+                    color={useColorModeValue("brand.blueLogo", "white")}
+                    _active={{ bg: "white" }}
                   >
                     Categorías
                   </MenuButton>
-                  
-                  <MenuList color={useColorModeValue('brand.blueLogo', 'white')}>
-                  {categorias?.map((item) => (
-                    <Link to={`/category/${item?.name}`}>
-                      <MenuItem fontWeight={500} _hover={{bg: 'brand.violetLogo25'}}>
-                        {item?.name}
-                      </MenuItem>
-                    </Link>
+
+                  <MenuList
+                    color={useColorModeValue("brand.blueLogo", "white")}
+                  >
+                    {categorias?.map((item) => (
+                      <Link to={`/category/${item?.name}`}>
+                        <MenuItem
+                          fontWeight={500}
+                          _hover={{ bg: "brand.violetLogo25" }}
+                        >
+                          {item?.name}
+                        </MenuItem>
+                      </Link>
                     ))}
                   </MenuList>
-                
-                  
                 </Menu>
-                
+
                 {Links.map((link) => (
                   <NavLink key={link.name} url={link.url}>
                     {link.name}
                   </NavLink>
                 ))}
-                
+
                 <Box me={5} ms={2}>
                   {!isLogged ? <Login /> : <MyAccount />}
                 </Box>
@@ -138,7 +144,8 @@ const Header = () => {
                   px={{ base: 2, md: 3 }}
                   className="headerBtn"
                 >
-                  <Image src={searchIcon} boxSize={{ base: "50px" }} />
+                  {/* <Image src={searchIcon} boxSize={{ base: "50px" }} /> */}
+                  <SearchBar />
                 </Button>
               </Box>
               <Box me={1}>
