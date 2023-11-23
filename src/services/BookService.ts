@@ -5,8 +5,9 @@ import {
   CREATE_BOOK_URL,
   GET_ALL_BOOK_URL,
   CATEGORY_URL,
+  UPLOAD_IMAGEN_BOOK_URL
 } from "./apiUrls";
-import { Book } from "../types/product";
+import axios from "axios";
 
 export interface GetBooksResponse {
   content: Book[];
@@ -32,6 +33,11 @@ export interface Category {
 export interface Author {
   name: string;
   email: string;
+}
+
+export interface Response{
+  code:string;
+  message:string;
 }
 
 export const getBookById = (id: number): Promise<Book> => {
@@ -77,8 +83,8 @@ export const getAllBooks = (): Promise<Book[]> => {
   return httpService
     .get(`${BASE_URL}${GET_ALL_BOOK_URL}`)
     .then((response) => {
-      if (Array.isArray(response.data)) {
-        return response.data as Book[];
+      if (Array.isArray(response.data.content)) {
+        return response.data.content as Book[];
       } else {
         throw new Error("La respuesta no es un array de libros");
       }
@@ -120,7 +126,15 @@ export const saveBook = (book: Book): Promise<Book> => {
     .post(`${BASE_URL}${CREATE_BOOK_URL}`, book)
     .then((response) => response.data)
     .catch((error) => {
-      throw new Error(error.response?.data?.message);
+      if (axios.isAxiosError(error)) {        
+        throw {
+          statusCode: error.response ? error.response.status : 500,
+          data: error.response ? error.response.data:null,
+          errorMessage: error.message,
+        };
+      } else {
+        throw error;
+      }
     });
 };
 
@@ -145,3 +159,30 @@ export const getNewBooksByCategory = (
       throw new Error(error.response?.data?.message);
     });
 };
+
+export const saveImage = (formdData: FormData, bookID:number): Promise<Response> => {
+  return httpService
+    .post(`${BASE_URL}${UPLOAD_IMAGEN_BOOK_URL}/${bookID}`, formdData)
+    .then((response) => response.data)
+    .catch((error) => {
+      if (axios.isAxiosError(error)) {        
+        throw {
+          statusCode: error.response ? error.response.status : 500,
+          data: error.response ? error.response.data:null,
+          errorMessage: error.message,
+        };
+      } else {
+        throw error;
+      }
+    });
+};
+
+export const deleteImage = (id: number): Promise<void> => {
+  return httpService
+    .delete(`${BASE_URL}${UPLOAD_IMAGEN_BOOK_URL}/${id}`)
+    .then(() => {})
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};
+
