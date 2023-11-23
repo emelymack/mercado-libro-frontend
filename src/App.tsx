@@ -14,6 +14,7 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import UserInfo from "./components/UserDashboard/UserInfo";
 import { login } from "./context/slices/authSlice";
 import { setUser } from "./context/slices/userSlice";
+import SuccesfulPurchase from "./components/SuccesfulPurchase";
 import CheckoutPage from "./components/CheckoutPage";
 import BookListSearch from "./components/SearchBar/BookListSearch";
 import QuestionsPage from "./components/QuestionsPage/QuestionsPage";
@@ -61,6 +62,7 @@ function App() {
             path="/books/search/:searchTerm"
             element={<BookListSearch />}
           />
+          <Route path="/succesful" element={<SuccesfulPurchase />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/questions" element={<QuestionsPage />} />
           <Route path="/novedades" element={<NewsPage />} />
