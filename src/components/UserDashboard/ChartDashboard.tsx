@@ -6,6 +6,7 @@ import StackedAreaChart from "../Charts/StackedAreaChart";
 
 import DoughnutSegmentedChart from "../Charts/DoughnutSegmentedChart";
 import StatCard from "../Charts/StatCard";
+import { Navigate } from "react-router-dom";
 
 const dataBar = {
   labels: ["Libro 1", "Libro 2", "Libro 3", "Libro 4", "Libro 5"],
@@ -88,6 +89,12 @@ const dataForDoughnut = {
 const chartSize = "400px";
 
 const ChartDashboard: React.FC = () => {
+  const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
+
+  if (!isAdmin) {
+    return <Navigate to="*" />;
+  }
+
   return (
     <>
       <Flex direction="column" minHeight="100vh">

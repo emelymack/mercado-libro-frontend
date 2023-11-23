@@ -25,6 +25,7 @@ import EditUserModal from "./EditUserModal";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import moment from "moment";
 import Pagination from "../../utils/Pagination";
+import { Navigate } from "react-router-dom";
 
 const UserInfo = () => {
   const fontSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
@@ -46,6 +47,7 @@ const UserInfo = () => {
   const [nameSearch, setNameSearch] = useState<string>("");
   const [lastNameSearch, setLastNameSearch] = useState<string>("");
   const [emailSearch, setEmailSearch] = useState<string>("");
+  const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
 
   const handleEdit = (id: number) => {
     setSelectedUserId(id);
@@ -145,6 +147,10 @@ const UserInfo = () => {
       setIsLoading(false);
     }
   };
+
+  if (!isAdmin) {
+    return <Navigate to="*" />;
+  }
 
   return (
     <>

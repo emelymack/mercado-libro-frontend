@@ -6,11 +6,16 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import user from "../../assets/user.svg";
 import dashboard from "../../assets/dashboard.svg";
 
 const Dashboard = () => {
+  const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
+
+  if (!isAdmin) {
+    return <Navigate to="*" />;
+  }
   return (
     <Box p={5} pt={60}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>

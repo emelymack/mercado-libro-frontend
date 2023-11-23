@@ -40,7 +40,11 @@ import CustomLoading from "../../CustomLoading/CustomLoading";
 import setLocalStorageItem from "../../../utils/setStorage";
 import { useAppDispatch } from "../../../context/hooks";
 import { setUser } from "../../../context/slices/userSlice";
-import { login } from "../../../context/slices/authSlice";
+import {
+  loginUserCheck,
+  loginAdmin,
+  login,
+} from "../../../context/slices/authSlice";
 import CustomInput from "../../Input/CustomInput";
 
 const schema = z.object({
@@ -78,7 +82,6 @@ const Login = () => {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const onSubmit = async (data: LoginDataForm) => {
-
     setIsLoading(true);
     onOpen();
 
@@ -112,10 +115,12 @@ const Login = () => {
 
         if (isAdmin) {
           localStorage.setItem("isLogged", "true");
-          dispatch(login());
+          localStorage.setItem("isLoggedAdmin", "true");
+          dispatch(loginAdmin());
           history("/userDashboard");
         } else {
           localStorage.setItem("isLogged", "true");
+          localStorage.setItem("isLoggedAdmin", "false");
           dispatch(login());
           console.log("No eres administrador. Redireccionando...");
           history("/");
@@ -160,7 +165,7 @@ const Login = () => {
         }
       >
         <ModalOverlay />
-        <ModalContent w={{ base: '80vw', lg: "650px"}} px={5}>
+        <ModalContent w={{ base: "80vw", lg: "650px" }} px={5}>
           <ModalHeader
             paddingTop={12}
             textAlign={"center"}
@@ -197,17 +202,15 @@ const Login = () => {
               </Flex> */}
               <Flex direction="column" align="center" paddingTop={4}>
                 <Box w={"100%"}>
-                  <FormControl
-                    id="email"
-                    w="100%"
-                    isInvalid={!!errors.email}
-                  >
-                    <CustomInput 
+                  <FormControl id="email" w="100%" isInvalid={!!errors.email}>
+                    <CustomInput
                       control={control}
                       name="email"
-                      placeholder={breakpointValue === "base"
-                      ? "Correo electrónico"
-                      : "Dirección de correo electrónico"}
+                      placeholder={
+                        breakpointValue === "base"
+                          ? "Correo electrónico"
+                          : "Dirección de correo electrónico"
+                      }
                       autoComplete="email"
                       type="email"
                     />
@@ -225,13 +228,13 @@ const Login = () => {
                     isInvalid={!!errors.password}
                   >
                     <InputGroup>
-                      <CustomInput 
+                      <CustomInput
                         control={control}
                         name="password"
                         placeholder="Contraseña"
                         type={showPassword ? "text" : "password"}
                         autoComplete="new-password"
-                      /> 
+                      />
 
                       <InputRightElement padding={7}>
                         <IconButton
@@ -264,18 +267,18 @@ const Login = () => {
                 w="100%"
                 justifyContent="flex-start"
               >
-                <Link isExternal color="#006C67" href="#" fontSize={'smaller'}>
+                <Link isExternal color="#006C67" href="#" fontSize={"smaller"}>
                   ¿Olvidaste tu contraseña?
                 </Link>
               </HStack>
               <Center>
                 <Button
                   type="submit"
-                  variant={'brandPrimary'}
+                  variant={"brandPrimary"}
                   py={5}
                   px={10}
                   mt={7}
-                  fontSize={'larger'}
+                  fontSize={"larger"}
                 >
                   INICIAR SESIÓN
                 </Button>
@@ -284,11 +287,7 @@ const Login = () => {
 
             <VStack>
               <Center pt={10} pb={5}>
-                <HStack
-                  fontSize='lg'
-                  spacing="1"
-                  w="100%"
-                >
+                <HStack fontSize="lg" spacing="1" w="100%">
                   <Link isExternal color="#006C67" href="#">
                     <LinkTo
                       to="/register"
