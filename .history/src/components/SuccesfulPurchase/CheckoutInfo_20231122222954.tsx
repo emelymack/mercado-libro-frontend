@@ -32,7 +32,7 @@ const CheckoutInfo = () => {
         <Box borderWidth="2px" borderColor="brand.greenLogo" borderRadius="5px" w={{ base: '85vw', lg: '70vw', xl: '50vw' }}>
             <Table>
                 <Tbody>
-                    <Tr style={styles.row}>
+                    <Tr style={styles.row} borderColor="brand.greenLogo">
                         <Td style={styles.rowContent} p={{ base: "14px", lg: "23px"}}>
                             <Box w={{ base: '35px', xl: '40px'}} h={{ base: '35px', xl: '40px'}} style={styles.icon}>
                                 <Image src={EmailIcon} alt="Email icon" w={{ base: '20px', xl: '25px' }} />
