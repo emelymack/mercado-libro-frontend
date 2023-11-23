@@ -6,7 +6,7 @@ import CartData from './CartData'
 import { useAppDispatch, useAppSelector } from "../../context/hooks";
 import { useNavigate } from "react-router-dom";
 import { toggleAccess } from "../../context/slices/checkoutSlice";
-import { clearShippingData } from "../../context/slices/cartSlice";
+import { clearCartData, clearShippingData } from "../../context/slices/cartSlice";
 import ShippingData from "./Form/ShippingData";
 import { ICheckoutData, IPaymentData, IShippingData } from "../../types/checkout";
 import PaymentData from "./Form/PaymentData";
@@ -40,18 +40,16 @@ const CheckoutPage = () => {
 
 
   const handleShippingData = (data: IShippingData) => {
-    setFormData({...formData, shippingData: data})
+    setFormData({...formData, shippingData: data})    
     setTabIndex(1)
   }
 
   const handlePaymentData = (data: IPaymentData) => {
-    console.log(data);
-    
-    // setFormData({...formData, paymentData: data})
-    //* TODO: hacer POST a la api y enviar a la página de éxito 
+    setFormData({...formData, paymentData: data})
   }
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
     if(!accessCheckout) navigate('/')
 
     return () => {
@@ -62,7 +60,13 @@ const CheckoutPage = () => {
     }
   }, [])
   
-  
+  useEffect(() => {
+    if(Object.keys(formData.paymentData).length !== 0) {
+      //* TODO: hacer POST a la api, borrar carrito y enviar a la página de éxito 
+      dispatch(clearCartData())
+      // navigate('/product/23')
+    }
+  }, [formData])
 
   return (
     <PageContainer>

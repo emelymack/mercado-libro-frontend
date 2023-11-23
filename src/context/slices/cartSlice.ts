@@ -56,6 +56,13 @@ export const cartSlice = createSlice({
 
     clearShippingData: (state) => {
       state.shipping = { type: null, price: 0, postalCode: 0, date: '' }
+    },
+
+    clearCartData: (state) => {
+      localStorage.removeItem('cart')
+      state.items = []
+      state.shipping = { type: null, price: 0, postalCode: 0, date: '' },
+      state.total = 0
     }
   },
   extraReducers: (builder) => {
@@ -66,6 +73,6 @@ export const cartSlice = createSlice({
   }
 });
 
-export const { updateItem, deleteItem, setShippingData, setTotalPrice, clearShippingData } = cartSlice.actions
+export const { updateItem, deleteItem, setShippingData, setTotalPrice, clearShippingData, clearCartData } = cartSlice.actions
 
 export default cartSlice.reducer;

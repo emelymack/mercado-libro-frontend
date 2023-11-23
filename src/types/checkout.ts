@@ -24,5 +24,6 @@ export interface IPaymentData {
   cardExpiryDate: string,
   cardCVV: number,
   documentType: string,
-  cardOwnerDocument: number
+  cardOwnerDocument: number,
+  orderNotes?: string
 }
