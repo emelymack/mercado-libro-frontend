@@ -5,14 +5,9 @@ import {
   CREATE_BOOK_URL,
   GET_ALL_BOOK_URL,
   CATEGORY_URL,
-<<<<<<< HEAD
   UPLOAD_IMAGEN_BOOK_URL
 } from "./apiUrls";
 import axios from "axios";
-=======
-} from "./apiUrls";
-import { Book } from "../types/product";
->>>>>>> main
 
 export interface GetBooksResponse {
   content: Book[];
