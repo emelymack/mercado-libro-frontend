@@ -9,18 +9,23 @@ import { Book } from "../../types/product";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import BreadcrumbNav from "./BreadcrumbNav";
+import Pagination from "../../utils/Pagination";
 
 
 
 export const Categories = () => {
   const {categoryName} = useParams();
   const [ librosCategoria, setLibrosCategoria ] = useState<Book[]>([]);
-  const [ isLoading, setIsLoading ] = useState(false)
-  const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
+  const [ isLoading, setIsLoading ] = useState(false);
+  const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
+  const [pageNumber, setPageNumber] = useState<number>(0);
+  const [pageSize] = useState<number>(10);
+  const [totalElements, setTotalElements] = useState<number>(0);
 
   useEffect(() => { 
     window.scrollTo(0, 0);
     setIsLoading(true)
+
     if(categoryName) {
       getBooksByCategory(categoryName)
       .then((res) => {
@@ -82,6 +87,12 @@ export const Categories = () => {
           </Box>
         }
       </Center>
+      <Pagination
+          pageNumber={pageNumber}
+          pageSize={pageSize}
+          totalElements={totalElements}
+          onPageChange={(newPage) => setPageNumber(newPage)}
+        />
     </Container>
   );
 };
