@@ -13,14 +13,14 @@ import ProductData from './ProductData'
 import PageContainer from '../Layout/PageContainer'
 
 interface Product {
-  book: Book | undefined,
-  isLoading: boolean
+  book: Book | undefined;
+  isLoading: boolean;
 }
 const ProductPage = () => {
   const [product, setProduct] = useState<Product>({book: undefined, isLoading: true})
   const {productId} = useParams()
 
-  const [orderQty, setOrderQty] = useState(1);  
+  const [orderQty, setOrderQty] = useState(1);
 
   useEffect(() => { 
     window.scrollTo(0, 0); 
@@ -34,25 +34,32 @@ const ProductPage = () => {
       })
     }
   }, [productId]);
-  
 
-  if(product.isLoading) return ( 
-    <Box h={'calc(100vh - 130px)'} display={'flex'} alignItems={'center'} justifyContent={'center'}>
-      <CustomLoading />
-    </Box> 
-  )
+  if (product.isLoading)
+    return (
+      <Box
+        h={"calc(100vh - 130px)"}
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <CustomLoading />
+      </Box>
+    );
 
   return (
     <PageContainer>
       <Box py={8} mb={20}>
         {product.book && (
           <>
-            <BreadcrumbNav category={product.book.categories[0]?.name} bookTitle={product.book.title} />
+            <BreadcrumbNav
+              category={product.book.categories[0]?.name}
+              bookTitle={product.book.title}
+            />
             <ProductData book={product.book}>
-
               {/* Detalles de producto */}
-              <Details 
-                description={product.book.description} 
+              <Details
+                description={product.book.description}
                 language={product.book.language}
                 page_count={product.book.page_count}
                 published_date={product.book.published_date}
@@ -61,9 +68,22 @@ const ProductPage = () => {
               />
 
               {/* Botones */}
-              <Stack direction={{base: 'column', lg: 'row'}} alignItems={'center'} spacing={{base: 5, lg: 10}} mt={8}>
-                <QuantityInput quantity={orderQty} onChange={setOrderQty} stock={product.book.stock} />
-                <AddToCart id={product.book.id} stock={product.book.stock} orderQty={orderQty} />
+              <Stack
+                direction={{ base: "column", lg: "row" }}
+                alignItems={"center"}
+                spacing={{ base: 5, lg: 10 }}
+                mt={8}
+              >
+                <QuantityInput
+                  quantity={orderQty}
+                  onChange={setOrderQty}
+                  stock={product.book.stock}
+                />
+                <AddToCart
+                  id={product.book.id}
+                  stock={product.book.stock}
+                  orderQty={orderQty}
+                />
               </Stack>
             </ProductData>
 
@@ -79,4 +99,4 @@ const ProductPage = () => {
   )
 }
 
-export default ProductPage
+export default ProductPage;

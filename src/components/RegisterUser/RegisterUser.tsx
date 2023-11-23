@@ -150,16 +150,18 @@ const RegisterUser = () => {
         marginY={20}
         py={5}
       >
-        <CardBody py={10} px={{base:10, lg:20}}>
+        <CardBody py={10} px={{ base: 10, lg: 20 }}>
           <VStack spacing={6}>
             <Title text="Registro" htmlElement={"h1"} size="xl" color="green" />
-            <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%", marginTop: 20 }}>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              style={{ width: "100%", marginTop: 20 }}
+            >
               <FormControl id="name" w="100%" isInvalid={!!errors.name}>
-                <CustomInput 
+                <CustomInput
                   control={control}
                   name="name"
                   placeholder="Nombre y Apellido"
-
                 />
                 {errors.name && (
                   <FormErrorMessage fontSize="lg" color="red">
@@ -173,7 +175,7 @@ const RegisterUser = () => {
                 w="100%"
                 isInvalid={!!errors.email}
               >
-                <CustomInput 
+                <CustomInput
                   control={control}
                   name="email"
                   placeholder={
@@ -197,7 +199,7 @@ const RegisterUser = () => {
                 isInvalid={!!errors.password}
               >
                 <InputGroup>
-                  <CustomInput 
+                  <CustomInput
                     control={control}
                     name="password"
                     placeholder="Contraseña"
@@ -235,7 +237,7 @@ const RegisterUser = () => {
                 isInvalid={!!errors.confirmPassword}
               >
                 <InputGroup>
-                  <CustomInput 
+                  <CustomInput
                     control={control}
                     name="confirmPassword"
                     placeholder="Confirma tu contraseña"
@@ -267,12 +269,15 @@ const RegisterUser = () => {
               </FormControl>
               <Center mt={10}>
                 <Button
-                  variant={'brandPrimary'}
+                  variant={"brandPrimary"}
                   type="submit"
-                  fontSize={'x-large'}
+                  fontSize={"x-large"}
                   py={6}
                   px={10}
-                  _hover={{fontSize: 'auto', backgroundColor: 'brand.violetLogo' }}
+                  _hover={{
+                    fontSize: "auto",
+                    backgroundColor: "brand.violetLogo",
+                  }}
                 >
                   Registrate
                 </Button>
@@ -297,7 +302,7 @@ const RegisterUser = () => {
           }}
         >
           <ModalOverlay />
-          <ModalContent bg={"brand.greenLogo"} color={'white'}>
+          <ModalContent bg={"brand.greenLogo"} color={"white"}>
             <ModalHeader textAlign="center">Registro Exitoso</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

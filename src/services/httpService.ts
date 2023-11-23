@@ -18,7 +18,7 @@ const requestGeneric: RequestGeneric = {
   delete: (url) => axios.delete(url),
 };
 
-axios.interceptors.request.use(
+const interceptor = axios.interceptors.request.use(
   (config) => {
     const tokenItem = localStorage.getItem("token");
     if (tokenItem) {
@@ -33,5 +33,10 @@ axios.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
+setTimeout(() => {
+  axios.interceptors.request.eject(interceptor);
+  console.log("Interceptor removed!"); // Agrega un mensaje de registro en la consola
+}, 5 * 1000);
 
 export default requestGeneric;

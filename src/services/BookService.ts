@@ -4,16 +4,18 @@ import {
   BOOK_URL,
   CREATE_BOOK_URL,
   GET_ALL_BOOK_URL,
-  CATEGORY_URL
+  CATEGORY_URL,
+  UPLOAD_IMAGEN_BOOK_URL
 } from "./apiUrls";
+import axios from "axios";
 import { Book } from "../types/product";
 
 export interface GetBooksResponse {
-  content: Book[],
-  currentPage: number,
-  pageSize: number,
-  totalElements: number,
-  totalPages: number
+  content: Book[];
+  currentPage: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
 }
 
 export interface Authors {
@@ -29,10 +31,14 @@ export interface Category {
   image_link: string;
 }
 
-
 export interface Author {
   name: string;
   email: string;
+}
+
+export interface Response{
+  code:string;
+  message:string;
 }
 
 export const getBookById = (id: number): Promise<Book> => {
@@ -78,8 +84,8 @@ export const getAllBooks = (): Promise<Book[]> => {
   return httpService
     .get(`${BASE_URL}${GET_ALL_BOOK_URL}`)
     .then((response) => {
-      if (Array.isArray(response.data)) {
-        return response.data as Book[];
+      if (Array.isArray(response.data.content)) {
+        return response.data.content as Book[];
       } else {
         throw new Error("La respuesta no es un array de libros");
       }
@@ -94,7 +100,7 @@ export const getAllCategory = (): Promise<Category[]> => {
     .get(`${BASE_URL}${CATEGORY_URL}`)
     .then((response) => {
       if (Array.isArray(response.data)) {
-        console.log(response.data)
+        console.log(response.data);
         return response.data as Category[];
       } else {
         throw new Error("La respuesta no es un array de Categorias");
@@ -105,9 +111,11 @@ export const getAllCategory = (): Promise<Category[]> => {
     });
 };
 
-export const getBooksByCategory = (nameCategory: string): Promise<GetBooksResponse> => {
+export const getBooksByCategory = (
+  nameCategory: string
+): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?page=0&category=${nameCategory}`) 
+    .get(`${BASE_URL}${BOOK_URL}?page=0&category=${nameCategory}`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
@@ -119,7 +127,15 @@ export const saveBook = (book: Book): Promise<Book> => {
     .post(`${BASE_URL}${CREATE_BOOK_URL}`, book)
     .then((response) => response.data)
     .catch((error) => {
-      throw new Error(error.response?.data?.message);
+      if (axios.isAxiosError(error)) {        
+        throw {
+          statusCode: error.response ? error.response.status : 500,
+          data: error.response ? error.response.data:null,
+          errorMessage: error.message,
+        };
+      } else {
+        throw error;
+      }
     });
 };
 
@@ -134,7 +150,9 @@ export const getNewBooks = (): Promise<GetBooksResponse> => {
     });
 };
 
-export const getNewBooksByCategory = (category:string): Promise<GetBooksResponse> => {
+export const getNewBooksByCategory = (
+  category: string
+): Promise<GetBooksResponse> => {
   return httpService
     .get(`${BASE_URL}${BOOK_URL}?selection=newer&category=${category}&page=0`) 
     .then((response) => response.data)
@@ -142,3 +160,30 @@ export const getNewBooksByCategory = (category:string): Promise<GetBooksResponse
       throw new Error(error.response?.data?.message);
     });
 };
+
+export const saveImage = (formdData: FormData, bookID:number): Promise<Response> => {
+  return httpService
+    .post(`${BASE_URL}${UPLOAD_IMAGEN_BOOK_URL}/${bookID}`, formdData)
+    .then((response) => response.data)
+    .catch((error) => {
+      if (axios.isAxiosError(error)) {        
+        throw {
+          statusCode: error.response ? error.response.status : 500,
+          data: error.response ? error.response.data:null,
+          errorMessage: error.message,
+        };
+      } else {
+        throw error;
+      }
+    });
+};
+
+export const deleteImage = (id: number): Promise<void> => {
+  return httpService
+    .delete(`${BASE_URL}${UPLOAD_IMAGEN_BOOK_URL}/${id}`)
+    .then(() => {})
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};
+
