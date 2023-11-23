@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IPaymentData } from "../../../types/checkout"
 import { useForm, SubmitHandler } from "react-hook-form";
 import { paymentSchema } from "../schema";
-import { Box, Button, Divider, Flex, Image, Radio, RadioGroup, Text, Textarea } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Image, Radio, RadioGroup, Text, Textarea, useDisclosure } from "@chakra-ui/react";
 import mailIcon from '../../../assets/icons/icon-mail.svg'
 import locationIcon from '../../../assets/icons/icon-location.svg'
 import shippingIcon from '../../../assets/icons/icon-shipping.svg'
@@ -10,6 +10,7 @@ import { Title } from "../../Title";
 import { useState } from "react";
 import { useAppSelector } from "../../../context/hooks";
 import PaymentCardData from "./PaymentCardData";
+import ModalError from "../../Modal/ModalError";
 
 interface Props {
   handlePaymentData: (data: IPaymentData) => void,
@@ -26,10 +27,15 @@ const PaymentData = ({ handlePaymentData, email, address, city, province }: Prop
   const { control, formState: { errors }, handleSubmit, register, watch } = useForm<IPaymentData>({
     resolver: zodResolver(paymentSchema),
   });
+  const { onOpen, isOpen, onClose } = useDisclosure()
 
   const onSubmit: SubmitHandler<IPaymentData> = (data) => {
-    handlePaymentData({...data, paymentMethod: paymentMethod})
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    if(data.paymentMethod === 'TARJETA' && (!data.cardNumber.startsWith('4') || !data.cardNumber.startsWith('2') || !data.cardNumber.startsWith('5') || !data.cardNumber.startsWith('34') || !data.cardNumber.startsWith('37') || !data.cardNumber.startsWith('6011') || !data.cardNumber.startsWith('622') || !data.cardNumber.startsWith('644') || !data.cardNumber.startsWith('649') || !data.cardNumber.startsWith('65') || !data.cardNumber.startsWith('300') || !data.cardNumber.startsWith('305') || !data.cardNumber.startsWith('36') || !data.cardNumber.startsWith('38'))) {
+      onOpen()
+    } else {
+      handlePaymentData({...data, paymentMethod: paymentMethod})
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }
 
   const handlePaymentMethod = (value: 'TARJETA'| 'TRANSFERENCIA' | 'MERCADO_PAGO') => {
@@ -37,6 +43,7 @@ const PaymentData = ({ handlePaymentData, email, address, city, province }: Prop
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box border={'2px solid'} borderColor={'brand.greenLogo'} borderRadius={8}>
         <Flex alignItems={"center"} p={5} fontSize={'lg'}>
@@ -115,6 +122,8 @@ const PaymentData = ({ handlePaymentData, email, address, city, province }: Prop
       </Button>
       </Flex>
     </form>
+    <ModalError isOpen={isOpen} onClose={onClose} title="Ingrese una tarjeta válida."  />
+    </>
   )
 }
 

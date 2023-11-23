@@ -63,20 +63,26 @@ const CheckoutPage = () => {
   
   useEffect(() => {
     if(Object.keys(formData.paymentData).length !== 0) {
-      //* TODO: hacer POST a la api, borrar carrito y enviar a la página de éxito 
-      dispatch(clearCartData())
-      dispatch(setCheckoutData({
-        email: formData.shippingData.email,
-        address: `${formData.shippingData.street} ${formData.shippingData.streetNumber}`,
-        postalCode: shippingData.postalCode,
-        city: formData.shippingData.city,
-        province: formData.shippingData.province,
-        phoneNumber: formData.shippingData.phoneNumber,
-        shippingType: formData.shippingData.shippingType,
-        shippingDate: shippingData.date,
-        paymentType: formData.paymentData.paymentMethod,
-      }))
-      navigate('/successful')
+      try {
+        dispatch(clearCartData())
+        dispatch(setCheckoutData({
+          email: formData.shippingData.email,
+          address: `${formData.shippingData.street} ${formData.shippingData.streetNumber}`,
+          postalCode: shippingData.postalCode,
+          city: formData.shippingData.city,
+          province: formData.shippingData.province,
+          phoneNumber: formData.shippingData.phoneNumber,
+          shippingType: formData.shippingData.shippingType,
+          shippingDate: shippingData.date,
+          paymentType: formData.paymentData.paymentMethod,
+        }))
+
+        
+        navigate('/successful')
+
+      } catch (err) {
+        console.error(err)
+      }
     }
   }, [formData])
 
