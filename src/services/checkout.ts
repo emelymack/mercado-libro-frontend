@@ -1,6 +1,6 @@
-export const validCard = '4242 4242 4242 4242' || '4242 4242 4242 4242'.replaceAll(' ','')
-export const withoutFundsCard = '4111 4111 4111 4111' || '4111 4111 4111 4111'.replaceAll(' ','')
-export const withoutAuthorizationCard = '4000 4000 4000 4000' || '4000 4000 4000 4000'.replaceAll(' ','')
+// export const validCard = '4242 4242 4242 4242' || '4242 4242 4242 4242'.replaceAll(' ','')
+// export const withoutFundsCard = '4111 4111 4111 4111' || '4111 4111 4111 4111'.replaceAll(' ','')
+// export const withoutAuthorizationCard = '4000 4000 4000 4000' || '4000 4000 4000 4000'.replaceAll(' ','')
 
 export const ERROR_METHOD_NOT_ALLOWED = {
   error: 'METHOD_NOT_ALLOWED',

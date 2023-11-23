@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import CartData from './CartData'
 import { useAppDispatch, useAppSelector } from "../../context/hooks";
 import { useNavigate } from "react-router-dom";
-import { toggleAccess } from "../../context/slices/checkoutSlice";
+import { setCheckoutData, toggleAccess } from "../../context/slices/checkoutSlice";
 import { clearCartData, clearShippingData } from "../../context/slices/cartSlice";
 import ShippingData from "./Form/ShippingData";
 import { ICheckoutData, IPaymentData, IShippingData } from "../../types/checkout";
@@ -32,6 +32,7 @@ const defaultValues = {
 
 const CheckoutPage = () => {
   const accessCheckout = useAppSelector((state) => state.checkout.access)
+  const shippingData = useAppSelector((state) => state.cart.shipping)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   // @ts-ignore
@@ -64,7 +65,18 @@ const CheckoutPage = () => {
     if(Object.keys(formData.paymentData).length !== 0) {
       //* TODO: hacer POST a la api, borrar carrito y enviar a la página de éxito 
       dispatch(clearCartData())
-      // navigate('/product/23')
+      dispatch(setCheckoutData({
+        email: formData.shippingData.email,
+        address: `${formData.shippingData.street} ${formData.shippingData.streetNumber}`,
+        postalCode: shippingData.postalCode,
+        city: formData.shippingData.city,
+        province: formData.shippingData.province,
+        phoneNumber: formData.shippingData.phoneNumber,
+        shippingType: formData.shippingData.shippingType,
+        shippingDate: shippingData.date,
+        paymentType: formData.paymentData.paymentMethod,
+      }))
+      navigate('/successful')
     }
   }, [formData])
 
