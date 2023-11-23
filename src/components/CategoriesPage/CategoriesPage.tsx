@@ -9,35 +9,42 @@ import { Book } from "../../types/product";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import BreadcrumbNav from "./BreadcrumbNav";
 
-
-
 export const Categories = () => {
-  const {categoryName} = useParams();
-  const [ librosCategoria, setLibrosCategoria ] = useState<Book[]>([]);
-  const [ isLoading, setIsLoading ] = useState(false)
-  const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
+  const { categoryName } = useParams();
+  const [librosCategoria, setLibrosCategoria] = useState<Book[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
 
-  useEffect(() => { 
+  useEffect(() => {
     window.scrollTo(0, 0);
-    setIsLoading(true)
-    if(categoryName) {
-      getBooksByCategory(categoryName)
-      .then((res) => {
-        setLibrosCategoria(res.content)
-        setIsLoading(false)
-      })
+    setIsLoading(true);
+    if (categoryName) {
+      getBooksByCategory(categoryName).then((res) => {
+        setLibrosCategoria(res.content);
+        setIsLoading(false);
+      });
     }
-  
   }, [categoryName]);
 
-  if(isLoading) return (
-    <Box h={'calc(100vh - 130px)'} display={'flex'} alignItems={'center'} justifyContent={'center'}>
-      <CustomLoading />
-    </Box>
-  )
+  if (isLoading)
+    return (
+      <Box
+        h={"calc(100vh - 130px)"}
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <CustomLoading />
+      </Box>
+    );
 
   return (
-    <Container maxW="container.xl" bg="white.600" mb={20} className={`page ${isScrolling ? 'scroll' : ''}`}>
+    <Container
+      maxW="container.xl"
+      bg="white.600"
+      mb={20}
+      className={`page ${isScrolling ? "scroll" : ""}`}
+    >
       <BreadcrumbNav category={`${categoryName}`} />
       <Heading
         size="3xl"
@@ -45,14 +52,14 @@ export const Categories = () => {
         mt={10}
         mb={12}
         color="brand.greenLogo"
-        textTransform={'uppercase'}
+        textTransform={"uppercase"}
         textAlign={"center"}
       >
         {categoryName}
       </Heading>
 
       <Center>
-        { librosCategoria.length > 0 ?
+        {librosCategoria.length > 0 ? (
           <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} gap={5}>
             {librosCategoria.map((producto) => (
               <ProductCard
@@ -66,7 +73,7 @@ export const Categories = () => {
                 page_count={producto.page_count}
                 ratings_count={producto.ratings_count}
                 currency_code={producto.currency_code}
-                images={producto.images}
+                image_links={producto.image_links}
                 title={producto.title}
                 authors={producto.authors}
                 price={producto.price}
@@ -74,11 +81,13 @@ export const Categories = () => {
               />
             ))}
           </SimpleGrid>
-          : 
+        ) : (
           <Box my={12} py={4}>
-            <Heading color={'red.400'} size={'md'} textAlign={'center'}>¡No se encontraron libros para esta categoría!</Heading>
+            <Heading color={"red.400"} size={"md"} textAlign={"center"}>
+              ¡No se encontraron libros para esta categoría!
+            </Heading>
           </Box>
-        }
+        )}
       </Center>
     </Container>
   );
