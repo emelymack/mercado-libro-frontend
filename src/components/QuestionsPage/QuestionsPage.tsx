@@ -5,16 +5,16 @@ import { Title } from "../Title";
 
 
 export const QuestionsPage = () => {
-    const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
+  const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
 
-    useEffect(() => { 
+   /*  useEffect(() => { 
         window.scrollTo(0, 0);
     });
-  
+   */
 
 
     return (
-        <Container maxW={'container.xl'} className={`page ${isScrolling ? 'scroll' : ''}`}>
+        <Container maxW="container.xl" bg="white.600" mb={20} className={`page ${isScrolling ? 'scroll' : ''}`}>
         <Heading
         size="3xl" fontWeight={900} mt={10} mb={12} color="brand.greenLogo" textTransform={'uppercase'} textAlign={"center"}>
         Preguntas Frecuentes

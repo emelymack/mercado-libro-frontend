@@ -66,7 +66,7 @@ export const Categories = () => {
                 page_count={producto.page_count}
                 ratings_count={producto.ratings_count}
                 currency_code={producto.currency_code}
-                images={producto.images}
+                image_links={producto.image_links}
                 title={producto.title}
                 authors={producto.authors}
                 price={producto.price}
