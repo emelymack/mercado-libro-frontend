@@ -30,7 +30,7 @@ const PaymentData = ({ handlePaymentData, email, address, city, province }: Prop
   const { onOpen, isOpen, onClose } = useDisclosure()
 
   const onSubmit: SubmitHandler<IPaymentData> = (data) => {
-    if(data.paymentMethod === 'TARJETA' && (!data.cardNumber.startsWith('4') || !data.cardNumber.startsWith('2') || !data.cardNumber.startsWith('5') || !data.cardNumber.startsWith('34') || !data.cardNumber.startsWith('37') || !data.cardNumber.startsWith('6011') || !data.cardNumber.startsWith('622') || !data.cardNumber.startsWith('644') || !data.cardNumber.startsWith('649') || !data.cardNumber.startsWith('65') || !data.cardNumber.startsWith('300') || !data.cardNumber.startsWith('305') || !data.cardNumber.startsWith('36') || !data.cardNumber.startsWith('38'))) {
+    if(data.paymentMethod === 'TARJETA' && !(data.cardNumber.startsWith('4') || data.cardNumber.startsWith('2') || data.cardNumber.startsWith('5') || data.cardNumber.startsWith('34') || data.cardNumber.startsWith('37') || data.cardNumber.startsWith('6011') || data.cardNumber.startsWith('622') || data.cardNumber.startsWith('644') || data.cardNumber.startsWith('649') || data.cardNumber.startsWith('65') || data.cardNumber.startsWith('300') || data.cardNumber.startsWith('305') || data.cardNumber.startsWith('36') || data.cardNumber.startsWith('38'))) {
       onOpen()
     } else {
       handlePaymentData({...data, paymentMethod: paymentMethod})
