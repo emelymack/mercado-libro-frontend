@@ -7,15 +7,15 @@ import Services from "./Services";
 import { useAppSelector } from "../../context/hooks";
 
 const Home = () => {
-  const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
+  const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
   return (
-    <Box className={`page ${isScrolling ? 'scroll' : ''}`}>
+    <Box className={`page ${isScrolling ? "scroll" : ""}`}>
       <Banner />
       <Container maxW={"container.xl"} mt={12} mb={20}>
         <Box>
           <NewsCarousel />
         </Box>
-        <Box mt={{base: 12, lg: 20}} mb={5}>
+        <Box mt={{ base: 12, lg: 20 }} mb={5}>
           <TrendingCarousel />
         </Box>
         <Categories />

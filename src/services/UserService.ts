@@ -1,6 +1,5 @@
 import httpService from "./httpService";
 import { BASE_URL, GET_ALL_USERS_URL, USER_URL } from "./apiUrls";
-
 import { CustomResponse } from "../types/customResponse";
 import axios from "axios";
 import { EditUser, GetAllUsersParams, User } from "../types/user";
