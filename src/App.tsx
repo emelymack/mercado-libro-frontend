@@ -66,7 +66,7 @@ function App() {
             path="/books/search/:searchTerm"
             element={<BookListSearch />}
           />
-          <Route path="/succesful" element={<SuccesfulPurchase />} />
+          <Route path="/successful" element={<SuccesfulPurchase />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/questions" element={<QuestionsPage />} />
           <Route path="/novedades" element={<NewsPage />} />

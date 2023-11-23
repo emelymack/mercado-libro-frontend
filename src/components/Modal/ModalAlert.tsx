@@ -43,7 +43,7 @@ const ModalAlert = ({isOpen, onClose, headerTitle, text, onConfirm}: Props) => {
             textAlign="center"
             height="200px"
           >
-            <AlertIcon boxSize="60px" mr={0} />
+            <AlertIcon boxSize="60px" mr={0} color={'red.900'} />
             <AlertTitle mt={4} mb={1} fontSize="xl">
               {text}
             </AlertTitle>

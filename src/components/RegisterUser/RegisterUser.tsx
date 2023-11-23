@@ -10,9 +10,7 @@ import {
   FormControl,
   FormErrorMessage,
   HStack,
-  Heading,
   IconButton,
-  Input,
   InputGroup,
   InputRightElement,
   Link,
@@ -72,7 +70,6 @@ const RegisterUser = () => {
   });
   const {
     control,
-    register,
     handleSubmit,
     setValue,
     reset,
@@ -207,23 +204,8 @@ const RegisterUser = () => {
                     name="password"
                     placeholder="Contraseña"
                     type={showPassword ? "text" : "password"}
-                    // {...register("password")}
                     autoComplete="new-password"
                   />
-                  {/* <Input
-                    padding={3}
-                    fontSize={{ base: "lg", md: "xl" }}
-                    h={"auto"}
-                    placeholder="Contraseña"
-                    type={showPassword ? "text" : "password"}
-                    {...register("password")}
-                    bg="white"
-                    color="#003844"
-                    borderColor="#d8dee4"
-                    size="sm"
-                    borderRadius="6px"
-                    autoComplete="new-password"
-                  /> */}
 
                   <InputRightElement padding={7}>
                     <IconButton
@@ -262,20 +244,6 @@ const RegisterUser = () => {
                     type={showConfirmPassword ? "text" : "password"}
                     autoComplete="off"
                   />
-                  {/* <Input
-                    padding={3}
-                    fontSize={{ base: "lg", md: "xl" }}
-                    h={"auto"}
-                    placeholder="Confirma tu contraseña"
-                    type={showConfirmPassword ? "text" : "password"}
-                    color="brand.blueLogo"
-                    {...register("confirmPassword")}
-                    bg="white"
-                    borderColor="#d8dee4"
-                    size="sm"
-                    autoComplete="off"
-                    borderRadius="6px"
-                  /> */}
                   <InputRightElement padding={7}>
                     <IconButton
                       aria-label="Mostrar contraseña"
@@ -380,11 +348,12 @@ const RegisterUser = () => {
         >
           <ModalOverlay />
           <ModalContent bg={"brand.greenLogo"}>
-            <ModalHeader textAlign="center">Error al registrarse</ModalHeader>
-            <ModalCloseButton />
+            <ModalHeader color={'white'} textAlign="center">Error al registrarse</ModalHeader>
+            <ModalCloseButton color={'white'} />
             <ModalBody>
               <Alert
                 bg={"brand.greenLogo"}
+                color={'white'}
                 status="error"
                 variant="subtle"
                 flexDirection="column"

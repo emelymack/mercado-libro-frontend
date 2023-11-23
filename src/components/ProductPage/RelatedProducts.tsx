@@ -3,56 +3,11 @@ import { Book } from '../../types/product';
 import ProductsCarousel from '../ProductsCarousel'
 import { getNewBooksByCategory } from '../../services/BookService';
 
-// const products = [
-//   {
-//     id: 6,
-//     image_links: [img],
-//     title: "El corazón de piedra verde",
-//     author: [{name: "Salvador de Madariaga", email:  ""}],
-//     price: 12500,
-//     url: ""
-//   },{
-//     id: 7,
-//     image_links: [img],
-//     title: "El corazón de piedra verde",
-//     author: [{name: "Salvador de Madariaga", email:  ""}],
-//     price: 12500,
-//     url: ""
-//   },{
-//     id: 8,
-//     image_links: [img],
-//     title: "El corazón de piedra verde",
-//     author: [{name: "Salvador de Madariaga", email:  ""}],
-//     price: 12500,
-//     url: ""
-//   },{
-//     id: 9,
-//     image_links: [img],
-//     title: "El corazón de piedra verde",
-//     author: [{name: "Salvador de Madariaga", email:  ""}],
-//     price: 12500,
-//     url: ""
-//   },{
-//     id: 10,
-//     image_links: [img],
-//     title: "El corazón de piedra verde",
-//     author: [{name: "Salvador de Madariaga", email:  ""}],
-//     price: 12500,
-//     url: ""
-//   },{
-//     id: 11,
-//     image_links: [img],
-//     title: "El corazón de piedra verde",
-//     author: [{name: "Salvador de Madariaga", email:  ""}],
-//     price: 12500,
-//     url: ""
-//   },
-// ]
-
 interface Props {
-  categoryName: string
+  categoryName: string,
+  productId: number
 }
-const RelatedProducts = ({categoryName}: Props) => {
+const RelatedProducts = ({categoryName, productId}: Props) => {
   const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
@@ -60,12 +15,13 @@ const RelatedProducts = ({categoryName}: Props) => {
 
     getNewBooksByCategory(categoryName)
     .then((res) => {
-      setBooks(res.content);
+      const relatedBooks = res.content.filter( item => item.id !== productId)
+      setBooks(relatedBooks);
     });
   }, []);
 
   return (
-    <ProductsCarousel title='Productos relacionados' products={books} />
+    <ProductsCarousel title='Productos relacionados' products={books ?? null} />
   )
 }
 

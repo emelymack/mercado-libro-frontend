@@ -169,6 +169,10 @@ footer {
   transform: scaleX(1);
 }
 
+.chakra-radio__label {
+  width: 100%;
+}
+
 @media (max-width: 767px) {
   header {
     padding-top: 15px;

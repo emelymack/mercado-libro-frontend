@@ -11,7 +11,6 @@ import {
   FormErrorMessage,
   HStack,
   IconButton,
-  Input,
   InputGroup,
   InputRightElement,
   Link,
@@ -22,7 +21,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spacer,
   VStack,
   useBreakpointValue,
   useDisclosure,
@@ -33,7 +31,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Link as LinkTo, useNavigate } from "react-router-dom";
 import { loginUser } from "../../../services/LoginService";
 import CustomLoading from "../../CustomLoading/CustomLoading";
@@ -64,7 +61,6 @@ const Login = () => {
   });
   const {
     control,
-    register,
     handleSubmit,
     reset,
     formState: { errors },

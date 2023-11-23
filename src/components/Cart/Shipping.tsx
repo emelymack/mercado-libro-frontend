@@ -1,7 +1,7 @@
 import { Box, Button, Flex, HStack, Input, Link, Radio, RadioGroup, Spinner, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import {useState, useEffect} from 'react'
 import { useAppDispatch } from '../../context/hooks'
-import { setShippingPrice } from '../../context/slices/cartSlice'
+import { setShippingData } from '../../context/slices/cartSlice'
 
 
 const Shipping = () => {
@@ -15,7 +15,7 @@ const Shipping = () => {
     if(postalCode.length >= 4) {
       setResults({isShown:false, isLoading: true})
       setDisplayError('none')
-      dispatch(setShippingPrice({ type: shippingType, price: 0, postalCode: Number(postalCode) }))
+      dispatch(setShippingData({ type: shippingType, price: 0, postalCode: Number(postalCode), date: shippingDate }))
       setTimeout(()=> {
         setResults({isLoading:false, isShown:true})
       }, 1500)
@@ -36,7 +36,7 @@ const Shipping = () => {
 
   useEffect(()=> {
     const price = shippingType === 'ENVIO_DOMICILIO' ? 2800 : 0
-    dispatch(setShippingPrice({ type: shippingType, price: price, postalCode: Number(postalCode) }))
+    dispatch(setShippingData({ type: shippingType, price: price, postalCode: Number(postalCode), date: shippingDate }))
   }, [shippingType])
 
   return (
@@ -82,6 +82,7 @@ const Shipping = () => {
                       Gratis
                     </Box>
                   </HStack>
+                  <Text fontSize={'xs'} color={'gray.00'}>Av. Fantasía 111, Buenos Aires</Text>
                 </Box>
               </Radio>
             </RadioGroup>

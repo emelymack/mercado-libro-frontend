@@ -1,28 +1,24 @@
-import { Box, Container, Stack } from "@chakra-ui/react";
-import BreadcrumbNav from "./Breadcrumb";
-import { useAppSelector } from "../../context/hooks";
-import QuantityInput from "../Input/QuantityInput";
-import AddToCart from "../Button/AddToCart";
-import Details from "./Details";
-import RelatedProducts from "./RelatedProducts";
-import { useEffect, useState } from "react";
-import { Book } from "../../types/product";
-import { getBookById } from "../../services/BookService";
-import { useParams } from "react-router-dom";
-import CustomLoading from "../CustomLoading/CustomLoading";
-import ProductData from "./ProductData";
+import { Box, Stack } from '@chakra-ui/react'
+import BreadcrumbNav from './Breadcrumb'
+import QuantityInput from '../Input/QuantityInput'
+import AddToCart from '../Button/AddToCart'
+import Details from './Details'
+import RelatedProducts from './RelatedProducts'
+import { useEffect, useState } from 'react'
+import { Book } from '../../types/product'
+import { getBookById } from '../../services/BookService'
+import { useParams } from 'react-router-dom'
+import CustomLoading from '../CustomLoading/CustomLoading'
+import ProductData from './ProductData'
+import PageContainer from '../Layout/PageContainer'
 
 interface Product {
   book: Book | undefined;
   isLoading: boolean;
 }
 const ProductPage = () => {
-  const [product, setProduct] = useState<Product>({
-    book: undefined,
-    isLoading: true,
-  });
-  const { productId } = useParams();
-  const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
+  const [product, setProduct] = useState<Product>({book: undefined, isLoading: true})
+  const {productId} = useParams()
 
   const [orderQty, setOrderQty] = useState(1);
 
@@ -52,10 +48,7 @@ const ProductPage = () => {
     );
 
   return (
-    <Container
-      maxW={"container.xl"}
-      className={`page ${isScrolling ? "scroll" : ""}`}
-    >
+    <PageContainer>
       <Box py={8} mb={20}>
         {product.book && (
           <>
@@ -95,14 +88,15 @@ const ProductPage = () => {
             </ProductData>
 
             {/* Productos relacionados */}
-            <Box px={{ base: 6, lg: 8 }} mt={20}>
-              <RelatedProducts categoryName={product.book.categories[0].name} />
+            <Box px={{base: 6, lg: 8}} mt={20}>
+              <RelatedProducts productId={product.book.id} categoryName={product.book.categories[0].name} />
             </Box>
           </>
         )}
-      </Box>
-    </Container>
-  );
-};
+        
+      </Box>  
+    </PageContainer>
+  )
+}
 
 export default ProductPage;

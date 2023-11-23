@@ -1,19 +1,18 @@
 import { useParams } from "react-router-dom";
 import ProductCard from "../Card/ProductCard";
 
-import { Center, Heading, Container, SimpleGrid, Box } from "@chakra-ui/react";
+import { Center, Heading, SimpleGrid, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../../context/hooks";
 import { getBooksByCategory } from "../../services/BookService";
 import { Book } from "../../types/product";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import BreadcrumbNav from "./BreadcrumbNav";
+import PageContainer from "../Layout/PageContainer";
 
 export const Categories = () => {
   const { categoryName } = useParams();
-  const [librosCategoria, setLibrosCategoria] = useState<Book[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
+  const [ librosCategoria, setLibrosCategoria ] = useState<Book[]>([]);
+  const [ isLoading, setIsLoading ] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,13 +38,8 @@ export const Categories = () => {
     );
 
   return (
-    <Container
-      maxW="container.xl"
-      bg="white.600"
-      mb={20}
-      className={`page ${isScrolling ? "scroll" : ""}`}
-    >
-      <BreadcrumbNav category={`${categoryName}`} />
+    <PageContainer bg="white.600" mb={20}>
+      {categoryName && <BreadcrumbNav category={categoryName} />}
       <Heading
         size="3xl"
         fontWeight={900}
@@ -63,21 +57,8 @@ export const Categories = () => {
           <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} gap={5}>
             {librosCategoria.map((producto) => (
               <ProductCard
-                id={producto.id}
-                publisher={producto.publisher}
-                isbn={producto.isbn}
-                description={producto.description}
-                published_date={producto.published_date}
-                categories={producto.categories}
-                language={producto.language}
-                page_count={producto.page_count}
-                ratings_count={producto.ratings_count}
-                currency_code={producto.currency_code}
-                image_links={producto.image_links}
-                title={producto.title}
-                authors={producto.authors}
-                price={producto.price}
-                stock={producto.stock}
+                {...producto}
+                stock={1}
               />
             ))}
           </SimpleGrid>
@@ -89,7 +70,7 @@ export const Categories = () => {
           </Box>
         )}
       </Center>
-    </Container>
+    </PageContainer>
   );
 };
 
