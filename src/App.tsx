@@ -18,6 +18,7 @@ import CheckoutPage from "./components/CheckoutPage";
 import BookListSearch from "./components/SearchBar/BookListSearch";
 import QuestionsPage from "./components/QuestionsPage/QuestionsPage";
 import NewsPage from "./components/NewsPage/NewsPage";
+import ChartDashboard from "./components/UserDashboard/ChartDashboard";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -56,6 +57,8 @@ function App() {
           <Route path="/category/:categoryName" element={<CategoriesPage />} />
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/userDashboard" element={<UserInfo />} />
+          <Route path="/userDashboardChart" element={<ChartDashboard />} />
+
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route
             path="/books/search/:searchTerm"

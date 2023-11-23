@@ -10,11 +10,11 @@ import {
   Button,
   keyframes,
 } from "@chakra-ui/react";
-import { Book } from "../../services/BookService";
 import { Link, useParams } from "react-router-dom";
 import { getAllBooksSearch } from "../../services/SearchServiceBook";
 import { useEffect, useState } from "react";
 import CustomLoading from "../CustomLoading/CustomLoading";
+import { Book } from "../../types/product";
 
 // interface BookListSearchProps {
 //   searchTerm?: string;
