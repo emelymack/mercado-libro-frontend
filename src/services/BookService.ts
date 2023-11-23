@@ -8,6 +8,7 @@ import {
   UPLOAD_IMAGEN_BOOK_URL
 } from "./apiUrls";
 import axios from "axios";
+import { Book } from "../types/product";
 
 export interface GetBooksResponse {
   content: Book[];
