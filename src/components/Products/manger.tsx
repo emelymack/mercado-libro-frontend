@@ -38,22 +38,19 @@ import {
   ModalFooter,
   useDisclosure,
   FormHelperText,
-  NumberInput,
-  NumberInputField,
   AlertTitle,
   AlertDescription,
   Card,
   CardHeader,
   Flex,
   ButtonGroup,
-  CardBody,
   Image,
+  HStack,
+  Tooltip,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { Author, Book, deleteBook, getAllBooks, getBookById, saveBook, saveImage, updateBook } from "../../services/BookService";
+import { Author, Book, deleteBook, deleteImage, getAllBooks, getBookById, saveBook, saveImage, updateBook } from "../../services/BookService";
 import {
-  MdDelete,
-  MdEditDocument,
   MdAdd,
   MdPerson,
   MdSave,
@@ -64,6 +61,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getAllCategories, Category } from "../../services/CategoryService";
 import CustomLoading from "../CustomLoading/CustomLoading";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 const schema = z.object({
   title: z
@@ -117,9 +115,6 @@ const initialAuthor: Author = {
   name: '',
   email: '',
 };
-
-const inputFile = document.getElementById("file");
-const formData = new FormData();
 
 const ProductManager = () => {
   const [error, setError] = useState<string>("");
@@ -198,6 +193,7 @@ const ProductManager = () => {
   };
 
   function save(book: Book) {
+    setIsLoading(true);
     saveBook(book).then((response) => {
       console.log(response);
       setSuccessSave("La información se guardo exitosamente!!");
@@ -220,10 +216,13 @@ const ProductManager = () => {
         } else {
           setErrorSave("No se pudo guardar la información de Libro");
         }
+      }).finally(() => {
+        setIsLoading(false);
       });
   }
 
   function update(book: Book) {
+    setIsLoading(true);
     updateBook(book?.id, book).then((response) => {
       console.log(response);
       setSuccessSave("La información se guardo exitosamente!!");
@@ -244,6 +243,8 @@ const ProductManager = () => {
         } else {
           setErrorSave("No se pudo guardar la información de Libro");
         }
+      }).finally(() => {
+        setIsLoading(false);
       });
   }
 
@@ -351,6 +352,11 @@ const ProductManager = () => {
     onClose();
   };
 
+  const handleDeleteAuthor = (index: number, author: any) => {
+    console.log("delete : " + index + "- " + JSON.stringify(author));
+
+  }
+
   function startTimer(): void {
     console.log("Temporizador iniciado.");
 
@@ -443,17 +449,19 @@ const ProductManager = () => {
   }
 
   const onSubmitFormImage = (event: any) => {
-    console.log("save image!!!");
-    console.log(event);
-    console.log(imagenSeleccionada);
+    setIsLoading(true);
     const formData = new FormData();
     formData.append('file', imagenSeleccionada);
     saveImage(formData, book?.id).then((response) => {
+      setImagenSeleccionada(null);
+      event.target.files=null;
       setSuccessUpload("Imagen cargada exitosamente!!. Puede agregar más imagenes o cerrar la ventana.");
       getDetailBookById();
     }).catch((error) => {
-        console.log(error);
-      });
+      console.log(error);
+    }).finally(() => {
+      setIsLoading(false);
+    });;
 
   }
 
@@ -472,14 +480,29 @@ const ProductManager = () => {
     setIsModalDeleteOpen(false);
   }
 
+  const handleDeleteChange = (image:any) => {
+    setIsLoading(true);
+    console.log(image);
+    deleteImage(image.id).then((response) => {
+      getDetailBookById();
+      
+    }).catch((error) => {
+      console.log(error);
+    }).finally(() => {
+      setIsLoading(false);
+    });
+    
+  }
+
   function getDetailBookById() {
-    getBookById(book?.id).then((response:any) => {
+    getBookById(book.id).then((response: any) => {
       setBook(response);
-    }).catch((error:any) => {
-        console.log(error);
-      });
+    }).catch((error: any) => {
+      console.log(error);
+    });
 
   }
+
 
   return (
 
@@ -580,22 +603,26 @@ const ProductManager = () => {
                               </Td>
                               <Td>
                                 <Stack direction="row" spacing={2}>
-                                  <Button
-                                    leftIcon={<MdDelete />}
-                                    colorScheme="purple"
-                                    variant="outline"
-                                    onClick={() => handlerDeleteProduct(book.id)}
-                                  >
-                                    Eliminar
-                                  </Button>
-                                  <Button
-                                    rightIcon={<MdEditDocument />}
-                                    colorScheme="gray"
-                                    variant="outline"
-                                    onClick={() => editBook(book)}
-                                  >
-                                    Editar
-                                  </Button>
+                                  <Tooltip label="Eliminar" aria-label="Eliminar" fontSize="md">
+                                    <DeleteIcon
+                                      w={4}
+                                      h={4}
+                                      color="red.300"
+                                      _hover={{ color: "red.500" }}
+                                      onClick={() => handlerDeleteProduct(book.id)}
+                                      cursor="pointer"
+                                    />
+                                  </Tooltip>
+                                  <Tooltip label="Editar" aria-label="Editar" fontSize="md">
+                                    <EditIcon
+                                      w={4}
+                                      h={4}
+                                      color="brand.blueLogo"
+                                      _hover={{ color: "brand.greenLogo" }}
+                                      onClick={() => editBook(book)}
+                                      cursor="pointer"
+                                    />
+                                  </Tooltip>
                                 </Stack>
                               </Td>
                             </Tr>
@@ -637,243 +664,300 @@ const ProductManager = () => {
 
 
 
+
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-              <FormControl id="title" w="100%" isInvalid={!!errors.title}>
-                <FormLabel>Titulo del libro</FormLabel>
-                <Input
-                  variant="outline"
-                  autoComplete="title"
-                  padding={3}
-                  fontSize={{ base: "sm", md: "sm" }}
-                  h={"auto"}
-                  type="title"
-                  {...register("title")}
-                  size="sm"
-                  borderColor="#d8dee4"
-                  borderRadius="6px"
-                />
-                {errors.title && (
-                  <FormErrorMessage fontSize="xs" color="red">
-                    {errors.title.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl
-                id="description"
-                paddingTop="20px"
-                w="100%"
-                isInvalid={!!errors.description}
-              >
-                <FormLabel>Reseña del libro</FormLabel>
-                <Textarea
-                  fontSize={{ base: "md", md: "sm" }}
-                  h={"auto"}
-                  {...register("description")}
-                  size="sm"
-                  borderRadius="6px"
-                />
-                {errors.description && (
-                  <FormErrorMessage fontSize="xs" color="red">
-                    {errors.description.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
 
-              <FormControl id="isbn" w="50%" isInvalid={!!errors.isbn}>
-                <FormLabel>ISBN</FormLabel>
-                <Input
-                  variant="outline"
-                  autoComplete="isbn"
-                  padding={3}
-                  fontSize={{ base: "sm", md: "sm" }}
-                  h={"auto"}
-                  type="isbn"
-                  {...register("isbn")}
-                  size="sm"
-                  borderColor="#d8dee4"
-                  borderRadius="6px"
-                  max={13}
-                  maxLength={15}
-                  placeholder="0-123-45678-9"
-                  _placeholder={{ color: "gray.120" }}
-                />
-                {errors.isbn && (
-                  <FormErrorMessage fontSize="xs" color="red">
-                    {errors.isbn.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
+              <Stack spacing='24px'>
+                <Box w='100%' h='500px'>
+                  <Grid templateColumns='repeat(2, 1fr)' gap={6}>
+                    <Box w='100%' h='10'>
+                      <FormControl id="title" isInvalid={!!errors.title}>
+                        <FormLabel>Titulo del libro</FormLabel>
+                        <Input
+                          variant="outline"
+                          autoComplete="title"
+                          padding={3}
+                          fontSize={{ base: "sm", md: "sm" }}
+                          h={"auto"}
+                          type="title"
+                          {...register("title")}
+                          size="sm"
+                          borderColor="#d8dee4"
+                          borderRadius="6px"
+                        />
+                        {errors.title && (
+                          <FormErrorMessage fontSize="xs" color="red">
+                            {errors.title.message}
+                          </FormErrorMessage>
+                        )}
+                      </FormControl>
 
-              <FormControl id="language" w="50%" isInvalid={!!errors.language}>
-                <FormLabel>Lenguaje</FormLabel>
-                <Select
-                  placeholder="Seleccionar..."
-                  {...register("language")}
-                  fontSize={{ base: "sm", md: "sm" }}>
-                  <option value="ES">Español</option>
-                  <option value="ENG">Ingles</option>
-                  <option value="FR">Frances</option>
-                </Select>
-                {errors.language && (
-                  <FormErrorMessage fontSize="xs" color="red">
-                    {errors.language.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
+                      <FormControl className="form_control_pad"
+                        id="description"
+                        paddingTop="20px"
+                        isInvalid={!!errors.description}
+                      >
+                        <FormLabel>Reseña del libro</FormLabel>
+                        <Textarea
+                          fontSize={{ base: "md", md: "sm" }}
+                          h={"auto"}
+                          {...register("description")}
+                          size="sm"
+                          borderRadius="6px"
+                          maxLength={100}
+                        />
+                        {errors.description && (
+                          <FormErrorMessage fontSize="xs" color="red">
+                            {errors.description.message}
+                          </FormErrorMessage>
+                        )}
+                      </FormControl>
 
-              <FormControl id="pagecount" w="50%" isInvalid={!!errors.pagecount}>
-                <FormLabel>Número de páginas</FormLabel>
-                <Input type="number" {...register('pagecount')} borderColor="#d8dee4"
-                  borderRadius="6px" />
-                <FormErrorMessage>
-                  {errors.pagecount && errors.pagecount.message}
-                </FormErrorMessage>
-              </FormControl>
+                      <FormControl id="isbn" isInvalid={!!errors.isbn} className="form_control_pad">
+                        <FormLabel>ISBN</FormLabel>
+                        <Input
+                          variant="outline"
+                          autoComplete="isbn"
+                          padding={3}
+                          fontSize={{ base: "sm", md: "sm" }}
+                          h={"auto"}
+                          type="isbn"
+                          {...register("isbn")}
+                          size="sm"
+                          borderColor="#d8dee4"
+                          borderRadius="6px"
+                          max={13}
+                          maxLength={15}
+                          placeholder="0-123-45678-9"
+                          _placeholder={{ color: "gray.120" }}
+                        />
+                        {errors.isbn && (
+                          <FormErrorMessage fontSize="xs" color="red">
+                            {errors.isbn.message}
+                          </FormErrorMessage>
+                        )}
+                      </FormControl>
 
-              <FormControl id="price" w="50%" isInvalid={!!errors.price}>
-                <FormLabel>Precio de venta</FormLabel>
-                <Input type="number" {...register('price')} borderColor="#d8dee4"
-                  borderRadius="6px" />
-                <FormErrorMessage>
-                  {errors.price && errors.price.message}
-                </FormErrorMessage>
-              </FormControl>
+                      <FormControl id="language" isInvalid={!!errors.language} className="form_control_pad">
+                        <FormLabel>Lenguaje</FormLabel>
+                        <Select
+                          placeholder="Seleccionar..."
+                          {...register("language")}
+                          fontSize={{ base: "sm", md: "sm" }}>
+                          <option value="ES">Español</option>
+                          <option value="ENG">Ingles</option>
+                          <option value="FR">Frances</option>
+                        </Select>
+                        {errors.language && (
+                          <FormErrorMessage fontSize="xs" color="red">
+                            {errors.language.message}
+                          </FormErrorMessage>
+                        )}
+                      </FormControl>
 
-              <FormControl id="currency" w="50%" isInvalid={!!errors.currency}>
-                <FormLabel>Moneda país venta</FormLabel>
-                <Select
-                  placeholder="Seleccionar..."
-                  {...register("currency")}
-                  fontSize={{ base: "sm", md: "sm" }}
-                >
-                  <option value="COP">COP</option>
-                  <option value="ARS">ARS</option>
-                  <option value="EUR">EUR</option>
-                  <option value="USD">USD</option>
-                </Select>
+                      <FormControl id="pagecount" isInvalid={!!errors.pagecount} className="form_control_pad">
+                        <FormLabel>Número de páginas</FormLabel>
+                        <Input type="number" {...register('pagecount')} borderColor="#d8dee4"
+                          borderRadius="6px" />
+                        <FormErrorMessage>
+                          {errors.pagecount && errors.pagecount.message}
+                        </FormErrorMessage>
+                      </FormControl>
 
-                {errors.currency && (
-                  <FormErrorMessage fontSize="xs" color="red">
-                    {errors.currency.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
+                     
 
-              <FormControl id="published" w="50%" isInvalid={!!errors.published}>
-                <FormLabel>Fecha de publicación</FormLabel>
-                <Input
-                  variant="outline"
-                  autoComplete="published"
-                  padding={3}
-                  placeholder="yyyy-MM-dd"
-                  _placeholder={{ color: "gray.120" }}
-                  fontSize={{ base: "sm", md: "sm" }}
-                  h={"auto"}
-                  type="published"
-                  {...register("published")}
-                  size="sm"
-                  borderColor="#d8dee4"
-                  borderRadius="6px"
-                />
-                {errors.published && (
-                  <FormErrorMessage fontSize="xs" color="red">
-                    {errors.published.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
+                    </Box>
+                    <Box w='100%' h='10'>
 
-              <FormControl id="publisher" w="50%" isInvalid={!!errors.publisher}>
-                <FormLabel>Editorial</FormLabel>
-                <Input
-                  variant="outline"
-                  autoComplete="publisher"
-                  padding={3}
-                  fontSize={{ base: "sm", md: "sm" }}
-                  h={"auto"}
-                  type="publisher"
-                  {...register("publisher")}
-                  size="sm"
-                  borderColor="#d8dee4"
-                  borderRadius="6px"
-                />
-                {errors.publisher && (
-                  <FormErrorMessage fontSize="xs" color="red">
-                    {errors.publisher.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
+                    <FormControl id="price" isInvalid={!!errors.price}>
+                        <FormLabel>Precio de venta</FormLabel>
+                        <Input type="number" {...register('price')} borderColor="#d8dee4"
+                          borderRadius="6px" />
+                        <FormErrorMessage>
+                          {errors.price && errors.price.message}
+                        </FormErrorMessage>
+                      </FormControl>
 
-              <FormControl id="stock" w="50%" isInvalid={!!errors.stock}>
-                <FormLabel>Cantidad Stock</FormLabel>
-                <Input type="number" {...register('stock')} borderColor="#d8dee4"
-                  borderRadius="6px" />
-                <FormErrorMessage>
-                  {errors.stock && errors.stock.message}
-                </FormErrorMessage>
-              </FormControl>
+                      <FormControl id="currency" isInvalid={!!errors.currency} className="form_control_pad">
+                        <FormLabel>Moneda país venta</FormLabel>
+                        <Select
+                          placeholder="Seleccionar..."
+                          {...register("currency")}
+                          fontSize={{ base: "sm", md: "sm" }}
+                        >
+                          <option value="COP">COP</option>
+                          <option value="ARS">ARS</option>
+                          <option value="EUR">EUR</option>
+                          <option value="USD">USD</option>
+                        </Select>
+
+                        {errors.currency && (
+                          <FormErrorMessage fontSize="xs" color="red">
+                            {errors.currency.message}
+                          </FormErrorMessage>
+                        )}
+                      </FormControl>
+
+                      <FormControl id="published" isInvalid={!!errors.published} className="form_control_pad">
+                        <FormLabel>Fecha de publicación</FormLabel>
+                        <Input
+                          variant="outline"
+                          autoComplete="published"
+                          padding={3}
+                          placeholder="yyyy-MM-dd"
+                          _placeholder={{ color: "gray.120" }}
+                          fontSize={{ base: "sm", md: "sm" }}
+                          h={"auto"}
+                          type="published"
+                          {...register("published")}
+                          size="sm"
+                          borderColor="#d8dee4"
+                          borderRadius="6px"
+                        />
+                        {errors.published && (
+                          <FormErrorMessage fontSize="xs" color="red">
+                            {errors.published.message}
+                          </FormErrorMessage>
+                        )}
+                      </FormControl>
+
+                      <FormControl id="publisher" isInvalid={!!errors.publisher} className="form_control_pad">
+                        <FormLabel>Editorial</FormLabel>
+                        <Input
+                          variant="outline"
+                          autoComplete="publisher"
+                          padding={3}
+                          fontSize={{ base: "sm", md: "sm" }}
+                          h={"auto"}
+                          type="publisher"
+                          {...register("publisher")}
+                          size="sm"
+                          borderColor="#d8dee4"
+                          borderRadius="6px"
+                        />
+                        {errors.publisher && (
+                          <FormErrorMessage fontSize="xs" color="red">
+                            {errors.publisher.message}
+                          </FormErrorMessage>
+                        )}
+                      </FormControl>
+
+                      <FormControl id="stock" isInvalid={!!errors.stock} className="form_control_pad">
+                        <FormLabel>Cantidad Stock</FormLabel>
+                        <Input type="number" {...register('stock')} borderColor="#d8dee4"
+                          borderRadius="6px" />
+                        <FormErrorMessage>
+                          {errors.stock && errors.stock.message}
+                        </FormErrorMessage>
+                      </FormControl>
 
 
-              <FormControl id="category" w="50%" isInvalid={!!errors.category}>
-                <FormLabel>Categorias</FormLabel>
-                <Select
-                  placeholder="Seleccionar..."
-                  {...register("category")}
-                  fontSize={{ base: "sm", md: "sm" }}
-                >
-                  <optgroup>
-                    {categories && categories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </optgroup>
-                </Select>
+                      <FormControl id="category" isInvalid={!!errors.category} className="form_control_pad">
+                        <FormLabel>Categorias</FormLabel>
+                        <Select
+                          placeholder="Seleccionar..."
+                          {...register("category")}
+                          fontSize={{ base: "sm", md: "sm" }}
+                        >
+                            {categories && categories.map((category) => (
+                              <option key={category.id} value={category.id}>
+                                {category.name}
+                              </option>
+                            ))}
+                        </Select>
 
-                {errors.category && (
-                  <FormErrorMessage fontSize="xs" color="red">
-                    {errors.category.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
+                        {errors.category && (
+                          <FormErrorMessage fontSize="xs" color="red">
+                            {errors.category.message}
+                          </FormErrorMessage>
+                        )}
+                      </FormControl>
 
-              <FormControl isRequired id="autor" paddingTop="20px" w="100%">
-                <div>
-                  {authors.map((author, index) => (
-                    <Card maxW='250px' key={index}>
-                      <CardHeader>
-                        <Flex>
-                          <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                            <Avatar name='Escritor' src='https://mercadolibro-site-g5.s3.amazonaws.com/assets/writer.jpg' />
-                            <Box>
-                              <Heading size='sm'>{author.name}</Heading>
-                              <Text>{author.email}</Text>
-                            </Box>
-                          </Flex>
-                        </Flex>
-                      </CardHeader>
-                    </Card>
-                  ))}
-                </div>
-                <Button leftIcon={<MdPerson />} mt={2} onClick={() => handleAddAuthor()}>
-                  Agregar Autor
-                </Button>
-              </FormControl>
+                    </Box>
+                  </Grid>
+                </Box>
+                <Box w='100%' flex='1'>
+                  <Grid templateColumns='repeat(4, 1fr)' gap={6}>
 
-              <FormControl paddingTop="20px" w="100%">
-                <div>
-                  {book?.image_links.map((image, index) => (
-                    <Grid templateColumns='repeat(5, 1fr)' gap={6}>
-                      <GridItem w='100%'>
-                        <Image boxSize='200px' src={image?.url} alt={image.name} />
-                      </GridItem>
-                    </Grid>
+                    <FormControl isRequired id="autor" paddingTop="20px" w="100%">
+                      <HStack spacing='24px'>
+                        {authors.map((author, index) => (
 
-                  ))}
-                </div>
-                <Button leftIcon={<MdPerson />} mt={2} onClick={() => handleAddImage()}>
-                  Agregar imagen
-                </Button>
-              </FormControl>
+                          <Box w='350px'>
+                            <Card maxW='350px' key={index}>
+                              <CardHeader>
+                                
+                                  <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                                    <Avatar name='Escritor' src='https://mercadolibro-site-g5.s3.amazonaws.com/assets/writer.jpg' />
+                                    <Box>
+                                      <Heading size='sm'>{author.name}</Heading>
+                                      <Text>{author.email}</Text>
+                                    </Box>
+
+                                    <Tooltip label="Eliminar" aria-label="Eliminar" fontSize="md">
+                                      <DeleteIcon
+                                        w={4}
+                                        h={4}
+                                        color="gray.400"
+                                        _hover={{ color: "red.500" }}
+                                        onClick={() => handleDeleteAuthor(index, author)}
+                                        cursor="pointer"
+                                      />
+                                    </Tooltip>
+                                  </Flex>
+                                
+                              </CardHeader>
+                            </Card>
+                          </Box>
+
+                        ))}
+                      </HStack>
+                      <Button leftIcon={<MdPerson />} mt={2} onClick={() => handleAddAuthor()}>
+                        Agregar Autor
+                      </Button>
+                    </FormControl>
+                  </Grid>
+
+                </Box>
+                <Box w='100%' flex='2'>
+                  <Grid templateColumns='repeat(4, 1fr)' gap={6}>
+                    <FormControl paddingTop="20px" w="100%">
+                      <HStack spacing='24px'>
+
+                        {book?.image_links.map((image, index) => (
+                          <Box w='200px'>
+                            <Card maxW='200px' key={index}>
+                              <CardHeader>
+                                <Flex>
+                                  <Image boxSize='200px' src={image?.url} alt={image.name} />
+                                  <Tooltip label="Eliminar" aria-label="Eliminar" fontSize="md">
+                                    <DeleteIcon
+                                      w={4}
+                                      h={4}
+                                      color="gray.400"
+                                      _hover={{ color: "red.500" }}
+                                      onClick={() => handleDeleteChange(image)}
+                                      cursor="pointer"
+                                    />
+                                  </Tooltip>
+                                </Flex>
+                              </CardHeader>
+                            </Card>
+                          </Box>
+                        ))}
+
+                      </HStack>
+
+                      <Button leftIcon={<MdPerson />} mt={2} onClick={() => handleAddImage()}>
+                        Agregar imagen
+                      </Button>
+                    </FormControl>
+
+                  </Grid>
+
+                </Box>
+              </Stack>
+
 
               <Center>
                 <ButtonGroup variant='outline' spacing='6'>

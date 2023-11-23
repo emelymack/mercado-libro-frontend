@@ -190,3 +190,12 @@ export const saveImage = (formdData: FormData, bookID:number): Promise<Response>
       }
     });
 };
+
+export const deleteImage = (id: number): Promise<void> => {
+  return httpService
+    .delete(`${BASE_URL}${UPLOAD_IMAGEN_BOOK_URL}/${id}`)
+    .then(() => {})
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};
