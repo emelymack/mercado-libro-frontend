@@ -28,9 +28,9 @@ const NavLink = (props: Props) => {
           transform: 'scaleX(1)' 
         }
       }}
-      color={useColorModeValue("var(--secondary)", 'white')}
-      fontWeight={800}
-      fontSize={16}
+      color={useColorModeValue('brand.blueLogo', 'white')}
+      fontWeight={'bold'}
+      fontSize={17}
       href={props.url}
       
     >

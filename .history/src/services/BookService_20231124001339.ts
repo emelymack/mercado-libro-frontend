@@ -100,6 +100,7 @@ export const getAllCategory = (): Promise<Category[]> => {
     .get(`${BASE_URL}${CATEGORY_URL}`)
     .then((response) => {
       if (Array.isArray(response.data)) {
+        console.log(response.data);
         return response.data as Category[];
       } else {
         throw new Error("La respuesta no es un array de Categorias");
