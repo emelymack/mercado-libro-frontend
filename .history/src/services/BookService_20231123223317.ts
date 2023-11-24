@@ -100,6 +100,7 @@ export const getAllCategory = (): Promise<Category[]> => {
     .get(`${BASE_URL}${CATEGORY_URL}`)
     .then((response) => {
       if (Array.isArray(response.data)) {
+        console.log(response.data);
         return response.data as Category[];
       } else {
         throw new Error("La respuesta no es un array de Categorias");
@@ -111,11 +112,10 @@ export const getAllCategory = (): Promise<Category[]> => {
 };
 
 export const getBooksByCategory = (
-  nameCategory: string,
-  page: number
+  nameCategory: string
 ): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?page=${page}&category=${nameCategory}`)
+    .get(`${BASE_URL}${BOOK_URL}?page=0&category=${nameCategory}`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);

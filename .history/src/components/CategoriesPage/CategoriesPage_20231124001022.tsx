@@ -11,7 +11,7 @@ import PageContainer from "../Layout/PageContainer";
 import Pagination from "../../utils/Pagination";
 
 export const Categories = () => {
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const [size] = useState<number>(9);
   const [totalElements, setTotalElements] = useState<number>(0);
   const { categoryName } = useParams();
@@ -22,13 +22,12 @@ export const Categories = () => {
     window.scrollTo(0, 0);
     setIsLoading(true);
     if (categoryName) {
-      getBooksByCategory(categoryName, page).then((res) => {
+      getBooksByCategory(categoryName).then((res) => {
         setLibrosCategoria(res.content);
-        setTotalElements(res.totalElements)
         setIsLoading(false);
       });
     }
-  }, [categoryName, page, size]);
+  }, [categoryName]);
 
   if (isLoading)
     return (
@@ -44,7 +43,7 @@ export const Categories = () => {
 
   return (
     <PageContainer bg="white.600" mb={20}>
-      {categoryName && <BreadcrumbNav category={categoryName}/>}
+      {categoryName && <BreadcrumbNav category={categoryName} />}
       <Heading
         size="3xl"
         fontWeight={900}
@@ -57,12 +56,13 @@ export const Categories = () => {
         {categoryName}
       </Heading>
 
-      <Center mb='5vh'>
+      <Center>
         {librosCategoria.length > 0 ? (
           <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} gap={5}>
             {librosCategoria.map((producto) => (
               <ProductCard
                 {...producto}
+                stock={1}
               />
             ))}
           </SimpleGrid>

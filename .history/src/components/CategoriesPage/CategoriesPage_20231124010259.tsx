@@ -63,6 +63,7 @@ export const Categories = () => {
             {librosCategoria.map((producto) => (
               <ProductCard
                 {...producto}
+                stock={1}
               />
             ))}
           </SimpleGrid>

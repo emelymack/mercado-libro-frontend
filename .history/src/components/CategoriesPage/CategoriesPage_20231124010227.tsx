@@ -44,7 +44,7 @@ export const Categories = () => {
 
   return (
     <PageContainer bg="white.600" mb={20}>
-      {categoryName && <BreadcrumbNav category={categoryName}/>}
+      {categoryName && <BreadcrumbNav category={categoryName} />}
       <Heading
         size="3xl"
         fontWeight={900}
@@ -63,6 +63,7 @@ export const Categories = () => {
             {librosCategoria.map((producto) => (
               <ProductCard
                 {...producto}
+                stock={1}
               />
             ))}
           </SimpleGrid>
