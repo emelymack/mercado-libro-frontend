@@ -20,6 +20,7 @@ import CheckoutPage from "./components/CheckoutPage";
 import BookListSearch from "./components/SearchBar/BookListSearch";
 import QuestionsPage from "./components/QuestionsPage/QuestionsPage";
 import NewsPage from "./components/NewsPage/NewsPage";
+import Oauth from "./components/Oauth/Oauth";
 
 
 function App() {
@@ -66,6 +67,7 @@ function App() {
             path="/books/search/:searchTerm"
             element={<BookListSearch />}
           />
+          <Route path="/oauth" element={<Oauth/>} />
           <Route path="/successful" element={<SuccesfulPurchase />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/questions" element={<QuestionsPage />} />
