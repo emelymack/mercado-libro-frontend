@@ -10,6 +10,8 @@ import { clearCartData, clearShippingData } from "../../context/slices/cartSlice
 import ShippingData from "./Form/ShippingData";
 import { ICheckoutData, IPaymentData, IShippingData } from "../../types/checkout";
 import PaymentData from "./Form/PaymentData";
+import { saveOrder } from "../../services/CheckoutService";
+import { getAllUsers } from "../../services/UserService";
 
 const defaultValues = {
   shippingData: {
@@ -32,7 +34,8 @@ const defaultValues = {
 
 const CheckoutPage = () => {
   const accessCheckout = useAppSelector((state) => state.checkout.access)
-  const shippingData = useAppSelector((state) => state.cart.shipping)
+  const cartData = useAppSelector((state) => state.cart)
+  const userData = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   // @ts-ignore
@@ -52,6 +55,14 @@ const CheckoutPage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
     if(!accessCheckout) navigate('/')
+    const cartItems = cartData.items.map((item) => return {
+      book_id : item.product.id;
+      quantity: item.quantity;
+      unit_price: item.product.price;
+    })
+
+    console.log(cartItems);
+    
 
     return () => {
       if(accessCheckout) {
@@ -68,15 +79,27 @@ const CheckoutPage = () => {
         dispatch(setCheckoutData({
           email: formData.shippingData.email,
           address: `${formData.shippingData.street} ${formData.shippingData.streetNumber}`,
-          postalCode: shippingData.postalCode,
+          postalCode: cartData.shipping.postalCode,
           city: formData.shippingData.city,
           province: formData.shippingData.province,
           phoneNumber: formData.shippingData.phoneNumber,
           shippingType: formData.shippingData.shippingType,
-          shippingDate: shippingData.date,
+          shippingDate: cartData.shipping.date,
           paymentType: formData.paymentData.paymentMethod,
         }))
 
+        saveOrder({
+          invoice: {
+            date_created: String(new Date()),
+            total: cartData.total,
+            user_id: userData.id
+          },
+          invoice_item: cartData.items.map((item) => return {
+            book_id : item.product.id,
+            quantity: item.quantity,
+            unit_price: item.product.price
+          })
+        })
         
         navigate('/successful')
 

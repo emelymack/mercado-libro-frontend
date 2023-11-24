@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface UserState {
   name: string;
   lastName: string;
+  id: number;
 }
 
 const initialState: UserState = {
   name: "",
   lastName: "",
+  id: 0
 };
 
 const userSlice = createSlice({
@@ -16,10 +18,11 @@ const userSlice = createSlice({
   reducers: {
     setUser: (
       state,
-      action: PayloadAction<{ name: string; lastName: string }>
+      action: PayloadAction<{ name: string; lastName: string, id: number }>
     ) => {
       state.name = action.payload.name;
       state.lastName = action.payload.lastName;
+      state.id = action.payload.id
     },
   },
 });

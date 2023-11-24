@@ -110,7 +110,7 @@ const Login = () => {
             "user",
             JSON.stringify({ name: user.name, lastName: user.lastName })
           );
-          dispatch(setUser({ name: user.name, lastName: user.lastName }));
+          dispatch(setUser({ name: user.name, lastName: user.lastName, id: user.id }));
         }
         const isAdmin = response.data?.user?.roles.some(
           (role) => role.description === "ADMIN"
