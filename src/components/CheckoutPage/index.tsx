@@ -10,6 +10,8 @@ import { clearCartData, clearShippingData } from "../../context/slices/cartSlice
 import ShippingData from "./Form/ShippingData";
 import { ICheckoutData, IPaymentData, IShippingData } from "../../types/checkout";
 import PaymentData from "./Form/PaymentData";
+import { saveOrder } from "../../services/CheckoutService";
+import CustomLoading from "../CustomLoading/CustomLoading";
 
 const defaultValues = {
   shippingData: {
@@ -32,12 +34,14 @@ const defaultValues = {
 
 const CheckoutPage = () => {
   const accessCheckout = useAppSelector((state) => state.checkout.access)
-  const shippingData = useAppSelector((state) => state.cart.shipping)
+  const cartData = useAppSelector((state) => state.cart)
+  const userData = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   // @ts-ignore
   const [ formData, setFormData ] = useState<ICheckoutData>(defaultValues)
   const [tabIndex, setTabIndex] = useState(0)
+  const [ isLoading, setIsLoading ] = useState(false)
 
 
   const handleShippingData = (data: IShippingData) => {
@@ -52,7 +56,7 @@ const CheckoutPage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
     if(!accessCheckout) navigate('/')
-
+  
     return () => {
       if(accessCheckout) {
         dispatch(toggleAccess())
@@ -60,31 +64,48 @@ const CheckoutPage = () => {
       }
     }
   }, [])
+
+  useEffect(() => {},[isLoading])
   
   useEffect(() => {
     if(Object.keys(formData.paymentData).length !== 0) {
+      setIsLoading(true)
       try {
         dispatch(clearCartData())
         dispatch(setCheckoutData({
           email: formData.shippingData.email,
           address: `${formData.shippingData.street} ${formData.shippingData.streetNumber}`,
-          postalCode: shippingData.postalCode,
+          postalCode: cartData.shipping.postalCode,
           city: formData.shippingData.city,
           province: formData.shippingData.province,
           phoneNumber: formData.shippingData.phoneNumber,
           shippingType: formData.shippingData.shippingType,
-          shippingDate: shippingData.date,
+          shippingDate: cartData.shipping.date,
           paymentType: formData.paymentData.paymentMethod,
         }))
 
-        
-        navigate('/successful')
-
+        saveOrder({
+          invoice: {
+            date_created: new Date(),
+            total: cartData.total,
+            user_id: userData.id
+          },
+          invoice_item: cartData.items.map((item) => ({
+            book_id : item.product.id,
+            quantity: item.quantity,
+            unit_price: item.product.price,
+          }))
+        }).then(() => {
+          setIsLoading(false)
+          navigate('/successful')
+        })
       } catch (err) {
         console.error(err)
       }
     }
   }, [formData])
+
+  if(isLoading) return <CustomLoading />
 
   return (
     <PageContainer>

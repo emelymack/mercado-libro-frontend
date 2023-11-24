@@ -34,7 +34,7 @@ const PaymentCardData = ({watch, errors, control, register}: any) => {
           )}
         </GridItem>
         <GridItem>
-          <CustomInput name="cardCVV" placeholder={"CVV"} control={control} type="number" mt={2} />
+          <CustomInput name="cardCVV" placeholder={"CVV"} control={control} type="password" mt={2} />
           {errors.cardCVV && (
             <Text fontSize="sm" color="red.400">
               {errors.cardCVV.message}

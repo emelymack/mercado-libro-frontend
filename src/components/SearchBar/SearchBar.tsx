@@ -1,29 +1,39 @@
-import { useState } from "react";
-import { Button, Flex, Image, Input } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Button, Flex, Image, Input, useDisclosure } from "@chakra-ui/react";
 import searchIcon from "../../assets/icons/icon-search.svg";
+// import closeIcon from "../../assets/icons/icon-xmark.svg"
 import { getAllBooksSearch } from "../../services/SearchServiceBook";
 import { useNavigate } from "react-router-dom";
 import { Book } from "../../types/product";
+import CustomLoading from "../CustomLoading/CustomLoading";
+import ModalError from "../Modal/ModalError";
 
 const SearchBar = () => {
   const [isInputVisible, setInputVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [books, setBooks] = useState<Book[]>([]);
+  const [, setBooks] = useState<Book[]>([]);
+  const [ isLoading, setIsLoading ] = useState(false)
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const history = useNavigate();
 
-  const handleClick = async () => {
+  const handleClick = async () => {    
     setInputVisible(!isInputVisible);
     if (searchTerm !== "") {
+      setIsLoading(true)
       try {
         const response = await getAllBooksSearch({
           keyword: searchTerm,
           page: 0,
         });
         setBooks(response.data);
+        setIsLoading(false);
         if (response.data.length > 0) {
           history(`/books/search/${searchTerm}`);
+        } else {
+          onOpen()
         }
+        setSearchTerm("")
       } catch (error) {
         console.error("Error al buscar libros:", error);
       }
@@ -34,6 +44,10 @@ const SearchBar = () => {
     setSearchTerm(event.target.value);
   };
 
+  useEffect(() => {}, [isLoading])
+
+  if(isLoading) return <CustomLoading />
+
   return (
     <>
       <Flex
@@ -41,7 +55,6 @@ const SearchBar = () => {
         align="center"
         justify="center"
         w="100%"
-        p={4}
       >
         {isInputVisible && (
           <Input
@@ -50,7 +63,7 @@ const SearchBar = () => {
             onChange={handleInputChange}
             size="lg"
             borderRadius="md"
-            w={{ base: "sm", md: "sm", lg: "sm" }}
+            w={{ base: "sm", md: "sm", lg: "xs" }}
             borderColor="gray.300"
             focusBorderColor="teal.500"
             _hover={{
@@ -82,6 +95,7 @@ const SearchBar = () => {
           />
         </Button>
       </Flex>
+      <ModalError isOpen={isOpen} onClose={onClose} title="No se encontraron resultados para la búsqueda" />
     </>
   );
 };

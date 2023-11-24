@@ -11,6 +11,7 @@ import {
   FormErrorMessage,
   HStack,
   IconButton,
+  Image,
   InputGroup,
   InputRightElement,
   Link,
@@ -39,6 +40,9 @@ import { useAppDispatch } from "../../../context/hooks";
 import { setUser } from "../../../context/slices/userSlice";
 import { loginAdmin, login } from "../../../context/slices/authSlice";
 import CustomInput from "../../Input/CustomInput";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
+import googleLogo from "../../../assets/img/google-logo.png";
+import facebookLogo from "../../../assets/img/facebook-logo.png";
 
 const schema = z.object({
   email: z
@@ -114,7 +118,9 @@ const Login = () => {
             "user",
             JSON.stringify({ name: user.name, lastName: user.lastName })
           );
-          dispatch(setUser({ name: user.name, lastName: user.lastName }));
+          dispatch(
+            setUser({ name: user.name, lastName: user.lastName, id: user.id })
+          );
         }
         const isAdmin = response.data?.user?.roles.some(
           (role) => role.description === "ADMIN"
@@ -192,22 +198,24 @@ const Login = () => {
                   <Button
                     h={14}
                     bg={"#D9D9D9"}
-                    color={"#000000"}
-                    // leftIcon={<FaGoogle />}
+                    color={"brand.blueLogo"}
+                    leftIcon={<FaGoogle />}
                     flexGrow={1}
                     onClick={redirectToGoogle}
                   >
-                    Iniciar sesión con Google
+                    Iniciar sesión con{" "}
+                    <Image src={googleLogo} w={"60px"} ms={2} mt={1} />
                   </Button>
                   <Button
                     h={14}
                     bg={"#D9D9D9"}
-                    color={"#000000"}
-                    // leftIcon={<FaFacebook />}
+                    color={"brand.blueLogo"}
+                    leftIcon={<FaFacebook />}
                     flexGrow={1}
                     onClick={redirectToFacebook}
                   >
-                    Iniciar sesión con Facebook
+                    Iniciar sesión con{" "}
+                    <Image src={facebookLogo} w={"70px"} ms={2} />
                   </Button>
                 </Flex>
               }
