@@ -69,15 +69,19 @@ const Login = () => {
   });
 
   const redirectToLoginProvider = (provider: string) => {
-    setLocalStorageItem("currentUrl", window.location.href)
+    setIsLoading(true);
+    setLocalStorageItem("currentUrl", window.location.href);
     window.location.href = `http://localhost:8080/v1/api/auth/oauth/${provider}`;
-  }
+  };
+
   const redirectToFacebook = () => {
     redirectToLoginProvider("facebook");
-  }
+  };
   const redirectToGoogle = () => {
+    setIsLoading(true);
     redirectToLoginProvider("google");
-  }
+    setIsLoading(false);
+  };
 
   const history = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -183,28 +187,30 @@ const Login = () => {
           <ModalBody bg={"#FFFFFF"}>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
               {/* Login con Google y Facebook */}
-              { <Flex paddingTop={2} gap={3}>
-                <Button
-                  h={14}
-                  bg={"#D9D9D9"}
-                  color={"#000000"}
-                  // leftIcon={<FaGoogle />}
-                  flexGrow={1}
-                  onClick={redirectToGoogle}
-                >
-                  Iniciar sesión con Google
-                </Button>
-                <Button
-                  h={14}
-                  bg={"#D9D9D9"}
-                  color={"#000000"}
-                  // leftIcon={<FaFacebook />}
-                  flexGrow={1}
-                  onClick={redirectToFacebook}
-                >
-                  Iniciar sesión con Facebook
-                </Button>
-              </Flex> }
+              {
+                <Flex paddingTop={2} gap={3}>
+                  <Button
+                    h={14}
+                    bg={"#D9D9D9"}
+                    color={"#000000"}
+                    // leftIcon={<FaGoogle />}
+                    flexGrow={1}
+                    onClick={redirectToGoogle}
+                  >
+                    Iniciar sesión con Google
+                  </Button>
+                  <Button
+                    h={14}
+                    bg={"#D9D9D9"}
+                    color={"#000000"}
+                    // leftIcon={<FaFacebook />}
+                    flexGrow={1}
+                    onClick={redirectToFacebook}
+                  >
+                    Iniciar sesión con Facebook
+                  </Button>
+                </Flex>
+              }
               <Flex direction="column" align="center" paddingTop={4}>
                 <Box w={"100%"}>
                   <FormControl id="email" w="100%" isInvalid={!!errors.email}>
