@@ -161,9 +161,17 @@ const UserInfo = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
+        p={[4, 6, 8]}
         overflowX="auto"
       >
-        <Flex align="center" pt={40} paddingLeft={20} paddingRight={20}>
+        <Flex
+          flexDirection={{ base: "column", md: "row" }}
+          align="center"
+          pt={{ base: 10, md: 40 }}
+          px={{ base: 4, md: 20 }}
+          mb={4}
+          w="full"
+        >
           <Input
             fontSize={fontSize}
             placeholder="Buscar por nombre"
@@ -175,6 +183,8 @@ const UserInfo = () => {
             _placeholder={{
               color: colorMode === "dark" ? "white" : "brand.blueLogo",
             }}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           />
 
           <Input
@@ -187,6 +197,8 @@ const UserInfo = () => {
             _placeholder={{
               color: colorMode === "dark" ? "white" : "brand.blueLogo",
             }}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           />
 
           <Input
@@ -199,6 +211,8 @@ const UserInfo = () => {
             _placeholder={{
               color: colorMode === "dark" ? "white" : "brand.blueLogo",
             }}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           />
 
           <Select
@@ -208,6 +222,8 @@ const UserInfo = () => {
             focusBorderColor="teal.500"
             onChange={(e) => setStatus(e.target.value)}
             mr={2}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           >
             <option value="ACTIVE">Activo</option>
             <option value="INACTIVE">Inactivo</option>
@@ -220,6 +236,8 @@ const UserInfo = () => {
             focusBorderColor="teal.500"
             onChange={(e) => setOrderBy(e.target.value)}
             mr={2}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           >
             <option value="ID">Id</option>
             <option value="NAME">Nombre</option>
@@ -235,6 +253,8 @@ const UserInfo = () => {
             focusBorderColor="teal.500"
             onChange={(e) => setOrderDirection(e.target.value)}
             mr={2}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           >
             <option value="ASC">Ascendente</option>
             <option value="DESC">Descendente</option>
@@ -258,17 +278,16 @@ const UserInfo = () => {
             colorScheme="gray"
             fontSize={fontSize}
             ml={2}
-            
             w={"2xl"}
             _hover={{
-              bg: "gray.600", 
-              color: "white"
+              bg: "gray.600",
+              color: "white",
             }}
           >
             Limpiar
           </Button>
         </Flex>
-        <Table variant="simple" size="md" mt={6}>
+        <Table variant="simple" size={{ base: "sm", md: "lg" }} mt={6}>
           <TableCaption>Usuarios Registrados en Mercado Libro</TableCaption>
           <Thead>
             <Tr>
@@ -281,7 +300,11 @@ const UserInfo = () => {
               <Th textAlign="center" fontSize={fontSize}>
                 Email
               </Th>
-              <Th textAlign="center" fontSize={fontSize}>
+              <Th
+                display={{ base: "none", md: "table-cell" }}
+                textAlign="center"
+                fontSize={fontSize}
+              >
                 Fecha Creación
               </Th>
               <Th textAlign="center" fontSize={fontSize}>
