@@ -21,18 +21,18 @@ export const NewsPage = () => {
     window.scrollTo(0, 0);
     setIsLoading(true);
 
-    getNewBooks(page).then((res) => {
+    getNewBooks().then((res) => {
       console.log(res.content);
       setLibrosNew(res.content);
       setTotalElements(res.totalElements)
       setIsLoading(false);
     });
-  }, [page, size]);
+  }, []);
 
   if (isLoading)
     return (
       <Box
-        h={"calc(100vh - 130px)"}
+
         display={"flex"}
         alignItems={"center"}
         justifyContent={"center"}
@@ -42,7 +42,7 @@ export const NewsPage = () => {
     );
 
   return (
-    <PageContainer bg="white.600" mb={20} pt={10}>
+    <PageContainer bg="white.600" mb={20}>
     <Container
       maxW="container.xl"
       bg="white.600"
@@ -53,7 +53,7 @@ export const NewsPage = () => {
       <Heading
         size="3xl"
         fontWeight={900}
-        mt={30}
+        mt={10}
         mb={12}
         color="brand.greenLogo"
         textTransform={"uppercase"}

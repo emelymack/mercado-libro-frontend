@@ -21,13 +21,13 @@ export const NewsPage = () => {
     window.scrollTo(0, 0);
     setIsLoading(true);
 
-    getNewBooks(page).then((res) => {
+    getNewBooks().then((res) => {
       console.log(res.content);
       setLibrosNew(res.content);
       setTotalElements(res.totalElements)
       setIsLoading(false);
     });
-  }, [page, size]);
+  }, []);
 
   if (isLoading)
     return (
@@ -42,13 +42,8 @@ export const NewsPage = () => {
     );
 
   return (
-    <PageContainer bg="white.600" mb={20} pt={10}>
-    <Container
-      maxW="container.xl"
-      bg="white.600"
-      mb={20}
-      className={`page ${isScrolling ? "scroll" : ""}`}
-    >
+    <PageContainer bg="white.600" mb={20}>
+
       <BreadcrumbNav novedades={"Novedades"} />
       <Heading
         size="3xl"

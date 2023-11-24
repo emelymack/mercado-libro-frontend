@@ -21,7 +21,7 @@ export const NewsPage = () => {
     window.scrollTo(0, 0);
     setIsLoading(true);
 
-    getNewBooks(page).then((res) => {
+    getNewBooks().then((res) => {
       console.log(res.content);
       setLibrosNew(res.content);
       setTotalElements(res.totalElements)

@@ -6,13 +6,8 @@ import { useAppSelector } from "../../context/hooks";
 import BreadcrumbNav from "./BreadcrumbNav";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import { Book } from "../../types/product";
-import Pagination from "../../utils/Pagination";
-import PageContainer from "../Layout/PageContainer";
 
 export const NewsPage = () => {
-  const [page, setPage] = useState<number>(0);
-  const [size] = useState<number>(9);
-  const [totalElements, setTotalElements] = useState<number>(0);
   const [librosNew, setLibrosNew] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
@@ -21,13 +16,12 @@ export const NewsPage = () => {
     window.scrollTo(0, 0);
     setIsLoading(true);
 
-    getNewBooks(page).then((res) => {
+    getNewBooks().then((res) => {
       console.log(res.content);
       setLibrosNew(res.content);
-      setTotalElements(res.totalElements)
       setIsLoading(false);
     });
-  }, [page, size]);
+  }, []);
 
   if (isLoading)
     return (
@@ -42,7 +36,6 @@ export const NewsPage = () => {
     );
 
   return (
-    <PageContainer bg="white.600" mb={20} pt={10}>
     <Container
       maxW="container.xl"
       bg="white.600"
@@ -53,7 +46,7 @@ export const NewsPage = () => {
       <Heading
         size="3xl"
         fontWeight={900}
-        mt={30}
+        mt={10}
         mb={12}
         color="brand.greenLogo"
         textTransform={"uppercase"}
@@ -94,13 +87,6 @@ export const NewsPage = () => {
         )}
       </Center>
     </Container>
-    <Pagination
-      pageNumber={page}
-      pageSize={size}
-      totalElements={totalElements}
-      onPageChange={(newPage) => setPage(newPage)}
-    />
-    </PageContainer>
   );
 };
 

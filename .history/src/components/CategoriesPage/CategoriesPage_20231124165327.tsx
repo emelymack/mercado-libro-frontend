@@ -49,7 +49,7 @@ export const Categories = () => {
       <Container
       maxW="container.xl"
       bg="white.600"
-      mb={20}
+      mb={0}
       className={`page ${isScrolling ? "scroll" : ""}`}
     >
       {categoryName && <BreadcrumbNav category={categoryName}/>}

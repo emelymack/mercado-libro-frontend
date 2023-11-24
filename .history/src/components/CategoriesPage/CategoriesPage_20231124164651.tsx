@@ -1,9 +1,8 @@
 import { useParams } from "react-router-dom";
 import ProductCard from "../Card/ProductCard";
 
-import { Center, Heading, SimpleGrid, Box, Container } from "@chakra-ui/react";
+import { Center, Heading, SimpleGrid, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../../context/hooks";
 import { getBooksByCategory } from "../../services/BookService";
 import { Book } from "../../types/product";
 import CustomLoading from "../CustomLoading/CustomLoading";
@@ -18,7 +17,6 @@ export const Categories = () => {
   const { categoryName } = useParams();
   const [ librosCategoria, setLibrosCategoria ] = useState<Book[]>([]);
   const [ isLoading, setIsLoading ] = useState(false)
-  const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,14 +43,8 @@ export const Categories = () => {
     );
 
   return (
-    <PageContainer bg="white.600" mb={20} pt={10}>
-      <Container
-      maxW="container.xl"
-      bg="white.600"
-      mb={20}
-      className={`page ${isScrolling ? "scroll" : ""}`}
-    >
-      {categoryName && <BreadcrumbNav category={categoryName}/>}
+    <PageContainer bg="white.600" mb={20}>
+      <BreadcrumbNav category={categoryName}/>
       <Heading
         size="3xl"
         fontWeight={900}
@@ -82,7 +74,6 @@ export const Categories = () => {
           </Box>
         )}
       </Center>
-      </Container>
       <Pagination
           pageNumber={page}
           pageSize={size}

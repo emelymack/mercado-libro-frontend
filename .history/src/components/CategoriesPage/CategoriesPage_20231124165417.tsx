@@ -45,7 +45,7 @@ export const Categories = () => {
     );
 
   return (
-    <PageContainer bg="white.600" mb={20} pt={10}>
+    <PageContainer bg="white.600" mb={20} pt={30}>
       <Container
       maxW="container.xl"
       bg="white.600"
