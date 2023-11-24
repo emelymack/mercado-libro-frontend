@@ -6,14 +6,9 @@ import {
 import axios from "axios";
 import { InvoiceData } from "../types/checkout";
 
-export const saveOrder = (data: InvoiceData): Promise<any> => {
-  const body = {
-    invoice: {
-      date_created: new Date(),
-    }
-  }
+export const saveOrder = async (data: InvoiceData): Promise<any> => {
   return httpService
-    .post(`${BASE_URL}${CREATE_INVOICE_URL}`, body)
+    .post(`${BASE_URL}${CREATE_INVOICE_URL}`, data)
     .then((response) => response.data)
     .catch((error) => {
       if (axios.isAxiosError(error)) {        

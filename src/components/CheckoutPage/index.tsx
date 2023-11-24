@@ -11,6 +11,7 @@ import ShippingData from "./Form/ShippingData";
 import { ICheckoutData, IPaymentData, IShippingData } from "../../types/checkout";
 import PaymentData from "./Form/PaymentData";
 import { saveOrder } from "../../services/CheckoutService";
+import CustomLoading from "../CustomLoading/CustomLoading";
 
 const defaultValues = {
   shippingData: {
@@ -40,6 +41,7 @@ const CheckoutPage = () => {
   // @ts-ignore
   const [ formData, setFormData ] = useState<ICheckoutData>(defaultValues)
   const [tabIndex, setTabIndex] = useState(0)
+  const [ isLoading, setIsLoading ] = useState(false)
 
 
   const handleShippingData = (data: IShippingData) => {
@@ -54,14 +56,6 @@ const CheckoutPage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
     if(!accessCheckout) navigate('/')
-    const cartItems = cartData.items.map((item) => ({
-      book_id : item.product.id,
-      quantity: item.quantity,
-      unit_price: item.product.price,
-    }))
-
-    console.log(cartItems);
-    
 
     return () => {
       if(accessCheckout) {
@@ -70,9 +64,12 @@ const CheckoutPage = () => {
       }
     }
   }, [])
+
+  useEffect(() => {},[isLoading])
   
   useEffect(() => {
     if(Object.keys(formData.paymentData).length !== 0) {
+      setIsLoading(true)
       try {
         dispatch(clearCartData())
         dispatch(setCheckoutData({
@@ -89,7 +86,7 @@ const CheckoutPage = () => {
 
         saveOrder({
           invoice: {
-            date_created: String(new Date()),
+            date_created: new Date(),
             total: cartData.total,
             user_id: userData.id
           },
@@ -98,15 +95,17 @@ const CheckoutPage = () => {
             quantity: item.quantity,
             unit_price: item.product.price,
           }))
+        }).then(() => {
+          setIsLoading(false)
+          navigate('/successful')
         })
-        
-        navigate('/successful')
-
       } catch (err) {
         console.error(err)
       }
     }
   }, [formData])
+
+  if(isLoading) return <CustomLoading />
 
   return (
     <PageContainer>
