@@ -25,9 +25,7 @@ const ProductCard = ({
   price,
   stock,
 }: Book) => {
-  // debugger;
   const navigate = useNavigate();
-  // const urlImage = image_links[0]?.url;
 
   const verMasInfo = () => {
     navigate(`/product/${id}`);

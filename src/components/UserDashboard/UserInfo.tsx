@@ -18,6 +18,7 @@ import {
   Tooltip,
   Tr,
   useBreakpointValue,
+  useColorMode,
 } from "@chakra-ui/react";
 import { User } from "../../types/user";
 import { EditIcon, SearchIcon } from "@chakra-ui/icons";
@@ -151,6 +152,7 @@ const UserInfo = () => {
   if (!isAdmin) {
     return <Navigate to="*" />;
   }
+  const { colorMode } = useColorMode();
 
   return (
     <>
@@ -168,6 +170,11 @@ const UserInfo = () => {
             value={nameSearch}
             onChange={(e) => setNameSearch(e.target.value)}
             mr={2}
+            borderColor="gray.300"
+            focusBorderColor="teal.500"
+            _placeholder={{
+              color: colorMode === "dark" ? "white" : "brand.blueLogo",
+            }}
           />
 
           <Input
@@ -176,6 +183,10 @@ const UserInfo = () => {
             value={lastNameSearch}
             onChange={(e) => setLastNameSearch(e.target.value)}
             mr={2}
+            focusBorderColor="teal.500"
+            _placeholder={{
+              color: colorMode === "dark" ? "white" : "brand.blueLogo",
+            }}
           />
 
           <Input
@@ -184,12 +195,17 @@ const UserInfo = () => {
             value={emailSearch}
             onChange={(e) => setEmailSearch(e.target.value)}
             mr={2}
+            focusBorderColor="teal.500"
+            _placeholder={{
+              color: colorMode === "dark" ? "white" : "brand.blueLogo",
+            }}
           />
 
           <Select
             fontSize={fontSize}
             placeholder="Seleccionar estado"
             value={status}
+            focusBorderColor="teal.500"
             onChange={(e) => setStatus(e.target.value)}
             mr={2}
           >
@@ -201,6 +217,7 @@ const UserInfo = () => {
             fontSize={fontSize}
             placeholder="Ordenar por"
             value={orderBy}
+            focusBorderColor="teal.500"
             onChange={(e) => setOrderBy(e.target.value)}
             mr={2}
           >
@@ -215,6 +232,7 @@ const UserInfo = () => {
             fontSize={fontSize}
             placeholder="Dirección de orden"
             value={orderDirection}
+            focusBorderColor="teal.500"
             onChange={(e) => setOrderDirection(e.target.value)}
             mr={2}
           >
@@ -228,6 +246,9 @@ const UserInfo = () => {
             w={"2xl"}
             leftIcon={<SearchIcon />}
             colorScheme="teal"
+            _hover={{
+              bg: "brand.violetLogo75",
+            }}
             onClick={handleSearch}
           >
             Buscar
@@ -237,7 +258,12 @@ const UserInfo = () => {
             colorScheme="gray"
             fontSize={fontSize}
             ml={2}
+            
             w={"2xl"}
+            _hover={{
+              bg: "gray.600", 
+              color: "white"
+            }}
           >
             Limpiar
           </Button>

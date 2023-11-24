@@ -11,7 +11,6 @@ import {
   FormErrorMessage,
   HStack,
   IconButton,
-  Input,
   InputGroup,
   InputRightElement,
   Link,
@@ -22,7 +21,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spacer,
   VStack,
   useBreakpointValue,
   useDisclosure,
@@ -40,11 +38,7 @@ import CustomLoading from "../../CustomLoading/CustomLoading";
 import setLocalStorageItem from "../../../utils/setStorage";
 import { useAppDispatch } from "../../../context/hooks";
 import { setUser } from "../../../context/slices/userSlice";
-import {
-  loginUserCheck,
-  loginAdmin,
-  login,
-} from "../../../context/slices/authSlice";
+import { loginAdmin, login } from "../../../context/slices/authSlice";
 import CustomInput from "../../Input/CustomInput";
 
 const schema = z.object({
@@ -68,7 +62,6 @@ const Login = () => {
   });
   const {
     control,
-    register,
     handleSubmit,
     reset,
     formState: { errors },

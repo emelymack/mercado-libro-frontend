@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Button, Image, Input } from "@chakra-ui/react";
+import { Button, Flex, Image, Input } from "@chakra-ui/react";
 import searchIcon from "../../assets/icons/icon-search.svg";
-import { Book } from "../../services/BookService";
 import { getAllBooksSearch } from "../../services/SearchServiceBook";
 import { useNavigate } from "react-router-dom";
+import { Book } from "../../types/product";
 
 const SearchBar = () => {
   const [isInputVisible, setInputVisible] = useState(false);
@@ -36,25 +36,52 @@ const SearchBar = () => {
 
   return (
     <>
-      {isInputVisible && (
-        <Input
-          placeholder="Buscar por titulo o categoria..."
-          value={searchTerm}
-          onChange={handleInputChange}
-        />
-      )}
-
-      <Button
-        bg={"none"}
-        px={{ base: 2, md: 3 }}
-        className="headerBtn"
-        onClick={handleClick}
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        align="center"
+        justify="center"
+        w="100%"
+        p={4}
       >
-        <Image
-          src={searchIcon}
-          boxSize={{ base: "50px", md: "50px", sm: "50px" }}
-        />
-      </Button>
+        {isInputVisible && (
+          <Input
+            placeholder="Buscar por titulo o categoria"
+            value={searchTerm}
+            onChange={handleInputChange}
+            size="lg"
+            borderRadius="md"
+            w={{ base: "sm", md: "sm", lg: "sm" }}
+            borderColor="gray.300"
+            focusBorderColor="teal.500"
+            _hover={{
+              borderColor: "teal.500",
+            }}
+            _placeholder={{
+              color: "brand.blueLogo",
+            }}
+            _autofill={{
+              border: "1px solid transparent",
+              textFillColor: "#003844",
+              boxShadow: "0 0 0px 1000px #ffffff inset",
+              transition: "background-color 5000s ease-in-out 0s",
+              backgroundColor: "brand.blueLogo",
+            }}
+            bg={"brand.violetLogo50"}
+          />
+        )}
+
+        <Button
+          bg={"none"}
+          px={{ base: 2, md: 3 }}
+          className="headerBtn"
+          onClick={handleClick}
+        >
+          <Image
+            src={searchIcon}
+            boxSize={{ base: "50px", md: "50px", sm: "50px" }}
+          />
+        </Button>
+      </Flex>
     </>
   );
 };
