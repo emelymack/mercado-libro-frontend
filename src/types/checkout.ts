@@ -2,15 +2,13 @@ export interface InvoiceData {
   invoice: {
     total: number,
     user_id: number,
-    date_created: string,
+    date_created: Date,
   },
-  invoice_item: [
-    {
+  invoice_item: {
       book_id: number,
       quantity: number,
       unit_price: number
-    }
-  ]
+    }[]
 }
 
 export interface ICheckoutData {

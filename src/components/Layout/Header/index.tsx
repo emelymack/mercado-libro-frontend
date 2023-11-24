@@ -58,15 +58,19 @@ const Header = () => {
   const isLogged = useAppSelector((state) => state.auth.isLogged);
   const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
   const { colorMode, toggleColorMode } = useColorMode();
+  const [isAdmin, setIsAdmin] = useState(false);
   const [categorias, setCategorias] = useState<Category[]>([]);
 
   useEffect(() => {
     getAllCategory().then((res) => {
       setCategorias(res);
     });
-
     return () => {};
   }, []);
+
+  useEffect(() => {
+    setIsAdmin(localStorage.getItem("isLoggedAdmin") === "true");
+  }, [isLogged]);
 
   return (
     <header className={`header-index ${isScrolling ? "scroll" : ""}`}>
@@ -127,22 +131,25 @@ const Header = () => {
                     ))}
                   </MenuList>
                 </Menu>
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    rightIcon={<ChevronDownIcon />}
-                    bg={"none"}
-                    color={"var(--secondary)"}
-                  >
-                    Administración
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem>
-                      <Link to={`/admin/products`}>Productos</Link>
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
-                
+                {isAdmin && (
+                  <Menu>
+                    <Link to="/dashboard">
+                      <MenuButton
+                        as={Button}
+                        rightIcon={<ChevronDownIcon />}
+                        bg="none"
+                        color="var(--secondary)"
+                      >
+                        Administración
+                      </MenuButton>
+                    </Link>
+                    {/* <MenuList>
+                      <MenuItem>
+                        <Link to={`/admin/products`}>Productos</Link>
+                      </MenuItem>
+                    </MenuList> */}
+                  </Menu>
+                )}
 
                 {Links.map((link) => (
                   <NavLink key={link.name} url={link.url}>

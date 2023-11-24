@@ -20,6 +20,7 @@ const userSlice = createSlice({
       state,
       action: PayloadAction<{ name: string; lastName: string, id: number }>
     ) => {
+      state.id = action.payload.id
       state.name = action.payload.name;
       state.lastName = action.payload.lastName;
       state.id = action.payload.id
