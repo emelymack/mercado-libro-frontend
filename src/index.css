@@ -169,6 +169,10 @@ footer {
   transform: scaleX(1);
 }
 
+.chakra-radio__label {
+  width: 100%;
+}
+
 @media (max-width: 767px) {
   header {
     padding-top: 15px;
@@ -193,4 +197,75 @@ footer {
     height: 15px;
     border-width: 4px !important;
   }
+  
+}
+
+.css-vdxpmq {
+  font-family: var(--chakra-fonts-body);
+  margin-top: var(--chakra-space-5);
+  padding: var(--chakra-space-3);
+  border-width: 1px;
+  border-radius: 12px;
+  overflow-x: auto;
+  z-index: 1;
+}
+
+.css-fmhgzt{
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: lighter !important;
+}
+
+.css-1r4lnxj{
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: lighter !important;
+}
+
+.title_admin{
+  padding-top: 20px;
+}
+
+.table_ml_header{
+  background-color:#9F9DFF;
+  
+  height: 50px;
+  
+}
+
+.css-r10se1{
+  color: #003844 !important;
+  font-size: 14px !important;
+}
+
+.css-1lno716{
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: lighter !important;
+  background-color:#9F9DFF !important;
+}
+
+.chakra-input{
+  border-color: #003844 !important;
+}
+
+
+.chakra-textarea{
+  border-color: #003844 !important;
+}
+
+.chakra-select{
+  border-color: #003844 !important;
+}
+.chakra-numberinput__field{
+  border-color: #003844 !important;
+}
+
+.admin_products{
+  padding-top: 150px;
+  padding-bottom: 150px
+}
+
+.form_control_pad{
+  padding-top: 10px;
 }

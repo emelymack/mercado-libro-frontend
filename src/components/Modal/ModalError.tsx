@@ -22,7 +22,7 @@ const ModalError = ({isOpen, onClose, title}: Props) => {
             textAlign="center"
             height="auto"
           >
-            <AlertIcon boxSize="50px" mt={0} mb={2} />
+            <AlertIcon boxSize="50px" mt={0} mb={2} color={'red.500'} />
             <AlertTitle mt={4} mb={1} fontSize="lg">
               {title}
             </AlertTitle>

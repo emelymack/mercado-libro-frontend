@@ -39,12 +39,17 @@ interface Category {
   image_link: string;
 }
 
-export interface Image {
-  id: number;
-  url: string;
+interface Image {
+  id: number,
+  url: string
 }
 
 export interface Authors {
   name: string;
   email: string;
+}
+
+export interface CartItem {
+  product: Book,
+  quantity: number
 }

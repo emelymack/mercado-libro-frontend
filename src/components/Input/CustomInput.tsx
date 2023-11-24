@@ -6,9 +6,11 @@ interface Props {
   type?: string,
   placeholder: string,
   autoComplete?: string,
-  control: Control<any>
+  value?: string | number,
+  control?: Control<any>,
+  [x:string]: any
 }
-const CustomInput = ({control, name, type, placeholder, autoComplete, ...otherProps}: Props) => {
+const CustomInput = ({control, name, type, placeholder, autoComplete, value, ...otherProps}: Props) => {
   return (
     <Controller
       name={name}
@@ -21,7 +23,6 @@ const CustomInput = ({control, name, type, placeholder, autoComplete, ...otherPr
           h={"auto"}
           placeholder={placeholder}
           type={type ?? 'text'}
-          // bg="rgba(217, 217, 217, .8)"
           bg={'brand.violetLogo50'}
           color="#003844"
           borderColor="#d8dee4"
@@ -32,6 +33,8 @@ const CustomInput = ({control, name, type, placeholder, autoComplete, ...otherPr
           autoComplete={autoComplete}
           _placeholder={{ color: "brand.blueLogo",  }}
           {...otherProps}
+          _disabled={{opacity: .7}}
+          value={value}
         />
       )}
     />

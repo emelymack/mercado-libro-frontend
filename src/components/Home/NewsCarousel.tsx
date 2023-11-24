@@ -4,8 +4,6 @@ import { Box } from '@chakra-ui/react'
 import { Book } from '../../types/product';
 import { getNewBooks } from '../../services/BookService';
 
-
-
 const NewsCarousel = () => {
   const [books, setBooks] = useState<Book[]>([]);
 
