@@ -1,41 +1,45 @@
-import Cards from 'react-credit-cards-2';
-import 'react-credit-cards-2/dist/es/styles-compiled.css';
+import Cards from "react-credit-cards-2";
+import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { useState, useEffect } from "react";
 
-const Card = ({watch}: any) => {
-  const [ cardState, setCardState ] = useState({
-    number: '',
-    expiry: '',
-    cvc: '',
-    name: '',
-    focus: 'number',
-    callback: () => {}
-  })
+const Card = ({ watch }: any) => {
+  const [cardState, setCardState] = useState({
+    number: "",
+    expiry: "",
+    cvc: "",
+    name: "",
+    focus: "number",
+    callback: () => {},
+  });
 
   useEffect(() => {
     // @ts-ignore
-    const subscription = watch((value, { name }) => {   
-      let inputName = ''
+    const subscription = watch((value, { name }) => {
+      let inputName = "";
       switch (name) {
-        case 'cardOwner': 
-          inputName = 'name'
+        case "cardOwner":
+          inputName = "name";
           break;
-        case 'cardNumber':
-          inputName = 'number'
+        case "cardNumber":
+          inputName = "number";
           break;
-        case 'cardExpiryDate':
-          inputName = 'expiry'
+        case "cardExpiryDate":
+          inputName = "expiry";
           break;
-        case 'cardCVV':
-          inputName = 'cvc'
+        case "cardCVV":
+          inputName = "cvc";
           break;
-      }      
+      }
       // @ts-ignore
-      setCardState((prev) => ({ ...prev, [inputName]: value[name], focus: inputName }))      
-    })
+      setCardState((prev) => ({
+        ...prev,
+        [inputName]: value[name],
+        focus: inputName,
+      }));
+    });
 
-    return () => subscription.unsubscribe()
-  }, [watch])
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <Cards
@@ -46,7 +50,7 @@ const Card = ({watch}: any) => {
       // @ts-ignore
       focused={cardState.focus}
     />
-  )
-}
+  );
+};
 
-export default Card
+export default Card;
