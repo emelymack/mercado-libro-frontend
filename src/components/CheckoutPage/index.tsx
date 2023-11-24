@@ -1,5 +1,5 @@
 import PageContainer from "../Layout/PageContainer"
-import { Box, Grid, GridItem, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorModeValue } from "@chakra-ui/react"
+import { Box, Grid, GridItem, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorModeValue, useDisclosure } from "@chakra-ui/react"
 import { Title } from "../Title"
 import { useEffect, useState } from "react";
 import CartData from './CartData'
@@ -12,6 +12,7 @@ import { ICheckoutData, IPaymentData, IShippingData } from "../../types/checkout
 import PaymentData from "./Form/PaymentData";
 import { saveOrder } from "../../services/CheckoutService";
 import CustomLoading from "../CustomLoading/CustomLoading";
+import ModalError from "../Modal/ModalError";
 
 const defaultValues = {
   shippingData: {
@@ -42,7 +43,7 @@ const CheckoutPage = () => {
   const [ formData, setFormData ] = useState<ICheckoutData>(defaultValues)
   const [tabIndex, setTabIndex] = useState(0)
   const [ isLoading, setIsLoading ] = useState(false)
-
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const handleShippingData = (data: IShippingData) => {
     setFormData({...formData, shippingData: data})    
@@ -71,7 +72,6 @@ const CheckoutPage = () => {
     if(Object.keys(formData.paymentData).length !== 0) {
       setIsLoading(true)
       try {
-        dispatch(clearCartData())
         dispatch(setCheckoutData({
           email: formData.shippingData.email,
           address: `${formData.shippingData.street} ${formData.shippingData.streetNumber}`,
@@ -88,16 +88,26 @@ const CheckoutPage = () => {
           invoice: {
             date_created: new Date(),
             total: cartData.total,
-            user_id: userData.id
+            user_id: userData.id,
+            address: `${formData.shippingData.street} ${formData.shippingData.streetNumber}`,
+            document_type: formData.paymentData.documentType,
+            dni: formData.paymentData.cardOwnerDocument,
+            notes: formData.paymentData.orderNotes
           },
           invoice_item: cartData.items.map((item) => ({
             book_id : item.product.id,
             quantity: item.quantity,
             unit_price: item.product.price,
           }))
-        }).then(() => {
+        }).then((res) => {
           setIsLoading(false)
-          navigate('/successful')
+          
+          if(res.status === 200) {
+            dispatch(clearCartData())
+            navigate('/successful')
+          } else {
+            onOpen()
+          }
         })
       } catch (err) {
         console.error(err)
@@ -159,6 +169,7 @@ const CheckoutPage = () => {
           </GridItem>
         </Grid>
       </Box>
+      <ModalError onClose={onClose} isOpen={isOpen} title="Hubo un error al realizar el pedido. Intente nuevamente, por favor." />
     </PageContainer>
   )
 }

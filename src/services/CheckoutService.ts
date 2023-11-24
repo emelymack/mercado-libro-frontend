@@ -9,7 +9,7 @@ import { InvoiceData } from "../types/checkout";
 export const saveOrder = async (data: InvoiceData): Promise<any> => {
   return httpService
     .post(`${BASE_URL}${CREATE_INVOICE_URL}`, data)
-    .then((response) => response.data)
+    .then((response) => response)
     .catch((error) => {
       if (axios.isAxiosError(error)) {        
         throw {

@@ -48,7 +48,7 @@ const CheckoutInfo = () => {
                     <Tr style={styles.row}>
                         <Td style={styles.rowContent}>
                             <Box w={{ base: '35px', xl: '40px'}} h={{ base: '35px', xl: '40px'}} style={styles.icon}>
-                                <Image src={EmailIcon} alt="Email icon" w={{ base: '20px', xl: '35px' }} />
+                                <Image src={EmailIcon} alt="Email icon" w={{ base: '30px', xl: '35px' }} />
                             </Box>
                             <Text>
                                 {checkoutData.email}
@@ -58,7 +58,7 @@ const CheckoutInfo = () => {
                     <Tr style={styles.row}>
                         <Td style={styles.rowLineBreakContent}>
                             <Box w={{ base: '35px', xl: '40px'}} h={{ base: '35px', xl: '40px'}} style={styles.icon}>
-                                <Image src={LocationIcon} alt="Location icon" w={{ base: '15px', xl: '35px' }} />
+                                <Image src={LocationIcon} alt="Location icon" w={{ base: '25px', xl: '35px' }} />
                             </Box>
                             <Text>
                                 {checkoutData.address}<br/>
@@ -70,7 +70,7 @@ const CheckoutInfo = () => {
                     <Tr style={styles.row}>
                         <Td style={styles.rowLineBreakContent}>
                             <Box w={{ base: '35px', xl: '40px'}} h={{ base: '35px', xl: '40px'}} style={styles.icon}>
-                                <Image src={TruckIcon} alt="Location icon" w={{ base: '20px', xl: '35px' }} />
+                                <Image src={TruckIcon} alt="Location icon" w={{ base: '25px', xl: '35px' }} />
                             </Box>
                             <Text>
                                 { checkoutData.shippingType === 'ENVIO_DOMICILIO' ? (
@@ -91,7 +91,7 @@ const CheckoutInfo = () => {
                     <Tr>
                         <Td style={styles.rowContent}>
                             <Box w={{ base: '35px', xl: '40px'}} h={{ base: '35px', xl: '40px' }} style={styles.icon}>
-                                <Image src={CreditCardIcon} alt="Credit card icon" w={{ base: '20px', xl: '35px' }} />
+                                <Image src={CreditCardIcon} alt="Credit card icon" w={{ base: '25px', xl: '35px' }} />
                             </Box>
                             <Text>
                                 { checkoutData.paymentType === 'TARJETA' && 'Pago con tarjeta de débito/crédito' }

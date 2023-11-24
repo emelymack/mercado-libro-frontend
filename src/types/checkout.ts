@@ -1,6 +1,10 @@
 export interface InvoiceData {
   invoice: {
     total: number,
+    address: string,
+    dni: number,
+    document_type: string,
+    notes?: string,
     user_id: number,
     date_created: Date,
   },

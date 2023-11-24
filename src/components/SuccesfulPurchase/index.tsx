@@ -10,7 +10,7 @@ const SuccesfulPurchase = () => {
             <SimpleGrid justifyItems='center' mb={40} className={`page ${isScrolling ? 'scroll' : ''}`}>
                 <Heading
                     size={"lg"}
-                    fontSize={{ base: '20px', sm: '26px', lg: '35px', xl: '40px'}}
+                    fontSize={{ base: '25px', lg: '35px', xl: '40px'}}
                     fontWeight='800'
                     textAlign='center'
                     mt={20}
@@ -22,7 +22,7 @@ const SuccesfulPurchase = () => {
                 <Box w={{ base: "75vw", sm: '80vw', md: '63vw', lg: '55vw', xl: '44vw' }}>
                     <Text
                     color='brand.blueLogo'
-                    fontSize={{ base: "12px", sm: '16px', lg: '20px', xl: '25px'}}
+                    fontSize={{ base: "14px", sm: '16px', lg: '20px', xl: '25px'}}
                     fontWeight='600'
                     mb={10}
                     mt={2}
