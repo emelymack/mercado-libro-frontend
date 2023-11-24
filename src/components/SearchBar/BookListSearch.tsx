@@ -9,12 +9,13 @@ import {
   Center,
   Button,
   keyframes,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { Book } from "../../services/BookService";
 import { Link, useParams } from "react-router-dom";
 import { getAllBooksSearch } from "../../services/SearchServiceBook";
 import { useEffect, useState } from "react";
 import CustomLoading from "../CustomLoading/CustomLoading";
+import { Book } from "../../types/product";
 
 // interface BookListSearchProps {
 //   searchTerm?: string;
@@ -71,24 +72,36 @@ const BookListSearch = () => {
               borderRadius="lg"
               overflow="hidden"
               boxShadow="md"
-              p={4}
-              minH="500px"
-              position="relative" // Agrega position relative para posicionar el botón absolutamente
-              onMouseEnter={() => setShowButton(book.id.toString())} // Muestra el botón cuando el mouse entra
-              onMouseLeave={() => setShowButton(null)} // Oculta el botón cuando el mouse sale
+              p={6}
+              w={"auto"}
+              minH="550px"
+              position="relative"
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              onMouseEnter={() => setShowButton(book.id.toString())}
+              onMouseLeave={() => setShowButton(null)}
+              _hover={{
+                backgroundColor: useColorModeValue(
+                  "brand.violetLogo",
+                  "brand.violetLogo50"
+                ),
+              }}
             >
               <Image
                 src={book.image_links[0].url}
                 alt={book.title}
                 objectFit="cover"
                 h="200px"
+                boxShadow="lg"
               />
               <VStack spacing={2} mt={3}>
                 <Heading fontSize="xl">{book.title}</Heading>
-                <Text>Author: {book.authors[0].name}</Text>
-                <Text>Publisher: {book.publisher}</Text>
+                <Text>Autor: {book.authors[0].name}</Text>
+                <Text>Editor: {book.publisher}</Text>
                 <Text>ISBN: {book.isbn}</Text>
-                <Text>Price: ${book.price}</Text>
+                <Text fontSize="lg">Precio: ${book.price}</Text>
                 <Text>Stock: {book.stock}</Text>
               </VStack>
               {showButton === book.id.toString() && (
@@ -111,7 +124,13 @@ const BookListSearch = () => {
                   borderRadius={2}
                 >
                   <Link to={`/product/${book.id.toString()}`}>
-                    <Button animation={`${slideIn} 0.3s ease-out forwards`}>
+                    <Button
+                      animation={`${slideIn} 0.3s ease-out forwards`}
+                      colorScheme="teal"
+                      size="lg"
+                      borderRadius="md"
+                      fontWeight="bold"
+                    >
                       Ver detalles
                     </Button>
                   </Link>

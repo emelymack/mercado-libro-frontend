@@ -154,13 +154,12 @@ const Header = () => {
                   {!isLogged ? <Login /> : <MyAccount />}
                 </Box>
               </HStack>
-              <Box ms={0}>
+              <Box ml={0}>
                 <Button
                   bg={"none"}
                   px={{ base: 2, md: 3 }}
                   className="headerBtn"
                 >
-                  {/* <Image src={searchIcon} boxSize={{ base: "50px" }} /> */}
                   <SearchBar />
                 </Button>
               </Box>

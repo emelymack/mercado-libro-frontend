@@ -19,6 +19,7 @@ import { getUserById, patchUser } from "../../services/UserService";
 import { useEffect, useState } from "react";
 import { User } from "../../types/user";
 import CustomLoading from "../CustomLoading/CustomLoading";
+import { Navigate } from "react-router-dom";
 
 const schema = z.object({
   name: z.string(),
@@ -45,6 +46,7 @@ const EditUserModal = ({
 }: EditUserModalProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
 
   const {
     register,
@@ -106,6 +108,9 @@ const EditUserModal = ({
       onClose();
     }
   };
+  if (!isAdmin) {
+    return <Navigate to="*" />;
+  }
 
   return (
     <Modal isOpen={!!isOpen} onClose={onClose} isCentered size="2xl">

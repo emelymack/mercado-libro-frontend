@@ -18,6 +18,7 @@ import {
   Tooltip,
   Tr,
   useBreakpointValue,
+  useColorMode,
 } from "@chakra-ui/react";
 import { User } from "../../types/user";
 import { EditIcon, SearchIcon } from "@chakra-ui/icons";
@@ -25,6 +26,7 @@ import EditUserModal from "./EditUserModal";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import moment from "moment";
 import Pagination from "../../utils/Pagination";
+import { Navigate } from "react-router-dom";
 
 const UserInfo = () => {
   const fontSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
@@ -46,6 +48,7 @@ const UserInfo = () => {
   const [nameSearch, setNameSearch] = useState<string>("");
   const [lastNameSearch, setLastNameSearch] = useState<string>("");
   const [emailSearch, setEmailSearch] = useState<string>("");
+  const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
 
   const handleEdit = (id: number) => {
     setSelectedUserId(id);
@@ -146,6 +149,11 @@ const UserInfo = () => {
     }
   };
 
+  if (!isAdmin) {
+    return <Navigate to="*" />;
+  }
+  const { colorMode } = useColorMode();
+
   return (
     <>
       <Box
@@ -153,15 +161,30 @@ const UserInfo = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
+        p={[4, 6, 8]}
         overflowX="auto"
       >
-        <Flex align="center" pt={40} paddingLeft={20} paddingRight={20}>
+        <Flex
+          flexDirection={{ base: "column", md: "row" }}
+          align="center"
+          pt={{ base: 10, md: 40 }}
+          px={{ base: 4, md: 20 }}
+          mb={4}
+          w="full"
+        >
           <Input
             fontSize={fontSize}
             placeholder="Buscar por nombre"
             value={nameSearch}
             onChange={(e) => setNameSearch(e.target.value)}
             mr={2}
+            borderColor="gray.300"
+            focusBorderColor="teal.500"
+            _placeholder={{
+              color: colorMode === "dark" ? "white" : "brand.blueLogo",
+            }}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           />
 
           <Input
@@ -170,6 +193,12 @@ const UserInfo = () => {
             value={lastNameSearch}
             onChange={(e) => setLastNameSearch(e.target.value)}
             mr={2}
+            focusBorderColor="teal.500"
+            _placeholder={{
+              color: colorMode === "dark" ? "white" : "brand.blueLogo",
+            }}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           />
 
           <Input
@@ -178,14 +207,23 @@ const UserInfo = () => {
             value={emailSearch}
             onChange={(e) => setEmailSearch(e.target.value)}
             mr={2}
+            focusBorderColor="teal.500"
+            _placeholder={{
+              color: colorMode === "dark" ? "white" : "brand.blueLogo",
+            }}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           />
 
           <Select
             fontSize={fontSize}
             placeholder="Seleccionar estado"
             value={status}
+            focusBorderColor="teal.500"
             onChange={(e) => setStatus(e.target.value)}
             mr={2}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           >
             <option value="ACTIVE">Activo</option>
             <option value="INACTIVE">Inactivo</option>
@@ -195,8 +233,11 @@ const UserInfo = () => {
             fontSize={fontSize}
             placeholder="Ordenar por"
             value={orderBy}
+            focusBorderColor="teal.500"
             onChange={(e) => setOrderBy(e.target.value)}
             mr={2}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           >
             <option value="ID">Id</option>
             <option value="NAME">Nombre</option>
@@ -209,8 +250,11 @@ const UserInfo = () => {
             fontSize={fontSize}
             placeholder="Dirección de orden"
             value={orderDirection}
+            focusBorderColor="teal.500"
             onChange={(e) => setOrderDirection(e.target.value)}
             mr={2}
+            mb={{ base: 2, md: 0 }}
+            w="full"
           >
             <option value="ASC">Ascendente</option>
             <option value="DESC">Descendente</option>
@@ -222,6 +266,9 @@ const UserInfo = () => {
             w={"2xl"}
             leftIcon={<SearchIcon />}
             colorScheme="teal"
+            _hover={{
+              bg: "brand.violetLogo75",
+            }}
             onClick={handleSearch}
           >
             Buscar
@@ -232,11 +279,15 @@ const UserInfo = () => {
             fontSize={fontSize}
             ml={2}
             w={"2xl"}
+            _hover={{
+              bg: "gray.600",
+              color: "white",
+            }}
           >
             Limpiar
           </Button>
         </Flex>
-        <Table variant="simple" size="md" mt={6}>
+        <Table variant="simple" size={{ base: "sm", md: "lg" }} mt={6}>
           <TableCaption>Usuarios Registrados en Mercado Libro</TableCaption>
           <Thead>
             <Tr>
@@ -249,7 +300,11 @@ const UserInfo = () => {
               <Th textAlign="center" fontSize={fontSize}>
                 Email
               </Th>
-              <Th textAlign="center" fontSize={fontSize}>
+              <Th
+                display={{ base: "none", md: "table-cell" }}
+                textAlign="center"
+                fontSize={fontSize}
+              >
                 Fecha Creación
               </Th>
               <Th textAlign="center" fontSize={fontSize}>
