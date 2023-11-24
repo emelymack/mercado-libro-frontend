@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Flex, Image, Input } from "@chakra-ui/react";
 import searchIcon from "../../assets/icons/icon-search.svg";
+import closeIcon from "../../assets/icons/icon-xmark.svg"
 import { getAllBooksSearch } from "../../services/SearchServiceBook";
 import { useNavigate } from "react-router-dom";
 import { Book } from "../../types/product";
@@ -8,7 +9,7 @@ import { Book } from "../../types/product";
 const SearchBar = () => {
   const [isInputVisible, setInputVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [books, setBooks] = useState<Book[]>([]);
+  const [, setBooks] = useState<Book[]>([]);
 
   const history = useNavigate();
 
@@ -41,7 +42,6 @@ const SearchBar = () => {
         align="center"
         justify="center"
         w="100%"
-        p={4}
       >
         {isInputVisible && (
           <Input
@@ -50,7 +50,7 @@ const SearchBar = () => {
             onChange={handleInputChange}
             size="lg"
             borderRadius="md"
-            w={{ base: "sm", md: "sm", lg: "sm" }}
+            w={{ base: "sm", md: "sm", lg: "xs" }}
             borderColor="gray.300"
             focusBorderColor="teal.500"
             _hover={{
@@ -77,7 +77,7 @@ const SearchBar = () => {
           onClick={handleClick}
         >
           <Image
-            src={searchIcon}
+            src={!isInputVisible ? searchIcon : closeIcon}
             boxSize={{ base: "50px", md: "50px", sm: "50px" }}
           />
         </Button>

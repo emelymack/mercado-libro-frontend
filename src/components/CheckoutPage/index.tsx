@@ -56,15 +56,7 @@ const CheckoutPage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
     if(!accessCheckout) navigate('/')
-    const cartItems = cartData.items.map((item) => return {
-      book_id : item.product.id;
-      quantity: item.quantity;
-      unit_price: item.product.price;
-    })
-
-    console.log(cartItems);
-    
-
+  
     return () => {
       if(accessCheckout) {
         dispatch(toggleAccess())
