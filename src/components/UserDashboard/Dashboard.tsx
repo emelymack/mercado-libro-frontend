@@ -9,6 +9,7 @@ import {
 import { Link, Navigate } from "react-router-dom";
 import user from "../../assets/user.svg";
 import dashboard from "../../assets/dashboard.svg";
+import books from "../../assets/books.svg";
 
 const Dashboard = () => {
   const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
@@ -43,6 +44,24 @@ const Dashboard = () => {
             width="full"
           >
             Ir a Dashboard
+          </Button>
+        </Box>
+        <Box boxShadow="xl" borderRadius="lg" p={5}>
+          <Heading mb={4}>Administración de Productos</Heading>
+          <Text mb={4}>Administra los productos aquí.</Text>
+          <Image
+            h={"400px"}
+            src={books}
+            alt="Imagen de administración de productos"
+            mb={4}
+          />
+          <Button
+            as={Link}
+            to="/admin/products"
+            colorScheme="teal"
+            width="full"
+          >
+            Ir a Administración de Productos
           </Button>
         </Box>
       </SimpleGrid>

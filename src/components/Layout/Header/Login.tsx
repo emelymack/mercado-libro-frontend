@@ -120,7 +120,7 @@ const Login = () => {
           localStorage.setItem("isLogged", "true");
           localStorage.setItem("isLoggedAdmin", "true");
           dispatch(loginAdmin());
-          history("/userDashboard");
+          history("/dashboard");
         } else {
           localStorage.setItem("isLogged", "true");
           localStorage.setItem("isLoggedAdmin", "false");
