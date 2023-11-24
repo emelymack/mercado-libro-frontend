@@ -148,7 +148,7 @@ const ShippingData = ({handleShippingData}: Props) => {
       {/* Datos de facturación */}
       <Box mt={8}>
         <Title size="md" capitalize htmlElement={'h5'} text="Datos de facturación" fw={700} />
-        <CustomInput name="dniOrCuil" placeholder={"DNI o CUIL"} control={control} type="number" mt={2} />
+        <CustomInput name="dniOrCuil" placeholder={"DNI o CUIL"} control={control} mt={2} maxLength={11} />
         {errors.dniOrCuil && (
           <Text fontSize="sm" color="red.400">
             {errors.dniOrCuil.message}

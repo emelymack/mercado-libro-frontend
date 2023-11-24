@@ -4,11 +4,11 @@ import {
   CREATE_INVOICE_URL,
 } from "./apiUrls";
 import axios from "axios";
-import { Book } from "../types/product";
+import { InvoiceData } from "../types/checkout";
 
-export const saveOrder = (book: Book): Promise<Book> => {
+export const saveOrder = async (data: InvoiceData): Promise<any> => {
   return httpService
-    .post(`${BASE_URL}${CREATE_INVOICE_URL}`, book)
+    .post(`${BASE_URL}${CREATE_INVOICE_URL}`, data)
     .then((response) => response.data)
     .catch((error) => {
       if (axios.isAxiosError(error)) {        
