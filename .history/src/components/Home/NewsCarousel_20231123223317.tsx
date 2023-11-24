@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import ProductsCarousel from '../ProductsCarousel'
 import { Box } from '@chakra-ui/react'
 import { Book } from '../../types/product';
-import { getNewBooksHome } from '../../services/BookService';
+import { getNewBooks } from '../../services/BookService';
 
 const NewsCarousel = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -10,7 +10,7 @@ const NewsCarousel = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    getNewBooksHome()
+    getNewBooks()
     .then((res) => {
       setBooks(res.content);
     });
