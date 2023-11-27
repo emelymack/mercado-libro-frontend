@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import ProductCard from "../Card/ProductCard";
-
-import { Center, Heading, SimpleGrid, Box, Container } from "@chakra-ui/react";
+import { Center, Heading, SimpleGrid, Box, Container, Flex, Input, Select, Button, RangeSlider, RangeSliderTrack, RangeSliderFilledTrack, RangeSliderThumb, filter } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../context/hooks";
 import { getBooksByCategory } from "../../services/BookService";
@@ -20,6 +19,7 @@ export const Categories = () => {
   const [ isLoading, setIsLoading ] = useState(false)
   const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
 
+
   useEffect(() => {
     window.scrollTo(0, 0);
     setIsLoading(true);
@@ -32,6 +32,7 @@ export const Categories = () => {
     }
   }, [categoryName, page, size]);
 
+  
   if (isLoading)
     return (
       <Box
@@ -43,6 +44,10 @@ export const Categories = () => {
         <CustomLoading />
       </Box>
     );
+
+
+
+    
 
   return (
     <PageContainer bg="white.600" mb={20} pt={10}>
@@ -81,6 +86,7 @@ export const Categories = () => {
             </Heading>
           </Box>
         )}
+        
       </Center>
       </Container>
       <Pagination
@@ -89,6 +95,7 @@ export const Categories = () => {
           totalElements={totalElements}
           onPageChange={(newPage) => setPage(newPage)}
         />
+        
     </PageContainer>
   );
 };
