@@ -23,10 +23,12 @@ const Health = () => {
   const [books, setBooks] = useState<Book[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<TokenData | null>(null);
+
+  // Usar token decodificado
   useEffect(() => {
     const tokenData = decodeToken();
     if (tokenData) {
-      console.log(tokenData); // Esto imprimirá el token decodificado en la consola
+      console.log(tokenData);
       setUserData(tokenData);
     }
   }, []);
