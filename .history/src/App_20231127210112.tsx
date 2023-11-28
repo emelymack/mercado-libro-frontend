@@ -16,8 +16,7 @@ import { login } from "./context/slices/authSlice";
 import { setUser } from "./context/slices/userSlice";
 import CheckoutPage from "./components/CheckoutPage";
 import MyAccount from "./components/Layout/Header/MyAccount";
-import MyAccountInfo from "./components/MyAccount/index";
-import Order from "./components/Order/index"
+import Order from "./components/Order"
 
 function App() {
   const dispatch = useAppDispatch();
@@ -57,7 +56,7 @@ function App() {
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/userDashboard" element={<UserInfo />} />
           <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/me" element={<MyAccountInfo />} />
+          <Route path="/me" element={<MyAccount />} />
           <Route path="/me/order" element={<Order />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

@@ -72,7 +72,7 @@ const MyAccount = () => {
           </Flex>
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={onDetailClick}>Informacion</MenuItem>
+          <MenuItem onClick={onDetailClick}>Detalle</MenuItem>
           <MenuDivider />
           <MenuItem onClick={onLogoutClick}>Cerrar sesión</MenuItem>
         </MenuList>
