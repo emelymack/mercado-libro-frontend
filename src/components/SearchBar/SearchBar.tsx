@@ -12,30 +12,31 @@ const SearchBar = () => {
   const [isInputVisible, setInputVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [, setBooks] = useState<Book[]>([]);
-  const [ isLoading, setIsLoading ] = useState(false)
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isLoading, setIsLoading] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const history = useNavigate();
 
-  const handleClick = async () => {    
+  const handleClick = async () => {
     setInputVisible(!isInputVisible);
     if (searchTerm !== "") {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
         const response = await getAllBooksSearch({
           keyword: searchTerm,
           page: 0,
         });
         setBooks(response.data);
-        setIsLoading(false);
         if (response.data.length > 0) {
           history(`/books/search/${searchTerm}`);
         } else {
-          onOpen()
+          onOpen();
         }
-        setSearchTerm("")
+        setSearchTerm("");
       } catch (error) {
         console.error("Error al buscar libros:", error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -44,9 +45,9 @@ const SearchBar = () => {
     setSearchTerm(event.target.value);
   };
 
-  useEffect(() => {}, [isLoading])
+  useEffect(() => {}, [isLoading]);
 
-  if(isLoading) return <CustomLoading />
+  if (isLoading) return <CustomLoading />;
 
   return (
     <>
@@ -95,7 +96,11 @@ const SearchBar = () => {
           />
         </Button>
       </Flex>
-      <ModalError isOpen={isOpen} onClose={onClose} title="No se encontraron resultados para la búsqueda" />
+      <ModalError
+        isOpen={isOpen}
+        onClose={onClose}
+        title="No se encontraron resultados para la búsqueda"
+      />
     </>
   );
 };

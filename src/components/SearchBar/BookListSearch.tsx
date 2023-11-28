@@ -10,13 +10,14 @@ import {
   Button,
   keyframes,
   useColorModeValue,
-  Container
+  Container,
 } from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
 import { getAllBooksSearch } from "../../services/SearchServiceBook";
 import { useEffect, useState } from "react";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import { Book } from "../../types/product";
+import NotFoundImg from "../../assets/img/403_2.jpg";
 
 // interface BookListSearchProps {
 //   searchTerm?: string;
@@ -56,11 +57,11 @@ const BookListSearch = () => {
   return (
     <>
       <Center pt={40}>
-        <Heading as="h1" size="lg" p={5} color='brand.greenLogo'>
+        <Heading as="h1" size="lg" p={5} color="brand.greenLogo">
           Resultados de búsqueda para: "{searchTerm}"
         </Heading>
       </Center>
-      <Container maxW={'container.xl'} mb={10}>
+      <Container maxW={"container.xl"} mb={10}>
         <Grid
           p={6}
           templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
@@ -92,7 +93,7 @@ const BookListSearch = () => {
                 }}
               >
                 <Image
-                  src={book.image_links[0].url}
+                  src={book.image_links[0]?.url ?? NotFoundImg}
                   alt={book.title}
                   objectFit="cover"
                   h="200px"
