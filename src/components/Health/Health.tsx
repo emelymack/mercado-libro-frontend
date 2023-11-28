@@ -8,18 +8,28 @@ import {
   Thead,
   Tr,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { Book, getAllBooks } from "../../services/BookService";
+import { getAllBooks } from "../../services/BookService";
 import { createUser } from "../../services/RegisterService";
 import CustomLoading from "../CustomLoading/CustomLoading";
+import { TokenData, decodeToken } from "../../utils/authUtils";
 
 const Health = () => {
   const [error, setError] = useState<string>("");
   // const [users, setUsers] = useState<User[]>();
   const [books, setBooks] = useState<Book[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userData, setUserData] = useState<TokenData | null>(null);
+  useEffect(() => {
+    const tokenData = decodeToken();
+    if (tokenData) {
+      console.log(tokenData); // Esto imprimirá el token decodificado en la consola
+      setUserData(tokenData);
+    }
+  }, []);
 
   const handleCreateUser = () => {
     setIsLoading(true);
@@ -114,6 +124,8 @@ const Health = () => {
           {error || "No se encontraron libros."}
         </Alert>
       )}
+
+      {userData && <Box pt={20}>Token: {JSON.stringify(userData.sub)}</Box>}
     </>
   );
 };
