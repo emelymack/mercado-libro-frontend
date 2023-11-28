@@ -1,0 +1,20 @@
+import { Box, Text, ViewIcon } from "@chakra-ui/react"
+
+const OrderCard = () => {
+
+    return (
+        <Box display='flex' justifyContent='space-between' alignItems='center' bg='papayawhip' p='15px' borderRadius='md'>
+            <Text as='b' fontSize='xl'>
+                Orden: #6082
+            </Text>
+            <Box display='flex' justifyContent='space-between' >
+                <Text>
+                    09/09/2023
+                </Text>
+                <ViewIcon boxSize={6}/>
+            </Box>
+        </Box>
+    )
+};
+
+export default OrderCard;
