@@ -1,13 +1,13 @@
 import { Box, Center, Container, Heading, SimpleGrid } from "@chakra-ui/react";
 import ProductCard from "../Card/ProductCard";
-import { getBestSellersPage, getNewBooks } from "../../services/BookService";
+import { getBestSellersPage} from "../../services/BookService";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../context/hooks";
 import BreadcrumbNav from "./BreadcrumbNav";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import { Book } from "../../types/product";
 //import Pagination from "../../utils/Pagination";
-import PageContainer from "../Layout/PageContainer";
+//import PageContainer from "../Layout/PageContainer";
 
 export const BestsellersPage = () => {
   const [page, setPage] = useState<number>(0);
@@ -42,7 +42,7 @@ export const BestsellersPage = () => {
     );
 
   return (
-    <PageContainer bg="white.600" mb={20} pt={10}>
+   // <PageContainer bg="white.600" mb={20} pt={10}>
     <Container
       maxW="container.xl"
       bg="white.600"
@@ -94,13 +94,13 @@ export const BestsellersPage = () => {
         )}
       </Center>
     </Container>
-   {/*  <Pagination
+   /*  <Pagination
       pageNumber={page}
       pageSize={size}
       totalElements={totalElements}
       onPageChange={(newPage) => setPage(newPage)}
-    /> */}
-    </PageContainer>
+    /> */
+   // </PageContainer>
   );
 };
 

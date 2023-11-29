@@ -162,16 +162,18 @@ export const getNewBooksByCategory = async (category:string): Promise<GetBooksRe
 
 export const getBestSellers = async (): Promise<Book[]> => {
   return httpService
-    .get(`${BASE_URL}${INVOICE_URL}/bestsellers`) 
+    .get(`${BASE_URL}${INVOICE_URL}/bestsellers/list`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
     });
 };
 
+//http://localhost:8080/v1/api/invoice/bestsellers/page?page=0&size=8
+
 export const getBestSellersPage = async (): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${INVOICE_URL}/bestsellers`) 
+    .get(`${BASE_URL}${INVOICE_URL}/bestsellers/page?page=0&size=8`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);

@@ -14,6 +14,7 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import UserInfo from "./components/UserDashboard/UserInfo";
 import { login } from "./context/slices/authSlice";
 import { setUser } from "./context/slices/userSlice";
+import BestsellersPage from "./components/BestsellersPage/BestsellersPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -52,6 +53,7 @@ function App() {
           <Route path="/category/:categoryName" element={<CategoriesPage />} />
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/userDashboard" element={<UserInfo />} />
+          <Route path="/bestsellers" element={<BestsellersPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
