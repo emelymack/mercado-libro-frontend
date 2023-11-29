@@ -12,19 +12,16 @@ const NotFoundPage = () => {
       justifyContent="center"
       overflow="hidden"
       bg={'brand.blueLogo'}
-      pt={'170px'}
-      
-      // backgroundImage={randomImage}
-      // backgroundRepeat={"no-repeat"}
-      // backgroundSize={'100%'}
+      pt={{base: '140px',lg: '170px'}}
+      px={10}
     >
-      <Heading color={'white'}>¡Ups! La página que estás buscando no existe...</Heading>
+      <Heading color={'white'} textAlign={'center'}>¡Ups! La página que estás buscando no existe...</Heading>
       <Image
         pt={5}
         src={randomImage}
         alt="Not Found"
         objectFit="cover"
-        boxSize="550px"
+        boxSize={{base: "300px",lg: "550px"}}
         mb={5}
       />
     </Box>

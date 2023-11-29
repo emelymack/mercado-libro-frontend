@@ -45,13 +45,7 @@ export const Categories = () => {
     );
 
   return (
-    <PageContainer bg="white.600" mb={20} pt={10}>
-      <Container
-      maxW="container.xl"
-      bg="white.600"
-      mb={20}
-      className={`page ${isScrolling ? "scroll" : ""}`}
-    >
+    <PageContainer bg="white.600" mb={20}>
       {categoryName && <BreadcrumbNav category={categoryName}/>}
       <Heading
         size="3xl"
@@ -82,7 +76,6 @@ export const Categories = () => {
           </Box>
         )}
       </Center>
-      </Container>
       <Pagination
           pageNumber={page}
           pageSize={size}
