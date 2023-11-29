@@ -6,7 +6,7 @@ import { useAppSelector } from "../../context/hooks";
 import BreadcrumbNav from "./BreadcrumbNav";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import { Book } from "../../types/product";
-import Pagination from "../../utils/Pagination";
+//import Pagination from "../../utils/Pagination";
 import PageContainer from "../Layout/PageContainer";
 
 export const BestsellersPage = () => {
@@ -94,12 +94,12 @@ export const BestsellersPage = () => {
         )}
       </Center>
     </Container>
-    <Pagination
+   {/*  <Pagination
       pageNumber={page}
       pageSize={size}
       totalElements={totalElements}
       onPageChange={(newPage) => setPage(newPage)}
-    />
+    /> */}
     </PageContainer>
   );
 };

@@ -169,7 +169,7 @@ export const getBestSellers = async (): Promise<Book[]> => {
     });
 };
 
-export const getBestSellersPage = async (): Promise<Book[]> => {
+export const getBestSellersPage = async (): Promise<GetBooksResponse> => {
   return httpService
     .get(`${BASE_URL}${INVOICE_URL}/bestsellers`) 
     .then((response) => response.data)
