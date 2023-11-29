@@ -9,9 +9,9 @@ const ModalError = ({isOpen, onClose, title}: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay  />
-      <ModalContent bg={"red.200"} >
+      <ModalContent bg={"red.200"} borderRadius={25} >
         <ModalCloseButton  />
-        <ModalBody mt={8} py={10}>
+        <ModalBody mt={5} py={10}>
           <Alert
             bg={"red.200"}
             status="error"
@@ -22,7 +22,7 @@ const ModalError = ({isOpen, onClose, title}: Props) => {
             textAlign="center"
             height="auto"
           >
-            <AlertIcon boxSize="40px" mr={0} />
+            <AlertIcon boxSize="50px" mt={0} mb={2} color={'red.500'} />
             <AlertTitle mt={4} mb={1} fontSize="lg">
               {title}
             </AlertTitle>

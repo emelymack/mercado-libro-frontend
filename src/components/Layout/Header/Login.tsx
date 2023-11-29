@@ -11,7 +11,7 @@ import {
   FormErrorMessage,
   HStack,
   IconButton,
-  Input,
+  Image,
   InputGroup,
   InputRightElement,
   Link,
@@ -22,7 +22,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spacer,
   VStack,
   useBreakpointValue,
   useDisclosure,
@@ -33,15 +32,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Link as LinkTo, useNavigate } from "react-router-dom";
 import { loginUser } from "../../../services/LoginService";
 import CustomLoading from "../../CustomLoading/CustomLoading";
 import setLocalStorageItem from "../../../utils/setStorage";
 import { useAppDispatch } from "../../../context/hooks";
 import { setUser } from "../../../context/slices/userSlice";
-import { login } from "../../../context/slices/authSlice";
+import { loginAdmin, login } from "../../../context/slices/authSlice";
 import CustomInput from "../../Input/CustomInput";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
+import googleLogo from "../../../assets/img/google-logo.png";
+import facebookLogo from "../../../assets/img/facebook-logo.png";
 
 const schema = z.object({
   email: z
@@ -64,7 +65,6 @@ const Login = () => {
   });
   const {
     control,
-    register,
     handleSubmit,
     reset,
     formState: { errors },
@@ -72,13 +72,27 @@ const Login = () => {
     resolver: zodResolver(schema),
   });
 
+  const redirectToLoginProvider = (provider: string) => {
+    setIsLoading(true);
+    setLocalStorageItem("currentUrl", window.location.href);
+    window.location.href = `http://localhost:8080/v1/api/auth/oauth/${provider}`;
+  };
+
+  const redirectToFacebook = () => {
+    redirectToLoginProvider("facebook");
+  };
+  const redirectToGoogle = () => {
+    setIsLoading(true);
+    redirectToLoginProvider("google");
+    setIsLoading(false);
+  };
+
   const history = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const onSubmit = async (data: LoginDataForm) => {
-    console.log(data);
     setIsLoading(true);
     onOpen();
 
@@ -104,7 +118,9 @@ const Login = () => {
             "user",
             JSON.stringify({ name: user.name, lastName: user.lastName })
           );
-          dispatch(setUser({ name: user.name, lastName: user.lastName }));
+          dispatch(
+            setUser({ name: user.name, lastName: user.lastName, id: user.id })
+          );
         }
         const isAdmin = response.data?.user?.roles.some(
           (role) => role.description === "ADMIN"
@@ -112,10 +128,12 @@ const Login = () => {
 
         if (isAdmin) {
           localStorage.setItem("isLogged", "true");
-          dispatch(login());
-          history("/userDashboard");
+          localStorage.setItem("isLoggedAdmin", "true");
+          dispatch(loginAdmin());
+          history("/dashboard");
         } else {
           localStorage.setItem("isLogged", "true");
+          localStorage.setItem("isLoggedAdmin", "false");
           dispatch(login());
           console.log("No eres administrador. Redireccionando...");
           history("/");
@@ -160,7 +178,7 @@ const Login = () => {
         }
       >
         <ModalOverlay />
-        <ModalContent w={{ base: '80vw', lg: "650px"}} px={5}>
+        <ModalContent w={{ base: "80vw", lg: "650px" }} px={5}>
           <ModalHeader
             paddingTop={12}
             textAlign={"center"}
@@ -175,39 +193,43 @@ const Login = () => {
           <ModalBody bg={"#FFFFFF"}>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
               {/* Login con Google y Facebook */}
-              {/* <Flex paddingTop={2} gap={3}>
-                <Button
-                  h={14}
-                  bg={"#D9D9D9"}
-                  color={"#000000"}
-                  leftIcon={<FaGoogle />}
-                  flexGrow={1}
-                >
-                  Iniciar sesión con Google
-                </Button>
-                <Button
-                  h={14}
-                  bg={"#D9D9D9"}
-                  color={"#000000"}
-                  leftIcon={<FaFacebook />}
-                  flexGrow={1}
-                >
-                  Iniciar sesión con Facebook
-                </Button>
-              </Flex> */}
+              {
+                <Flex paddingTop={2} gap={3}>
+                  <Button
+                    h={14}
+                    bg={"#D9D9D9"}
+                    color={"brand.blueLogo"}
+                    leftIcon={<FaGoogle />}
+                    flexGrow={1}
+                    onClick={redirectToGoogle}
+                  >
+                    Iniciar sesión con{" "}
+                    <Image src={googleLogo} w={"60px"} ms={2} mt={1} />
+                  </Button>
+                  <Button
+                    h={14}
+                    bg={"#D9D9D9"}
+                    color={"brand.blueLogo"}
+                    leftIcon={<FaFacebook />}
+                    flexGrow={1}
+                    onClick={redirectToFacebook}
+                  >
+                    Iniciar sesión con{" "}
+                    <Image src={facebookLogo} w={"70px"} ms={2} />
+                  </Button>
+                </Flex>
+              }
               <Flex direction="column" align="center" paddingTop={4}>
                 <Box w={"100%"}>
-                  <FormControl
-                    id="email"
-                    w="100%"
-                    isInvalid={!!errors.email}
-                  >
-                    <CustomInput 
+                  <FormControl id="email" w="100%" isInvalid={!!errors.email}>
+                    <CustomInput
                       control={control}
                       name="email"
-                      placeholder={breakpointValue === "base"
-                      ? "Correo electrónico"
-                      : "Dirección de correo electrónico"}
+                      placeholder={
+                        breakpointValue === "base"
+                          ? "Correo electrónico"
+                          : "Dirección de correo electrónico"
+                      }
                       autoComplete="email"
                       type="email"
                     />
@@ -225,13 +247,13 @@ const Login = () => {
                     isInvalid={!!errors.password}
                   >
                     <InputGroup>
-                      <CustomInput 
+                      <CustomInput
                         control={control}
                         name="password"
                         placeholder="Contraseña"
                         type={showPassword ? "text" : "password"}
                         autoComplete="new-password"
-                      /> 
+                      />
 
                       <InputRightElement padding={7}>
                         <IconButton
@@ -264,18 +286,18 @@ const Login = () => {
                 w="100%"
                 justifyContent="flex-start"
               >
-                <Link isExternal color="#006C67" href="#" fontSize={'smaller'}>
+                <Link isExternal color="#006C67" href="#" fontSize={"smaller"}>
                   ¿Olvidaste tu contraseña?
                 </Link>
               </HStack>
               <Center>
                 <Button
                   type="submit"
-                  variant={'brandPrimary'}
+                  variant={"brandPrimary"}
                   py={5}
                   px={10}
                   mt={7}
-                  fontSize={'larger'}
+                  fontSize={"larger"}
                 >
                   INICIAR SESIÓN
                 </Button>
@@ -284,11 +306,7 @@ const Login = () => {
 
             <VStack>
               <Center pt={10} pb={5}>
-                <HStack
-                  fontSize='lg'
-                  spacing="1"
-                  w="100%"
-                >
+                <HStack fontSize="lg" spacing="1" w="100%">
                   <Link isExternal color="#006C67" href="#">
                     <LinkTo
                       to="/register"

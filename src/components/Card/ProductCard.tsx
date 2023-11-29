@@ -15,22 +15,39 @@ import {
 import { Book } from "../../types/product";
 import { useNavigate } from "react-router-dom";
 import AddToCart from "../Button/AddToCart";
+import notFoundImg from '../../assets/img/404_3.jpg'
+import { formatPrice } from "../Cart/PriceTag";
 
-const ProductCard = ({ id, image_links, title, authors, price, stock }: Book) => {
-  const navigate = useNavigate()
+const ProductCard = ({
+  id,
+  image_links,
+  title,
+  authors,
+  price,
+  stock,
+}: Book) => {
+  const navigate = useNavigate();
 
   const verMasInfo = () => {
-    navigate(`/product/${id}`)
-  }
+    navigate(`/product/${id}`);
+  };
 
   return (
-    <Card variant={"productCard"} w={"auto"} _hover={{
-            backgroundColor: useColorModeValue('brand.violetLogo25', 'brand.violetLogo50'),
-          }}>
+    <Card
+      variant={"productCard"}
+      w={"auto"}
+      h={"100%"}
+      _hover={{
+        backgroundColor: useColorModeValue(
+          "brand.violetLogo25",
+          "brand.violetLogo50"
+        ),
+      }}
+    >
       <CardHeader py={2}>
         <Box display={"flex"} justifyContent={"center"}>
           <Image
-            src={image_links[0]}
+            src={image_links[0]?.url ?? notFoundImg}
             maxH={200}
             w={"auto"}
             alt={title}
@@ -49,18 +66,22 @@ const ProductCard = ({ id, image_links, title, authors, price, stock }: Book) =>
           ))}
           {/* Precio */}
           <Text color="brand.blueLogo" fontSize="2xl" fontWeight={600}>
-            ${price}
+            {formatPrice(price)}
           </Text>
         </Stack>
       </CardBody>
-      <CardFooter display={'flex'} flexDir={{base: 'column', lg: 'row'}} px={5}>
-        <Button 
-          variant="brandSecondary" 
+      <CardFooter
+        display={"flex"}
+        flexDir={{ base: "column", lg: "row" }}
+        px={5}
+      >
+        <Button
+          variant="brandSecondary"
           w={"100%"}
-          h={"auto"} 
-          py={3} 
-          me={2} 
-          mb={{base: 3, lg: 0}}
+          h={"auto"}
+          py={3}
+          me={2}
+          mb={{ base: 3, lg: 0 }}
           onClick={() => verMasInfo()}
         >
           Ver más

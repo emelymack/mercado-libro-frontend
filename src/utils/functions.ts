@@ -1,3 +1,5 @@
+import { CartItem } from "../types/product";
+
 // obtener fecha en formato DD/MM/YYYY
 export function formatDateDDMMYYYY(dateString: string) {
   const date = new Date(dateString);

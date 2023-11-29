@@ -10,9 +10,7 @@ import {
   FormControl,
   FormErrorMessage,
   HStack,
-  Heading,
   IconButton,
-  Input,
   InputGroup,
   InputRightElement,
   Link,
@@ -72,7 +70,6 @@ const RegisterUser = () => {
   });
   const {
     control,
-    register,
     handleSubmit,
     setValue,
     reset,
@@ -153,16 +150,18 @@ const RegisterUser = () => {
         marginY={20}
         py={5}
       >
-        <CardBody py={10} px={{base:10, lg:20}}>
+        <CardBody py={10} px={{ base: 10, lg: 20 }}>
           <VStack spacing={6}>
             <Title text="Registro" htmlElement={"h1"} size="xl" color="green" />
-            <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%", marginTop: 20 }}>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              style={{ width: "100%", marginTop: 20 }}
+            >
               <FormControl id="name" w="100%" isInvalid={!!errors.name}>
-                <CustomInput 
+                <CustomInput
                   control={control}
                   name="name"
                   placeholder="Nombre y Apellido"
-
                 />
                 {errors.name && (
                   <FormErrorMessage fontSize="lg" color="red">
@@ -176,7 +175,7 @@ const RegisterUser = () => {
                 w="100%"
                 isInvalid={!!errors.email}
               >
-                <CustomInput 
+                <CustomInput
                   control={control}
                   name="email"
                   placeholder={
@@ -200,28 +199,13 @@ const RegisterUser = () => {
                 isInvalid={!!errors.password}
               >
                 <InputGroup>
-                  <CustomInput 
+                  <CustomInput
                     control={control}
                     name="password"
                     placeholder="Contraseña"
                     type={showPassword ? "text" : "password"}
-                    // {...register("password")}
                     autoComplete="new-password"
                   />
-                  {/* <Input
-                    padding={3}
-                    fontSize={{ base: "lg", md: "xl" }}
-                    h={"auto"}
-                    placeholder="Contraseña"
-                    type={showPassword ? "text" : "password"}
-                    {...register("password")}
-                    bg="white"
-                    color="#003844"
-                    borderColor="#d8dee4"
-                    size="sm"
-                    borderRadius="6px"
-                    autoComplete="new-password"
-                  /> */}
 
                   <InputRightElement padding={7}>
                     <IconButton
@@ -253,27 +237,13 @@ const RegisterUser = () => {
                 isInvalid={!!errors.confirmPassword}
               >
                 <InputGroup>
-                  <CustomInput 
+                  <CustomInput
                     control={control}
                     name="confirmPassword"
                     placeholder="Confirma tu contraseña"
                     type={showConfirmPassword ? "text" : "password"}
                     autoComplete="off"
                   />
-                  {/* <Input
-                    padding={3}
-                    fontSize={{ base: "lg", md: "xl" }}
-                    h={"auto"}
-                    placeholder="Confirma tu contraseña"
-                    type={showConfirmPassword ? "text" : "password"}
-                    color="brand.blueLogo"
-                    {...register("confirmPassword")}
-                    bg="white"
-                    borderColor="#d8dee4"
-                    size="sm"
-                    autoComplete="off"
-                    borderRadius="6px"
-                  /> */}
                   <InputRightElement padding={7}>
                     <IconButton
                       aria-label="Mostrar contraseña"
@@ -299,12 +269,15 @@ const RegisterUser = () => {
               </FormControl>
               <Center mt={10}>
                 <Button
-                  variant={'brandPrimary'}
+                  variant={"brandPrimary"}
                   type="submit"
-                  fontSize={'x-large'}
+                  fontSize={"x-large"}
                   py={6}
                   px={10}
-                  _hover={{fontSize: 'auto', backgroundColor: 'brand.violetLogo' }}
+                  _hover={{
+                    fontSize: "auto",
+                    backgroundColor: "brand.violetLogo",
+                  }}
                 >
                   Registrate
                 </Button>
@@ -329,7 +302,7 @@ const RegisterUser = () => {
           }}
         >
           <ModalOverlay />
-          <ModalContent bg={"brand.greenLogo"} color={'white'}>
+          <ModalContent bg={"brand.greenLogo"} color={"white"}>
             <ModalHeader textAlign="center">Registro Exitoso</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
@@ -375,11 +348,12 @@ const RegisterUser = () => {
         >
           <ModalOverlay />
           <ModalContent bg={"brand.greenLogo"}>
-            <ModalHeader textAlign="center">Error al registrarse</ModalHeader>
-            <ModalCloseButton />
+            <ModalHeader color={'white'} textAlign="center">Error al registrarse</ModalHeader>
+            <ModalCloseButton color={'white'} />
             <ModalBody>
               <Alert
                 bg={"brand.greenLogo"}
+                color={'white'}
                 status="error"
                 variant="subtle"
                 flexDirection="column"

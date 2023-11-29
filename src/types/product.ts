@@ -1,16 +1,16 @@
 export interface Product {
-  id: string,
-  img: string,
-  title: string,
-  author: string,
-  price: number,
-  url: string
+  id: string;
+  img: string;
+  title: string;
+  author: string;
+  price: number;
+  url: string;
 }
 
 export interface ProductDetail extends Product {
-  pages: number,
-  language: string,
-  publishDate: Date,
+  pages: number;
+  language: string;
+  publishDate: Date;
 }
 
 export interface Book {
@@ -27,7 +27,7 @@ export interface Book {
   published_date: string;
   page_count: number;
   ratings_count: number;
-  image_links: string[];
+  image_links: Image[];
   currency_code: string;
 }
 
@@ -39,7 +39,17 @@ interface Category {
   image_link: string;
 }
 
+interface Image {
+  id: number,
+  url: string
+}
+
 export interface Authors {
   name: string;
   email: string;
+}
+
+export interface CartItem {
+  product: Book,
+  quantity: number
 }
