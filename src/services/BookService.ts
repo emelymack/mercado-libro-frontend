@@ -168,3 +168,12 @@ export const getBestSellers = async (): Promise<Book[]> => {
       throw new Error(error.response?.data?.message);
     });
 };
+
+export const getBestSellersPage = async (): Promise<Book[]> => {
+  return httpService
+    .get(`${BASE_URL}${INVOICE_URL}/bestsellers`) 
+    .then((response) => response.data)
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};
