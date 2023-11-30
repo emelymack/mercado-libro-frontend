@@ -3,7 +3,6 @@ import { BASE_URL, GET_ALL_USERS_URL, USER_URL } from "./apiUrls";
 import { CustomResponse } from "../types/customResponse";
 import axios from "axios";
 import { EditUser, GetAllUsersParams, User } from "../types/user";
-import { Invoice } from "./InvoiceService";
 
 export const getUserById = async (
   id: number
@@ -30,7 +29,7 @@ export const getUserById = async (
 
 export const getUserInvoices = async (
   id: number
-): Promise<CustomResponse<Invoice[]>> => {
+): Promise<CustomResponse<User>> => {
   try {
     const response = await httpService.get(`${BASE_URL}api/invoice/userid/${id}?page=0&size=10`);
 

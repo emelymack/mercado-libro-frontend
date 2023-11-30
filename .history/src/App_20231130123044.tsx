@@ -69,8 +69,10 @@ function App() {
           <Route path="/userDashboard" element={<UserInfo />} />
           <Route path="/userDashboardChart" element={<ChartDashboard />} />
           <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/me" element={<MyAccountInfo />} />
-          <Route path="/me/order/:invoiceId" element={<Order />} />
+          <IdProvider>
+            <Route path="/me" element={<MyAccountInfo />} />
+            <Route path="/me/order" element={<Order />} />
+          </IdProvider>
           <Route
             path="/books/search/:searchTerm"
             element={<BookListSearch />}

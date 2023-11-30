@@ -10,34 +10,10 @@ import TableDesktop from "./TableDesktop"
 import { useWindowSize } from "@uidotdev/usehooks";
 import TableMobile from "./TableMobile";
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from "react";
-import { Invoice, getInvoiceById } from "../../services/InvoiceService"
 
 const Order = () => {
   const size = useWindowSize();
-  const [invoice, setInvoice] = useState<Invoice>();
   const invoiceId = useSelector((state) => state.invoice.selectedInvoiceId);
-
-
-  useEffect(() => {
-    window.scrollTo(0, 0); 
-
-    const fetchInvoice = async () => {
-        try {
-            const response = await getInvoiceById(invoiceId);
-            console.log(response)
-
-            if (response.statusCode === 200 && response.data) {
-              setInvoice(response.data);
-            } else {
-              console.error("Failed to fetch invoice:", response.errorMessage);
-            }
-        } catch (error) {
-            console.error("Failed to fetch invoice:", error);
-        }};
-
-        fetchInvoice();
-    }, []);
   
     return(
         <Flex w='min-content' m='0 auto' pt={{base: '13vh', lg: '18vh'}} pb={{base: '8vh', '2xl': '8vh'}} flexDir={"column"} alignItems={"center"}>

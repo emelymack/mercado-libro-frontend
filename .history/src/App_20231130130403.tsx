@@ -56,7 +56,6 @@ function App() {
   return (
     <div className="content">
       <Layout>
-        <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/about" element={<h1>About</h1>} />
@@ -70,7 +69,7 @@ function App() {
           <Route path="/userDashboardChart" element={<ChartDashboard />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/me" element={<MyAccountInfo />} />
-          <Route path="/me/order/:invoiceId" element={<Order />} />
+          <Route path="/me/order" element={<Order />} />
           <Route
             path="/books/search/:searchTerm"
             element={<BookListSearch />}

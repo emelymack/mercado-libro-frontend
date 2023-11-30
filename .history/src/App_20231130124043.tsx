@@ -56,6 +56,12 @@ function App() {
   return (
     <div className="content">
       <Layout>
+        <IdProvider>
+        <Routes>
+            <Route path="/me" element={<MyAccountInfo />} />
+            <Route path="/me/order" element={<Order />} />
+        </Routes>
+        </IdProvider>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<RegisterUser />} />
@@ -69,8 +75,6 @@ function App() {
           <Route path="/userDashboard" element={<UserInfo />} />
           <Route path="/userDashboardChart" element={<ChartDashboard />} />
           <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/me" element={<MyAccountInfo />} />
-          <Route path="/me/order/:invoiceId" element={<Order />} />
           <Route
             path="/books/search/:searchTerm"
             element={<BookListSearch />}

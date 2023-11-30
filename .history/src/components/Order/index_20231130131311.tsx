@@ -25,7 +25,6 @@ const Order = () => {
     const fetchInvoice = async () => {
         try {
             const response = await getInvoiceById(invoiceId);
-            console.log(response)
 
             if (response.statusCode === 200 && response.data) {
               setInvoice(response.data);
@@ -36,7 +35,7 @@ const Order = () => {
             console.error("Failed to fetch invoice:", error);
         }};
 
-        fetchInvoice();
+        fetchInvoices();
     }, []);
   
     return(

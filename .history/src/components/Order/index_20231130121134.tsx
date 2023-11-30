@@ -9,42 +9,19 @@ import BreadcrumbNav from "../MyAccount/BreadCrumbNav"
 import TableDesktop from "./TableDesktop"
 import { useWindowSize } from "@uidotdev/usehooks";
 import TableMobile from "./TableMobile";
-import { useSelector } from 'react-redux';
-import { useEffect, useState } from "react";
-import { Invoice, getInvoiceById } from "../../services/InvoiceService"
+import { useLocation  } from "react-router-dom"
+import { Invoice, InvoiceItem } from "../../services/InvoiceService"
 
 const Order = () => {
   const size = useWindowSize();
-  const [invoice, setInvoice] = useState<Invoice>();
-  const invoiceId = useSelector((state) => state.invoice.selectedInvoiceId);
-
-
-  useEffect(() => {
-    window.scrollTo(0, 0); 
-
-    const fetchInvoice = async () => {
-        try {
-            const response = await getInvoiceById(invoiceId);
-            console.log(response)
-
-            if (response.statusCode === 200 && response.data) {
-              setInvoice(response.data);
-            } else {
-              console.error("Failed to fetch invoice:", response.errorMessage);
-            }
-        } catch (error) {
-            console.error("Failed to fetch invoice:", error);
-        }};
-
-        fetchInvoice();
-    }, []);
+  const location = useLocation();
   
     return(
         <Flex w='min-content' m='0 auto' pt={{base: '13vh', lg: '18vh'}} pb={{base: '8vh', '2xl': '8vh'}} flexDir={"column"} alignItems={"center"}>
             <Box alignSelf='flex-start' mb='10px'>
                 <BreadcrumbNav order='Orden #3424' size={{ base: 'sm', lg: 'sm'}}/>
             </Box>
-            <Heading alignSelf='flex-start' fontSize={{ base: 'xl', lg: '2xl', '2xl': '3xl'}}>Orden #{invoiceId.substring(0,4).toUpperCase()}</Heading>
+            <Heading alignSelf='flex-start' fontSize={{ base: 'xl', lg: '2xl', '2xl': '3xl'}}>Orden #{location.state.id}</Heading>
             <Grid w={{ base: '85vw', '2xl': '65vw'}} templateRows='repeat(1, 1fr)' templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(7, 1fr)'}} gap={4} mt='10px'>
                 <GridItem rowSpan={2} colSpan={2} h='min-content'>
                     <Text fontSize={{ lg: 'lg', '2xl': 'lg'}} pb='5px' borderBottom='1px solid #e6e6e6'>Detalles</Text>

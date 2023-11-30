@@ -8,6 +8,8 @@ import { Invoice } from "../../services/InvoiceService";
 export const MyAccount = () => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
 
+
+
     useEffect(() => {
         window.scrollTo(0, 0); 
 
@@ -18,10 +20,10 @@ export const MyAccount = () => {
                 if (response.statusCode === 200 && response.data) {
                   setInvoices(response.data);
                 } else {
-                  console.error("Failed to fetch invoices:", response.errorMessage);
+                  console.error("Failed to fetch users:", response.errorMessage);
                 }
             } catch (error) {
-                console.error("Failed to fetch invoices:", error);
+                console.error("Failed to fetch users:", error);
             }};
 
             fetchInvoices();
@@ -95,9 +97,10 @@ export const MyAccount = () => {
                     </Text>
                     <hr/>
                     <SimpleGrid columns={{ md: 1, lg: 2, xl: 2}} spacing={5} pt='15px'>
-                    {invoices.map((invoice) => (
-                         <OrderCard id={invoice.id} createdAt={invoice.date_created}/>
-                    ))}
+                        <OrderCard></OrderCard>
+                        <OrderCard></OrderCard>
+                        <OrderCard></OrderCard>
+                        <OrderCard></OrderCard>
                     </SimpleGrid>
                 </GridItem>
             </Grid>

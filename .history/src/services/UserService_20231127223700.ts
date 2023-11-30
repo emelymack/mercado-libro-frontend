@@ -3,7 +3,6 @@ import { BASE_URL, GET_ALL_USERS_URL, USER_URL } from "./apiUrls";
 import { CustomResponse } from "../types/customResponse";
 import axios from "axios";
 import { EditUser, GetAllUsersParams, User } from "../types/user";
-import { Invoice } from "./InvoiceService";
 
 export const getUserById = async (
   id: number
@@ -14,29 +13,6 @@ export const getUserById = async (
     return {
       statusCode: response.status,
       data: response.data,
-    };
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw {
-        statusCode: error.response ? error.response.status : 500,
-        data: null,
-        errorMessage: error.message,
-      };
-    } else {
-      throw error;
-    }
-  }
-};
-
-export const getUserInvoices = async (
-  id: number
-): Promise<CustomResponse<Invoice[]>> => {
-  try {
-    const response = await httpService.get(`${BASE_URL}api/invoice/userid/${id}?page=0&size=10`);
-
-    return {
-      statusCode: response.status,
-      data: response.data.content,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {

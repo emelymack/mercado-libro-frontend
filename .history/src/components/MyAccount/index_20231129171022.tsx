@@ -1,30 +1,18 @@
 import { Grid, GridItem,Heading, Box, Text, SimpleGrid } from "@chakra-ui/react"
 import OrderCard from "./OrderCard";
 import BreadcrumbNav from "./BreadCrumbNav";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getUserInvoices } from "../../services/UserService";
-import { Invoice } from "../../services/InvoiceService";
 
 export const MyAccount = () => {
-    const [invoices, setInvoices] = useState<Invoice[]>([]);
 
-    useEffect(() => {
+    useEffect(() => { 
         window.scrollTo(0, 0); 
-
-        const fetchInvoices = async () => {
-            try {
-                const response = await getUserInvoices(2);
-
-                if (response.statusCode === 200 && response.data) {
-                  setInvoices(response.data);
-                } else {
-                  console.error("Failed to fetch invoices:", response.errorMessage);
-                }
-            } catch (error) {
-                console.error("Failed to fetch invoices:", error);
-            }};
-
-            fetchInvoices();
+        
+        getUserInvoices(2)
+          .then((res) => {
+            console.log(res)
+          })
         }, []);
 
     return (
@@ -95,9 +83,10 @@ export const MyAccount = () => {
                     </Text>
                     <hr/>
                     <SimpleGrid columns={{ md: 1, lg: 2, xl: 2}} spacing={5} pt='15px'>
-                    {invoices.map((invoice) => (
-                         <OrderCard id={invoice.id} createdAt={invoice.date_created}/>
-                    ))}
+                        <OrderCard></OrderCard>
+                        <OrderCard></OrderCard>
+                        <OrderCard></OrderCard>
+                        <OrderCard></OrderCard>
                     </SimpleGrid>
                 </GridItem>
             </Grid>

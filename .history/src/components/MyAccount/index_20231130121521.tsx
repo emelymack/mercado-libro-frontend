@@ -96,7 +96,7 @@ export const MyAccount = () => {
                     <hr/>
                     <SimpleGrid columns={{ md: 1, lg: 2, xl: 2}} spacing={5} pt='15px'>
                     {invoices.map((invoice) => (
-                         <OrderCard id={invoice.id} createdAt={invoice.date_created}/>
+                         <OrderCard id={invoice.id.substring(0,4).toUpperCase()} createdAt={invoice.date_created} real_id={invoice.id}/>
                     ))}
                     </SimpleGrid>
                 </GridItem>

@@ -4,12 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { selectInvoice } from '../../context/slices/invoiceSlice';
 
-interface OrderData {
-    id: string,
-    createdAt: string
-}
-
-const OrderCard = ({id, createdAt} : OrderData) => {
+const OrderCard = ({id, createdAt}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 

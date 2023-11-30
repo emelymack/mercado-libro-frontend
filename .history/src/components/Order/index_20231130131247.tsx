@@ -18,25 +18,24 @@ const Order = () => {
   const [invoice, setInvoice] = useState<Invoice>();
   const invoiceId = useSelector((state) => state.invoice.selectedInvoiceId);
 
-
+  
   useEffect(() => {
     window.scrollTo(0, 0); 
 
-    const fetchInvoice = async () => {
+    const fetchInvoices = async () => {
         try {
             const response = await getInvoiceById(invoiceId);
-            console.log(response)
 
             if (response.statusCode === 200 && response.data) {
               setInvoice(response.data);
             } else {
-              console.error("Failed to fetch invoice:", response.errorMessage);
+              console.error("Failed to fetch invoices:", response.errorMessage);
             }
         } catch (error) {
-            console.error("Failed to fetch invoice:", error);
+            console.error("Failed to fetch invoices:", error);
         }};
 
-        fetchInvoice();
+        fetchInvoices();
     }, []);
   
     return(
