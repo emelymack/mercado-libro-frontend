@@ -1,20 +1,3 @@
-export interface InvoiceData {
-  invoice: {
-    total: number,
-    address: string,
-    dni: number,
-    document_type: string,
-    notes?: string,
-    user_id: number,
-    date_created: Date,
-  },
-  invoice_item: {
-      book_id: number,
-      quantity: number,
-      unit_price: number
-    }[]
-}
-
 export interface ICheckoutData {
   shippingData: IShippingData,
   paymentData: IPaymentData
