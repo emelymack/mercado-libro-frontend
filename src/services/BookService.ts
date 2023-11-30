@@ -9,6 +9,8 @@ import {
 } from "./apiUrls";
 import axios from "axios";
 import { Book } from "../types/product";
+import { GetAllCategoryParams } from "../types/category";
+import { CustomResponse } from "../types/customResponse";
 
 export interface GetBooksResponse {
   content: Book[];
@@ -120,6 +122,41 @@ export const getBooksByCategory = (
     .catch((error) => {
       throw new Error(error.response?.data?.message);
     });
+};
+
+export const getByCategoryPage = async (
+  params: GetAllCategoryParams,
+): Promise<CustomResponse<Book[]>> => {
+  let url = `${BASE_URL}${BOOK_URL}?page=${params.page}&category=${params.nameCategory}`;
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `&${key}=${value}`;
+    }
+  });
+
+  try {
+    const response = await httpService.get(url);
+    if (Array.isArray(response.data.content)) {
+      return {
+        statusCode: response.status,
+        data: response.data.content as Book[],
+        totalElements: response.data.totalElements,
+      };
+    } else {
+      throw new Error("La respuesta no es un array de libros");
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
 };
 
 export const saveBook = (book: Book): Promise<Book> => {

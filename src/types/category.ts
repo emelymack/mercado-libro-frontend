@@ -8,3 +8,16 @@ export interface Category {
 export interface CategoryDetail extends Category {
   products: Product[]
 }
+
+
+export interface GetAllCategoryParams {
+  page?: number;
+  size?: number;
+  orderDirection?: string;
+  orderBy?: string;
+  title?: string;
+  author?: string;
+  price?: number;
+  status?: string;
+  nameCategory?: string;
+}
