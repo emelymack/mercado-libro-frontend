@@ -15,34 +15,22 @@ import { Invoice, getInvoiceById, InvoiceItem } from "../../services/InvoiceServ
 import { getBookById } from "../../services/BookService"
 import { Book } from "../../types/product"
 
-export interface Item {
-  book: Book,
-  invoice: InvoiceItem
-}
-
 const Order = () => {
   const size = useWindowSize();
   const [invoice, setInvoice] = useState<Invoice>();
-  const [items, setItems] = useState<Item[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const invoiceId = useSelector((state) => state.invoice.selectedInvoiceId);
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const items : Item[] = [];
+        const books: Book[] = [];
         try {
           await Promise.all(       
             (invoice?.invoice_item || []).map(async (book) => {
             const bookData = await getBookById(book.book_id);
-
-            const item : Item = {
-              book: bookData,
-              invoice: book
-            }
-
-            items.push(item);
+            books.push(bookData);
           }))
-
-          setItems(items);
+          setBooks(books)
         } catch (error) {
             console.error("Failed to fetch invoice:", error);
         }};
@@ -55,7 +43,6 @@ const Order = () => {
     const fetchInvoice = async () => {
         try {
             const response = await getInvoiceById(invoiceId);
-            console.log(response)
 
             if (response.statusCode === 200 && response.data) {
               setInvoice(response.data);
@@ -73,7 +60,7 @@ const Order = () => {
     return(
         <Flex w='min-content' m='0 auto' pt={{base: '13vh', lg: '18vh'}} pb={{base: '8vh', '2xl': '8vh'}} flexDir={"column"} alignItems={"center"}>
             <Box alignSelf='flex-start' mb='10px'>
-                <BreadcrumbNav order='Orden #3454}' size={{ base: 'sm', lg: 'sm'}}/>
+                <BreadcrumbNav order='Orden #3424' size={{ base: 'sm', lg: 'sm'}}/>
             </Box>
             <Heading alignSelf='flex-start' fontSize={{ base: 'xl', lg: '2xl', '2xl': '3xl'}}>Orden #{invoiceId.substring(0,4).toUpperCase()}</Heading>
             <Grid w={{ base: '85vw', '2xl': '65vw'}} templateRows='repeat(1, 1fr)' templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(7, 1fr)'}} gap={4} mt='10px'>
@@ -81,7 +68,7 @@ const Order = () => {
                     <Text fontSize={{ lg: 'lg', '2xl': 'lg'}} pb='5px' borderBottom='1px solid #e6e6e6'>Detalles</Text>
                     <Box display='flex' alignItems='center' m='5px 0'>
                       <Image boxSize={4} src={CalendarIcon} mr='8px' alt="Calendar icon"/>
-                      <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Fecha: <b>{invoice?.date_created}</b></Text>
+                      <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Fecha: <b>31/03/2023</b></Text>
                     </Box>
                     <Box display='flex' alignItems='center' m='5px 0'>
                       <Image boxSize={4} src={InfoIcon} mr='8px' alt="Info icon"/>
@@ -117,13 +104,13 @@ const Order = () => {
                   <TableMobile />
                 )}
                 {size.width && size.width > 980 && (
-                  <TableDesktop items={items}/>
+                  <TableDesktop items={books}/>
                 )}
                 </GridItem>
                 <GridItem colSpan={5} h='min-content' display='flex' flexDir='column'>
                     <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}}><b>Costo de envío (Correo Argentino - Envio a domicilio):</b> Gratis</Text>
                     <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}}><b>Subtotal:</b> $24.900</Text>
-                    <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}} fontWeight='semibold' alignSelf='center'>Total: ${invoice?.total}</Text>
+                    <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}} fontWeight='semibold' alignSelf='center'>Total: $24.900</Text>
                 </GridItem>
             </Grid>
         </Flex>

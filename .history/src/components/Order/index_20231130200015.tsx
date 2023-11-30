@@ -73,7 +73,7 @@ const Order = () => {
     return(
         <Flex w='min-content' m='0 auto' pt={{base: '13vh', lg: '18vh'}} pb={{base: '8vh', '2xl': '8vh'}} flexDir={"column"} alignItems={"center"}>
             <Box alignSelf='flex-start' mb='10px'>
-                <BreadcrumbNav order='Orden #3454}' size={{ base: 'sm', lg: 'sm'}}/>
+                <BreadcrumbNav order=`Orden #{invoiceId.substring(0,4).toUpperCase()}`` size={{ base: 'sm', lg: 'sm'}}/>
             </Box>
             <Heading alignSelf='flex-start' fontSize={{ base: 'xl', lg: '2xl', '2xl': '3xl'}}>Orden #{invoiceId.substring(0,4).toUpperCase()}</Heading>
             <Grid w={{ base: '85vw', '2xl': '65vw'}} templateRows='repeat(1, 1fr)' templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(7, 1fr)'}} gap={4} mt='10px'>
