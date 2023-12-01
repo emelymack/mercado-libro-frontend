@@ -1,11 +1,11 @@
 import httpService from "./httpService";
-import { BASE_URL, INVOICE_URL } from "./apiUrls";
+import { BASE_URL, CREATE_INVOICE_URL, INVOICE_URL } from "./apiUrls";
 import { Book } from "../types/product";
 import { CustomResponse } from "../types/customResponse";
 import axios from "axios";
 
 export interface Invoice {
-    id: number;
+    id: string;
     dni:string;
     account_number: string;
     bank: string;

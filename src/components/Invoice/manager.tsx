@@ -13,7 +13,7 @@ const InvoiceManager = () => {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useState<number>(0);
     const [size] = useState<number>(10);
     const [totalElements, setTotalElements] = useState<number>(0);
     const [listInvoices, setListInvoices] = useState<Invoice[]>();
