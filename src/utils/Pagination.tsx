@@ -1,5 +1,6 @@
 import { Flex, IconButton, Text, Tooltip } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import React from "react";
 
 interface PaginationProps {
   pageNumber: number;
@@ -8,7 +9,7 @@ interface PaginationProps {
   onPageChange: (newPage: number) => void;
 }
 
-const Pagination = ({
+export const Pagination = ({
   pageNumber,
   pageSize,
   totalElements,

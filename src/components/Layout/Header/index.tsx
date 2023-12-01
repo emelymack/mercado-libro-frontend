@@ -40,17 +40,9 @@ const Links = [
     url: "/novedades",
   },
   {
-    name: "MAS VENDIDOS",
-    url: "#masVendidos",
+    name: "MÁS VENDIDOS",
+    url: "/bestsellers",
   },
-  // {
-  //   name: "eBooks",
-  //   url: "",
-  // },
-  // {
-  //   name: "Editoriales",
-  //   url: "",
-  // },
 ];
 
 const Header = () => {

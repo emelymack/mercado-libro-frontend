@@ -9,5 +9,6 @@ export const CATEGORY_URL = "api/category";
 export const LOGIN_URL = "api/auth/login";
 export const USER_URL = "api/user/";
 export const GET_ALL_USERS_URL = "api/user";
+export const INVOICE_URL = "api/invoice";
 export const UPLOAD_IMAGEN_BOOK_URL = "api/book-image";
-export const CREATE_INVOICE_URL = "invoice";
+export const CREATE_INVOICE_URL = "api/invoice";
