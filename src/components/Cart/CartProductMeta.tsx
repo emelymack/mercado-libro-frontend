@@ -1,12 +1,7 @@
 import {
   Box,
-  HStack,
-  Icon,
   Image,
-  Link,
   Stack,
-  Text,
-  useColorModeValue as mode,
 } from '@chakra-ui/react'
 import { PriceTag } from './PriceTag'
 import { Title } from '../Title'
@@ -34,7 +29,7 @@ export const CartProductMeta = (props: CartProductMetaProps) => {
       />
       <Box pt="4" w={'45%'}>
         <Stack spacing="0.5" >
-          <Title htmlElement={'h5'} size={'md'} noOfLines={2} text={name} />
+          <Title htmlElement={'h5'} capitalize size={'md'} noOfLines={{base: 3, md: 2}} text={name} />
           <PriceTag price={price} currency={currency} fontSize='xl' />
         </Stack>
       </Box>

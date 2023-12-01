@@ -19,6 +19,7 @@ const AddToCart = ({id, stock, orderQty}: Props) => {
   const addItemToCart = async () => {
     try {
       const isItemInCart = items.items.some((item) => item.product.id === id)
+
       if(!isItemInCart) {
         dispatch(fetchProduct({id: id, orderQty: orderQty}))
         onOpenSuccess()

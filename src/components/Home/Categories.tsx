@@ -45,7 +45,6 @@ export const Categories = () => {
     window.scrollTo(0, 0);
 
     getAllCategory().then((res) => {
-      console.log(res);
       setCategoria(res);
     });
   }, []);

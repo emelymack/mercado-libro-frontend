@@ -41,7 +41,7 @@
   z-index: 100;
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color: rgba(136, 132, 255, .9);
+  background-color: rgba(136, 132, 255, 0.9);
 }
 .header-index .logo {
   transition: width 0.35s ease-in-out;
@@ -50,7 +50,7 @@
   width: 140px;
 }
 
-@media(max-width: 991px) {
+@media (max-width: 991px) {
   .header-index {
     background-color: var(--primary);
     padding-top: 15px;
@@ -60,7 +60,7 @@
   .page {
     padding-top: 93px !important;
   }
-} 
+}
 
 .page {
   padding-top: 127px;
@@ -117,6 +117,10 @@ footer {
   color: var(--primary) !important;
 }
 
+.swiper-slide {
+  height: auto !important;
+}
+
 .swiper .swiper-button-prev::after,
 .swiper .swiper-button-next::after {
   color: var(--highlight);
@@ -165,6 +169,10 @@ footer {
   transform: scaleX(1);
 }
 
+.chakra-radio__label {
+  width: 100%;
+}
+
 @media (max-width: 767px) {
   header {
     padding-top: 15px;
@@ -189,4 +197,75 @@ footer {
     height: 15px;
     border-width: 4px !important;
   }
+  
+}
+
+.css-vdxpmq {
+  font-family: var(--chakra-fonts-body);
+  margin-top: var(--chakra-space-5);
+  padding: var(--chakra-space-3);
+  border-width: 1px;
+  border-radius: 12px;
+  overflow-x: auto;
+  z-index: 1;
+}
+
+.css-fmhgzt{
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: lighter !important;
+}
+
+.css-1r4lnxj{
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: lighter !important;
+}
+
+.title_admin{
+  padding-top: 20px;
+}
+
+.table_ml_header{
+  background-color:#9F9DFF;
+  
+  height: 50px;
+  
+}
+
+.css-r10se1{
+  color: #003844 !important;
+  font-size: 14px !important;
+}
+
+.css-1lno716{
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: lighter !important;
+  background-color:#9F9DFF !important;
+}
+
+.chakra-input{
+  border-color: #003844 !important;
+}
+
+
+.chakra-textarea{
+  border-color: #003844 !important;
+}
+
+.chakra-select{
+  border-color: #003844 !important;
+}
+.chakra-numberinput__field{
+  border-color: #003844 !important;
+}
+
+.admin_products{
+  padding-top: 150px;
+  padding-bottom: 150px
+}
+
+.form_control_pad{
+  padding-top: 10px;
 }
