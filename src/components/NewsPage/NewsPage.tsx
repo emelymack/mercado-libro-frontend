@@ -1,6 +1,6 @@
-import { Box, Center, Container, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Box, Button, Center, Container, Flex, Heading, Select, SimpleGrid, useBreakpointValue } from "@chakra-ui/react";
 import ProductCard from "../Card/ProductCard";
-import { getNewBooks } from "../../services/BookService";
+import { getNewBooksPage } from "../../services/BookService";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../context/hooks";
 import BreadcrumbNav from "./BreadcrumbNav";
@@ -8,26 +8,119 @@ import CustomLoading from "../CustomLoading/CustomLoading";
 import { Book } from "../../types/product";
 import Pagination from "../../utils/Pagination";
 import PageContainer from "../Layout/PageContainer";
+import { SearchIcon } from "@chakra-ui/icons";
 
 export const NewsPage = () => {
   const [page, setPage] = useState<number>(0);
-  const [size] = useState<number>(9);
+  const [size] = useState<number>(8);
   const [totalElements, setTotalElements] = useState<number>(0);
   const [librosNew, setLibrosNew] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
 
-  useEffect(() => {
+
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const fontSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
+  const [orderBy, setOrderBy] = useState<string>("");
+  const [titleSearch, setTitleSearch] = useState<string>("");
+  const [authorSearch, setAuthorSearch] = useState<string>("");
+  const [priceSearch, setPriceSearch] = useState<string>("");
+  const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
+  const [orderDirection, setOrderDirection] = useState<string>("");
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [shouldFilter, setShouldFilter] = useState(false);
+
+  const fetchNews = async () => {
     window.scrollTo(0, 0);
     setIsLoading(true);
 
-    getNewBooks(page).then((res) => {
+    try {
+      const response = await getNewBooksPage({
+        page,
+        size
+      });
+      if (response.statusCode === 200 && response.data) {
+        setTotalPages(response.totalPages ?? 0);
+        setTotalElements(response.totalElements ?? 0);
+        setLibrosNew(response.data);
+        setFilteredBooks(response.data);
+      } else {
+        console.error("Failed to fetch users:", response.errorMessage);
+      }
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchNews();
+  }, [page, size]);
+
+  const handleOptionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const newValue = event.target.value as string;
+    setSelectedOption(newValue);
+    setOrderBy(newValue);
+  };
+
+
+    /* getNewBooks(page).then((res) => {
       console.log(res.content);
       setLibrosNew(res.content);
       setTotalElements(res.totalElements)
       setIsLoading(false);
     });
-  }, [page, size]);
+  }, [page, size]); */
+
+  useEffect(() => {
+    if (!shouldFilter) return;
+
+    const sortedBooks = [...librosNew].sort((a: Book, b: Book) => {
+      let comparison = 0;
+      switch (selectedOption) {
+        case "title":
+          comparison = a.title.localeCompare(b.title);
+          break;
+        case "authors":
+          comparison = a.authors[0].name.localeCompare(b.authors[0].name);
+          break;
+        case "price":
+          comparison = a.price - b.price;
+          break;
+        case "published_date":
+          comparison =
+            new Date(b.published_date).getTime() -
+            new Date(a.published_date).getTime();
+          break;
+        default:
+          break;
+      }
+      if (orderDirection === "DESC") {
+        comparison *= -1;
+      }
+
+      return comparison;
+    });
+
+    setFilteredBooks(sortedBooks);
+    setShouldFilter(false);
+  }, [shouldFilter, selectedOption, orderDirection, librosNew]);
+
+  const handleFilter = () => {
+    setShouldFilter(true);
+  };
+
+  const clearFilters = () => {
+    setOrderBy("");
+    setTitleSearch("");
+    setAuthorSearch("");
+    setPriceSearch("");
+    setOrderDirection("");
+    setSelectedOption(null);
+    setFilteredBooks(librosNew);
+  };
+
+
 
   if (isLoading)
     return (
@@ -40,6 +133,8 @@ export const NewsPage = () => {
         <CustomLoading />
       </Box>
     );
+
+    
 
   return (
     <PageContainer bg="white.600" mb={20}>
@@ -56,37 +151,102 @@ export const NewsPage = () => {
         Novedades
       </Heading>
 
-      <Center>
-        {librosNew.length > 0 ? (
-          <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} gap={5}>
-            {librosNew.map((producto) => (
-              <ProductCard
-                id={producto.id}
-                image_links={producto.image_links}
-                title={producto.title}
-                authors={producto.authors}
-                price={producto.price}
-                stock={producto.stock}
-                publisher={""}
-                description={""}
-                isbn={""}
-                language={""}
-                categories={[]}
-                published_date={""}
-                page_count={0}
-                ratings_count={0}
-                currency_code={""}
-              />
-            ))}
-          </SimpleGrid>
-        ) : (
-          <Box my={12} py={4}>
-            <Heading color={"red.400"} size={"md"} textAlign={"center"}>
-              ¡No se encontraron libros para esta categoría!
-            </Heading>
-          </Box>
-        )}
-      </Center>
+
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        p={[4, 6, 8]}
+        overflowX="auto"
+      >
+        <Flex
+          flexDirection={{ base: "column", md: "row" }}
+          align="center"
+          pt={{ base: 10, md: 5 }}
+          pb={{ base: 10, md: 5 }}
+          px={{ base: 4, md: 20 }}
+          mb={5}
+          w="full"
+        >
+          <Select
+            onChange={handleOptionChange}
+            fontSize={fontSize}
+            placeholder="Ordenar por"
+            value={orderBy}
+            focusBorderColor="teal.500"
+            mr={2}
+            mb={{ base: 2, md: 0 }}
+            w="full"
+          >
+            <option value="title">Nombre</option>
+            <option value="authors">Author</option>
+            <option value="price">Price</option>
+            <option value="published_date">Recientes</option>
+          </Select>
+
+          <Select
+            fontSize={fontSize}
+            placeholder="Dirección de orden"
+            value={orderDirection}
+            focusBorderColor="teal.500"
+            onChange={(e) => setOrderDirection(e.target.value)}
+            mr={2}
+            mb={{ base: 2, md: 0 }}
+            w="full"
+          >
+            <option value="ASC">Ascendente</option>
+            <option value="DESC">Descendente</option>
+          </Select>
+
+          <Button
+            fontSize={fontSize}
+            ml={2}
+            w={"2xl"}
+            leftIcon={<SearchIcon />}
+            colorScheme="teal"
+            _hover={{
+              bg: "brand.violetLogo75",
+            }}
+            onClick={handleFilter}
+          >
+            Filtrar
+          </Button>
+          <Button
+            onClick={clearFilters}
+            colorScheme="gray"
+            fontSize={fontSize}
+            ml={2}
+            w={"2xl"}
+            _hover={{
+              bg: "gray.600",
+              color: "white",
+            }}
+          >
+            Limpiar
+          </Button>
+        </Flex>
+
+
+
+        <Center mb="5vh">
+          {filteredBooks.length > 0 ? (
+            <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} gap={5}>
+              {filteredBooks.map((producto) => (
+                <ProductCard {...producto} />
+              ))}
+            </SimpleGrid>
+          ) : (
+            <Box my={12} py={4}>
+              <Heading color={"red.400"} size={"md"} textAlign={"center"}>
+                ¡No se encontraron libros nuevos!
+              </Heading>
+            </Box>
+          )}
+        </Center>
+
+
+      </Box>
     <Pagination
       pageNumber={page}
       pageSize={size}
