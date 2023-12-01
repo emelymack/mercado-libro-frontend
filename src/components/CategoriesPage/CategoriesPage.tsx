@@ -66,7 +66,7 @@ export const Categories = () => {
   };
   useEffect(() => {
     fetchCategory();
-  }, [page, size]);
+  }, [page, size, categoryName]);
 
   const handleOptionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const newValue = event.target.value as string;
@@ -119,7 +119,7 @@ export const Categories = () => {
     setPriceSearch("");
     setOrderDirection("");
     setSelectedOption(null);
-    setFilteredBooks(librosCategoria); // Restablece los libros filtrados a la lista original de libros
+    setFilteredBooks(librosCategoria);
   };
 
   if (isLoading)
