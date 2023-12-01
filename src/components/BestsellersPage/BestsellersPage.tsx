@@ -49,7 +49,7 @@ export const BestsellersPage = () => {
       mb={20}
       className={`page ${isScrolling ? "scroll" : ""}`}
     >
-      <BreadcrumbNav bestsellers={"Bestsellers"} />
+      <BreadcrumbNav />
       <Heading
         size="3xl"
         fontWeight={900}
@@ -59,7 +59,7 @@ export const BestsellersPage = () => {
         textTransform={"uppercase"}
         textAlign={"center"}
       >
-        Novedades
+        Libros más vendidos
       </Heading>
 
       <Center>
