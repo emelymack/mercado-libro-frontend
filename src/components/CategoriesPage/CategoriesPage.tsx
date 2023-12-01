@@ -8,7 +8,6 @@ import {
   Flex,
   Select,
   Button,
-  useColorMode,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -39,10 +38,10 @@ export const Categories = () => {
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
   const [orderDirection, setOrderDirection] = useState<string>("");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [reloadKey, setReloadKey] = useState(0);
   const [shouldFilter, setShouldFilter] = useState(false);
 
   const fetchCategory = async () => {
+    window.scrollTo(0, 0);
     setIsLoading(true);
 
     try {
@@ -135,7 +134,6 @@ export const Categories = () => {
       </Box>
     );
 
-  const { colorMode } = useColorMode();
 
   return (
     <PageContainer bg="white.600" mb={20}>
