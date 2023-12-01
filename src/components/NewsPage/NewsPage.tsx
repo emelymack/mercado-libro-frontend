@@ -1,8 +1,7 @@
-import { Box, Button, Center, Container, Flex, Heading, Select, SimpleGrid, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Heading, Select, SimpleGrid, useBreakpointValue } from "@chakra-ui/react";
 import ProductCard from "../Card/ProductCard";
 import { getNewBooksPage } from "../../services/BookService";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../../context/hooks";
 import BreadcrumbNav from "./BreadcrumbNav";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import { Book } from "../../types/product";
@@ -16,15 +15,14 @@ export const NewsPage = () => {
   const [totalElements, setTotalElements] = useState<number>(0);
   const [librosNew, setLibrosNew] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
 
 
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [, setTotalPages] = useState<number>(0);
   const fontSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
   const [orderBy, setOrderBy] = useState<string>("");
-  const [titleSearch, setTitleSearch] = useState<string>("");
-  const [authorSearch, setAuthorSearch] = useState<string>("");
-  const [priceSearch, setPriceSearch] = useState<string>("");
+  const [, setTitleSearch] = useState<string>("");
+  const [, setAuthorSearch] = useState<string>("");
+  const [, setPriceSearch] = useState<string>("");
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
   const [orderDirection, setOrderDirection] = useState<string>("");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -62,15 +60,6 @@ export const NewsPage = () => {
     setSelectedOption(newValue);
     setOrderBy(newValue);
   };
-
-
-    /* getNewBooks(page).then((res) => {
-      console.log(res.content);
-      setLibrosNew(res.content);
-      setTotalElements(res.totalElements)
-      setIsLoading(false);
-    });
-  }, [page, size]); */
 
   useEffect(() => {
     if (!shouldFilter) return;
@@ -180,9 +169,9 @@ export const NewsPage = () => {
             w="full"
           >
             <option value="title">Nombre</option>
-            <option value="authors">Author</option>
-            <option value="price">Price</option>
-            <option value="published_date">Recientes</option>
+            <option value="authors">Autor</option>
+            <option value="price">Precio</option>
+            <option value="published_date">Fecha de publicación</option>
           </Select>
 
           <Select

@@ -177,9 +177,9 @@ export const Categories = () => {
             w="full"
           >
             <option value="title">Nombre</option>
-            <option value="authors">Author</option>
-            <option value="price">Price</option>
-            <option value="published_date">Recientes</option>
+            <option value="authors">Autor</option>
+            <option value="price">Precio</option>
+            <option value="published_date">Fecha de publicación</option>
           </Select>
 
           <Select
