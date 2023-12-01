@@ -75,26 +75,8 @@ const Login = () => {
   const redirectToLoginProvider = async (provider: string) => {
     setIsLoading(true);
     setLocalStorageItem("currentUrl", window.location.href);
-
-    // try {
-    //   // Realiza la autenticación y espera la respuesta
-    //   const response = await fetch(`http://localhost:8080/v1/api/auth/oauth/${provider}`);
-    //   console.log(response);
-      
-    //   if (response.ok) {
-    //     // Redirige después de que la autenticación es exitosa
-    //     window.location.href = "/";
-    //   } else {
-    //     // Manejar errores de autenticación
-    //     console.error("Error en la autenticación");
-    //   }
-    // } catch (error) {
-    //   console.error("Error en la autenticación:", error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
-    window.location.href = `http://localhost:8080/v1/api/auth/oauth/${provider}`;
-    setIsLoading(false)
+    
+    location.assign(`http://localhost:8080/v1/api/auth/oauth/${provider}`)
   };
 
   const redirectToFacebook = () => {

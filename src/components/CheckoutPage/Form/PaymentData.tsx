@@ -3,15 +3,15 @@ import { IPaymentData } from "../../../types/checkout"
 import { useForm, SubmitHandler } from "react-hook-form";
 import { paymentSchema } from "../schema";
 import { Box, Button, Divider, Flex, Image, Radio, RadioGroup, Text, Textarea, useDisclosure } from "@chakra-ui/react";
-import mailIcon from '../../../assets/icons/icon-mail.svg'
-import locationIcon from '../../../assets/icons/icon-location.svg'
-import shippingIcon from '../../../assets/icons/icon-shipping.svg'
+import mailIcon from '../../../assets/icons/icon-mail.svg';
+import locationIcon from '../../../assets/icons/icon-location.svg';
+import shippingIcon from '../../../assets/icons/icon-shipping.svg';
 import { Title } from "../../Title";
 import { useState } from "react";
 import { useAppSelector } from "../../../context/hooks";
 import PaymentCardData from "./PaymentCardData";
 import ModalError from "../../Modal/ModalError";
-import { initMercadoPago } from '@mercadopago/sdk-react'
+import { initMercadoPago } from '@mercadopago/sdk-react';
 import { Payment } from '@mercadopago/sdk-react';
 
 
@@ -25,48 +25,54 @@ interface Props {
 }
 
 
-  const customization = {
-    paymentMethods: {
-      creditCard: "all",
-      debitCard: "all",
-      mercadoPago: "all",
-    },
-  };
-  const onSubmitMP = async (
-    { selectedPaymentMethod, formData }
-  ) => {
-    console.log(formData);
-    
-    // callback llamado al hacer clic en el botón enviar datos
-    return new Promise((resolve, reject) => {
-      fetch("http://localhost:8080/v1/invoice/9224eeae-295f-44c3-aca6-ae811b8f0342/payment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          // recibir el resultado del pago
-          resolve();
-        })
-        .catch((error) => {
-          // manejar la respuesta de error al intentar crear el pago
-          reject();
-        });
+const customization = {
+  paymentMethods: {
+    creditCard: "all",
+    debitCard: "all",
+    mercadoPago: "all",
+  },
+};
+const onSubmitMP = async (
+  { selectedPaymentMethod, formData }
+) => {
+  console.log(formData);
+  
+  // callback llamado al hacer clic en el botón enviar datos
+  return new Promise<void>((resolve, reject) => {
+    fetch("http://localhost:8080/v1/api/invoice/9224eeae-295f-44c3-aca6-ae811b8f0342/payment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+    .then((response) => response.json())
+    .then((response) => {
+      console.log(response);
+
+      // recibir el resultado del pago
+      resolve();
+
+      // TODO: llamar al onSubmit
+    })
+    .catch((error) => {
+      console.log(error);
+      
+      // manejar la respuesta de error al intentar crear el pago
+      reject();
     });
-  };
-  const onError = async (error) => {
-    // callback llamado para todos los casos de error de Brick
-    console.log(error);
-  };
-  const onReady = async () => {
-    /*
-      Callback llamado cuando el Brick está listo.
-      Aquí puede ocultar cargamentos de su sitio, por ejemplo.
-    */
-  }
+  });
+};
+const onError = async (error) => {
+  // callback llamado para todos los casos de error de Brick
+  console.log(error);
+};
+const onReady = async () => {
+  /*
+    Callback llamado cuando el Brick está listo.
+    Aquí puede ocultar cargamentos de su sitio, por ejemplo.
+  */
+}
 
 const PaymentData = ({ handlePaymentData, email, address, city, province }: Props) => {
   const [paymentMethod, setPaymentMethod] = useState<'TARJETA'| 'TRANSFERENCIA' | 'MERCADO_PAGO'>('MERCADO_PAGO')
@@ -127,6 +133,11 @@ const PaymentData = ({ handlePaymentData, email, address, city, province }: Prop
       </Box>
 
       <Box mt={10}>
+        <Title size="md" capitalize htmlElement={'h5'} text="Notas de pedido" fw={700} />
+        <Textarea {...register("orderNotes")} placeholder='Escribe aquí...' bg={'brand.violetLogo50'} color={'brand.blueLogo'} mt={3} rows={4} />
+      </Box>
+
+      <Box mt={10}>
         <Title size="md" capitalize htmlElement={'h5'} text="Seleccionar medio de pago" fw={700} />
         <RadioGroup 
           {...register("paymentMethod")} 
@@ -169,11 +180,6 @@ const PaymentData = ({ handlePaymentData, email, address, city, province }: Prop
             onError={onError}
           />
         )}
-      </Box>
-
-      <Box mt={10}>
-        <Title size="md" capitalize htmlElement={'h5'} text="Notas de pedido" fw={700} />
-        <Textarea {...register("orderNotes")} placeholder='Escribe aquí...' bg={'brand.violetLogo50'} color={'brand.blueLogo'} mt={3} rows={4} />
       </Box>
 
       <Flex justifyContent={"flex-end"} mt={10}>
