@@ -11,7 +11,6 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../../context/hooks";
 import { getByCategoryPage } from "../../services/BookService";
 import { Book } from "../../types/product";
 import CustomLoading from "../CustomLoading/CustomLoading";
@@ -24,17 +23,16 @@ export const Categories = () => {
   const [page, setPage] = useState<number>(0);
   const [size] = useState<number>(8); // Cambia esto a la cantidad de elementos que deseas por página
   const [totalElements, setTotalElements] = useState<number>(0);
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [, setTotalPages] = useState<number>(0);
   const { categoryName } = useParams();
   const [librosCategoria, setLibrosCategoria] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
 
   const fontSize = useBreakpointValue({ base: "sm", md: "md", lg: "lg" });
   const [orderBy, setOrderBy] = useState<string>("");
-  const [titleSearch, setTitleSearch] = useState<string>("");
-  const [authorSearch, setAuthorSearch] = useState<string>("");
-  const [priceSearch, setPriceSearch] = useState<string>("");
+  const [, setTitleSearch] = useState<string>("");
+  const [, setAuthorSearch] = useState<string>("");
+  const [, setPriceSearch] = useState<string>("");
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
   const [orderDirection, setOrderDirection] = useState<string>("");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
