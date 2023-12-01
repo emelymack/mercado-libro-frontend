@@ -22,7 +22,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 
 export const Categories = () => {
   const [page, setPage] = useState<number>(0);
-  const [size] = useState<number>(10); // Cambia esto a la cantidad de elementos que deseas por página
+  const [size] = useState<number>(8); // Cambia esto a la cantidad de elementos que deseas por página
   const [totalElements, setTotalElements] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const { categoryName } = useParams();
@@ -161,9 +161,10 @@ export const Categories = () => {
         <Flex
           flexDirection={{ base: "column", md: "row" }}
           align="center"
-          pt={{ base: 10, md: 40 }}
+          pt={{ base: 10, md: 5 }}
+          pb={{ base: 10, md: 5 }}
           px={{ base: 4, md: 20 }}
-          mb={4}
+          mb={5}
           w="full"
         >
           <Select
