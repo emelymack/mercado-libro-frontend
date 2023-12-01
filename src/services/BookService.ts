@@ -162,7 +162,7 @@ export const getNewBooksByCategory = async (category:string): Promise<GetBooksRe
 
 export const getBestSellers = async (): Promise<Book[]> => {
   return httpService
-    .get(`${BASE_URL}${INVOICE_URL}/bestsellers`) 
+    .get(`${BASE_URL}${INVOICE_URL}/bestsellers/list`) 
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
