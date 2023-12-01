@@ -14,6 +14,7 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import UserInfo from "./components/UserDashboard/UserInfo";
 import { login } from "./context/slices/authSlice";
 import { setUser } from "./context/slices/userSlice";
+import BestsellersPage from "./components/BestsellersPage/BestsellersPage";
 import ProductManager from "./components/Products/manger";
 import SuccesfulPurchase from "./components/SuccesfulPurchase";
 import CheckoutPage from "./components/CheckoutPage";
@@ -66,6 +67,7 @@ function App() {
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/userDashboard" element={<UserInfo />} />
+          <Route path="/bestsellers" element={<BestsellersPage />} />
           <Route path="/userDashboardChart" element={<ChartDashboard />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/me" element={<MyAccountInfo />} />

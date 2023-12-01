@@ -41,7 +41,7 @@ const Links = [
   },
   {
     name: "MAS VENDIDOS",
-    url: "#masVendidos",
+    url: "/bestsellers",
   },
   // {
   //   name: "eBooks",

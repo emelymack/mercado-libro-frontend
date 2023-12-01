@@ -5,6 +5,7 @@ import {
   CREATE_BOOK_URL,
   GET_ALL_BOOK_URL,
   CATEGORY_URL,
+  INVOICE_URL,
   UPLOAD_IMAGEN_BOOK_URL
 } from "./apiUrls";
 import axios from "axios";
@@ -272,3 +273,24 @@ export const deleteImage = (id: number): Promise<void> => {
     });
 };
 
+
+
+export const getBestSellers = async (): Promise<Book[]> => {
+  return httpService
+    .get(`${BASE_URL}${INVOICE_URL}/bestsellers/list`) 
+    .then((response) => response.data)
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};
+
+//http://localhost:8080/v1/api/invoice/bestsellers/page?page=0&size=8
+
+export const getBestSellersPage = async (): Promise<GetBooksResponse> => {
+  return httpService
+    .get(`${BASE_URL}${INVOICE_URL}/bestsellers/page?page=0&size=8`) 
+    .then((response) => response.data)
+    .catch((error) => {
+      throw new Error(error.response?.data?.message);
+    });
+};
