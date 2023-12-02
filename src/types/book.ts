@@ -4,3 +4,13 @@ export interface GetAllBooksParams {
   keyword?: string;
   page?: number;
 }
+
+export interface GetNewBooksParams{
+  page?: number;
+  size?: number;
+  keyword?: string;
+  publisher?: string;
+  releases?: boolean;
+  selection?: string;
+  sort?: string;
+}

@@ -7,7 +7,7 @@ interface Props {
 }
 const BreadcrumbNav = ({category, bookTitle}: Props) => {
   return (
-    <Breadcrumb px={{base: 4, md:0}} spacing='8px' fontSize={{lg:'smaller'}} separator={<ChevronRightIcon color='brand.greenLogo' />}>
+    <Breadcrumb px={{base: 1, md:0}} spacing='8px' fontSize={{lg:'smaller'}} separator={<ChevronRightIcon color='brand.greenLogo' />}>
       <BreadcrumbItem>
         <BreadcrumbLink href='/'>Inicio</BreadcrumbLink>
       </BreadcrumbItem>

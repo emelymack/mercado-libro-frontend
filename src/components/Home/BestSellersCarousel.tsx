@@ -2,18 +2,18 @@ import { useEffect, useState } from 'react';
 import ProductsCarousel from '../ProductsCarousel'
 import { Box } from '@chakra-ui/react'
 import { Book } from '../../types/product';
-import { getNewBooksHome } from '../../services/BookService';
+import { getBestSellers } from '../../services/BookService';
 
 
-const TrendingCarousel = () => {
+const BestSellersCarousel = () => {
   const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    getNewBooksHome()
+    getBestSellers()
     .then((res) => {
-      setBooks(res.content);
+      setBooks(res);
     });
   }, []);
 
@@ -24,4 +24,4 @@ const TrendingCarousel = () => {
   )
 }
 
-export default TrendingCarousel
+export default BestSellersCarousel
