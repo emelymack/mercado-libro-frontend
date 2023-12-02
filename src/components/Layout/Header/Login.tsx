@@ -116,7 +116,7 @@ const Login = () => {
         if (user) {
           localStorage.setItem(
             "user",
-            JSON.stringify({ name: user.name, lastName: user.lastName })
+            JSON.stringify({ name: user.name, lastName: user.lastName, id: user.id })
           );
           dispatch(
             setUser({ name: user.name, lastName: user.lastName, id: user.id })
