@@ -37,7 +37,6 @@ import { loginUser } from "../../../services/LoginService";
 import CustomLoading from "../../CustomLoading/CustomLoading";
 import setLocalStorageItem from "../../../utils/setStorage";
 import { useAppDispatch } from "../../../context/hooks";
-import { setUser } from "../../../context/slices/userSlice";
 import { loginAdmin, login } from "../../../context/slices/authSlice";
 import CustomInput from "../../Input/CustomInput";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
