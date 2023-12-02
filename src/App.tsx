@@ -7,14 +7,13 @@ import RegisterUser from "./components/RegisterUser/RegisterUser";
 import Health from "./components/Health/Health";
 import CategoriesPage from "./components/CategoriesPage/CategoriesPage";
 import ProductPage from "./components/ProductPage";
-import { useAppDispatch } from "./context/hooks";
+import { useAppDispatch, useAppSelector } from "./context/hooks";
 import { scrollPosition } from "./context/slices/scrollSlice";
 import { useEffect } from "react";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import UserInfo from "./components/UserDashboard/UserInfo";
 import { login } from "./context/slices/authSlice";
 import { setUser } from "./context/slices/userSlice";
-import BestsellersPage from "./components/BestsellersPage/BestsellersPage";
 import ProductManager from "./components/Products/manger";
 import SuccesfulPurchase from "./components/SuccesfulPurchase";
 import CheckoutPage from "./components/CheckoutPage";
@@ -29,6 +28,7 @@ import MyAccountInfo from "./components/MyAccount";
 
 function App() {
   const dispatch = useAppDispatch();
+  const loggedState = useAppSelector(state => state.auth.isLogged)
 
   const handleScroll = () => {
     dispatch(scrollPosition(window.scrollY > 90));
@@ -36,14 +36,15 @@ function App() {
 
   useEffect(() => {
     const isLogged = localStorage.getItem("isLogged");
-    const storedUser = localStorage.getItem("user");
+    //@ts-ignore
+    const storedUser = JSON.parse(localStorage.getItem("user"));
     if (isLogged === "true") {
       dispatch(login());
     }
     if (storedUser) {
-      dispatch(setUser(JSON.parse(storedUser)));
+      dispatch(setUser({ name: storedUser.name, lastName: storedUser.lastName, id: storedUser.id }));
     }
-  }, [dispatch]);
+  }, [loggedState]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -67,7 +68,6 @@ function App() {
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/userDashboard" element={<UserInfo />} />
-          <Route path="/bestsellers" element={<BestsellersPage />} />
           <Route path="/userDashboardChart" element={<ChartDashboard />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/me" element={<MyAccountInfo />} />

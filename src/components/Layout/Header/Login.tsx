@@ -37,7 +37,6 @@ import { loginUser } from "../../../services/LoginService";
 import CustomLoading from "../../CustomLoading/CustomLoading";
 import setLocalStorageItem from "../../../utils/setStorage";
 import { useAppDispatch } from "../../../context/hooks";
-import { setUser } from "../../../context/slices/userSlice";
 import { loginAdmin, login } from "../../../context/slices/authSlice";
 import CustomInput from "../../Input/CustomInput";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
@@ -72,19 +71,18 @@ const Login = () => {
     resolver: zodResolver(schema),
   });
 
-  const redirectToLoginProvider = (provider: string) => {
+  const redirectToLoginProvider = async (provider: string) => {
     setIsLoading(true);
     setLocalStorageItem("currentUrl", window.location.href);
-    window.location.href = `http://localhost:8080/v1/api/auth/oauth/${provider}`;
+    
+    location.assign(`http://localhost:8080/v1/api/auth/oauth/${provider}`)
   };
 
   const redirectToFacebook = () => {
     redirectToLoginProvider("facebook");
   };
   const redirectToGoogle = () => {
-    setIsLoading(true);
     redirectToLoginProvider("google");
-    setIsLoading(false);
   };
 
   const history = useNavigate();
@@ -106,22 +104,13 @@ const Login = () => {
         console.log("Inicio de sesión exitoso");
         console.log("Datos del usuario:", response.data);
         const token = response.data?.token;
-        const user = response.data?.user;
         reset();
 
         if (token) {
           console.log("Token:", token);
           setLocalStorageItem("token", token);
         }
-        if (user) {
-          localStorage.setItem(
-            "user",
-            JSON.stringify({ name: user.name, lastName: user.lastName })
-          );
-          dispatch(
-            setUser({ name: user.name, lastName: user.lastName, id: user.id })
-          );
-        }
+
         const isAdmin = response.data?.user?.roles.some(
           (role) => role.description === "ADMIN"
         );
