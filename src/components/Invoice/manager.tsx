@@ -57,9 +57,9 @@ const InvoiceManager = () => {
         
     }
 
-    /*if (!isAdmin) {
+    if (!isAdmin) {
         return <Navigate to="*" />;
-    }*/
+    }
 
     return (
         <div className="admin_products">
