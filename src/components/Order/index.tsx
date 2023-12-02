@@ -1,4 +1,4 @@
-import { Grid, Text, Box, GridItem, Heading, Image, Flex, Spinner } from "@chakra-ui/react"
+import { Grid, Text, Box, GridItem, Heading, Image, Flex, Spinner, Button } from "@chakra-ui/react"
 import CalendarIcon from '../../assets/icons/icon-calendar.svg'
 import InfoIcon from '../../assets/icons/icon-info.svg'
 import CardIcon from '../../assets/icons/icon-card.svg'
@@ -16,6 +16,9 @@ import { Book } from "../../types/product"
 import { selectId } from "../../context/slices/invoiceSlice"
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../context/slices/userSlice';
+import { useAppSelector } from "../../context/hooks"
+import { useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export interface Item {
   book: Book,
@@ -28,12 +31,17 @@ const Order = () => {
   const size = useWindowSize();
   const [invoice, setInvoice] = useState<Invoice>();
   const [items, setItems] = useState<Item[]>([]);
-  const invoiceId = useSelector(selectId);
-  const code = invoiceId.substring(0,4).toUpperCase();
+  const param = useParams();
+  const code = param.invoiceId?.substring(0,4).toUpperCase();
   const paymentMethod = invoice?.payment_method === 'MERCADO_PAGO' ? 'Mercado Pago' : 'Transferencia bancaria';
   const paymentState = invoice?.payment_method === 'MERCADO_PAGO' ? 'Pagado' : 'Pendiente';
   const orderState = invoice?.payment_method === 'MERCADO_PAGO' ? 'Confirmada' : 'Abierta';
   const user = useSelector(selectUser);
+  const navigate = useNavigate();
+
+  const handleReturn = () => {
+    navigate(-1);
+  }
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -67,8 +75,8 @@ const Order = () => {
     setIsInfoLoading(true)
     const fetchInvoice = async () => {
       try {
-        const response = await getInvoiceById(invoiceId);
-
+        const response = await getInvoiceById(param.invoiceId);
+        
         if (response.statusCode === 200 && response.data) {
           setInvoice(response.data);
         } else {
@@ -153,7 +161,9 @@ const Order = () => {
 
                 </GridItem>
                 <GridItem colSpan={5} h='min-content' display='flex' flexDir='column'>
-                {invoice?.shipping_method === 'CORREO_ARGENTINO' ? (
+                    <Flex justify='space-between'>
+                      <Box>
+                    {invoice?.shipping_method === 'CORREO_ARGENTINO' ? (
                    <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}}>
                       <b>Costo de envío (Correo Argentino - Envio a domicilio):</b> ${invoice?.shipping}
                     </Text> 
@@ -163,6 +173,9 @@ const Order = () => {
                   </Text> 
                 )}
                     <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}}><b>Subtotal:</b> ${invoice?.subTotal}</Text>
+                    </Box>
+                      <Button bg='brand.greenLogo' textColor='white' onClick={() => handleReturn()}>Volver</Button>
+                    </Flex>
                     <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}} fontWeight='semibold' alignSelf='center'>Total: ${invoice?.total}</Text>
                 </GridItem>
             </Grid>

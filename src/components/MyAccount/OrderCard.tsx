@@ -14,8 +14,8 @@ const OrderCard = ({id, createdAt} : OrderData) => {
     const dispatch = useDispatch();
 
     const handleInvoiceSelection  = () => {
-        dispatch(setInvoice({ id: id }));
-        navigate(`/me/order/${id.substring(0,4).toUpperCase()}`);
+        //dispatch(setInvoice({ id: id }));
+        navigate(`/me/order/${id}`);
       };
 
     return (

@@ -64,7 +64,7 @@ export const getInvoiceById = async (
     id: string
   ): Promise<CustomResponse<Invoice>> => {
     try {
-      debugger
+      console.log('id aquiiiiiiiiiiiiiiiiiiiiii', id)
       const response = await httpService.get(
         `${BASE_URL}api/invoice/${id}`);
 
