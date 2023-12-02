@@ -57,6 +57,8 @@ const CheckoutPage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
     if(!accessCheckout) navigate('/')
+    console.log(userData.id);
+    
   
     return () => {
       if(accessCheckout) {
@@ -170,6 +172,7 @@ const CheckoutPage = () => {
         </Grid>
       </Box>
       <ModalError onClose={onClose} isOpen={isOpen} title="Hubo un error al realizar el pedido. Intente nuevamente, por favor." />
+      
     </PageContainer>
   )
 }

@@ -7,7 +7,7 @@ import RegisterUser from "./components/RegisterUser/RegisterUser";
 import Health from "./components/Health/Health";
 import CategoriesPage from "./components/CategoriesPage/CategoriesPage";
 import ProductPage from "./components/ProductPage";
-import { useAppDispatch } from "./context/hooks";
+import { useAppDispatch, useAppSelector } from "./context/hooks";
 import { scrollPosition } from "./context/slices/scrollSlice";
 import { useEffect } from "react";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
@@ -28,6 +28,7 @@ import MyAccountInfo from "./components/MyAccount";
 
 function App() {
   const dispatch = useAppDispatch();
+  const loggedState = useAppSelector(state => state.auth.isLogged)
 
   const handleScroll = () => {
     dispatch(scrollPosition(window.scrollY > 90));
@@ -35,14 +36,14 @@ function App() {
 
   useEffect(() => {
     const isLogged = localStorage.getItem("isLogged");
-    const storedUser = localStorage.getItem("user");
+    const storedUser = JSON.parse(localStorage.getItem("user"));
     if (isLogged === "true") {
       dispatch(login());
     }
     if (storedUser) {
-      dispatch(setUser(JSON.parse(storedUser)));
+      dispatch(setUser({ name: storedUser.name, lastName: storedUser.lastName, id: storedUser.id }));
     }
-  }, [dispatch]);
+  }, [loggedState]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);

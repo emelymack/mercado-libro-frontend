@@ -27,6 +27,7 @@ import { useAppDispatch, useAppSelector } from "../../../context/hooks";
 import { logout } from "../../../context/slices/authSlice";
 import { useEffect, useState } from "react";
 import CustomLoading from "../../CustomLoading/CustomLoading";
+import { logoutUser } from "../../../context/slices/userSlice";
 
 const MyAccount = () => {
   const history = useNavigate();
@@ -53,6 +54,7 @@ const MyAccount = () => {
     setIsLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     dispatch(logout());
+    dispatch(logoutUser());
     clearLocalStorage();
     setIsLoading(false);
     setIsInactiveModalOpen(false);
