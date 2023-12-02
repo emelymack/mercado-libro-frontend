@@ -20,7 +20,7 @@ const BreadcrumbNav:React.FC<BreadcrumbNavProps>= ({order, size}) => {
 
       {order ? (
         <BreadcrumbItem>
-         <BreadcrumbLink href={`/me/order`}>{order}</BreadcrumbLink>
+         <BreadcrumbLink href={`/me/order`}>#{order}</BreadcrumbLink>
         </BreadcrumbItem>
       ) : ''}
 

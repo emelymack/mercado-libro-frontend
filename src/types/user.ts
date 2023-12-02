@@ -8,6 +8,27 @@ export interface User {
   roles: Role[];
 }
 
+export interface Address {
+  id: number;
+  street: string;
+  number: number;
+  city: string;
+  department: string;
+  state: string;
+  zipCode: string;
+  district: string;
+  userId: number;
+}
+
+export interface AddAddress {
+  street: string;
+  number: number;
+  city: string;
+  state: string;
+  zipCode: string;
+  district: string;
+}
+
 export interface EditUser {
   id?: number;
   name?: string;
