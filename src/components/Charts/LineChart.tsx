@@ -34,7 +34,7 @@ const options: ChartOptions<"line"> = {
   plugins: {
     title: {
       display: true,
-      text: "Media Statistics",
+      text: "Ventas por mes y inventario",
     },
     legend: {
       position: "top",

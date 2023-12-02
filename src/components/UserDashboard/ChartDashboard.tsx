@@ -9,28 +9,46 @@ import StatCard from "../Charts/StatCard";
 import { Navigate } from "react-router-dom";
 import useDashboardData from "./DataDashboard/useDashboardData";
 import { useAppSelector } from "../../context/hooks";
+import {
+  inventoryData,
+  mockDataDonut,
+  months,
+  paymentTypeData,
+  salesData,
+} from "./DataDashboard/mockData";
 
 const dataBar = {
-  labels: ["Libro 1", "Libro 2", "Libro 3", "Libro 4", "Libro 5"],
+  labels: ["Tipo de pago"],
   datasets: [
     {
-      label: "Ventas",
-      data: [65, 59, 80, 81, 56],
+      label: "Tarjeta de crédito",
+      data: [
+        paymentTypeData.content.find(
+          (item) => item.payment_type === "Tarjeta de crédito"
+        )?.sales || 0,
+      ],
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
-      label: "Inventario",
-      data: [45, 49, 60, 70, 46],
+      label: "Transferencia bancaria",
+      data: [
+        paymentTypeData.content.find(
+          (item) => item.payment_type === "Transferencia bancaria"
+        )?.sales || 0,
+      ],
       backgroundColor: "rgba(54, 162, 235, 0.5)",
     },
   ],
 };
+
 const dataLine = {
-  labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo"],
+  labels: salesData.content.map(
+    (item) => `${months[item.month - 1]} ${item.year}`
+  ),
   datasets: [
     {
       label: "Ventas",
-      data: [20, 59, 80, 81, 56],
+      data: salesData.content.map((item) => item.sales),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
       pointRadius: 5,
@@ -39,7 +57,7 @@ const dataLine = {
     },
     {
       label: "Inventario",
-      data: [10, 48, 40, 19, 86],
+      data: inventoryData.content.map((item) => item.inventory),
       borderColor: "rgb(54, 162, 235)",
       backgroundColor: "rgba(54, 162, 235, 0.5)",
       pointRadius: 5,
@@ -69,19 +87,29 @@ const dataAreas = {
 };
 
 const dataForDoughnut = {
-  labels: ["Libro 1", "Libro 2", "Libro 3"],
+  labels: mockDataDonut.content.map((item) => item.category_name),
   datasets: [
     {
-      data: [10, 20, 30],
+      data: mockDataDonut.content.map((item) => item.sales),
       backgroundColor: [
         "rgba(75, 192, 192, 0.2)",
         "rgba(255, 99, 132, 0.5)",
         "rgba(54, 162, 235, 0.2)",
+        "rgba(255, 206, 86, 0.2)",
+        "rgba(153, 102, 255, 0.2)",
+        "rgba(255, 159, 64, 0.2)",
+        "rgba(255, 99, 132, 0.2)",
+        "rgba(75, 192, 192, 0.5)",
       ],
       borderColor: [
         "rgba(75, 192, 192, 1)",
         "rgba(255, 99, 132, 1)",
         "rgba(54, 162, 235, 1)",
+        "rgba(255, 206, 86, 1)",
+        "rgba(153, 102, 255, 1)",
+        "rgba(255, 159, 64, 1)",
+        "rgba(255, 99, 132, 1)",
+        "rgba(75, 192, 192, 1)",
       ],
       borderWidth: 1,
     },

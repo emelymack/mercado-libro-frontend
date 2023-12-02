@@ -30,7 +30,7 @@ const DoughnutSegmentedChart: React.FC<DoughnutSegmentedChartProps> = ({
       },
       title: {
         display: true,
-        text: "Doughnut Chart Example",
+        text: "Ventas por categoria",
       },
       tooltip: {
         callbacks: {
