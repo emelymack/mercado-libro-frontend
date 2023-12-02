@@ -1,6 +1,7 @@
-import { Text, Table, Thead, Tr, Th, Tbody, Td, Image, TableContainer} from "@chakra-ui/react"
+import { Text, Table, Thead, Tr, Th, Tbody, Td, Image, TableContainer} from "@chakra-ui/react";
+import { Item } from './index';
 
-const TableDesktop = () => {
+const TableDesktop = ({ items }: { items: Item[] }) => {
 
     return(
         <TableContainer>
@@ -14,24 +15,17 @@ const TableDesktop = () => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    <Tr>
-                        <Td display='flex'>
-                            <Image objectFit='contain' boxSize={{ base: '50px', md: '50px', lg: '80px', xl: '100px', '2xl': '120px'}} src='https://www.tematika.com/media/catalog/Ilhsa/Imagenes/678297.jpg'/>
-                            <Text ml='20px' fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word" fontWeight='semibold'>Harry Potter y La Orden Del Fenix: Edicion Salamandra, J.K Rowling</Text>
-                        </Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>$24.900</Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>1</Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>$24.900</Td>
-                    </Tr>
-                    <Tr>
-                        <Td display='flex'>
-                            <Image objectFit='contain' boxSize={{ base: '50px', md: '50px', lg: '80px', xl: '100px', '2xl': '120px'}} src='https://www.tematika.com/media/catalog/Ilhsa/Imagenes/678298.jpg'/>
-                            <Text ml='20px' fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word" fontWeight='semibold'>Harry Potter y La Piedra Filosofal: Edicion Salamandra, J.K Rowling</Text>
-                        </Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>$24.900</Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>1</Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>$24.900</Td>
-                    </Tr>
+                    {items.map((item) => (
+                         <Tr>
+                         <Td display='flex'>
+                             <Image objectFit='contain' boxSize={{ base: '50px', md: '50px', lg: '80px', xl: '100px', '2xl': '120px'}} src={item.book.image_links[0].url}/>
+                             <Text ml='20px' fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word" fontWeight='semibold'>{item.book.title}, {item.book.authors[0].name}</Text>
+                         </Td>
+                         <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>${item.book.price}</Td>
+                         <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>{item.invoice.quantity}</Td>
+                         <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>${item.invoice.total}</Td>
+                     </Tr>
+                    ))}
                 </Tbody>
             </Table>
         </TableContainer>

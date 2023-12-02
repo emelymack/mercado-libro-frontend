@@ -4,6 +4,7 @@ import userReducer from "../context/slices/userSlice";
 import authSlice from "./slices/authSlice";
 import cartReducer from '../context/slices/cartSlice'
 import checkoutReducer from '../context/slices/checkoutSlice'
+import invoiceReducer from '../context/slices/invoiceSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     user: userReducer,
     auth: authSlice,
     cart: cartReducer,
-    checkout: checkoutReducer
+    checkout: checkoutReducer,
+    invoice: invoiceReducer,
   },
 });
 
