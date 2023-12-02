@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, redirect, useNavigate } from "react-router-dom";
-import { Badge, Box, Grid, GridItem, Switch, Table, TableCaption, Tag, Tbody, Td, Th, Thead, Tooltip, Tr, useBreakpointValue } from "@chakra-ui/react";
+import { Badge, Box, Grid, GridItem, Switch, Table, TableCaption, Tag, Tbody, Td, Text, Th, Thead, Tooltip, Tr, useBreakpointValue } from "@chakra-ui/react";
 import { EditIcon, ViewIcon } from "@chakra-ui/icons";
 import Pagination from "../../utils/Pagination";
 import CustomLoading from "../CustomLoading/CustomLoading";
@@ -73,8 +73,8 @@ const InvoiceManager = () => {
                 overflowX="auto"
             >
                 <Grid templateAreas={`"header header""nav main"`}>
-                    <GridItem pl="4" area={"header"}>
-                        <h1>Listado de ventas</h1>
+                    <GridItem pl="2" area={"header"}>
+                        <Text fontSize='4xl'>Listado de Ventas</Text>
                     </GridItem>
                 </Grid>
                 <Table variant="simple" size={{ base: "sm", md: "lg" }} mt={6}>
@@ -94,6 +94,9 @@ const InvoiceManager = () => {
                                 Total
                             </Th>
                             <Th textAlign="center" fontSize={fontSize}>
+                                Items
+                            </Th>
+                            <Th textAlign="center" fontSize={fontSize}>
                                 Ver detalle
                             </Th>
                         </Tr>
@@ -102,7 +105,7 @@ const InvoiceManager = () => {
                         {listInvoices?.map((invoice) => (
                             <Tr key={invoice.id}>
                                 <Td textAlign="center" fontSize={fontSize}>
-                                    # {invoice.id}
+                                    # {invoice.id.substring(0,4).toUpperCase()}
                                 </Td>
                                 <Td textAlign="center" fontSize={fontSize}>
                                     {invoice.dni}
@@ -111,7 +114,10 @@ const InvoiceManager = () => {
                                     {invoice.date_created}
                                 </Td>
                                 <Td textAlign="center" fontSize={fontSize}>
-                                    ${invoice.total}
+                                    $ {invoice.total}
+                                </Td>
+                                <Td textAlign="center" fontSize={fontSize}>
+                                     {invoice?.invoice_item?.length}
                                 </Td>
                                 <Td textAlign="center" fontSize={fontSize}>
                                     <Tooltip label="Editar" aria-label="Editar" fontSize="md">

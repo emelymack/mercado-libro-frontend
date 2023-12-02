@@ -13,7 +13,7 @@ export interface Invoice {
     tax: number;
     total: number;
     user_id: number;
-    items: InvoiceItem[];
+    invoice_item: InvoiceItem[];
 }
 
 export interface InvoiceItem {
