@@ -11,8 +11,6 @@ import { useState } from "react";
 import { useAppSelector } from "../../../context/hooks";
 import PaymentCardData from "./PaymentCardData";
 import ModalError from "../../Modal/ModalError";
-import { initMercadoPago } from '@mercadopago/sdk-react';
-import { Payment } from '@mercadopago/sdk-react';
 
 
 interface Props {
@@ -21,63 +19,7 @@ interface Props {
   address: string,
   city: string,
   province: string,
-  // savedData: IShippingData
 }
-
-// initMercadoPago('TEST-7d04eb5c-5bb8-4696-a59e-533dfede69b9');
-
-// const customization = {
-//   paymentMethods: {
-//     creditCard: "all",
-//     debitCard: "all",
-//     mercadoPago: "all",
-//   },
-// };
-// const initialization = {
-//   amount: cartData.total,
-//   // preferenceId: "<PREFERENCE_ID>",
-// };
-// const onSubmitMP = async (
-//   { selectedPaymentMethod, formData }
-// ) => {
-//   console.log(formData);
-  
-//   // callback llamado al hacer clic en el botón enviar datos
-//   return new Promise<void>((resolve, reject) => {
-//     fetch("http://localhost:8080/v1/api/invoice/9224eeae-295f-44c3-aca6-ae811b8f0342/payment", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(formData),
-//     })
-//     .then((response) => response.json())
-//     .then((response) => {
-//       console.log(response);
-
-//       // recibir el resultado del pago
-//       resolve();
-
-//       // TODO: llamar al onSubmit
-//     })
-//     .catch((error) => {
-//       console.log(error);
-      
-//       // manejar la respuesta de error al intentar crear el pago
-//       reject();
-//     });
-//   });
-// };
-// const onError = async (error) => {
-//   // callback llamado para todos los casos de error de Brick
-//   console.log(error);
-// };
-// const onReady = async () => {
-//   /*
-//     Callback llamado cuando el Brick está listo.
-//     Aquí puede ocultar cargamentos de su sitio, por ejemplo.
-//   */
-// }
 
 const PaymentData = ({ handlePaymentData, email, address, city, province }: Props) => {
   const [paymentMethod, setPaymentMethod] = useState<'TARJETA'| 'TRANSFERENCIA' | 'MERCADO_PAGO'>('MERCADO_PAGO')
@@ -86,11 +28,6 @@ const PaymentData = ({ handlePaymentData, email, address, city, province }: Prop
     resolver: zodResolver(paymentSchema),
   });
   const { onOpen, isOpen, onClose } = useDisclosure()
-
-  // const initialization = {
-  //   amount: cartData.total,
-  //   // preferenceId: "<PREFERENCE_ID>",
-  // };
 
   const onSubmit: SubmitHandler<IPaymentData> = (data) => {
     data = {...data, paymentMethod: paymentMethod}
@@ -171,15 +108,6 @@ const PaymentData = ({ handlePaymentData, email, address, city, province }: Prop
         {paymentMethod === 'TARJETA' && (
           <PaymentCardData watch={watch} errors={errors} control={control} register={register} />
         )}
-        {/* {paymentMethod === 'MERCADO_PAGO' && (
-          <Payment
-            initialization={initialization}
-            customization={customization}
-            onSubmit={onSubmitMP}
-            onReady={onReady}
-            onError={onError}
-          />
-        )} */}
       </Box>
 
       <Flex justifyContent={"flex-end"} mt={10}>
@@ -190,7 +118,6 @@ const PaymentData = ({ handlePaymentData, email, address, city, province }: Prop
         fontSize={'xl'} 
         _hover={{fontSize: 'xl', bg: 'brand.violetLogo'}} 
         type="submit"
-        // onClick={() => console.log(getValues())}
       >
         Realizar pedido
       </Button>
