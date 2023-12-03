@@ -7,7 +7,6 @@ const useBooksByAuthorData = () => {
 
   useEffect(() => {
     const fetchBooksByAuthor = async () => {
-      debugger;
       try {
         const response = await getBooksByAuthor({
           page: 0,

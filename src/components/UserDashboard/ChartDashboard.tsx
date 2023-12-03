@@ -15,6 +15,7 @@ import paymentTypeData from "./DataDashboard/paymentTypeData";
 import useBooksByAuthorData from "./DataDashboard/useBooksByAuthorData";
 import { useEffect, useState } from "react";
 import { BarData, DoughnutData } from "../../types/chatsData";
+import CustomLoading from "../CustomLoading/CustomLoading";
 
 const dataLine = {
   labels: salesDataLine.content.map(
@@ -51,8 +52,7 @@ const ChartDashboard = () => {
   const paymentDataLine = paymentTypeData();
   const salesDataDonut = useSalesData();
   const booksByAuthor = useBooksByAuthorData();
-  const maxBooks =
-    Math.max(...booksByAuthor.map((item) => item.total_books)) + 10;
+  const [loading, setLoading] = useState(true);
   const [barData, setBarData] = useState<BarData>({
     labels: [],
     datasets: [
@@ -238,6 +238,32 @@ const ChartDashboard = () => {
       pdf.save(`Dashboard-${dateString}.pdf`);
     }
   };
+
+  useEffect(() => {
+    if (
+      totalUsers &&
+      totalBooks &&
+      totalCategories &&
+      totalSales &&
+      paymentDataLine &&
+      salesDataDonut &&
+      booksByAuthor
+    ) {
+      setLoading(false);
+    }
+  }, [
+    totalUsers,
+    totalBooks,
+    totalCategories,
+    totalSales,
+    paymentDataLine,
+    salesDataDonut,
+    booksByAuthor,
+  ]);
+
+  if (loading) {
+    return <CustomLoading />;
+  }
 
   return (
     <>
