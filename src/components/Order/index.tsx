@@ -213,12 +213,12 @@ const Order = () => {
                     </Box>
 
                     { size.width && size.width < 550 ? '' : (
-                      <Button bg='brand.greenLogo' textColor='white' size={{ base: 'sm', lg: 'md'}} onClick={() => handleReturn()}>Volver</Button>
+                      <Button bg='brand.greenLogo' _hover={{ backgroundColor: 'brand.blueLogo' }} textColor='white' size={{ base: 'sm', lg: 'md'}} onClick={() => handleReturn()}>Volver</Button>
                     )}
                     </Flex>
                     <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}} fontWeight='semibold' alignSelf='center'>Total: ${formatNumberWithDots(invoice?.total)}</Text>
                     { size.width && size.width < 550 ?  (
-                      <Button bg='brand.greenLogo' mt={5} textColor='white' size={{ base: 'sm', lg: 'md'}} onClick={() => handleReturn()}>Volver</Button>
+                      <Button bg='brand.greenLogo' _hover={{ backgroundColor: 'brand.blueLogo' }} mt={5} textColor='white' size={{ base: 'sm', lg: 'md'}} onClick={() => handleReturn()}>Volver</Button>
                     ) : ''}
                 </GridItem>
             </Grid>
