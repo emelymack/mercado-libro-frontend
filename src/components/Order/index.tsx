@@ -35,7 +35,7 @@ const Order = () => {
   const [items, setItems] = useState<Item[]>([]);
   const param = useParams();
   const code = param.invoiceId?.substring(0,4).toUpperCase();
-  const paymentMethod = invoice?.payment_method === 'MERCADO_PAGO' ? 'Mercado Pago' : 'Transferencia bancaria';
+  const paymentMethod = invoice?.payment_method === 'MERCADO_PAGO' ? 'Mercado Pago' : 'Transferencia';
   const paymentState = invoice?.payment_method === 'MERCADO_PAGO' ? 'Pagado' : 'Pendiente';
   const orderState = invoice?.payment_method === 'MERCADO_PAGO' ? 'Confirmada' : 'Abierta';
   const user = useSelector(selectUser);
@@ -134,7 +134,7 @@ const Order = () => {
             <Box alignSelf='flex-start' mb='10px'>
                 <BreadcrumbNav order={code} size={{ base: 'sm', lg: 'sm'}}/>
             </Box>
-            <Heading alignSelf='flex-start' fontSize={{ base: 'xl', lg: '2xl', '2xl': '3xl'}}>Orden #{code}</Heading>
+            <Heading color='brand.blueLogo' alignSelf='flex-start' fontSize={{ base: 'xl', lg: '2xl', '2xl': '3xl'}}>Orden #{code}</Heading>
             <Grid w={{ base: '85vw', '2xl': '65vw'}} templateRows='repeat(1, 1fr)' templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(7, 1fr)'}} gap={4} mt='10px'>
                 <GridItem rowSpan={2} colSpan={2} h='min-content'>
                     <Text fontSize={{ lg: 'lg', '2xl': 'lg'}} pb='5px' borderBottom='1px solid #e6e6e6'>Detalles</Text>
