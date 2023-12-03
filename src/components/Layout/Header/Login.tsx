@@ -42,6 +42,7 @@ import CustomInput from "../../Input/CustomInput";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import googleLogo from "../../../assets/img/google-logo.png";
 import facebookLogo from "../../../assets/img/facebook-logo.png";
+import { setUser } from "../../../context/slices/userSlice";
 
 const schema = z.object({
   email: z
@@ -104,11 +105,22 @@ const Login = () => {
         console.log("Inicio de sesión exitoso");
         console.log("Datos del usuario:", response.data);
         const token = response.data?.token;
+        const user = response.data?.user;
         reset();
 
         if (token) {
           console.log("Token:", token);
           setLocalStorageItem("token", token);
+        }
+
+        if (user) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ name: user.name, lastName: user.lastName, id: user.id })
+          );
+          dispatch(
+            setUser({ name: user.name, lastName: user.lastName, id: user.id })
+          );
         }
 
         const isAdmin = response.data?.user?.roles.some(

@@ -25,6 +25,7 @@ import Dashboard from "./components/UserDashboard/Dashboard";
 import Oauth from "./components/Oauth/Oauth";
 import Order from "./components/Order";
 import MyAccountInfo from "./components/MyAccount";
+import { IdProvider } from "./context/invoice";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -71,7 +72,7 @@ function App() {
           <Route path="/userDashboardChart" element={<ChartDashboard />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/me" element={<MyAccountInfo />} />
-          <Route path="/me/order" element={<Order />} />
+          <Route path="/me/order/:invoiceId" element={<Order />} />
           <Route
             path="/books/search/:searchTerm"
             element={<BookListSearch />}

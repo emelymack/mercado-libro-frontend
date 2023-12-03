@@ -9,6 +9,7 @@ const getToken = async (provider: string, code:string) => {
         const response = await httpService.post(`http://localhost:8080/v1/api/auth/oauth/${provider}?code=${code}`
         , {provider, code});
         const user = response.data.user;
+        console.log(user)
         setLocalStorageItem("token", response.data.token);
         localStorage.setItem(
             "user",
