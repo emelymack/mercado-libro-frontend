@@ -9,40 +9,11 @@ import StatCard from "../Charts/StatCard";
 import { Navigate } from "react-router-dom";
 import useDashboardData from "./DataDashboard/useDashboardData";
 import { useAppSelector } from "../../context/hooks";
-import {
-  inventoryData,
-  mockDataDonut,
-  months,
-  paymentTypeData,
-  salesDataLine,
-} from "./DataDashboard/mockData";
+import { inventoryData, months, salesDataLine } from "./DataDashboard/mockData";
 import useSalesData from "./DataDashboard/useSalesData";
+import paymentTypeData from "./DataDashboard/paymentTypeData";
 import { useEffect, useState } from "react";
-import { DoughnutData } from "../../types/salesData";
-
-const dataBar = {
-  labels: ["Tipo de pago"],
-  datasets: [
-    {
-      label: "Tarjeta de crédito",
-      data: [
-        paymentTypeData.content.find(
-          (item) => item.payment_type === "Tarjeta de crédito"
-        )?.sales || 0,
-      ],
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Transferencia bancaria",
-      data: [
-        paymentTypeData.content.find(
-          (item) => item.payment_type === "Transferencia bancaria"
-        )?.sales || 0,
-      ],
-      backgroundColor: "rgba(54, 162, 235, 0.5)",
-    },
-  ],
-};
+import { BarData, DoughnutData } from "../../types/chatsData";
 
 const dataLine = {
   labels: salesDataLine.content.map(
@@ -89,44 +60,24 @@ const dataAreas = {
   ],
 };
 
-// const dataForDoughnut = {
-//   labels: salesDataDonut.map((item) => item.category_name),
-//   datasets: [
-//     {
-//       data: salesDataDonut.map((item) => item.sales),
-//       backgroundColor: [
-//         "rgba(75, 192, 192, 0.2)",
-//         "rgba(255, 99, 132, 0.5)",
-//         "rgba(54, 162, 235, 0.2)",
-//         "rgba(255, 206, 86, 0.2)",
-//         "rgba(153, 102, 255, 0.2)",
-//         "rgba(255, 159, 64, 0.2)",
-//         "rgba(255, 99, 132, 0.2)",
-//         "rgba(75, 192, 192, 0.5)",
-//       ],
-//       borderColor: [
-//         "rgba(75, 192, 192, 1)",
-//         "rgba(255, 99, 132, 1)",
-//         "rgba(54, 162, 235, 1)",
-//         "rgba(255, 206, 86, 1)",
-//         "rgba(153, 102, 255, 1)",
-//         "rgba(255, 159, 64, 1)",
-//         "rgba(255, 99, 132, 1)",
-//         "rgba(75, 192, 192, 1)",
-//       ],
-//       borderWidth: 1,
-//     },
-//   ],
-// };
-
 const chartSize = "500px";
 
 const ChartDashboard = () => {
   const { totalUsers, totalBooks, totalCategories, totalSales } =
     useDashboardData();
   const { name, lastName } = useAppSelector((state) => state.user);
-
+  const paymentDataLine = paymentTypeData();
   const salesDataDonut = useSalesData();
+  const [barData, setBarData] = useState<BarData>({
+    labels: [],
+    datasets: [
+      {
+        label: "",
+        data: [],
+        backgroundColor: "",
+      },
+    ],
+  });
   const [dataForDoughnut, setDataForDoughnut] = useState<DoughnutData>({
     labels: [],
     datasets: [
@@ -176,6 +127,28 @@ const ChartDashboard = () => {
       });
     }
   }, [salesDataDonut]);
+
+  useEffect(() => {
+    if (paymentDataLine) {
+      const dataBar = {
+        labels: ["Tipo de pago"],
+        datasets: paymentDataLine.map((item) => {
+          console.log("item:", item); // Agrega esta línea para ver qué hay en 'item'
+          return {
+            label: item.payment_type || "",
+            data: [item.sales || 0],
+            backgroundColor:
+              item.payment_type === "MERCADO_PAGO"
+                ? "rgba(54, 162, 235, 0.5)"
+                : "rgba(255, 99, 132, 0.5)",
+          };
+        }),
+      };
+
+      setBarData(dataBar);
+    }
+  }, [paymentTypeData]);
+
   const date = new Date();
   const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
 
@@ -319,7 +292,7 @@ const ChartDashboard = () => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <BarChart data={dataBar} />
+                <BarChart data={barData} />
               </Box>
               <Box
                 p={5}

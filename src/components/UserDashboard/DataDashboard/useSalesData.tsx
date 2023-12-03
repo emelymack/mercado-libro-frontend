@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getSalesByCategory } from "../../../services/InvoiceService";
-import { SalesData } from "../../../types/salesData";
+import { SalesData } from "../../../types/chatsData";
 
 const useSalesData = () => {
   const [salesData, setSalesData] = useState<SalesData[]>([]);

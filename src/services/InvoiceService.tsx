@@ -3,11 +3,12 @@ import {
   BASE_URL,
   GET_ALL_INVOICES_URL,
   GET_SALES_BY_CATEGORY_URL,
+  GET_SALES_BY_PAYMENT_TYPE_URL,
 } from "./apiUrls";
 import { CustomResponse } from "../types/customResponse";
 import axios from "axios";
 import { GetAllInvoincesParams } from "../types/invoice";
-import { SalesData } from "../types/salesData";
+import { PaymentTypeData, SalesData } from "../types/chatsData";
 
 export interface GetInvoiceResponse {
   content: Invoice[];
@@ -133,6 +134,35 @@ export const getSalesByCategory = async (
     return {
       statusCode: response.status,
       data: response.data.content as SalesData[],
+      totalElements: response.data.totalElements,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getSalesCountByPayment = async (
+  params: GetAllInvoincesParams
+): Promise<CustomResponse<PaymentTypeData[]>> => {
+  let url = `${BASE_URL}${GET_SALES_BY_PAYMENT_TYPE_URL}?`;
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+  try {
+    const response = await httpService.get(url);
+    return {
+      statusCode: response.status,
+      data: response.data.content as PaymentTypeData[],
       totalElements: response.data.totalElements,
     };
   } catch (error) {
