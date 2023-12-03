@@ -1,7 +1,7 @@
 import { Box, Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import BarChart from "../Charts/BarChart";
 import LineChart from "../Charts/LineChart";
-import StackedAreaChart from "../Charts/StackedAreaChart";
+import StackedAreaChart from "../Charts/BartChartHorizontal";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import DoughnutSegmentedChart from "../Charts/DoughnutSegmentedChart";
@@ -129,11 +129,10 @@ const ChartDashboard = () => {
   }, [salesDataDonut]);
 
   useEffect(() => {
-    if (paymentDataLine) {
+    if (paymentDataLine && paymentDataLine.length > 0) {
       const dataBar = {
         labels: ["Tipo de pago"],
         datasets: paymentDataLine.map((item) => {
-          console.log("item:", item); // Agrega esta línea para ver qué hay en 'item'
           return {
             label: item.payment_type || "",
             data: [item.sales || 0],
@@ -147,7 +146,7 @@ const ChartDashboard = () => {
 
       setBarData(dataBar);
     }
-  }, [paymentTypeData]);
+  }, [paymentDataLine]);
 
   const date = new Date();
   const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";

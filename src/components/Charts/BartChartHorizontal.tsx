@@ -22,6 +22,7 @@ ChartJS.register(
 );
 
 const options: ChartOptions<"bar"> = {
+  indexAxis: "y",
   responsive: true,
   plugins: {
     legend: {
@@ -29,7 +30,7 @@ const options: ChartOptions<"bar"> = {
     },
     title: {
       display: true,
-      text: "Tipo de pago",
+      text: "Quarterly Sales Data",
     },
     tooltip: {
       callbacks: {
@@ -44,7 +45,7 @@ const options: ChartOptions<"bar"> = {
   scales: {
     x: {
       title: {
-        display: false,
+        display: true,
         text: "Quarters",
       },
       grid: {
