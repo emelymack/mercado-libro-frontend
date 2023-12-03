@@ -2,7 +2,13 @@ import httpService from "./httpService";
 import { BASE_URL, GET_ALL_USERS_URL, USER_URL } from "./apiUrls";
 import { CustomResponse } from "../types/customResponse";
 import axios from "axios";
-import { AddAddress, Address, EditUser, GetAllUsersParams, User } from "../types/user";
+import {
+  AddAddress,
+  Address,
+  EditUser,
+  GetAllUsersParams,
+  User,
+} from "../types/user";
 import { Invoice } from "./InvoiceService";
 
 export const getUserAddress = async (): Promise<CustomResponse<Address>> => {
@@ -42,24 +48,25 @@ const interceptor = axios.interceptors.request.use(
 );
 
 export const postUserAddress = async (
-  address : AddAddress
+  address: AddAddress
 ): Promise<CustomResponse<Address>> => {
   try {
-    axios.interceptors.request.use((config) => {
-      const tokenItem = localStorage.getItem("token");
-      if (tokenItem) {
-        const token = JSON.parse(tokenItem);
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
+    axios.interceptors.request.use(
+      (config) => {
+        const tokenItem = localStorage.getItem("token");
+        if (tokenItem) {
+          const token = JSON.parse(tokenItem);
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
       },
       (error) => Promise.reject(error)
-    )
+    );
 
-    const response = await httpService.post(`${BASE_URL}api/address`, address)
+    const response = await httpService.post(`${BASE_URL}api/address`, address);
 
     axios.interceptors.request.eject(interceptor);
-    console.log("Interceptor removed!")
+    console.log("Interceptor removed!");
 
     return {
       statusCode: response.status,
@@ -106,10 +113,12 @@ export const getUserInvoices = async (
   page: number
 ): Promise<CustomResponse<Invoice[]>> => {
   try {
-    const response = await httpService.get(`${BASE_URL}api/invoice/userid/${id}?page=${page}&size=6`);
+    const response = await httpService.get(
+      `${BASE_URL}api/invoice/userid/${id}?page=${page}&size=6`
+    );
 
-    console.log(response)
-    console.log(id)
+    console.log(response);
+    console.log(id);
     return {
       statusCode: response.status,
       data: response.data,

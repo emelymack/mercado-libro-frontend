@@ -14,8 +14,11 @@ import {
   mockDataDonut,
   months,
   paymentTypeData,
-  salesData,
+  salesDataLine,
 } from "./DataDashboard/mockData";
+import useSalesData from "./DataDashboard/useSalesData";
+import { useEffect, useState } from "react";
+import { DoughnutData } from "../../types/salesData";
 
 const dataBar = {
   labels: ["Tipo de pago"],
@@ -42,13 +45,13 @@ const dataBar = {
 };
 
 const dataLine = {
-  labels: salesData.content.map(
+  labels: salesDataLine.content.map(
     (item) => `${months[item.month - 1]} ${item.year}`
   ),
   datasets: [
     {
       label: "Ventas",
-      data: salesData.content.map((item) => item.sales),
+      data: salesDataLine.content.map((item) => item.sales),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
       pointRadius: 5,
@@ -86,41 +89,93 @@ const dataAreas = {
   ],
 };
 
-const dataForDoughnut = {
-  labels: mockDataDonut.content.map((item) => item.category_name),
-  datasets: [
-    {
-      data: mockDataDonut.content.map((item) => item.sales),
-      backgroundColor: [
-        "rgba(75, 192, 192, 0.2)",
-        "rgba(255, 99, 132, 0.5)",
-        "rgba(54, 162, 235, 0.2)",
-        "rgba(255, 206, 86, 0.2)",
-        "rgba(153, 102, 255, 0.2)",
-        "rgba(255, 159, 64, 0.2)",
-        "rgba(255, 99, 132, 0.2)",
-        "rgba(75, 192, 192, 0.5)",
-      ],
-      borderColor: [
-        "rgba(75, 192, 192, 1)",
-        "rgba(255, 99, 132, 1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 206, 86, 1)",
-        "rgba(153, 102, 255, 1)",
-        "rgba(255, 159, 64, 1)",
-        "rgba(255, 99, 132, 1)",
-        "rgba(75, 192, 192, 1)",
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
+// const dataForDoughnut = {
+//   labels: salesDataDonut.map((item) => item.category_name),
+//   datasets: [
+//     {
+//       data: salesDataDonut.map((item) => item.sales),
+//       backgroundColor: [
+//         "rgba(75, 192, 192, 0.2)",
+//         "rgba(255, 99, 132, 0.5)",
+//         "rgba(54, 162, 235, 0.2)",
+//         "rgba(255, 206, 86, 0.2)",
+//         "rgba(153, 102, 255, 0.2)",
+//         "rgba(255, 159, 64, 0.2)",
+//         "rgba(255, 99, 132, 0.2)",
+//         "rgba(75, 192, 192, 0.5)",
+//       ],
+//       borderColor: [
+//         "rgba(75, 192, 192, 1)",
+//         "rgba(255, 99, 132, 1)",
+//         "rgba(54, 162, 235, 1)",
+//         "rgba(255, 206, 86, 1)",
+//         "rgba(153, 102, 255, 1)",
+//         "rgba(255, 159, 64, 1)",
+//         "rgba(255, 99, 132, 1)",
+//         "rgba(75, 192, 192, 1)",
+//       ],
+//       borderWidth: 1,
+//     },
+//   ],
+// };
 
-const chartSize = "400px";
+const chartSize = "500px";
 
 const ChartDashboard = () => {
-  const { totalUsers, totalBooks, totalCategories } = useDashboardData();
+  const { totalUsers, totalBooks, totalCategories, totalSales } =
+    useDashboardData();
   const { name, lastName } = useAppSelector((state) => state.user);
+
+  const salesDataDonut = useSalesData();
+  const [dataForDoughnut, setDataForDoughnut] = useState<DoughnutData>({
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        backgroundColor: [],
+        borderColor: [],
+        borderWidth: 1,
+      },
+    ],
+  });
+
+  useEffect(() => {
+    if (salesDataDonut) {
+      const filteredSalesData = salesDataDonut.filter(
+        (item) => item.sales !== undefined && item.category_name !== undefined
+      );
+
+      setDataForDoughnut({
+        labels: filteredSalesData.map((item) => item.category_name!),
+        datasets: [
+          {
+            data: filteredSalesData.map((item) => item.sales!),
+            backgroundColor: [
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(255, 99, 132, 0.5)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(75, 192, 192, 0.5)",
+            ],
+            borderColor: [
+              "rgba(75, 192, 192, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(75, 192, 192, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      });
+    }
+  }, [salesDataDonut]);
   const date = new Date();
   const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
 
@@ -226,7 +281,11 @@ const ChartDashboard = () => {
                 value={totalCategories}
                 max={totalCategories + 100}
               />
-              <StatCard title="Sales" value={22} max={1000} />
+              <StatCard
+                title="Ventas"
+                value={totalSales}
+                max={totalSales + 100}
+              />
             </SimpleGrid>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} spacing={5} mb={5}>
               <Box

@@ -33,7 +33,7 @@ export const months = [
   "Diciembre",
 ];
 
-export const salesData = {
+export const salesDataLine = {
   content: [
     { year: 2023, month: 1, sales: 5 },
     { year: 2023, month: 12, sales: 5 },

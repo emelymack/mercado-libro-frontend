@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getAllUsers } from "../../../services/UserService";
 import { getAllBooksSearch } from "../../../services/SearchServiceBook";
 import { getAllCategories } from "../../../services/CategoryService";
+import { getAllInvoices } from "../../../services/InvoiceService";
 
 type DashboardData = {
   totalUsers: number;
@@ -21,8 +22,9 @@ const useDashboardData = (): DashboardData => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const usersResponse = await getAllUsers({ page: 0, size: 10 }); // Ajusta los parámetros según tus necesidades
+        const usersResponse = await getAllUsers({ page: 0, size: 10 });
         const booksResponse = await getAllBooksSearch({ page: 0 });
+        const salesResponse = await getAllInvoices({ page: 0, size: 10 });
         const categoriesResponse = await getAllCategories();
 
         setData((prevData) => ({
@@ -30,7 +32,7 @@ const useDashboardData = (): DashboardData => {
           totalUsers: usersResponse.totalElements ?? prevData.totalUsers,
           totalBooks: booksResponse.totalElements ?? prevData.totalBooks,
           totalCategories: categoriesResponse.length,
-          // totalSales: salesResponse.totalElements ?? prevData.totalSales,
+          totalSales: salesResponse.totalElements ?? prevData.totalSales,
         }));
       } catch (error) {
         console.error("Error al obtener los datos del dashboard:", error);
@@ -42,5 +44,7 @@ const useDashboardData = (): DashboardData => {
 
   return data;
 };
+
+
 
 export default useDashboardData;
