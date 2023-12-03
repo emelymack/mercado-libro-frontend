@@ -15,3 +15,4 @@ export const UPLOAD_IMAGEN_BOOK_URL = "api/book-image";
 export const CREATE_INVOICE_URL = "api/invoice";
 export const GET_SALES_BY_CATEGORY_URL = "api/invoice/salesbycategory";
 export const GET_SALES_BY_PAYMENT_TYPE_URL = "api/invoice/salesbypaymenttype";
+export const GET_BOOKS_BY_AUTHOR = "api/book/author/book-count";

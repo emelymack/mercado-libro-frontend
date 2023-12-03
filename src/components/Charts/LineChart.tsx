@@ -67,7 +67,6 @@ const options: ChartOptions<"line"> = {
   elements: {
     line: {
       tension: 0.4,
-
       borderWidth: 3,
       fill: true,
     },

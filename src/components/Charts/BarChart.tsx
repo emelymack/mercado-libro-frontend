@@ -54,7 +54,7 @@ const options: ChartOptions<"bar"> = {
     y: {
       title: {
         display: true,
-        text: "Sales",
+        text: "Pagos",
       },
     },
   },

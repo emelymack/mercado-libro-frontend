@@ -1,7 +1,7 @@
 import { Box, Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import BarChart from "../Charts/BarChart";
 import LineChart from "../Charts/LineChart";
-import StackedAreaChart from "../Charts/BartChartHorizontal";
+import BarChartHorizontal from "../Charts/BartChartHorizontal";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import DoughnutSegmentedChart from "../Charts/DoughnutSegmentedChart";
@@ -12,6 +12,7 @@ import { useAppSelector } from "../../context/hooks";
 import { inventoryData, months, salesDataLine } from "./DataDashboard/mockData";
 import useSalesData from "./DataDashboard/useSalesData";
 import paymentTypeData from "./DataDashboard/paymentTypeData";
+import useBooksByAuthorData from "./DataDashboard/useBooksByAuthorData";
 import { useEffect, useState } from "react";
 import { BarData, DoughnutData } from "../../types/chatsData";
 
@@ -40,27 +41,8 @@ const dataLine = {
     },
   ],
 };
-const dataAreas = {
-  labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo"],
-  datasets: [
-    {
-      label: "Ventas",
-      data: [65, 59, 80, 81, 56],
-      backgroundColor: "rgba(255, 99, 132, 0.2)",
-      borderColor: "rgba(255, 99, 132, 1)",
-      pointBackgroundColor: "rgba(255, 99, 132, 1)",
-    },
-    {
-      label: "Inventario",
-      data: [28, 48, 40, 19, 86],
-      backgroundColor: "rgba(54, 162, 235, 0.2)",
-      borderColor: "rgba(54, 162, 235, 1)",
-      pointBackgroundColor: "rgba(54, 162, 235, 1)",
-    },
-  ],
-};
 
-const chartSize = "500px";
+const chartSize = "600px";
 
 const ChartDashboard = () => {
   const { totalUsers, totalBooks, totalCategories, totalSales } =
@@ -68,6 +50,9 @@ const ChartDashboard = () => {
   const { name, lastName } = useAppSelector((state) => state.user);
   const paymentDataLine = paymentTypeData();
   const salesDataDonut = useSalesData();
+  const booksByAuthor = useBooksByAuthorData();
+  const maxBooks =
+    Math.max(...booksByAuthor.map((item) => item.total_books)) + 10;
   const [barData, setBarData] = useState<BarData>({
     labels: [],
     datasets: [
@@ -86,6 +71,17 @@ const ChartDashboard = () => {
         backgroundColor: [],
         borderColor: [],
         borderWidth: 1,
+      },
+    ],
+  });
+
+  const [barHorizontalData, setBarHorizontalData] = useState<BarData>({
+    labels: [],
+    datasets: [
+      {
+        label: "",
+        data: [],
+        backgroundColor: "",
       },
     ],
   });
@@ -147,6 +143,29 @@ const ChartDashboard = () => {
       setBarData(dataBar);
     }
   }, [paymentDataLine]);
+
+  useEffect(() => {
+    if (booksByAuthor && booksByAuthor.length > 0) {
+      const colors = booksByAuthor.map(
+        () =>
+          `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${
+            Math.random() * 255
+          }, 0.5)`
+      );
+
+      const dataBarHorizontal = {
+        labels: ["Libros"],
+        datasets: booksByAuthor.map((item, index) => {
+          return {
+            label: item.author || "",
+            data: [item.total_books || 0],
+            backgroundColor: colors[index],
+          };
+        }),
+      };
+      setBarHorizontalData(dataBarHorizontal);
+    }
+  }, [booksByAuthor]);
 
   const date = new Date();
   const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
@@ -302,7 +321,7 @@ const ChartDashboard = () => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <StackedAreaChart data={dataAreas} />
+                <BarChartHorizontal data={barHorizontalData} />
               </Box>
             </SimpleGrid>
             <Box width="100%" p="2">

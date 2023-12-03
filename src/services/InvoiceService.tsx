@@ -2,13 +2,18 @@ import httpService from "./httpService";
 import {
   BASE_URL,
   GET_ALL_INVOICES_URL,
+  GET_BOOKS_BY_AUTHOR,
   GET_SALES_BY_CATEGORY_URL,
   GET_SALES_BY_PAYMENT_TYPE_URL,
 } from "./apiUrls";
 import { CustomResponse } from "../types/customResponse";
 import axios from "axios";
 import { GetAllInvoincesParams } from "../types/invoice";
-import { PaymentTypeData, SalesData } from "../types/chatsData";
+import {
+  BooksByAuthorData,
+  PaymentTypeData,
+  SalesData,
+} from "../types/chatsData";
 
 export interface GetInvoiceResponse {
   content: Invoice[];
@@ -163,6 +168,35 @@ export const getSalesCountByPayment = async (
     return {
       statusCode: response.status,
       data: response.data.content as PaymentTypeData[],
+      totalElements: response.data.totalElements,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getBooksByAuthor = async (
+  params: GetAllInvoincesParams
+): Promise<CustomResponse<BooksByAuthorData[]>> => {
+  let url = `${BASE_URL}${GET_BOOKS_BY_AUTHOR}?`;
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+  try {
+    const response = await httpService.get(url);
+    return {
+      statusCode: response.status,
+      data: response.data.content as BooksByAuthorData[],
       totalElements: response.data.totalElements,
     };
   } catch (error) {

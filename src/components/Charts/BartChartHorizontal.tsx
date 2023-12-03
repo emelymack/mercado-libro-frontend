@@ -24,14 +24,16 @@ ChartJS.register(
 const options: ChartOptions<"bar"> = {
   indexAxis: "y",
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
     legend: {
       position: "top",
     },
     title: {
       display: true,
-      text: "Quarterly Sales Data",
+      text: "Libros por Autor",
     },
+
     tooltip: {
       callbacks: {
         label: function (tooltipItem: TooltipItem<"bar">) {
@@ -46,16 +48,10 @@ const options: ChartOptions<"bar"> = {
     x: {
       title: {
         display: true,
-        text: "Quarters",
+        text: "Autores",
       },
       grid: {
         display: false,
-      },
-    },
-    y: {
-      title: {
-        display: true,
-        text: "Sales",
       },
     },
   },

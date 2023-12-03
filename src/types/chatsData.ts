@@ -8,6 +8,16 @@ export interface PaymentTypeData {
   payment_type?: string;
 }
 
+export interface SalesByCategoryData {
+  sales?: number;
+  category_name?: string;
+}
+
+export interface BooksByAuthorData {
+  total_books?: number;
+  author?: string;
+}
+
 export interface DoughnutData {
   labels: string[];
   datasets: {
