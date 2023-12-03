@@ -12,18 +12,20 @@ import { decodeToken } from "../../utils/authUtils";
 import AddAdressModal from "./AddAddress";
 import EditAddressModal from "./EditAddressModal";
 import Pagination from "../../utils/Pagination";
+import CustomLoading from "../CustomLoading/CustomLoading";
 
 export const MyAccount = () => {
     const [page, setPage] = useState<number>(0);
     const [size] = useState<number>(6);
     const [totalElements, setTotalElements] = useState<number>(0);
-    const [isAddressLoading, setIsAddressLoading] = useState(true);
-    const [isOrdersLoading, setIsOrdersLoading] = useState(true);
+    const [isAddressLoading, setIsAddressLoading] = useState(false);
+    const [isOrdersLoading, setIsOrdersLoading] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [address, setAddress] = useState<Address>();
     const [addressEdited, setAddressEdited] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState(true);
 
     let user = localStorage.getItem("user");
     if (user != null) { user = JSON.parse(user); }
@@ -38,11 +40,18 @@ export const MyAccount = () => {
         setIsEditModalOpen(true);
     };
 
+    const checkLoadingState = () => {
+        console.log(isOrdersLoading, isAddressLoading)
+        if (!isAddressLoading && !isOrdersLoading) {
+            setIsLoading(false);
+        }
+    };
+
     useEffect(() => {
         window.scrollTo(0, 0); 
+        setIsOrdersLoading(true);
 
         const fetchInvoices = async () => {
-            setIsOrdersLoading(true)
 
             try {
                 const response = await getUserInvoices(parseInt(user?.id), page);
@@ -56,15 +65,17 @@ export const MyAccount = () => {
             } catch (error) {
                 console.error("Failed to fetch invoices:", error);
             } finally {
-                setIsOrdersLoading(false)
+                setIsOrdersLoading(false);
+                checkLoadingState();
             }}
 
             fetchInvoices();
         }, [page]);
 
         useEffect(() => {
+            setIsAddressLoading(true)
             const fetchAddress = async () => {
-                setIsAddressLoading(true)
+
                 try {
                     const response = await getUserAddress();
     
@@ -76,13 +87,26 @@ export const MyAccount = () => {
                 } catch (error) {
                     console.error("Failed to fetch address:", error);
                 } finally {
-                    setIsAddressLoading(false)
+                    setIsAddressLoading(false);
+                    checkLoadingState();
                 }
             }
 
             fetchAddress();
             setAddressEdited(false);
         }, [addressEdited]);
+
+    if (isLoading)
+        return (
+            <Box
+                h={"calc(100vh - 130px)"}
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+            >
+                <CustomLoading />
+            </Box>
+        );
 
     return (
         <Box m='0 auto' w='min-content' pt={{base: '20vh', lg: '25vh'}} pb={{base: '12vh', '2xl': '12vh'}} display={"flex"} flexDir={"column"} alignItems={"center"} >

@@ -1,6 +1,17 @@
-import { Text, Table, Thead, Tr, Th, Tbody, Td, Image, TableContainer} from "@chakra-ui/react"
+import { Text, Table, Thead, Tr, Th, Tbody, Td, Image, TableContainer} from "@chakra-ui/react";
+import { Item } from './index';
 
-const TableMobile = () => {
+const TableMobile = ({ items }: { items: Item[] }) => {
+    const formatNumberWithDots = (n : number) => {
+        const numberString = String(n).replace(/\./g, '');
+    
+        const parts = [];
+        for (let i = numberString.length; i > 0; i -= 3) {
+            parts.unshift(numberString.slice(Math.max(i - 3, 0), i));
+        }
+    
+        return parts.join('.');
+      }
 
     return(
         <TableContainer>
@@ -8,23 +19,21 @@ const TableMobile = () => {
                 <Thead>
                     <Tr>
                         <Th fontWeight='semibold' fontSize={{base: 'md'}} color='black' textTransform='capitalize'>Producto</Th>
+                        <Th></Th>
                     </Tr>
                 </Thead>
                 <Tbody>
+                {items.map((item) => (
                     <Tr>
-                        <Td display='flex'>
-                        <Image objectFit='contain' boxSize={{ base: '50px', md: '50px', lg: '80px', xl: '100px', '2xl': '120px'}} src='https://www.tematika.com/media/catalog/Ilhsa/Imagenes/678297.jpg'/>
-                            <Text ml='20px' fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word"><b>Harry Potter y La Orden Del Fenix: Edicion Salamandra, J.K Rowling</b> x1</Text>
-                        </Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'lg'}} verticalAlign='top' textAlign='center'>$24.900</Td>
+                         <Td>
+                             <Image objectFit='contain' boxSize={{ base: '50px', md: '50px', lg: '80px', xl: '100px', '2xl': '120px'}} src={item.book.image_links[0].url}/>
+                         </Td>
+                         <Td pl={0}>
+                            <Text fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word"><b>{item.book.title}, {item.book.authors[0].name}</b> x{item.invoice.quantity}</Text>
+                         </Td>
+                        <Td fontSize={{base: 'sm', '2xl': 'lg'}} verticalAlign='top' textAlign='center'>${formatNumberWithDots(item.book.price)}</Td>
                     </Tr>
-                    <Tr>
-                        <Td display='flex'>
-                            <Image objectFit='contain' boxSize={{ base: '50px', md: '50px', lg: '80px', xl: '100px', '2xl': '120px'}} src='https://www.tematika.com/media/catalog/Ilhsa/Imagenes/678298.jpg'/>
-                            <Text ml='20px' fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word"><b>Harry Potter y La Piedra Filosofal: Edicion Salamandra, J.K Rowling</b> x1</Text>
-                        </Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'lg'}} verticalAlign='top' textAlign='center'>$24.900</Td>
-                    </Tr>
+                ))}
                 </Tbody>
             </Table>
         </TableContainer>
