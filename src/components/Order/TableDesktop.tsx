@@ -34,9 +34,9 @@ const TableDesktop = ({ items }: { items: Item[] }) => {
                          <Td pl={0}>
                              <Text fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word" fontWeight='semibold'>{`${item.book.title}, ${item.book.authors.map(author => author.name).join(', ')}`}</Text>
                          </Td>
-                         <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>${formatNumberWithDots(item.book.price)}</Td>
-                         <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>{item.invoice.quantity}</Td>
-                         <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>${formatNumberWithDots(item.invoice.total)}</Td>
+                         <Td fontSize={{base: 'sm', '2xl': 'md'}} textAlign='center'>${formatNumberWithDots(item.book.price)}</Td>
+                         <Td fontSize={{base: 'sm', '2xl': 'md'}} textAlign='center'>{item.invoice.quantity}</Td>
+                         <Td fontSize={{base: 'sm', '2xl': 'md'}} textAlign='center'>${formatNumberWithDots(item.invoice.total)}</Td>
                      </Tr>
                     ))}
                 </Tbody>

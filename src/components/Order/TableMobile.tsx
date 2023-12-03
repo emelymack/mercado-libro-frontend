@@ -31,7 +31,7 @@ const TableMobile = ({ items }: { items: Item[] }) => {
                          <Td pl={0}>
                             <Text fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word"><b>{item.book.title}, {item.book.authors[0].name}</b> x{item.invoice.quantity}</Text>
                          </Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'lg'}} verticalAlign='top' textAlign='center'>${formatNumberWithDots(item.book.price)}</Td>
+                        <Td fontSize={{base: 'sm', '2xl': 'lg'}} textAlign='center'>${formatNumberWithDots(item.book.price)}</Td>
                     </Tr>
                 ))}
                 </Tbody>

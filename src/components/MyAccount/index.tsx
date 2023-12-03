@@ -46,7 +46,7 @@ export const MyAccount = () => {
             setIsLoading(false);
         }
     };
-
+    
     useEffect(() => {
         window.scrollTo(0, 0); 
         setIsOrdersLoading(true);
