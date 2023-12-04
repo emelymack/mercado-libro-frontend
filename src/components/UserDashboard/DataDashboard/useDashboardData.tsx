@@ -22,18 +22,24 @@ const useDashboardData = (): DashboardData => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const usersResponse = await getAllUsers({ page: 0, size: 10 });
-        const booksResponse = await getAllBooksSearch({ page: 0 });
-        const salesResponse = await getAllInvoices({ page: 0, size: 10 });
-        const categoriesResponse = await getAllCategories();
+        const [
+          usersResponse,
+          booksResponse,
+          salesResponse,
+          categoriesResponse,
+        ] = await Promise.all([
+          getAllUsers({ page: 0, size: 1 }),
+          getAllBooksSearch({ page: 0 }),
+          getAllInvoices({ page: 0, size: 1 }),
+          getAllCategories(),
+        ]);
 
-        setData((prevData) => ({
-          ...prevData,
-          totalUsers: usersResponse.totalElements ?? prevData.totalUsers,
-          totalBooks: booksResponse.totalElements ?? prevData.totalBooks,
-          totalCategories: categoriesResponse.length,
-          totalSales: salesResponse.totalElements ?? prevData.totalSales,
-        }));
+        setData({
+          totalUsers: usersResponse.totalElements || 0,
+          totalBooks: booksResponse.totalElements || 0,
+          totalCategories: categoriesResponse.length || 0,
+          totalSales: salesResponse.totalElements || 0,
+        });
       } catch (error) {
         console.error("Error al obtener los datos del dashboard:", error);
       }
@@ -44,7 +50,5 @@ const useDashboardData = (): DashboardData => {
 
   return data;
 };
-
-
 
 export default useDashboardData;
