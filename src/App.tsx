@@ -8,6 +8,7 @@ import Health from "./components/Health/Health";
 import CategoriesPage from "./components/CategoriesPage/CategoriesPage";
 import ProductPage from "./components/ProductPage";
 import { useAppDispatch, useAppSelector } from "./context/hooks";
+import { useAppDispatch, useAppSelector } from "./context/hooks";
 import { scrollPosition } from "./context/slices/scrollSlice";
 import { useEffect } from "react";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
@@ -30,6 +31,7 @@ import { IdProvider } from "./context/invoice";
 function App() {
   const dispatch = useAppDispatch();
   const loggedState = useAppSelector(state => state.auth.isLogged)
+  const loggedState = useAppSelector(state => state.auth.isLogged)
 
   const handleScroll = () => {
     dispatch(scrollPosition(window.scrollY > 90));
@@ -44,7 +46,9 @@ function App() {
     }
     if (storedUser) {
       dispatch(setUser({ name: storedUser.name, lastName: storedUser.lastName, id: storedUser.id }));
+      dispatch(setUser({ name: storedUser.name, lastName: storedUser.lastName, id: storedUser.id }));
     }
+  }, [loggedState]);
   }, [loggedState]);
 
   useEffect(() => {

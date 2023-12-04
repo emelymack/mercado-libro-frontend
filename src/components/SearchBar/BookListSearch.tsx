@@ -93,7 +93,7 @@ const BookListSearch = () => {
                 }}
               >
                 <Image
-                  src={book.image_links[0]?.url ?? NotFoundImg}
+                  src={book.image_links ? book.image_links[0]?.url : NotFoundImg}
                   alt={book.title}
                   objectFit="cover"
                   h="200px"

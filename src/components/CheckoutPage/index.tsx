@@ -13,6 +13,7 @@ import PaymentData from "./Form/PaymentData";
 import { saveOrder } from "../../services/CheckoutService";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import ModalError from "../Modal/ModalError";
+import MercadoPago from "./MercadoPago";
 
 const defaultValues = {
   shippingData: {
@@ -43,7 +44,10 @@ const CheckoutPage = () => {
   const [ formData, setFormData ] = useState<ICheckoutData>(defaultValues)
   const [tabIndex, setTabIndex] = useState(0)
   const [ isLoading, setIsLoading ] = useState(false)
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [ invoiceId, setInvoiceId ] = useState<null | string>(null)
+  const [ preferenceId, setPreferenceId ] = useState<null | string>(null)
+  const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure()
+  const { isOpen: isOpenMP, onOpen: onOpenMP, onClose: onCloseMP } = useDisclosure()
 
   const handleShippingData = (data: IShippingData) => {
     setFormData({...formData, shippingData: data})    
@@ -56,7 +60,7 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
-    if(!accessCheckout) navigate('/')
+    if(!accessCheckout) navigate('/')    
   
     return () => {
       if(accessCheckout) {
@@ -88,11 +92,15 @@ const CheckoutPage = () => {
           invoice: {
             date_created: new Date(),
             total: cartData.total,
+            tax: 0.0,
             user_id: userData.id,
             address: `${formData.shippingData.street} ${formData.shippingData.streetNumber}`,
+            deadline: cartData.shipping.date,
             document_type: formData.paymentData.documentType,
             dni: formData.paymentData.cardOwnerDocument,
-            notes: formData.paymentData.orderNotes
+            notes: formData.paymentData.orderNotes,
+            paid: false,
+            payment_method: formData.paymentData.paymentMethod
           },
           invoice_item: cartData.items.map((item) => ({
             book_id : item.product.id,
@@ -101,12 +109,19 @@ const CheckoutPage = () => {
           }))
         }).then((res) => {
           setIsLoading(false)
+          setInvoiceId(res.data.invoice.id)
+          setPreferenceId(res.data.invoice.preference_id)
           
+          // setPreferenceId(res.data.preferenceI)
           if(res.status === 200) {
-            dispatch(clearCartData())
-            navigate('/successful')
+            if(formData.paymentData.paymentMethod !== 'MERCADO_PAGO') {
+              dispatch(clearCartData())
+              navigate('/successful')
+            } else {
+              onOpenMP()
+            }
           } else {
-            onOpen()
+            onOpenError()
           }
         })
       } catch (err) {
@@ -157,6 +172,7 @@ const CheckoutPage = () => {
                     city={formData.shippingData.city}
                     province={formData.shippingData.province}
                   />
+                  <MercadoPago isOpenModalMP={isOpenMP} onCloseModalMP={onCloseMP} invoiceId={invoiceId} preferenceId={preferenceId} />
                 </TabPanel>
               </TabPanels>
             </Tabs>
@@ -169,7 +185,8 @@ const CheckoutPage = () => {
           </GridItem>
         </Grid>
       </Box>
-      <ModalError onClose={onClose} isOpen={isOpen} title="Hubo un error al realizar el pedido. Intente nuevamente, por favor." />
+      <ModalError onClose={onCloseError} isOpen={isOpenError} title="Hubo un error al realizar el pedido. Intente nuevamente, por favor." />
+      
     </PageContainer>
   )
 }
