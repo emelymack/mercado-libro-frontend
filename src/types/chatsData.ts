@@ -1,3 +1,4 @@
+import { months } from "../components/UserDashboard/DataDashboard/mockData";
 export interface SalesData {
   sales?: number;
   category_name?: string;
@@ -18,6 +19,18 @@ export interface BooksByAuthorData {
   author?: string;
 }
 
+export interface MonthlySales {
+  year?: number;
+  month?: number;
+  sales?: number;
+}
+
+export interface MonthlyStock {
+  year?: number;
+  month?: string;
+  stock?: number;
+}
+
 export interface DoughnutData {
   labels: string[];
   datasets: {
@@ -34,5 +47,18 @@ export interface BarData {
     label: string;
     data: number[];
     backgroundColor: string;
+  }[];
+}
+
+export interface LineData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    borderColor: string;
+    backgroundColor: string;
+    pointRadius: number;
+    pointHoverRadius: number;
+    fill: boolean;
   }[];
 }

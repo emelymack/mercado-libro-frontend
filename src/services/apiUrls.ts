@@ -16,3 +16,5 @@ export const CREATE_INVOICE_URL = "api/invoice";
 export const GET_SALES_BY_CATEGORY_URL = "api/invoice/salesbycategory";
 export const GET_SALES_BY_PAYMENT_TYPE_URL = "api/invoice/salesbypaymenttype";
 export const GET_BOOKS_BY_AUTHOR = "api/book/author/book-count";
+export const GET_MONTHLY_SALES = "api/invoice/monthlysales";
+export const GET_MONTHLY_STOCK = "api/invoice/monthlystock";

@@ -20,6 +20,7 @@ const DoughnutSegmentedChart: React.FC<DoughnutSegmentedChartProps> = ({
 }) => {
   const options: ChartOptions<"doughnut"> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "bottom",

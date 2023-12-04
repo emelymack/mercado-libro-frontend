@@ -26,6 +26,7 @@ ChartJS.register(
 );
 
 const options: ChartOptions<"line"> = {
+  maintainAspectRatio: false,
   responsive: true,
   interaction: {
     mode: "index",

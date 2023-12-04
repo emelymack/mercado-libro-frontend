@@ -9,39 +9,14 @@ import StatCard from "../Charts/StatCard";
 import { Navigate } from "react-router-dom";
 import useDashboardData from "./DataDashboard/useDashboardData";
 import { useAppSelector } from "../../context/hooks";
-import { inventoryData, months, salesDataLine } from "./DataDashboard/mockData";
+import { months } from "./DataDashboard/mockData";
 import useSalesData from "./DataDashboard/useSalesData";
 import paymentTypeData from "./DataDashboard/paymentTypeData";
 import useBooksByAuthorData from "./DataDashboard/useBooksByAuthorData";
 import { useEffect, useState } from "react";
-import { BarData, DoughnutData } from "../../types/chatsData";
+import { BarData, DoughnutData, LineData } from "../../types/chatsData";
 import CustomLoading from "../CustomLoading/CustomLoading";
-
-const dataLine = {
-  labels: salesDataLine.content.map(
-    (item) => `${months[item.month - 1]} ${item.year}`
-  ),
-  datasets: [
-    {
-      label: "Ventas",
-      data: salesDataLine.content.map((item) => item.sales),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-      pointRadius: 5,
-      pointHoverRadius: 8,
-      fill: false,
-    },
-    {
-      label: "Inventario",
-      data: inventoryData.content.map((item) => item.inventory),
-      borderColor: "rgb(54, 162, 235)",
-      backgroundColor: "rgba(54, 162, 235, 0.5)",
-      pointRadius: 5,
-      pointHoverRadius: 8,
-      fill: false,
-    },
-  ],
-};
+import salesAndSotckData from "./DataDashboard/salesAndSotckData";
 
 const chartSize = "600px";
 
@@ -49,6 +24,8 @@ const ChartDashboard = () => {
   const { totalUsers, totalBooks, totalCategories, totalSales } =
     useDashboardData();
   const { name, lastName } = useAppSelector((state) => state.user);
+  const { salesMonthly, stockMonthly } = salesAndSotckData();
+
   const paymentDataLine = paymentTypeData();
   const salesDataDonut = useSalesData();
   const booksByAuthor = useBooksByAuthorData();
@@ -86,6 +63,29 @@ const ChartDashboard = () => {
     ],
   });
 
+  const [dataLine, setDataLine] = useState<LineData>({
+    labels: [],
+    datasets: [
+      {
+        label: "",
+        data: [],
+        borderColor: "",
+        backgroundColor: "",
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        fill: false,
+      },
+      {
+        label: "",
+        data: [],
+        borderColor: "",
+        backgroundColor: "",
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        fill: false,
+      },
+    ],
+  });
   useEffect(() => {
     if (salesDataDonut) {
       const filteredSalesData = salesDataDonut.filter(
@@ -129,11 +129,15 @@ const ChartDashboard = () => {
       const dataBar = {
         labels: ["Tipo de pago"],
         datasets: paymentDataLine.map((item) => {
+          let paymentType =
+            item.payment_type === "MERCADO_PAGO"
+              ? "Mercado Pago"
+              : "Transferencia";
           return {
-            label: item.payment_type || "",
+            label: paymentType,
             data: [item.sales || 0],
             backgroundColor:
-              item.payment_type === "MERCADO_PAGO"
+              paymentType === "Mercado Pago"
                 ? "rgba(54, 162, 235, 0.5)"
                 : "rgba(255, 99, 132, 0.5)",
           };
@@ -166,6 +170,38 @@ const ChartDashboard = () => {
       setBarHorizontalData(dataBarHorizontal);
     }
   }, [booksByAuthor]);
+
+  useEffect(() => {
+    setDataLine({
+      labels: months,
+      datasets: [
+        {
+          label: "Ventas",
+          data: months.map((_month, index) => {
+            const sale = salesMonthly.find((sale) => sale.month === index + 1);
+            return sale ? sale.sales : 0;
+          }) as number[],
+          borderColor: "rgb(255, 99, 132)",
+          backgroundColor: "rgba(255, 99, 132, 0.5)",
+          pointRadius: 5,
+          pointHoverRadius: 8,
+          fill: false,
+        },
+        {
+          label: "Inventario",
+          data: months.map((month) => {
+            const stock = stockMonthly.find((stock) => stock.month === month);
+            return stock ? stock.stock : 0;
+          }) as number[],
+          borderColor: "rgb(54, 162, 235)",
+          backgroundColor: "rgba(54, 162, 235, 0.5)",
+          pointRadius: 5,
+          pointHoverRadius: 8,
+          fill: false,
+        },
+      ],
+    });
+  }, [salesMonthly, stockMonthly]);
 
   const date = new Date();
   const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
@@ -240,26 +276,10 @@ const ChartDashboard = () => {
   };
 
   useEffect(() => {
-    if (
-      totalUsers &&
-      totalBooks &&
-      totalCategories &&
-      totalSales &&
-      paymentDataLine &&
-      salesDataDonut &&
-      booksByAuthor
-    ) {
+    if (totalUsers && totalBooks && totalCategories && totalSales) {
       setLoading(false);
     }
-  }, [
-    totalUsers,
-    totalBooks,
-    totalCategories,
-    totalSales,
-    paymentDataLine,
-    salesDataDonut,
-    booksByAuthor,
-  ]);
+  }, [totalUsers, totalBooks, totalCategories, totalSales]);
 
   if (loading) {
     return <CustomLoading />;

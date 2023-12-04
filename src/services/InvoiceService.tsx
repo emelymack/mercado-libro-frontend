@@ -3,6 +3,8 @@ import {
   BASE_URL,
   GET_ALL_INVOICES_URL,
   GET_BOOKS_BY_AUTHOR,
+  GET_MONTHLY_SALES,
+  GET_MONTHLY_STOCK,
   GET_SALES_BY_CATEGORY_URL,
   GET_SALES_BY_PAYMENT_TYPE_URL,
 } from "./apiUrls";
@@ -11,6 +13,8 @@ import axios from "axios";
 import { GetAllInvoincesParams } from "../types/invoice";
 import {
   BooksByAuthorData,
+  MonthlySales,
+  MonthlyStock,
   PaymentTypeData,
   SalesData,
 } from "../types/chatsData";
@@ -197,6 +201,64 @@ export const getBooksByAuthor = async (
     return {
       statusCode: response.status,
       data: response.data.content as BooksByAuthorData[],
+      totalElements: response.data.totalElements,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getMonthlySales = async (
+  params: GetAllInvoincesParams
+): Promise<CustomResponse<MonthlySales[]>> => {
+  let url = `${BASE_URL}${GET_MONTHLY_SALES}?`;
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+  try {
+    const response = await httpService.get(url);
+    return {
+      statusCode: response.status,
+      data: response.data.content as MonthlySales[],
+      totalElements: response.data.totalElements,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getMonthlyStock = async (
+  params: GetAllInvoincesParams
+): Promise<CustomResponse<MonthlyStock[]>> => {
+  let url = `${BASE_URL}${GET_MONTHLY_STOCK}?`;
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+  try {
+    const response = await httpService.get(url);
+    return {
+      statusCode: response.status,
+      data: response.data.content as MonthlyStock[],
       totalElements: response.data.totalElements,
     };
   } catch (error) {
