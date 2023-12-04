@@ -13,6 +13,7 @@ interface CustomLoadingProps {
 
 const CustomLoading = ({ message = "Cargando..." }: CustomLoadingProps) => {
   return (
+    <Box h={'calc(100vh - 128px)'} w={'99vw'} bg={'brand.violetLogo25'}>
     <Box
       position="fixed"
       top={0}
@@ -45,6 +46,7 @@ const CustomLoading = ({ message = "Cargando..." }: CustomLoadingProps) => {
           {message}
         </Box>
       </Box>
+    </Box>
     </Box>
   );
 };

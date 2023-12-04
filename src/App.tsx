@@ -25,7 +25,6 @@ import Dashboard from "./components/UserDashboard/Dashboard";
 import Oauth from "./components/Oauth/Oauth";
 import Order from "./components/Order";
 import MyAccountInfo from "./components/MyAccount";
-import { IdProvider } from "./context/invoice";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -43,6 +42,7 @@ function App() {
       dispatch(login());
     }
     if (storedUser) {
+      dispatch(setUser({ name: storedUser.name, lastName: storedUser.lastName, id: storedUser.id }));
       dispatch(setUser({ name: storedUser.name, lastName: storedUser.lastName, id: storedUser.id }));
     }
   }, [loggedState]);

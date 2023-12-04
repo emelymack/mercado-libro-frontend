@@ -18,6 +18,8 @@ const OrderCard = ({id, createdAt} : OrderData) => {
         navigate(`/me/order/${id}`);
       };
 
+      const replaceCharacter = (str : string, target : string, replacement : string) => str.split(target).join(replacement);
+
     return (
         <Box display='flex' justifyContent={{ base: 'space-between', lg: 'center', xl: 'space-between'}} alignItems='center' bg='#D9D9D9CC' p='15px' borderRadius='md' flexWrap='wrap'>        
             <Text as='button' fontWeight='bold' fontSize={{ base: 'lg', lg: 'lg'}} _hover={{ opacity: '0.6', transition: 'opacity 0.4s ease-in-out' }}>
@@ -25,7 +27,7 @@ const OrderCard = ({id, createdAt} : OrderData) => {
             </Text>
             <Box display='flex' justifyContent='space-between'>
                 <Text pr='3px' fontSize={{ base: 'sm', lg: 'md', 'xl': 'sm', '2xl': 'md'}}>
-                    {createdAt}
+                    {replaceCharacter(createdAt, '-', '/')}
                 </Text>
                 <IconButton aria-label='Ver compra' variant="text" boxSize={6} pl='3px' onClick={() => {handleInvoiceSelection()}}
 
