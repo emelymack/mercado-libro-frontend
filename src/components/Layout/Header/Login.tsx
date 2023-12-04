@@ -73,7 +73,6 @@ const Login = () => {
   });
 
   const redirectToLoginProvider = async (provider: string) => {
-  const redirectToLoginProvider = async (provider: string) => {
     setIsLoading(true);
     setLocalStorageItem("currentUrl", window.location.href);
     
