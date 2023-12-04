@@ -92,12 +92,12 @@ const CheckoutInfo = () => {
 					</Tr>
 					<Tr>
 						<Td style={styles.rowContent}>
-							<Box w={{ base: '35px', lg: '50px'}} h={{ base: '35px', xl: '40px' }} style={styles.icon}>
-								<Image src={CreditCardIcon} alt="Credit card icon" w={{ base: '25px', lg: 'auto' }} />
+							<Box w={{ base: '35px', lg: '40px'}} style={styles.icon}>
+								<Image src={CreditCardIcon} alt="Credit card icon" w={{ base: '25px', lg: '35px' }} />
 							</Box>
 							<Text>
 								{ checkoutData.paymentType === 'TARJETA' && 'Pago con tarjeta de débito/crédito' }
-								{ checkoutData.paymentType === 'TRANSFERENCIA' && (
+								{ checkoutData.paymentType === 'TRANSFER' && (
 									<>
 										<Text fontWeight={500}>Pago con transferencia/depósito bancario</Text>
 										<Box mt={2}>

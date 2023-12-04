@@ -45,6 +45,7 @@ const CheckoutPage = () => {
   const [tabIndex, setTabIndex] = useState(0)
   const [ isLoading, setIsLoading ] = useState(false)
   const [ invoiceId, setInvoiceId ] = useState<null | string>(null)
+  const [ preferenceId, setPreferenceId ] = useState<null | string>(null)
   const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure()
   const { isOpen: isOpenMP, onOpen: onOpenMP, onClose: onCloseMP } = useDisclosure()
 
@@ -91,11 +92,15 @@ const CheckoutPage = () => {
           invoice: {
             date_created: new Date(),
             total: cartData.total,
+            tax: 0.0,
             user_id: userData.id,
             address: `${formData.shippingData.street} ${formData.shippingData.streetNumber}`,
+            deadline: cartData.shipping.date,
             document_type: formData.paymentData.documentType,
             dni: formData.paymentData.cardOwnerDocument,
-            notes: formData.paymentData.orderNotes
+            notes: formData.paymentData.orderNotes,
+            paid: false,
+            payment_method: formData.paymentData.paymentMethod
           },
           invoice_item: cartData.items.map((item) => ({
             book_id : item.product.id,
@@ -105,7 +110,9 @@ const CheckoutPage = () => {
         }).then((res) => {
           setIsLoading(false)
           setInvoiceId(res.data.invoice.id)
-            
+          setPreferenceId(res.data.invoice.preference_id)
+          
+          // setPreferenceId(res.data.preferenceI)
           if(res.status === 200) {
             if(formData.paymentData.paymentMethod !== 'MERCADO_PAGO') {
               dispatch(clearCartData())
@@ -165,7 +172,7 @@ const CheckoutPage = () => {
                     city={formData.shippingData.city}
                     province={formData.shippingData.province}
                   />
-                  <MercadoPago isOpenModalMP={isOpenMP} onCloseModalMP={onCloseMP} invoiceId={invoiceId} />
+                  <MercadoPago isOpenModalMP={isOpenMP} onCloseModalMP={onCloseMP} invoiceId={invoiceId} preferenceId={preferenceId} />
                 </TabPanel>
               </TabPanels>
             </Tabs>

@@ -18,7 +18,7 @@ export interface IShippingData {
 }
 
 export interface IPaymentData {
-  paymentMethod: string,
+  paymentMethod: 'MERCADO_PAGO' | 'TRANSFER',
   cardOwner: string,
   cardNumber:string,
   cardExpiryDate: string,

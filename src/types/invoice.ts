@@ -11,6 +11,10 @@ export interface Invoice {
   notes?: string,
   user_id: number,
   date_created: Date,
+  tax: number,
+  deadline: string,
+  payment_method: 'MERCADO_PAGO' | 'TRANSFER',
+  paid: boolean
 }
 export interface InvoiceItem {
   book_id: number,

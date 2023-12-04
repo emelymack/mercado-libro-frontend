@@ -1,18 +1,19 @@
 import { Box, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, useDisclosure } from "@chakra-ui/react"
-import { Payment, initMercadoPago } from "@mercadopago/sdk-react";
+import { Payment, StatusScreen, initMercadoPago } from "@mercadopago/sdk-react";
 import { useAppDispatch, useAppSelector } from "../../context/hooks";
-import ModalError from "../Modal/ModalError";
 import { useNavigate } from "react-router-dom";
 import { clearCartData } from "../../context/slices/cartSlice";
 import { useState } from "react"
-import ModalSuccess from "../Modal/ModalSuccess";
 import { IBrickError } from "@mercadopago/sdk-react/bricks/util/types/common";
+import { BASE_URL, CREATE_INVOICE_URL } from "../../services/apiUrls";
+import ModalError from "../Modal/ModalError";
 
 
 interface Props {
   isOpenModalMP: boolean,
   onCloseModalMP: () => void,
-  invoiceId: string | null
+  invoiceId: string | null,
+  preferenceId: string | null
 }
 
 initMercadoPago('TEST-7d04eb5c-5bb8-4696-a59e-533dfede69b9');
@@ -31,18 +32,23 @@ const onErrorMP = async (error:IBrickError) => {
 };
 
 
-const MercadoPago = ({isOpenModalMP, onCloseModalMP, invoiceId}: Props) => {
+const MercadoPago = ({isOpenModalMP, onCloseModalMP, invoiceId, preferenceId}: Props) => {
   const cartData = useAppSelector((state) => state.cart)
   const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure()
-  const { isOpen: isOpenSuccess, onOpen: onOpenSuccess, onClose: onCloseSuccess } = useDisclosure()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [ error, setError ] = useState("")
   const [ isLoading, setIsLoading ] = useState(true)
+  const [ isResponseReady, setIsResponseReady ] = useState(false)
+  const [ paymentId, setPaymentId ] = useState("")
 
   const initializationMP = {
     amount: cartData.total,
-    // preferenceId: "<PREFERENCE_ID>",
+    preferenceId: preferenceId,
+  };
+
+  const initializationStatusMP = {
+    paymentId: paymentId
   };
 
   const onReadyMP = async () => {
@@ -50,12 +56,12 @@ const MercadoPago = ({isOpenModalMP, onCloseModalMP, invoiceId}: Props) => {
   }
 
   const onSubmitMP = async (
-    { selectedPaymentMethod, formData }
+    { formData }
   ) => {
     console.log(formData);
     // callback llamado al hacer clic en el botón enviar datos
     return new Promise<void>((resolve, reject) => {
-      fetch(`http://localhost:8080/v1/api/invoice/${invoiceId}/payment`, {
+      fetch(`${BASE_URL}${CREATE_INVOICE_URL}/${invoiceId}/payment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,18 +71,21 @@ const MercadoPago = ({isOpenModalMP, onCloseModalMP, invoiceId}: Props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-        
+        setIsResponseReady(true)
+        setPaymentId(response.id)
         if(response.status === 'approved') {
-          onOpenSuccess()
           dispatch(clearCartData())
 
           setTimeout(() => {
             navigate('/successful')
-          }, 1500)
+          }, 3000)
         } else {
           setError(response.error)
           onOpenError()
+
+          setIsResponseReady(false)
         }
+
         // recibir el resultado del pago
         resolve();
         })
@@ -103,24 +112,28 @@ const MercadoPago = ({isOpenModalMP, onCloseModalMP, invoiceId}: Props) => {
                 <Spinner size={'xl'} thickness='4px' color="brand.violetLogo" />
               </Box>
             )  }
-            <Payment
-              initialization={initializationMP}
-              customization={customizationMP}
-              onSubmit={onSubmitMP}
-              onReady={onReadyMP}
-              onError={onErrorMP}
-            />
-            {/* <StatusScreen
-              initialization={initializationMP}
-              onReady={onReadyMP}
-              onError={onErrorMP}
-            /> */}
+            { !isResponseReady && (
+              <Payment
+                initialization={initializationMP}
+                customization={customizationMP}
+                onSubmit={onSubmitMP}
+                onReady={onReadyMP}
+                onError={onErrorMP}
+              />)
+            }
+            { isResponseReady && (
+              <StatusScreen
+                initialization={initializationStatusMP}
+                onReady={onReadyMP}
+                onError={onErrorMP}
+              />)
+            }
           </ModalBody>
         </ModalContent>
       </Modal>
 
       <ModalError isOpen={isOpenError} onClose={onCloseError} title={`ERROR: "${error}". Intente nuevamente, por favor.`} />
-      <ModalSuccess isOpen={isOpenSuccess} onClose={onCloseSuccess} title="¡Pago realizado exitosamente! Redirigiendo..." />
+      {/* <ModalSuccess isOpen={isOpenSuccess} onClose={onCloseSuccess} title="¡Pago realizado exitosamente! Redirigiendo..." /> */}
     </>
   )
 }
