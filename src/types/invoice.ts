@@ -1,3 +1,7 @@
+export interface GetAllInvoincesParams {
+  page?: number;
+  size?: number;
+}
 export interface InvoiceData {
   invoice: Invoice,
   invoice_item: InvoiceItem[]

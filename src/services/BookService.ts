@@ -6,7 +6,7 @@ import {
   GET_ALL_BOOK_URL,
   CATEGORY_URL,
   INVOICE_URL,
-  UPLOAD_IMAGEN_BOOK_URL
+  UPLOAD_IMAGEN_BOOK_URL,
 } from "./apiUrls";
 import axios from "axios";
 import { Book } from "../types/product";
@@ -40,9 +40,9 @@ export interface Author {
   email: string;
 }
 
-export interface Response{
-  code:string;
-  message:string;
+export interface Response {
+  code: string;
+  message: string;
 }
 
 export const getBookById = (id: number): Promise<Book> => {
@@ -127,7 +127,7 @@ export const getBooksByCategory = (
 };
 
 export const getByCategoryPage = async (
-  params: GetAllCategoryParams,
+  params: GetAllCategoryParams
 ): Promise<CustomResponse<Book[]>> => {
   let url = `${BASE_URL}${BOOK_URL}?page=${params.page}&category=${params.nameCategory}`;
 
@@ -166,10 +166,10 @@ export const saveBook = (book: Book): Promise<Book> => {
     .post(`${BASE_URL}${CREATE_BOOK_URL}`, book)
     .then((response) => response.data)
     .catch((error) => {
-      if (axios.isAxiosError(error)) {        
+      if (axios.isAxiosError(error)) {
         throw {
           statusCode: error.response ? error.response.status : 500,
-          data: error.response ? error.response.data:null,
+          data: error.response ? error.response.data : null,
           errorMessage: error.message,
         };
       } else {
@@ -191,45 +191,44 @@ export const saveBook = (book: Book): Promise<Book> => {
     });
 }; */
 
-
 export const getNewBooksPage = async (
-  params: GetNewBooksParams,
-): Promise<CustomResponse<Book[]>> => { 
+  params: GetNewBooksParams
+): Promise<CustomResponse<Book[]>> => {
   let url = `${BASE_URL}${BOOK_URL}?selection=newer&page=${params.page}`;
-    
-Object.entries(params).forEach(([key, value]) => {
-  if (value !== undefined && value !== "") {
-    url += `&${key}=${value}`;
-  }
-});
 
-try {
-  const response = await httpService.get(url);
-  if (Array.isArray(response.data.content)) {
-    return {
-      statusCode: response.status,
-      data: response.data.content as Book[],
-      totalElements: response.data.totalElements,
-    };
-  } else {
-    throw new Error("La respuesta no es un array de libros");
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `&${key}=${value}`;
+    }
+  });
+
+  try {
+    const response = await httpService.get(url);
+    if (Array.isArray(response.data.content)) {
+      return {
+        statusCode: response.status,
+        data: response.data.content as Book[],
+        totalElements: response.data.totalElements,
+      };
+    } else {
+      throw new Error("La respuesta no es un array de libros");
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
   }
-} catch (error) {
-  if (axios.isAxiosError(error)) {
-    throw {
-      statusCode: error.response ? error.response.status : 500,
-      data: null,
-      errorMessage: error.message,
-    };
-  } else {
-    throw error;
-  }
-}
 };
 
 export const getNewBooksHome = (): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?selection=newer&page=0`) 
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&page=0`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
@@ -240,22 +239,25 @@ export const getNewBooksByCategory = (
   category: string
 ): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?selection=newer&category=${category}&page=0`) 
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&category=${category}&page=0`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
     });
 };
 
-export const saveImage = (formdData: FormData, bookID:number): Promise<Response> => {
+export const saveImage = (
+  formdData: FormData,
+  bookID: number
+): Promise<Response> => {
   return httpService
     .post(`${BASE_URL}${UPLOAD_IMAGEN_BOOK_URL}/${bookID}`, formdData)
     .then((response) => response.data)
     .catch((error) => {
-      if (axios.isAxiosError(error)) {        
+      if (axios.isAxiosError(error)) {
         throw {
           statusCode: error.response ? error.response.status : 500,
-          data: error.response ? error.response.data:null,
+          data: error.response ? error.response.data : null,
           errorMessage: error.message,
         };
       } else {
@@ -273,11 +275,9 @@ export const deleteImage = (id: number): Promise<void> => {
     });
 };
 
-
-
 export const getBestSellers = async (): Promise<Book[]> => {
   return httpService
-    .get(`${BASE_URL}${INVOICE_URL}/bestsellers/list`) 
+    .get(`${BASE_URL}${INVOICE_URL}/bestsellers/list`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
@@ -288,7 +288,7 @@ export const getBestSellers = async (): Promise<Book[]> => {
 
 export const getBestSellersPage = async (): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${INVOICE_URL}/bestsellers/page?page=0&size=8`) 
+    .get(`${BASE_URL}${INVOICE_URL}/bestsellers/page?page=0&size=8`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
