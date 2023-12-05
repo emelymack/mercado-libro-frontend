@@ -90,11 +90,19 @@ const CheckoutPage = () => {
 
         saveOrder({
           invoice: {
+            address: {
+              city: formData.shippingData.city,
+              department: formData.shippingData.apartment,
+              district: formData.shippingData.district,
+              street: formData.shippingData.street,
+              number: formData.shippingData.streetNumber,
+              state: formData.shippingData.province,
+              zipCode: String(cartData.shipping.postalCode)
+            },
             date_created: new Date(),
             total: cartData.total,
             tax: 0.0,
             user_id: userData.id,
-            address: `${formData.shippingData.street} ${formData.shippingData.streetNumber}`,
             deadline: cartData.shipping.date,
             document_type: formData.paymentData.documentType,
             dni: formData.paymentData.cardOwnerDocument,

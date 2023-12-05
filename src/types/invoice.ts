@@ -9,7 +9,15 @@ export interface InvoiceData {
 
 export interface Invoice {
   total: number,
-  address: string,
+  address: {
+    city: string,
+    department?: string,
+    district?: string,
+    street: string,
+    number: number,
+    state: string,
+    zipCode: string
+  },
   dni: number,
   document_type: string,
   notes?: string,

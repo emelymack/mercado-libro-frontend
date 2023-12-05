@@ -42,6 +42,7 @@ import CustomInput from "../../Input/CustomInput";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import googleLogo from "../../../assets/img/google-logo.png";
 import facebookLogo from "../../../assets/img/facebook-logo.png";
+import { BASE_URL } from "../../../services/apiUrls";
 
 const schema = z.object({
   email: z
@@ -75,9 +76,9 @@ const Login = () => {
     setIsLoading(true);
     setLocalStorageItem("currentUrl", window.location.href);
     
-    location.assign(`http://localhost:8080/v1/api/auth/oauth/${provider}`)
+    location.assign(`http://${BASE_URL}api/auth/oauth/${provider}`)
     
-    location.assign(`http://localhost:8080/v1/api/auth/oauth/${provider}`)
+    location.assign(`http://${BASE_URL}api/auth/oauth/${provider}`)
   };
 
   const redirectToFacebook = () => {
