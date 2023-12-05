@@ -22,6 +22,7 @@ ChartJS.register(
 );
 
 const options: ChartOptions<"bar"> = {
+  indexAxis: "y",
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -30,8 +31,9 @@ const options: ChartOptions<"bar"> = {
     },
     title: {
       display: true,
-      text: "Tipo de pago",
+      text: "Libros por Autor",
     },
+
     tooltip: {
       callbacks: {
         label: function (tooltipItem: TooltipItem<"bar">) {
@@ -45,17 +47,11 @@ const options: ChartOptions<"bar"> = {
   scales: {
     x: {
       title: {
-        display: false,
-        text: "Quarters",
+        display: true,
+        text: "Autores",
       },
       grid: {
         display: false,
-      },
-    },
-    y: {
-      title: {
-        display: true,
-        text: "Pagos",
       },
     },
   },

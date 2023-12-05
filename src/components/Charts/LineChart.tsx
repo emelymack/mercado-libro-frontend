@@ -26,6 +26,7 @@ ChartJS.register(
 );
 
 const options: ChartOptions<"line"> = {
+  maintainAspectRatio: false,
   responsive: true,
   interaction: {
     mode: "index",
@@ -34,7 +35,7 @@ const options: ChartOptions<"line"> = {
   plugins: {
     title: {
       display: true,
-      text: "Media Statistics",
+      text: "Ventas por mes y inventario",
     },
     legend: {
       position: "top",
@@ -67,7 +68,6 @@ const options: ChartOptions<"line"> = {
   elements: {
     line: {
       tension: 0.4,
-
       borderWidth: 3,
       fill: true,
     },

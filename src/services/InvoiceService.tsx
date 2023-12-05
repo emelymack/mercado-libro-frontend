@@ -1,7 +1,23 @@
 import httpService from "./httpService";
-import { BASE_URL } from "./apiUrls";
+import {
+  BASE_URL,
+  GET_ALL_INVOICES_URL,
+  GET_BOOKS_BY_AUTHOR,
+  GET_MONTHLY_SALES,
+  GET_MONTHLY_STOCK,
+  GET_SALES_BY_CATEGORY_URL,
+  GET_SALES_BY_PAYMENT_TYPE_URL,
+} from "./apiUrls";
 import { CustomResponse } from "../types/customResponse";
 import axios from "axios";
+import { GetAllInvoincesParams } from "../types/invoice";
+import {
+  BooksByAuthorData,
+  MonthlySales,
+  MonthlyStock,
+  PaymentTypeData,
+  SalesData,
+} from "../types/chatsData";
 
 export interface GetInvoiceResponse {
   content: Invoice[];
@@ -42,7 +58,7 @@ export interface Invoice {
   client: string;
   invoice_item: InvoiceItem[];
   paid: boolean;
-  address: Address
+  address: Address;
 }
 
 export interface Address {
@@ -55,33 +71,205 @@ export interface Address {
   department: string;
 }
 
-export interface Response{
-  code:string;
-  message:string;
+export interface Response {
+  code: string;
+  message: string;
 }
 
 export const getInvoiceById = async (
-    id: string
-  ): Promise<CustomResponse<Invoice>> => {
-    try {
-      console.log('id aquiiiiiiiiiiiiiiiiiiiiii', id)
-      const response = await httpService.get(
-        `${BASE_URL}api/invoice/${id}`);
+  id: string
+): Promise<CustomResponse<Invoice>> => {
+  try {
+    const response = await httpService.get(`${BASE_URL}api/invoice/${id}`);
 
-        console.log(response)
-      return {
-        statusCode: response.status,
-        data: response.data,
+    console.log(response);
+    return {
+      statusCode: response.status,
+      data: response.data,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
       };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw {
-          statusCode: error.response ? error.response.status : 500,
-          data: null,
-          errorMessage: error.message,
-        };
-      } else {
-        throw error;
-      }
+    } else {
+      throw error;
     }
-  };
+  }
+};
+
+export const getAllInvoices = async (
+  params: GetAllInvoincesParams
+): Promise<CustomResponse<Invoice>> => {
+  let url = `${BASE_URL}${GET_ALL_INVOICES_URL}?`;
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+  try {
+    const response = await httpService.get(url);
+    return {
+      statusCode: response.status,
+      data: response.data,
+      totalElements: response.data.totalElements,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getSalesByCategory = async (
+  params: GetAllInvoincesParams
+): Promise<CustomResponse<SalesData[]>> => {
+  let url = `${BASE_URL}${GET_SALES_BY_CATEGORY_URL}?`;
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+  try {
+    const response = await httpService.get(url);
+    return {
+      statusCode: response.status,
+      data: response.data.content as SalesData[],
+      totalElements: response.data.totalElements,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getSalesCountByPayment = async (
+  params: GetAllInvoincesParams
+): Promise<CustomResponse<PaymentTypeData[]>> => {
+  let url = `${BASE_URL}${GET_SALES_BY_PAYMENT_TYPE_URL}?`;
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+  try {
+    const response = await httpService.get(url);
+    return {
+      statusCode: response.status,
+      data: response.data.content as PaymentTypeData[],
+      totalElements: response.data.totalElements,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getBooksByAuthor = async (
+  params: GetAllInvoincesParams
+): Promise<CustomResponse<BooksByAuthorData[]>> => {
+  let url = `${BASE_URL}${GET_BOOKS_BY_AUTHOR}?`;
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+  try {
+    const response = await httpService.get(url);
+    return {
+      statusCode: response.status,
+      data: response.data.content as BooksByAuthorData[],
+      totalElements: response.data.totalElements,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getMonthlySales = async (
+  params: GetAllInvoincesParams
+): Promise<CustomResponse<MonthlySales[]>> => {
+  let url = `${BASE_URL}${GET_MONTHLY_SALES}?`;
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+  try {
+    const response = await httpService.get(url);
+    return {
+      statusCode: response.status,
+      data: response.data.content as MonthlySales[],
+      totalElements: response.data.totalElements,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getMonthlyStock = async (
+  params: GetAllInvoincesParams
+): Promise<CustomResponse<MonthlyStock[]>> => {
+  let url = `${BASE_URL}${GET_MONTHLY_STOCK}?`;
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+  try {
+    const response = await httpService.get(url);
+    return {
+      statusCode: response.status,
+      data: response.data.content as MonthlyStock[],
+      totalElements: response.data.totalElements,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
