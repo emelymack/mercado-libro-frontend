@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Box, Grid, GridItem, Table, Tbody, Td, Text, Th, Thead, Tooltip, Tr, useBreakpointValue } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 import Pagination from "../../utils/Pagination";
 import CustomLoading from "../CustomLoading/CustomLoading";
-import { useDispatch } from 'react-redux';
 import { Invoice, getAllInvoices } from "../../services/InvoiceService";
 
 const InvoiceManager = () => {
@@ -21,7 +20,6 @@ const InvoiceManager = () => {
     const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     useEffect(() => {
         setIsLoading(true);
@@ -55,9 +53,9 @@ const InvoiceManager = () => {
         
     }
 
-    /*if (!isAdmin) {
+    if (!isAdmin) {
         return <Navigate to="*" />;
-    }*/
+    }
 
     return (
         <div className="admin_products">
