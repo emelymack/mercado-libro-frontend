@@ -104,13 +104,17 @@ const Login = () => {
       });
 
       if (response.statusCode === 200) {
-        console.log("Inicio de sesión exitoso");
-        console.log("Datos del usuario:", response.data);
         const token = response.data?.token;
         reset();
+        
+        response.data.user && dispatch(setUser({ 
+          name: response.data.user.name, 
+          lastName: response.data.user.lastName, 
+          id: response.data.user.id 
+        }))
 
         if (token) {
-          console.log("Token:", token);
+          // console.log("Token:", token);
           setLocalStorageItem("token", token);
         }
 

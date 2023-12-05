@@ -81,9 +81,9 @@ const MercadoPago = ({isOpenModalMP, onCloseModalMP, invoiceId, preferenceId}: P
           }, 3000)
         } else {
           setError(response.error)
-          onOpenError()
+          // onOpenError()
 
-          setIsResponseReady(false)
+          // setIsResponseReady(false)
         }
 
         // recibir el resultado del pago
