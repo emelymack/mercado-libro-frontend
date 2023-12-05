@@ -63,6 +63,7 @@ import { getAllCategories, Category } from "../../services/CategoryService";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Book } from "../../types/product";
+import Pagination from "../../utils/Pagination";
 
 const schema = z.object({
   title: z
@@ -139,6 +140,10 @@ const ProductManager = () => {
   const [imagenSeleccionada, setImagenSeleccionada] = useState('');
   const [successUpload, setSuccessUpload] = useState<string>("");
 
+
+  const [page, setPage] = useState<number>(0);
+  const [size] = useState<number>(10);
+  const [totalElements, setTotalElements] = useState<number>(0);
 
   useEffect(() => {
     setIsLoading(true);
@@ -253,10 +258,15 @@ const ProductManager = () => {
 
     try {
       setIsLoading(true);
-      getAllBooks()
-        .then((books) => {
-          setBooks(books);
-          console.log("Lista de libros:", books);
+      getAllBooks({
+        page,
+        size,
+      })
+        .then((response) => {
+          console.log("Lista de libros:", response?.data.content);
+          setTotalElements(response.totalElements ?? 0);
+          setBooks(response?.data.content);
+          
         })
         .catch((error) => {
           if (
@@ -300,7 +310,7 @@ const ProductManager = () => {
       page_count: Number(data.pagecount),
       ratings_count: 5,
       currency_code: data.currency,
-      image_links: [{"id":0, "url":"http://mercadolibro-site-g5.s3-website-us-east-1.amazonaws.com/assets/ml.png"}],
+      image_links: [{ "id": 0, "url": "http://mercadolibro-site-g5.s3-website-us-east-1.amazonaws.com/assets/ml.png" }],
       categories: listCategories
     };
 
@@ -455,7 +465,7 @@ const ProductManager = () => {
     formData.append('file', imagenSeleccionada);
     saveImage(formData, book?.id).then((response) => {
       setImagenSeleccionada('');
-      event.target.files=null;
+      event.target.files = null;
       setSuccessUpload("Imagen cargada exitosamente!!. Puede agregar más imagenes o cerrar la ventana.");
       getDetailBookById();
     }).catch((error) => {
@@ -481,18 +491,18 @@ const ProductManager = () => {
     setIsModalDeleteOpen(false);
   }
 
-  const handleDeleteChange = (image:any) => {
+  const handleDeleteChange = (image: any) => {
     setIsLoading(true);
     console.log(image);
     deleteImage(image.id).then((response) => {
       getDetailBookById();
-      
+
     }).catch((error) => {
       console.log(error);
     }).finally(() => {
       setIsLoading(false);
     });
-    
+
   }
 
   function getDetailBookById() {
@@ -504,6 +514,12 @@ const ProductManager = () => {
 
   }
 
+  const handleChangePage = (page: any) => {
+    setIsLoading(true);
+    console.log(page);
+    setPage(page);
+    getListBooks();
+  }
 
   return (
 
@@ -582,7 +598,7 @@ const ProductManager = () => {
                           {books.map((book) => (
                             <Tr key={book.id}>
                               <Td>
-                                <Avatar src={book.image_links[0].url} />
+                                <Avatar src={book.image_links != null && book.image_links.length > 0 ? book.image_links[0].url : ml} />
                               </Td>
                               <Td>{book.title}</Td>
                               <Td>
@@ -631,6 +647,12 @@ const ProductManager = () => {
                         </Tbody>
                         <Tfoot></Tfoot>
                       </Table>
+                      <Pagination
+                        pageNumber={page}
+                        pageSize={size}
+                        totalElements={totalElements}
+                        onPageChange={(newPage) => handleChangePage(newPage)}
+                      />
                     </TableContainer>
                   </div>
                 </div>
@@ -765,12 +787,12 @@ const ProductManager = () => {
                         </FormErrorMessage>
                       </FormControl>
 
-                     
+
 
                     </Box>
                     <Box w='100%' h='10'>
 
-                    <FormControl id="price" isInvalid={!!errors.price}>
+                      <FormControl id="price" isInvalid={!!errors.price}>
                         <FormLabel>Precio de venta</FormLabel>
                         <Input type="number" {...register('price')} borderColor="#d8dee4"
                           borderRadius="6px" />
@@ -860,11 +882,11 @@ const ProductManager = () => {
                           {...register("category")}
                           fontSize={{ base: "sm", md: "sm" }}
                         >
-                            {categories && categories.map((category) => (
-                              <option key={category.id} value={category.id}>
-                                {category.name}
-                              </option>
-                            ))}
+                          {categories && categories.map((category) => (
+                            <option key={category.id} value={category.id}>
+                              {category.name}
+                            </option>
+                          ))}
                         </Select>
 
                         {errors.category && (
@@ -887,27 +909,27 @@ const ProductManager = () => {
                           <Box w='350px'>
                             <Card maxW='350px' key={index}>
                               <CardHeader>
-                                
-                                  <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
 
-                                    <Avatar name='Escritor' src='https://mercadolibro-site-g5.s3.amazonaws.com/assets/writer.jpg' />
-                                    <Box>
-                                      <Heading size='sm'>{author.name}</Heading>
-                                      <Text>{author.email}</Text>
-                                    </Box>
+                                <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
 
-                                    <Tooltip label="Eliminar" aria-label="Eliminar" fontSize="md">
-                                      <DeleteIcon
-                                        w={4}
-                                        h={4}
-                                        color="gray.400"
-                                        _hover={{ color: "red.500" }}
-                                        onClick={() => handleDeleteAuthor(index, author)}
-                                        cursor="pointer"
-                                      />
-                                    </Tooltip>
-                                  </Flex>
-                                
+                                  <Avatar name='Escritor' src='https://mercadolibro-site-g5.s3.amazonaws.com/assets/writer.jpg' />
+                                  <Box>
+                                    <Heading size='sm'>{author.name}</Heading>
+                                    <Text>{author.email}</Text>
+                                  </Box>
+
+                                  <Tooltip label="Eliminar" aria-label="Eliminar" fontSize="md">
+                                    <DeleteIcon
+                                      w={4}
+                                      h={4}
+                                      color="gray.400"
+                                      _hover={{ color: "red.500" }}
+                                      onClick={() => handleDeleteAuthor(index, author)}
+                                      cursor="pointer"
+                                    />
+                                  </Tooltip>
+                                </Flex>
+
                               </CardHeader>
                             </Card>
                           </Box>
@@ -923,42 +945,42 @@ const ProductManager = () => {
                 </Box>
                 {edit && (
                   <Box w='100%' flex='2'>
-                  <Grid templateColumns='repeat(4, 1fr)' gap={6}>
-                    <FormControl paddingTop="20px" w="100%">
-                      <HStack spacing='24px'>
+                    <Grid templateColumns='repeat(4, 1fr)' gap={6}>
+                      <FormControl paddingTop="20px" w="100%">
+                        <HStack spacing='24px'>
 
-                        {book?.image_links.map((image, index) => (
-                          <Box w='200px'>
-                            <Card maxW='200px' key={index}>
-                              <CardHeader>
-                                <Flex>
-                                  <Image boxSize='200px' src={image?.url} alt={image.name} />
-                                  <Tooltip label="Eliminar" aria-label="Eliminar" fontSize="md">
-                                    <DeleteIcon
-                                      w={4}
-                                      h={4}
-                                      color="gray.400"
-                                      _hover={{ color: "red.500" }}
-                                      onClick={() => handleDeleteChange(image)}
-                                      cursor="pointer"
-                                    />
-                                  </Tooltip>
-                                </Flex>
-                              </CardHeader>
-                            </Card>
-                          </Box>
-                        ))}
+                          {book?.image_links.map((image, index) => (
+                            <Box w='200px'>
+                              <Card maxW='200px' key={index}>
+                                <CardHeader>
+                                  <Flex>
+                                    <Image boxSize='200px' src={image?.url} alt={image.name} />
+                                    <Tooltip label="Eliminar" aria-label="Eliminar" fontSize="md">
+                                      <DeleteIcon
+                                        w={4}
+                                        h={4}
+                                        color="gray.400"
+                                        _hover={{ color: "red.500" }}
+                                        onClick={() => handleDeleteChange(image)}
+                                        cursor="pointer"
+                                      />
+                                    </Tooltip>
+                                  </Flex>
+                                </CardHeader>
+                              </Card>
+                            </Box>
+                          ))}
 
-                      </HStack>
+                        </HStack>
 
-                      <Button leftIcon={<MdPerson />} mt={2} onClick={() => handleAddImage()}>
-                        Agregar imagen
-                      </Button>
-                    </FormControl>
-                  </Grid>
-                </Box>
+                        <Button leftIcon={<MdPerson />} mt={2} onClick={() => handleAddImage()}>
+                          Agregar imagen
+                        </Button>
+                      </FormControl>
+                    </Grid>
+                  </Box>
                 )}
-                
+
               </Stack>
 
               <Center>
