@@ -18,7 +18,7 @@ const Dashboard = () => {
     return <Navigate to="*" />;
   }
   return (
-    <Box p={5} pt={60}>
+    <Box p={5} pt={'160px'}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
         <Box boxShadow="xl" borderRadius="lg" p={5}>
           <Heading mb={4}>Información de Usuario</Heading>
