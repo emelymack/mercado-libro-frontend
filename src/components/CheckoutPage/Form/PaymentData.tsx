@@ -88,7 +88,7 @@ const PaymentData = ({ handlePaymentData, email, address, city, province }: Prop
           </Radio> */}
           <Radio size='lg' value='MERCADO_PAGO' name='paymentMethod' colorScheme='auto' bg='brand.greenLogo' borderColor={'brand.greenLogo'}>
             <Flex alignItems={'center'}>
-              Tarjeta de crédito o débito <Text ms={1} mt={1} fontSize={'xs'}>(a través de Mercado Pago)</Text>
+              Mercado Pago
             </Flex>
           </Radio>
           

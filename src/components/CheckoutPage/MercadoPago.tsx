@@ -6,8 +6,6 @@ import { clearCartData } from "../../context/slices/cartSlice";
 import { useState } from "react"
 import { IBrickError } from "@mercadopago/sdk-react/bricks/util/types/common";
 import { BASE_URL, CREATE_INVOICE_URL } from "../../services/apiUrls";
-import ModalError from "../Modal/ModalError";
-
 
 interface Props {
   isOpenModalMP: boolean,
@@ -34,10 +32,9 @@ const onErrorMP = async (error:IBrickError) => {
 
 const MercadoPago = ({isOpenModalMP, onCloseModalMP, invoiceId, preferenceId}: Props) => {
   const cartData = useAppSelector((state) => state.cart)
-  const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const [ error, setError ] = useState("")
+  const [ , setError ] = useState("")
   const [ isLoading, setIsLoading ] = useState(true)
   const [ isResponseReady, setIsResponseReady ] = useState(false)
   const [ paymentId, setPaymentId ] = useState("")
@@ -70,7 +67,7 @@ const MercadoPago = ({isOpenModalMP, onCloseModalMP, invoiceId, preferenceId}: P
       })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setIsResponseReady(true)
         setPaymentId(response.id)
         if(response.status === 'approved') {
@@ -78,12 +75,9 @@ const MercadoPago = ({isOpenModalMP, onCloseModalMP, invoiceId, preferenceId}: P
 
           setTimeout(() => {
             navigate('/successful')
-          }, 3000)
+          }, 4000)
         } else {
           setError(response.error)
-          // onOpenError()
-
-          // setIsResponseReady(false)
         }
 
         // recibir el resultado del pago
@@ -131,9 +125,6 @@ const MercadoPago = ({isOpenModalMP, onCloseModalMP, invoiceId, preferenceId}: P
           </ModalBody>
         </ModalContent>
       </Modal>
-
-      <ModalError isOpen={isOpenError} onClose={onCloseError} title={`ERROR: "${error}". Intente nuevamente, por favor.`} />
-      {/* <ModalSuccess isOpen={isOpenSuccess} onClose={onCloseSuccess} title="¡Pago realizado exitosamente! Redirigiendo..." /> */}
     </>
   )
 }

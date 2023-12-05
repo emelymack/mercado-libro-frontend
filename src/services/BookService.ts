@@ -2,8 +2,6 @@ import httpService from "./httpService";
 import {
   BASE_URL,
   BOOK_URL,
-  CREATE_BOOK_URL,
-  GET_ALL_BOOK_URL,
   CATEGORY_URL,
   INVOICE_URL,
   UPLOAD_IMAGEN_BOOK_URL,
@@ -45,6 +43,11 @@ export interface Response {
   message: string;
 }
 
+export interface Params {
+  page?: number;
+  size?: number;
+}
+
 export const getBookById = (id: number): Promise<Book> => {
   return httpService
     .get(`${BASE_URL}${BOOK_URL}/${id}`)
@@ -84,10 +87,44 @@ export const patchBook = (
     });
 };
 
+export const getAllBooks = async (
+  params: Params
+): Promise<CustomResponse<Book>> => {
+  let url = `${BASE_URL}${BOOK_URL}?`;
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      url += `${key}=${value}&`;
+    }
+  });
+  try {
+    const response = await httpService.get(url);
+    return {
+      statusCode: response.status,
+      data: response.data,
+      totalElements: response.data.totalElements,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+/*
 export const getAllBooks = (): Promise<Book[]> => {
   return httpService
     .get(`${BASE_URL}${GET_ALL_BOOK_URL}`)
     .then((response) => {
+      console.log("---service---");
+      console.log(response);
+      
+      
       if (Array.isArray(response.data.content)) {
         return response.data.content as Book[];
       } else {
@@ -98,6 +135,7 @@ export const getAllBooks = (): Promise<Book[]> => {
       throw new Error(error.response?.data?.message);
     });
 };
+*/
 
 export const getAllCategory = (): Promise<Category[]> => {
   return httpService
@@ -163,7 +201,7 @@ export const getByCategoryPage = async (
 
 export const saveBook = (book: Book): Promise<Book> => {
   return httpService
-    .post(`${BASE_URL}${CREATE_BOOK_URL}`, book)
+    .post(`${BASE_URL}${BOOK_URL}`, book)
     .then((response) => response.data)
     .catch((error) => {
       if (axios.isAxiosError(error)) {
@@ -228,7 +266,7 @@ export const getNewBooksPage = async (
 
 export const getNewBooksHome = (): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?selection=newer&page=0`)
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&page=0&size=20`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);

@@ -13,6 +13,8 @@ const BestSellersCarousel = () => {
 
     getBestSellers()
     .then((res) => {
+      console.log(res);
+      
       setBooks(res);
     });
   }, []);

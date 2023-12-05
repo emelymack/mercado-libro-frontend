@@ -25,6 +25,7 @@ import Dashboard from "./components/UserDashboard/Dashboard";
 import Oauth from "./components/Oauth/Oauth";
 import Order from "./components/Order";
 import MyAccountInfo from "./components/MyAccount";
+import InvoiceManager from "./components/Invoice/manager";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -65,6 +66,7 @@ function App() {
           <Route path="/contact" element={<Health />} />
           <Route path="/contact" element={<h1>Contact</h1>} />
           <Route path="/admin/products" element={<ProductManager />} />
+          <Route path="/admin/invoices" element={<InvoiceManager />} />
           <Route path="/category/:categoryName" element={<CategoriesPage />} />
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -72,7 +74,7 @@ function App() {
           <Route path="/userDashboardChart" element={<ChartDashboard />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/me" element={<MyAccountInfo />} />
-          <Route path="/me/order/:invoiceId" element={<Order />} />
+          <Route path="/order/detail/:invoiceId" element={<Order />} />
           <Route
             path="/books/search/:searchTerm"
             element={<BookListSearch />}
@@ -81,7 +83,7 @@ function App() {
           <Route path="/successful" element={<SuccesfulPurchase />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/questions" element={<QuestionsPage />} />
-          <Route path="/novedades" element={<NewsPage />} />
+          <Route path="/bestsellers" element={<NewsPage />} />
         </Routes>
       </Layout>
     </div>

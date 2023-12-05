@@ -1,8 +1,6 @@
 import { Box, Text, IconButton } from "@chakra-ui/react"
 import { ViewIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { selectInvoice, setInvoice } from '../../context/slices/invoiceSlice';
 
 interface OrderData {
     id: string,
@@ -11,11 +9,9 @@ interface OrderData {
 
 const OrderCard = ({id, createdAt} : OrderData) => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const handleInvoiceSelection  = () => {
-        //dispatch(setInvoice({ id: id }));
-        navigate(`/me/order/${id}`);
+        navigate(`/order/detail/${id}`);
       };
 
       const replaceCharacter = (str : string, target : string, replacement : string) => str.split(target).join(replacement);

@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../services/apiUrls";
 import httpService from "../../services/httpService";
 import setLocalStorageItem from "../../utils/setStorage";
 import { useLocation } from "react-router-dom";
@@ -6,7 +7,7 @@ import { useLocation } from "react-router-dom";
 const getToken = async (provider: string, code:string) => {
     /*post request to backend*/
     try{
-        const response = await httpService.post(`http://localhost:8080/v1/api/auth/oauth/${provider}?code=${code}`
+        const response = await httpService.post(`${BASE_URL}api/auth/oauth/${provider}?code=${code}`
         , {provider, code});
         const user = response.data.user;
         console.log(user)

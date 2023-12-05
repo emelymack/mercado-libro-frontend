@@ -10,6 +10,7 @@ import { Link, Navigate } from "react-router-dom";
 import user from "../../assets/user.svg";
 import dashboard from "../../assets/dashboard.svg";
 import books from "../../assets/books.svg";
+import cart from "../../assets/cart.svg";
 
 const Dashboard = () => {
   const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
@@ -18,7 +19,7 @@ const Dashboard = () => {
     return <Navigate to="*" />;
   }
   return (
-    <Box p={5} pt={60}>
+    <Box p={5} pt={'160px'}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
         <Box boxShadow="xl" borderRadius="lg" p={5}>
           <Heading mb={4}>Información de Usuario</Heading>
@@ -62,6 +63,24 @@ const Dashboard = () => {
             width="full"
           >
             Ir a Administración de Productos
+          </Button>
+        </Box>
+        <Box boxShadow="xl" borderRadius="lg" p={5}>
+          <Heading mb={4}>Administración de ventas</Heading>
+          <Text mb={4}>Listado de ventas del sistema</Text>
+          <Image
+            h={"400px"}
+            src={cart}
+            alt="Imagen de administración de productos"
+            mb={4}
+          />
+          <Button
+            as={Link}
+            to="/admin/invoices"
+            colorScheme="teal"
+            width="full"
+          >
+            Ir a inventario ventas
           </Button>
         </Box>
       </SimpleGrid>
