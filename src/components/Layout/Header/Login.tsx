@@ -76,9 +76,9 @@ const Login = () => {
     setIsLoading(true);
     setLocalStorageItem("currentUrl", window.location.href);
     
-    location.assign(`http://${BASE_URL}api/auth/oauth/${provider}`)
+    location.assign(`${BASE_URL}api/auth/oauth/${provider}`)
     
-    location.assign(`http://${BASE_URL}api/auth/oauth/${provider}`)
+    location.assign(`${BASE_URL}api/auth/oauth/${provider}`)
   };
 
   const redirectToFacebook = () => {

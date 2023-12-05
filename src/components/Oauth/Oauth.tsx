@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 const getToken = async (provider: string, code:string) => {
     /*post request to backend*/
     try{
-        const response = await httpService.post(`http://${BASE_URL}api/auth/oauth/${provider}?code=${code}`
+        const response = await httpService.post(`${BASE_URL}api/auth/oauth/${provider}?code=${code}`
         , {provider, code});
         const user = response.data.user;
         console.log(user)
