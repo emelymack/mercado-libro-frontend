@@ -49,7 +49,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { Author, Book, deleteBook, deleteImage, getAllBooks, getBookById, saveBook, saveImage, updateBook } from "../../services/BookService";
+import { Author, deleteBook, deleteImage, getAllBooks, getBookById, saveBook, saveImage, updateBook } from "../../services/BookService";
 import {
   MdAdd,
   MdPerson,
@@ -62,6 +62,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { getAllCategories, Category } from "../../services/CategoryService";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { Book } from "../../types/product";
 
 const schema = z.object({
   title: z
@@ -135,7 +136,7 @@ const ProductManager = () => {
   const [isModalAddAuthor, setIsModalAddAuthor] = useState<boolean>(false);
   const [errorDelete, setErrorDelete] = useState<string>("");
   const [isModalAddImage, setIsModalAddImage] = useState<boolean>(false);
-  const [imagenSeleccionada, setImagenSeleccionada] = useState(null);
+  const [imagenSeleccionada, setImagenSeleccionada] = useState('');
   const [successUpload, setSuccessUpload] = useState<string>("");
 
 
@@ -299,7 +300,7 @@ const ProductManager = () => {
       page_count: Number(data.pagecount),
       ratings_count: 5,
       currency_code: data.currency,
-      image_links: ["http://mercadolibro-site-g5.s3-website-us-east-1.amazonaws.com/assets/ml.png"],
+      image_links: [{"id":0, "url":"http://mercadolibro-site-g5.s3-website-us-east-1.amazonaws.com/assets/ml.png"}],
       categories: listCategories
     };
 
@@ -453,7 +454,7 @@ const ProductManager = () => {
     const formData = new FormData();
     formData.append('file', imagenSeleccionada);
     saveImage(formData, book?.id).then((response) => {
-      setImagenSeleccionada(null);
+      setImagenSeleccionada('');
       event.target.files=null;
       setSuccessUpload("Imagen cargada exitosamente!!. Puede agregar más imagenes o cerrar la ventana.");
       getDetailBookById();
@@ -581,7 +582,7 @@ const ProductManager = () => {
                           {books.map((book) => (
                             <Tr key={book.id}>
                               <Td>
-                                <Avatar src={ml} />
+                                <Avatar src={book.image_links[0].url} />
                               </Td>
                               <Td>{book.title}</Td>
                               <Td>
@@ -888,6 +889,7 @@ const ProductManager = () => {
                               <CardHeader>
                                 
                                   <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+
                                     <Avatar name='Escritor' src='https://mercadolibro-site-g5.s3.amazonaws.com/assets/writer.jpg' />
                                     <Box>
                                       <Heading size='sm'>{author.name}</Heading>
@@ -919,7 +921,8 @@ const ProductManager = () => {
                   </Grid>
 
                 </Box>
-                <Box w='100%' flex='2'>
+                {edit && (
+                  <Box w='100%' flex='2'>
                   <Grid templateColumns='repeat(4, 1fr)' gap={6}>
                     <FormControl paddingTop="20px" w="100%">
                       <HStack spacing='24px'>
@@ -952,12 +955,11 @@ const ProductManager = () => {
                         Agregar imagen
                       </Button>
                     </FormControl>
-
                   </Grid>
-
                 </Box>
+                )}
+                
               </Stack>
-
 
               <Center>
                 <ButtonGroup variant='outline' spacing='6'>
@@ -1045,7 +1047,7 @@ const ProductManager = () => {
         </Modal>
       )}
 
-      {book.id && isModalAddImage && (
+      {edit && isModalAddImage && (
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
