@@ -40,17 +40,9 @@ const Links = [
     url: "/novedades",
   },
   {
-    name: "MAS VENDIDOS",
-    url: "#masVendidos",
+    name: "MÁS VENDIDOS",
+    url: "/bestsellers",
   },
-  // {
-  //   name: "eBooks",
-  //   url: "",
-  // },
-  // {
-  //   name: "Editoriales",
-  //   url: "",
-  // },
 ];
 
 const Header = () => {
@@ -131,12 +123,18 @@ const Header = () => {
                     ))}
                   </MenuList>
                 </Menu>
+
+                {Links.map((link) => (
+                  <NavLink key={link.name} url={link.url}>
+                    {link.name}
+                  </NavLink>
+                ))}
+
                 {isAdmin && (
                   <Menu>
                     <Link to="/dashboard">
                       <MenuButton
                         as={Button}
-                        rightIcon={<ChevronDownIcon />}
                         bg="none"
                         color="var(--secondary)"
                       >
@@ -150,12 +148,6 @@ const Header = () => {
                     </MenuList> */}
                   </Menu>
                 )}
-
-                {Links.map((link) => (
-                  <NavLink key={link.name} url={link.url}>
-                    {link.name}
-                  </NavLink>
-                ))}
 
                 <Box me={5} ms={2}>
                   {!isLogged ? <Login /> : <MyAccount />}

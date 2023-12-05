@@ -2,7 +2,88 @@ import httpService from "./httpService";
 import { BASE_URL, GET_ALL_USERS_URL, USER_URL } from "./apiUrls";
 import { CustomResponse } from "../types/customResponse";
 import axios from "axios";
-import { EditUser, GetAllUsersParams, User } from "../types/user";
+import {
+  AddAddress,
+  Address,
+  EditUser,
+  GetAllUsersParams,
+  User,
+} from "../types/user";
+import { Invoice } from "./InvoiceService";
+
+export const getUserAddress = async (): Promise<CustomResponse<Address>> => {
+  try {
+    const response = await httpService.get(`${BASE_URL}api/address`);
+    return {
+      statusCode: response.status,
+      data: response.data,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+const interceptor = axios.interceptors.request.use(
+  (config) => {
+    const tokenItem = localStorage.getItem("token");
+    if (tokenItem) {
+      const token = JSON.parse(tokenItem);
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        config.headers.Authorization = "";
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+export const postUserAddress = async (
+  address: AddAddress
+): Promise<CustomResponse<Address>> => {
+  try {
+    axios.interceptors.request.use(
+      (config) => {
+        const tokenItem = localStorage.getItem("token");
+        if (tokenItem) {
+          const token = JSON.parse(tokenItem);
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    const response = await httpService.post(`${BASE_URL}api/address`, address);
+
+    axios.interceptors.request.eject(interceptor);
+    console.log("Interceptor removed!");
+
+    return {
+      statusCode: response.status,
+      data: response.data,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
 
 export const getUserById = async (
   id: number
@@ -10,6 +91,34 @@ export const getUserById = async (
   try {
     const response = await httpService.get(`${BASE_URL}${USER_URL}${id}`);
 
+    return {
+      statusCode: response.status,
+      data: response.data,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw {
+        statusCode: error.response ? error.response.status : 500,
+        data: null,
+        errorMessage: error.message,
+      };
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getUserInvoices = async (
+  id: number,
+  page: number
+): Promise<CustomResponse<Invoice[]>> => {
+  try {
+    const response = await httpService.get(
+      `${BASE_URL}api/invoice/userid/${id}?page=${page}&size=6`
+    );
+
+    console.log(response);
+    console.log(id);
     return {
       statusCode: response.status,
       data: response.data,

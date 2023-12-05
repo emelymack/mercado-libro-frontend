@@ -1,6 +1,17 @@
-import { Text, Table, Thead, Tr, Th, Tbody, Td, Image, TableContainer} from "@chakra-ui/react"
+import { Text, Table, Thead, Tr, Th, Tbody, Td, Image, TableContainer} from "@chakra-ui/react";
+import { Item } from './index';
 
-const TableDesktop = () => {
+const TableDesktop = ({ items }: { items: Item[] }) => {
+    const formatNumberWithDots = (n : number) => {
+        const numberString = String(n).replace(/\./g, '');
+    
+        const parts = [];
+        for (let i = numberString.length; i > 0; i -= 3) {
+            parts.unshift(numberString.slice(Math.max(i - 3, 0), i));
+        }
+    
+        return parts.join('.');
+      }
 
     return(
         <TableContainer>
@@ -8,30 +19,26 @@ const TableDesktop = () => {
                 <Thead>
                     <Tr>
                         <Th fontWeight='semibold' color='black' fontSize={{base: 'sm', '2xl': 'md'}} textTransform='capitalize'>Producto</Th>
+                        <Th></Th>
                         <Th fontSize={{base: 'sm', '2xl': 'md'}} color='black' fontWeight='semibold' textTransform='capitalize' textAlign='center'>Precio</Th>
                         <Th fontSize={{base: 'sm', '2xl': 'md'}} color='black' fontWeight='semibold' textTransform='capitalize' textAlign='center'>Cantidad</Th>
                         <Th fontSize={{base: 'sm', '2xl': 'md'}} color='black' fontWeight='semibold' textTransform='capitalize' textAlign='center'>Total</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    <Tr>
-                        <Td display='flex'>
-                            <Image objectFit='contain' boxSize={{ base: '50px', md: '50px', lg: '80px', xl: '100px', '2xl': '120px'}} src='https://www.tematika.com/media/catalog/Ilhsa/Imagenes/678297.jpg'/>
-                            <Text ml='20px' fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word" fontWeight='semibold'>Harry Potter y La Orden Del Fenix: Edicion Salamandra, J.K Rowling</Text>
-                        </Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>$24.900</Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>1</Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>$24.900</Td>
-                    </Tr>
-                    <Tr>
-                        <Td display='flex'>
-                            <Image objectFit='contain' boxSize={{ base: '50px', md: '50px', lg: '80px', xl: '100px', '2xl': '120px'}} src='https://www.tematika.com/media/catalog/Ilhsa/Imagenes/678298.jpg'/>
-                            <Text ml='20px' fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word" fontWeight='semibold'>Harry Potter y La Piedra Filosofal: Edicion Salamandra, J.K Rowling</Text>
-                        </Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>$24.900</Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>1</Td>
-                        <Td fontSize={{base: 'sm', '2xl': 'md'}} verticalAlign='top' textAlign='center'>$24.900</Td>
-                    </Tr>
+                    {items.map((item) => (
+                         <Tr>
+                         <Td>
+                             <Image objectFit='contain' boxSize={{ base: '50px', md: '50px', lg: '80px', xl: '100px', '2xl': '120px'}} src={item.book.image_links[0].url}/>
+                         </Td>
+                         <Td pl={0}>
+                             <Text fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word" fontWeight='semibold'>{`${item.book.title}, ${item.book.authors.map(author => author.name).join(', ')}`}</Text>
+                         </Td>
+                         <Td fontSize={{base: 'sm', '2xl': 'md'}} textAlign='center'>${formatNumberWithDots(item.book.price)}</Td>
+                         <Td fontSize={{base: 'sm', '2xl': 'md'}} textAlign='center'>{item.invoice.quantity}</Td>
+                         <Td fontSize={{base: 'sm', '2xl': 'md'}} textAlign='center'>${formatNumberWithDots(item.invoice.total)}</Td>
+                     </Tr>
+                    ))}
                 </Tbody>
             </Table>
         </TableContainer>

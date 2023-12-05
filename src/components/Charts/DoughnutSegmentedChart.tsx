@@ -20,6 +20,7 @@ const DoughnutSegmentedChart: React.FC<DoughnutSegmentedChartProps> = ({
 }) => {
   const options: ChartOptions<"doughnut"> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "bottom",
@@ -30,7 +31,7 @@ const DoughnutSegmentedChart: React.FC<DoughnutSegmentedChartProps> = ({
       },
       title: {
         display: true,
-        text: "Doughnut Chart Example",
+        text: "Ventas por categoria",
       },
       tooltip: {
         callbacks: {

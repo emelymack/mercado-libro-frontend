@@ -27,6 +27,7 @@ import { useAppDispatch, useAppSelector } from "../../../context/hooks";
 import { logout } from "../../../context/slices/authSlice";
 import { useEffect, useState } from "react";
 import CustomLoading from "../../CustomLoading/CustomLoading";
+import { logoutUser } from "../../../context/slices/userSlice";
 
 const MyAccount = () => {
   const history = useNavigate();
@@ -53,6 +54,7 @@ const MyAccount = () => {
     setIsLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     dispatch(logout());
+    dispatch(logoutUser());
     clearLocalStorage();
     setIsLoading(false);
     setIsInactiveModalOpen(false);
@@ -68,6 +70,7 @@ const MyAccount = () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       dispatch(logout());
+      dispatch(logoutUser())
       clearLocalStorage();
     } catch (error) {
       console.error("Error during logout:", error);
@@ -83,13 +86,13 @@ const MyAccount = () => {
       <Menu>
         <MenuButton as={Button} bg="none" _focus={{ boxShadow: "none" }}>
           <Flex align="center">
-            <Avatar size="sm" name={initials} mr={2} bg={"brand.greenLogo"} />
-            <Text>Mi Cuenta</Text>
-            <ChevronDownIcon ms={1} />
+            <Avatar size="sm" name={initials} mr={2} bg={"brand.violetLogo"} border={'2px solid'} borderColor={'white !important'} color={'brand.blueLogo'} fontWeight={700} />
+            <Text color='brand.blueLogo'>Mi Cuenta</Text>
+            <ChevronDownIcon ms={1} color='brand.blueLogo'/>
           </Flex>
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={handleInfoClick}>Informacion</MenuItem>
+          <MenuItem onClick={handleInfoClick}>Información</MenuItem>
           <MenuDivider />
           <MenuItem onClick={onLogoutClick}>Cerrar sesión</MenuItem>
         </MenuList>

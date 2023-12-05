@@ -1,6 +1,5 @@
 import httpService from "../../services/httpService";
 import setLocalStorageItem from "../../utils/setStorage";
-import Home from "../Home";
 import { useLocation } from "react-router-dom";
 
 
@@ -10,10 +9,11 @@ const getToken = async (provider: string, code:string) => {
         const response = await httpService.post(`http://localhost:8080/v1/api/auth/oauth/${provider}?code=${code}`
         , {provider, code});
         const user = response.data.user;
+        console.log(user)
         setLocalStorageItem("token", response.data.token);
         localStorage.setItem(
             "user",
-            JSON.stringify({ name: user.name, lastName: user.lastName })
+            JSON.stringify({ name: user.name, lastName: user.lastName, id: user.id })
           );
         localStorage.setItem("isLogged", "true");
         // Get last url from local storage

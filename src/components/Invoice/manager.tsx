@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
-import { Badge, Box, Grid, GridItem, Switch, Table, TableCaption, Tag, Tbody, Td, Text, Th, Thead, Tooltip, Tr, useBreakpointValue } from "@chakra-ui/react";
-import { EditIcon, ViewIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
+import { Box, Grid, GridItem, Table, Tbody, Td, Text, Th, Thead, Tooltip, Tr, useBreakpointValue } from "@chakra-ui/react";
+import { ViewIcon } from "@chakra-ui/icons";
 import Pagination from "../../utils/Pagination";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import { useDispatch } from 'react-redux';
@@ -35,7 +35,8 @@ const InvoiceManager = () => {
 
                 if (response.statusCode === 200 && response.data) {
                     setTotalElements(response.totalElements ?? 0);
-                    setListInvoices(response.data);
+
+                    setListInvoices(response.data?.content);
                 } else {
                     console.error("Failed to fetch users:", response.errorMessage);
                 }
@@ -50,16 +51,13 @@ const InvoiceManager = () => {
 
 
     const handleView = (id: string) => {
-        console.log(id);
-        navigate("/order/detail/"+id);
-        //dispatch(id);
-        //navigate("/order/detail/"${id.substring(0,4).toUpperCase()});
+        navigate(`/order/detail/${id}`);
         
     }
 
-    if (!isAdmin) {
+    /*if (!isAdmin) {
         return <Navigate to="*" />;
-    }
+    }*/
 
     return (
         <div className="admin_products">

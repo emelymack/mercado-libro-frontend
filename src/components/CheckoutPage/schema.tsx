@@ -58,10 +58,13 @@ export const shippingSchema = z.object({
 })
 
 export const paymentSchema = z.object({
-  paymentMethod: z.string({
+  paymentMethod: z.union([
+    z.literal('MERCADO_PAGO'),
+    z.literal('TRANSFER')
+  ],{
     invalid_type_error: "Debes seleccionar un medio de pago."
   })
-  .nullable(), // arreglar por qué no envia el paymentMethod TRANSFERENCIA
+  .nullable(), 
   cardOwner: z
     .string()
     .regex(/^[a-zA-Z\s]*$/, 'No se pueden ingresar valores numéricos ni símbolos.')
@@ -104,27 +107,27 @@ export const paymentSchema = z.object({
   path: ["paymentMethod"],
   message: "Debes seleccionar un medio de pago.",
 },)
-.refine((data) => (data.paymentMethod === 'TARJETA' && data.cardNumber !== undefined) || data.paymentMethod !== 'TARJETA', {
-  path: ["cardNumber"],
-  message: "Este campo es obligatorio.",
-},)
-.refine((data) => (data.paymentMethod === 'TARJETA' && data.cardExpiryDate !== undefined) || data.paymentMethod !== 'TARJETA', {
-  path: ["cardExpiryDate"],
-  message: "Este campo es obligatorio.",
-},)
-.refine((data) => (data.paymentMethod === 'TARJETA' && data.cardCVV !== undefined) || data.paymentMethod !== 'TARJETA', {
-  path: ["cardCVV"],
-  message: "Este campo es obligatorio.",
-},)
-.refine((data) => (data.paymentMethod === 'TARJETA' && data.cardOwner !== undefined) || data.paymentMethod !== 'TARJETA', {
-  path: ["cardOwner"],
-  message: "Este campo es obligatorio.",
-},)
-.refine((data) => (data.paymentMethod === 'TARJETA' && data.cardOwnerDocument !== undefined) || data.paymentMethod !== 'TARJETA', {
-  path: ["cardOwnerDocument"],
-  message: "Este campo es obligatorio.",
-},)
-.refine((data) => (data.paymentMethod === 'TARJETA' && data.documentType !== "") || data.paymentMethod !== 'TARJETA', {
-  path: ["documentType"],
-  message: "Este campo es obligatorio.",
-},);
+// .refine((data) => (data.paymentMethod === 'TARJETA' && data.cardNumber !== undefined) || data.paymentMethod !== 'TARJETA', {
+//   path: ["cardNumber"],
+//   message: "Este campo es obligatorio.",
+// },)
+// .refine((data) => (data.paymentMethod === 'TARJETA' && data.cardExpiryDate !== undefined) || data.paymentMethod !== 'TARJETA', {
+//   path: ["cardExpiryDate"],
+//   message: "Este campo es obligatorio.",
+// },)
+// .refine((data) => (data.paymentMethod === 'TARJETA' && data.cardCVV !== undefined) || data.paymentMethod !== 'TARJETA', {
+//   path: ["cardCVV"],
+//   message: "Este campo es obligatorio.",
+// },)
+// .refine((data) => (data.paymentMethod === 'TARJETA' && data.cardOwner !== undefined) || data.paymentMethod !== 'TARJETA', {
+//   path: ["cardOwner"],
+//   message: "Este campo es obligatorio.",
+// },)
+// .refine((data) => (data.paymentMethod === 'TARJETA' && data.cardOwnerDocument !== undefined) || data.paymentMethod !== 'TARJETA', {
+//   path: ["cardOwnerDocument"],
+//   message: "Este campo es obligatorio.",
+// },)
+// .refine((data) => (data.paymentMethod === 'TARJETA' && data.documentType !== "") || data.paymentMethod !== 'TARJETA', {
+//   path: ["documentType"],
+//   message: "Este campo es obligatorio.",
+// },);
