@@ -18,7 +18,7 @@ import { BarData, DoughnutData, LineData } from "../../types/chatsData";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import salesAndSotckData from "./DataDashboard/salesAndSotckData";
 
-const chartSize = "600px";
+const chartSize = "450px";
 
 const ChartDashboard = () => {
   const { totalUsers, totalBooks, totalCategories, totalSales } =
