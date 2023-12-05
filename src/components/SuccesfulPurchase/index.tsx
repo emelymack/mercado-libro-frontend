@@ -1,10 +1,13 @@
 import { Heading, Text, Box, SimpleGrid } from "@chakra-ui/react";
 import { useAppSelector } from "../../context/hooks";
 import CheckoutInfo from "./CheckoutInfo";
+import { useEffect } from "react";
 
 
 const SuccesfulPurchase = () => {
     const isScrolling = useAppSelector((state) => state.scroll.isScrolling)
+
+    useEffect(() => { window.scrollTo(0,0) }, [])
     
     return(
             <SimpleGrid justifyItems='center' mb={40} className={`page ${isScrolling ? 'scroll' : ''}`}>
