@@ -6,13 +6,13 @@ import { useEffect, useState } from "react";
 import { getUserAddress, getUserInvoices } from "../../services/UserService";
 import { Invoice } from "../../services/InvoiceService";
 import { Address } from "../../types/user";
-import { useSelector } from 'react-redux';
 import { selectUser } from '../../context/slices/userSlice';
 import { decodeToken } from "../../utils/authUtils";
 import AddAdressModal from "./AddAddress";
 import EditAddressModal from "./EditAddressModal";
 import Pagination from "../../utils/Pagination";
 import CustomLoading from "../CustomLoading/CustomLoading";
+import { useAppSelector } from "../../context/hooks";
 
 export const MyAccount = () => {
     const [page, setPage] = useState<number>(0);
@@ -27,9 +27,9 @@ export const MyAccount = () => {
     const [addressEdited, setAddressEdited] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState(true);
 
-    let user = localStorage.getItem("user");
-    if (user != null) { user = JSON.parse(user); }
-    // const user = useSelector(selectUser);
+    //let user = localStorage.getItem("user");
+    //if (user != null) { user = JSON.parse(user); }
+    const user = useAppSelector(selectUser);
     const email = decodeToken()?.sub;
 
     const handleAdd = () => {
@@ -54,7 +54,7 @@ export const MyAccount = () => {
         const fetchInvoices = async () => {
 
             try {
-                const response = await getUserInvoices(parseInt(user?.id), page);
+                const response = await getUserInvoices(user?.id, page);
 
                 if (response.statusCode === 200 && response.data) {
                     setTotalElements(response.data.totalElements)
