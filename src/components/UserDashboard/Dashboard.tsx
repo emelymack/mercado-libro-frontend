@@ -64,6 +64,24 @@ const Dashboard = () => {
             Ir a Administración de Productos
           </Button>
         </Box>
+        <Box boxShadow="xl" borderRadius="lg" p={5}>
+          <Heading mb={4}>Administración de ventas</Heading>
+          <Text mb={4}>Listado de ventas del sistema</Text>
+          <Image
+            h={"400px"}
+            src={books}
+            alt="Imagen de administración de productos"
+            mb={4}
+          />
+          <Button
+            as={Link}
+            to="/admin/invoices"
+            colorScheme="teal"
+            width="full"
+          >
+            Ir a inventario ventas
+          </Button>
+        </Box>
       </SimpleGrid>
     </Box>
   );
