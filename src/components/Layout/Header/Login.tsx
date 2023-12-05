@@ -42,7 +42,6 @@ import CustomInput from "../../Input/CustomInput";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import googleLogo from "../../../assets/img/google-logo.png";
 import facebookLogo from "../../../assets/img/facebook-logo.png";
-import { setUser } from "../../../context/slices/userSlice";
 
 const schema = z.object({
   email: z
