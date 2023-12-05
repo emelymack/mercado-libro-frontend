@@ -130,7 +130,7 @@ const Order = () => {
     )
 
     return(
-        <Flex w='min-content' m='0 auto' pt={{base: '13vh', md: '18vh', lg: '22vh', xl: '25vh'}} pb={{base: '7vh', md:  '12vh', 'xl': '15vh'}} flexDir={"column"} alignItems={"center"}>
+        <Flex w='min-content' m='0 auto' pt={{base: '13vh', md: '15vh', lg: '22vh', xl: '18vh'}} pb={{base: '7vh', md: '10vh', 'xl': '8vh'}} flexDir={"column"} alignItems={"center"}>
             <Box alignSelf='flex-start' mb='10px'>
                 <BreadcrumbNav order={code} size={{ base: 'sm', lg: 'sm'}}/>
             </Box>
