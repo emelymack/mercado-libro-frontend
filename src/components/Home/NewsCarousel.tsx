@@ -18,7 +18,7 @@ const NewsCarousel = () => {
 
   return (
     <Box id='novedades'>
-      <ProductsCarousel title='Novedades de octubre' products={books} />
+      <ProductsCarousel title='Novedades de diciembre' products={books} />
     </Box>
   )
 }
