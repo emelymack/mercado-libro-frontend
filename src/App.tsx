@@ -83,7 +83,7 @@ function App() {
           <Route path="/successful" element={<SuccesfulPurchase />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/questions" element={<QuestionsPage />} />
-          <Route path="/novedades" element={<NewsPage />} />
+          <Route path="/bestsellers" element={<NewsPage />} />
         </Routes>
       </Layout>
     </div>
