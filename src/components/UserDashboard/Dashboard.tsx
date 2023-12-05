@@ -10,6 +10,7 @@ import { Link, Navigate } from "react-router-dom";
 import user from "../../assets/user.svg";
 import dashboard from "../../assets/dashboard.svg";
 import books from "../../assets/books.svg";
+import cart from "../../assets/cart.svg";
 
 const Dashboard = () => {
   const isAdmin = localStorage.getItem("isLoggedAdmin") === "true";
@@ -69,7 +70,7 @@ const Dashboard = () => {
           <Text mb={4}>Listado de ventas del sistema</Text>
           <Image
             h={"400px"}
-            src={books}
+            src={cart}
             alt="Imagen de administración de productos"
             mb={4}
           />
