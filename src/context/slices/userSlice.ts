@@ -6,10 +6,12 @@ interface UserState {
   id: number;
 }
 
+const user = JSON.parse(localStorage.getItem('user'))
+
 const initialState: UserState = {
-  name: "",
-  lastName: "",
-  id: 0
+  name: user?.name,
+  lastName: user?.lastName,
+  id: user?.id
 };
 
 const userSlice = createSlice({
