@@ -1045,7 +1045,7 @@ const ProductManager = () => {
         </Modal>
       )}
 
-      {isModalAddImage && (
+      {book.id && isModalAddImage && (
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
