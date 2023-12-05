@@ -228,7 +228,7 @@ export const getNewBooksPage = async (
 
 export const getNewBooksHome = (): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?selection=newer&page=0`)
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&page=0&size=20`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);
