@@ -192,7 +192,7 @@ const Header = ({ isOpenLogin, onOpenLogin, onCloseLogin }: Props) => {
           </HStack>
         </Flex>
 
-        {isOpen && <NavMenu Links={Links} isLogged={isLogged} />}
+        {isOpen && <NavMenu Links={Links} isLogged={isLogged} /* isOpenLogin={isOpen} onOpenLogin={onOpen} onCloseLogin={onClose} */ />}
       </Box>
     </header>
   );
