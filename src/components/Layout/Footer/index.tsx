@@ -88,8 +88,8 @@ const Footer = () => {
             <Link className="footerLink" href={`/questions`} mb={1}>
               Preguntas Frecuentes
             </Link>
-            <Link className="footerLink" href="" mb={1}>
-              Categorías
+            <Link className="footerLink" href={`/novedades`} mb={1}>
+              Novedades
             </Link>
           </Box>
           <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
