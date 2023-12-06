@@ -79,7 +79,7 @@ const Footer = () => {
             flexDir={"column"}
             alignItems={{ base: "center", md: "start" }}
           >
-            <Link className="footerLink" href="" mb={1}>
+            <Link className="footerLink" href={`/`} mb={1}>
               Iniciar sesión
             </Link>
             <Link className="footerLink" href={`/register`} mb={1}>
