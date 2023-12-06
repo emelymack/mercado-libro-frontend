@@ -112,7 +112,7 @@ export const getAllInvoices = async (
   try {
     const response = await httpService.get(url);
     console.log(response);
-    
+
     return {
       statusCode: response.status,
       data: response.data,

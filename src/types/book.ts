@@ -3,10 +3,10 @@ export interface GetAllBooksParams {
   pageSize?: number;
   keyword?: string;
   page?: number;
-  size: number;
+  size?: number;
 }
 
-export interface GetNewBooksParams{
+export interface GetNewBooksParams {
   page?: number;
   size?: number;
   keyword?: string;

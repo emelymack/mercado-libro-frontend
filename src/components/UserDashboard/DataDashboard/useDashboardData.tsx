@@ -29,7 +29,7 @@ const useDashboardData = (): DashboardData => {
           categoriesResponse,
         ] = await Promise.all([
           getAllUsers({ page: 0, size: 1 }),
-          getAllBooksSearch({ page: 0 }),
+          getAllBooksSearch({ page: 0, size: 1 }),
           getAllInvoices({ page: 0, size: 1 }),
           getAllCategories(),
         ]);
