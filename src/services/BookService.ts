@@ -277,7 +277,7 @@ export const getNewBooksByCategory = (
   category: string
 ): Promise<GetBooksResponse> => {
   return httpService
-    .get(`${BASE_URL}${BOOK_URL}?selection=newer&category=${category}&page=0`)
+    .get(`${BASE_URL}${BOOK_URL}?selection=newer&category=${category}&page=0&size=20`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(error.response?.data?.message);

@@ -1,4 +1,4 @@
-import { Text, Table, Thead, Tr, Th, Tbody, Td, Image, TableContainer} from "@chakra-ui/react";
+import { Text, Table, Thead, Tr, Th, Tbody, Td, Image, TableContainer, useColorModeValue} from "@chakra-ui/react";
 import { Item } from './index';
 
 const TableMobile = ({ items }: { items: Item[] }) => {
@@ -18,7 +18,7 @@ const TableMobile = ({ items }: { items: Item[] }) => {
             <Table>
                 <Thead>
                     <Tr>
-                        <Th fontWeight='semibold' fontSize={{base: 'md'}} color='black' textTransform='capitalize'>Producto</Th>
+                        <Th fontWeight='semibold' fontSize={{base: 'md'}} color={useColorModeValue('black', 'white')} textTransform='capitalize'>Producto</Th>
                         <Th></Th>
                     </Tr>
                 </Thead>
