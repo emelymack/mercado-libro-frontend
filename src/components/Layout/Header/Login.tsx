@@ -59,7 +59,7 @@ interface Props {
   onOpen: () => void,
   onClose: () => void
 }
-const Login = ({isOpen, onOpen, onClose}: Props) => {
+export const Login = ({isOpen, onOpen, onClose}: Props) => {
   const dispatch = useAppDispatch();
   const breakpointValue = useBreakpointValue({
     base: "base",
