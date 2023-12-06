@@ -1,4 +1,4 @@
-import { Grid, Text, Box, GridItem, Heading, Image, Flex, Spinner, Button, useColorModeValue } from "@chakra-ui/react"
+import { Grid, Text, Box, GridItem, Heading, Image, Flex, Spinner, Button, useColorModeValue, Icon } from "@chakra-ui/react"
 import CalendarIcon from '../../assets/icons/icon-calendar.svg'
 import InfoIcon from '../../assets/icons/icon-info.svg'
 import CardIcon from '../../assets/icons/icon-card.svg'
@@ -19,7 +19,13 @@ import { selectUser } from '../../context/slices/userSlice';
 import { useAppSelector } from "../../context/hooks";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import CustomLoading from "../CustomLoading/CustomLoading"
+import CustomLoading from "../CustomLoading/CustomLoading";
+import { FaCalendarCheck } from "react-icons/fa";
+import { FaCircleInfo } from "react-icons/fa6";
+import { FaCreditCard } from "react-icons/fa";
+import { FaMoneyBillWave } from "react-icons/fa";
+import { FaTruck } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 
 export interface Item {
   book: Book,
@@ -147,27 +153,39 @@ const Order = () => {
                     ) : (
                       <>
                         <Box display='flex' alignItems='center' m='10px 0'>
-                          <Image boxSize={4} src={CalendarIcon} mr='8px' alt="Calendar icon"/>
+                          <Box mr='8px'>
+                            <FaCalendarCheck/>
+                          </Box>
                           <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Fecha: <b>{replaceCharacter(invoice?.date_created, '-', '/')}</b></Text>
                         </Box>
                         <Box display='flex' alignItems='center' m='5px 0'>
-                          <Image boxSize={4} src={InfoIcon} mr='8px' alt="Info icon"/>
+                          <Box mr='8px'>
+                            <FaCircleInfo/>
+                          </Box>
                           <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Estado: <b>{orderState}</b></Text>
                         </Box>
                         <Box display='flex' alignItems='center' m='5px 0'>
-                          <Image boxSize={4} src={CardIcon} mr='8px' alt="Card icon"/>
+                          <Box mr='8px'>
+                            <FaCreditCard/>
+                          </Box>
                           <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Pago: <b>{paymentState}</b></Text>
                         </Box>
                         <Box display='flex' alignItems='center' m='5px 0'>
-                          <Image boxSize={4} src={DollarIcon} mr='8px' alt="Dollar icon"/>
+                          <Box mr='8px'>
+                            <FaMoneyBillWave/>
+                          </Box>
                           <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Medio de pago: <b>{paymentMethod}</b></Text>
                         </Box>
                         <Box display='flex' alignItems='center' m='5px 0'>
-                          <Image boxSize={4} src={TruckIcon} mr='8px' alt="Truck icon"/>
+                          <Box mr='8px'>
+                            <FaTruck/>
+                          </Box>
                           <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Envío: <b>Pendiente</b></Text>
                         </Box>
                         <Box display='flex' alignItems='center' m='30px 0 5px 0'>
-                          <Image boxSize={4} src={LocationIcon} mr='8px' alt="Location icon"/>
+                          <Box mr='8px'>
+                            <FaLocationDot/>
+                          </Box>
                           <Text fontWeight='semibold' fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Dirección de envío:</Text>
                         </Box>
                         <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>
