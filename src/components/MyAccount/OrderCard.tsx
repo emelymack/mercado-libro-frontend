@@ -1,4 +1,4 @@
-import { Box, Text, IconButton } from "@chakra-ui/react"
+import { Box, Text, IconButton, useColorModeValue } from "@chakra-ui/react"
 import { ViewIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +17,7 @@ const OrderCard = ({id, createdAt} : OrderData) => {
       const replaceCharacter = (str : string, target : string, replacement : string) => str.split(target).join(replacement);
 
     return (
-        <Box display='flex' justifyContent={{ base: 'space-between', lg: 'center', xl: 'space-between'}} alignItems='center' bg='#D9D9D9CC' p='15px' borderRadius='md' flexWrap='wrap'>        
+        <Box display='flex' justifyContent={{ base: 'space-between', lg: 'center', xl: 'space-between'}} alignItems='center' bg={useColorModeValue('#D9D9D9CC', 'brand.blueLogo')} p='15px' borderRadius='md' flexWrap='wrap'>        
             <Text as='button' fontWeight='bold' fontSize={{ base: 'lg', lg: 'lg'}} _hover={{ opacity: '0.6', transition: 'opacity 0.4s ease-in-out' }}>
                 #Orden: {id.substring(0,4).toUpperCase()}
             </Text>
