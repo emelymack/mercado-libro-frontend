@@ -27,6 +27,7 @@ const SearchBar = () => {
         const response = await getAllBooksSearch({
           keyword: searchTerm,
           page: 0,
+          size: 20
         });
         setBooks(response.data);
         if (response.data.length > 0) {

@@ -3,6 +3,7 @@ export interface GetAllBooksParams {
   pageSize?: number;
   keyword?: string;
   page?: number;
+  size: number;
 }
 
 export interface GetNewBooksParams{
