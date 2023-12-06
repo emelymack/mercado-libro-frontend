@@ -43,6 +43,7 @@ const BookListSearch = () => {
           const response = await getAllBooksSearch({
             keyword: searchTerm,
             page: 0,
+            size: 100
           });
           setBooks(response.data);
         } catch (error) {
