@@ -1,4 +1,4 @@
-import { Grid, Text, Box, GridItem, Heading, Image, Flex, Spinner, Button } from "@chakra-ui/react"
+import { Grid, Text, Box, GridItem, Heading, Image, Flex, Spinner, Button, useColorModeValue, Icon } from "@chakra-ui/react"
 import CalendarIcon from '../../assets/icons/icon-calendar.svg'
 import InfoIcon from '../../assets/icons/icon-info.svg'
 import CardIcon from '../../assets/icons/icon-card.svg'
@@ -19,7 +19,13 @@ import { selectUser } from '../../context/slices/userSlice';
 import { useAppSelector } from "../../context/hooks";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import CustomLoading from "../CustomLoading/CustomLoading"
+import CustomLoading from "../CustomLoading/CustomLoading";
+import { FaCalendarCheck } from "react-icons/fa";
+import { FaCircleInfo } from "react-icons/fa6";
+import { FaCreditCard } from "react-icons/fa";
+import { FaMoneyBillWave } from "react-icons/fa";
+import { FaTruck } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 
 export interface Item {
   book: Book,
@@ -130,14 +136,15 @@ const Order = () => {
     )
 
     return(
-        <Flex w='min-content' m='0 auto' pt={{base: '13vh', md: '18vh', lg: '22vh', xl: '25vh'}} pb={{base: '7vh', md:  '12vh', 'xl': '15vh'}} flexDir={"column"} alignItems={"center"}>
+        <Flex w='min-content' m='0 auto' pt={{base: '13vh', md: '15vh', lg: '22vh', xl: '18vh'}} pb={{base: '7vh', md: '10vh', 'xl': '9vh'}} flexDir={"column"} alignItems={"center"}>
             <Box alignSelf='flex-start' mb='10px'>
                 <BreadcrumbNav order={code} size={{ base: 'sm', lg: 'sm'}}/>
             </Box>
-            <Heading color='brand.blueLogo' alignSelf='flex-start' fontSize={{ base: 'xl', lg: '2xl', '2xl': '3xl'}}>Orden #{code}</Heading>
+            <Heading color={useColorModeValue('brand.blueLogo', 'brand.greenLogo')} alignSelf='flex-start' fontSize={{ base: 'xl', lg: '2xl', '2xl': '3xl'}}>Orden #{code}</Heading>
             <Grid w={{ base: '85vw', '2xl': '65vw'}} templateRows='repeat(1, 1fr)' templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(7, 1fr)'}} gap={4} mt='10px'>
                 <GridItem rowSpan={2} colSpan={2} h='min-content'>
-                    <Text fontSize={{ lg: 'lg', '2xl': 'lg'}} pb='5px' borderBottom='1px solid #e6e6e6'>Detalles</Text>
+                    <Text fontSize={{ lg: 'lg', '2xl': 'lg'}} pb='8px'>Detalles</Text>
+                    <hr/>
 
                     { isInfoLoading ? (
                       <Box display={'flex'} justifyContent={'center'} mt={10}>
@@ -145,28 +152,40 @@ const Order = () => {
                       </Box>
                     ) : (
                       <>
-                        <Box display='flex' alignItems='center' m='5px 0'>
-                          <Image boxSize={4} src={CalendarIcon} mr='8px' alt="Calendar icon"/>
+                        <Box display='flex' alignItems='center' m='10px 0'>
+                          <Box mr='8px'>
+                            <FaCalendarCheck/>
+                          </Box>
                           <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Fecha: <b>{replaceCharacter(invoice?.date_created, '-', '/')}</b></Text>
                         </Box>
                         <Box display='flex' alignItems='center' m='5px 0'>
-                          <Image boxSize={4} src={InfoIcon} mr='8px' alt="Info icon"/>
+                          <Box mr='8px'>
+                            <FaCircleInfo/>
+                          </Box>
                           <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Estado: <b>{orderState}</b></Text>
                         </Box>
                         <Box display='flex' alignItems='center' m='5px 0'>
-                          <Image boxSize={4} src={CardIcon} mr='8px' alt="Card icon"/>
+                          <Box mr='8px'>
+                            <FaCreditCard/>
+                          </Box>
                           <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Pago: <b>{paymentState}</b></Text>
                         </Box>
                         <Box display='flex' alignItems='center' m='5px 0'>
-                          <Image boxSize={4} src={DollarIcon} mr='8px' alt="Dollar icon"/>
+                          <Box mr='8px'>
+                            <FaMoneyBillWave/>
+                          </Box>
                           <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Medio de pago: <b>{paymentMethod}</b></Text>
                         </Box>
                         <Box display='flex' alignItems='center' m='5px 0'>
-                          <Image boxSize={4} src={TruckIcon} mr='8px' alt="Truck icon"/>
+                          <Box mr='8px'>
+                            <FaTruck/>
+                          </Box>
                           <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Envío: <b>Pendiente</b></Text>
                         </Box>
                         <Box display='flex' alignItems='center' m='30px 0 5px 0'>
-                          <Image boxSize={4} src={LocationIcon} mr='8px' alt="Location icon"/>
+                          <Box mr='8px'>
+                            <FaLocationDot/>
+                          </Box>
                           <Text fontWeight='semibold' fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>Dirección de envío:</Text>
                         </Box>
                         <Text fontSize={{ base: 'sm', lg: 'sm', xl: 'md', '2xl': 'md'}}>
