@@ -20,6 +20,7 @@ const TableMobile = ({ items }: { items: Item[] }) => {
                     <Tr>
                         <Th fontWeight='semibold' fontSize={{base: 'md'}} color={useColorModeValue('black', 'white')} textTransform='capitalize'>Producto</Th>
                         <Th></Th>
+                        <Th></Th>
                     </Tr>
                 </Thead>
                 <Tbody>
