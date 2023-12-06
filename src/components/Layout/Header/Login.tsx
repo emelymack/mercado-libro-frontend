@@ -105,12 +105,13 @@ const Login = () => {
 
       if (response.statusCode === 200) {
         const token = response.data?.token;
-        reset();
+        reset();        
 
         response.data.user && localStorage.setItem('user', JSON.stringify({ 
           name: response.data.user.name, 
           lastName: response.data.user.lastName, 
-          id: response.data.user.id 
+          id: response.data.user.id,
+          email: data.email
         }))
 
         if (token) {
