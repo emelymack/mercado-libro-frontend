@@ -45,7 +45,12 @@ const Links = [
   },
 ];
 
-const Header = () => {
+interface Props {
+  isOpenLogin: boolean,
+  onOpenLogin: () => void,
+  onCloseLogin: () => void
+}
+const Header = ({ isOpenLogin, onOpenLogin, onCloseLogin }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isLogged = useAppSelector((state) => state.auth.isLogged);
   const isScrolling = useAppSelector((state) => state.scroll.isScrolling);
@@ -141,16 +146,11 @@ const Header = () => {
                         Administración
                       </MenuButton>
                     </Link>
-                    {/* <MenuList>
-                      <MenuItem>
-                        <Link to={`/admin/products`}>Productos</Link>
-                      </MenuItem>
-                    </MenuList> */}
                   </Menu>
                 )}
 
                 <Box me={5} ms={2}>
-                  {!isLogged ? <Login /> : <MyAccount />}
+                  {!isLogged ? <Login isOpen={isOpenLogin} onOpen={onOpenLogin} onClose={onCloseLogin} /> : <MyAccount />}
                 </Box>
               </HStack>
               <Box ml={0}>
