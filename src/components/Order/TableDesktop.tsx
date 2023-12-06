@@ -1,4 +1,4 @@
-import { Text, Table, Thead, Tr, Th, Tbody, Td, Image, TableContainer} from "@chakra-ui/react";
+import { Text, Table, Thead, Tr, Th, Tbody, Td, Image, TableContainer, useColorModeValue} from "@chakra-ui/react";
 import { Item } from './index';
 
 const TableDesktop = ({ items }: { items: Item[] }) => {
@@ -18,11 +18,11 @@ const TableDesktop = ({ items }: { items: Item[] }) => {
             <Table>
                 <Thead>
                     <Tr>
-                        <Th fontWeight='semibold' color='black' fontSize={{base: 'sm', '2xl': 'md'}} textTransform='capitalize'>Producto</Th>
+                        <Th fontWeight='semibold' color={useColorModeValue('black', 'white')} fontSize={{base: 'sm', '2xl': 'md'}} textTransform='capitalize'>Producto</Th>
                         <Th></Th>
-                        <Th fontSize={{base: 'sm', '2xl': 'md'}} color='black' fontWeight='semibold' textTransform='capitalize' textAlign='center'>Precio</Th>
-                        <Th fontSize={{base: 'sm', '2xl': 'md'}} color='black' fontWeight='semibold' textTransform='capitalize' textAlign='center'>Cantidad</Th>
-                        <Th fontSize={{base: 'sm', '2xl': 'md'}} color='black' fontWeight='semibold' textTransform='capitalize' textAlign='center'>Total</Th>
+                        <Th fontSize={{base: 'sm', '2xl': 'md'}} color={useColorModeValue('black', 'white')} fontWeight='semibold' textTransform='capitalize' textAlign='center'>Precio</Th>
+                        <Th fontSize={{base: 'sm', '2xl': 'md'}} color={useColorModeValue('black', 'white')} fontWeight='semibold' textTransform='capitalize' textAlign='center'>Cantidad</Th>
+                        <Th fontSize={{base: 'sm', '2xl': 'md'}} color={useColorModeValue('black', 'white')} fontWeight='semibold' textTransform='capitalize' textAlign='center'>Total</Th>
                     </Tr>
                 </Thead>
                 <Tbody>

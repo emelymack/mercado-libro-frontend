@@ -1,4 +1,4 @@
-import { Grid, GridItem,Heading, Box, Text, SimpleGrid, Button, Spinner, Link, Flex, Icon } from "@chakra-ui/react"
+import { Grid, GridItem,Heading, Box, Text, SimpleGrid, Button, Spinner, Link, Flex, Icon, useColorModeValue } from "@chakra-ui/react"
 import { FaShoppingCart } from "react-icons/fa";
 import OrderCard from "./OrderCard";
 import BreadcrumbNav from "./BreadCrumbNav";
@@ -113,7 +113,7 @@ export const MyAccount = () => {
             <Box alignSelf='flex-start' mb='10px'>
                 <BreadcrumbNav size={{ base: 'sm', lg: 'sm'}}/>
             </Box>
-            <Heading color='brand.blueLogo' alignSelf='flex-start' fontSize={{ base: 'xl', lg: '2xl', 'xl': '3xl'}}>
+            <Heading color={useColorModeValue('brand.blueLogo', 'brand.greenLogo')} alignSelf='flex-start' fontSize={{ base: 'xl', lg: '2xl', 'xl': '3xl'}}>
                 Mi cuenta
             </Heading>
             <Grid w="75vw" templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(5, 1fr)'}} gap={4} pt='20px'>
@@ -146,7 +146,7 @@ export const MyAccount = () => {
                                 </Text>
 
                                 { address != null ? (
-                                    <Box color='brand.blueLogo' as="button" fontWeight='semibold' fontSize={{base: 'md', xl: 'lg'}} onClick={() => handleEdit()} _hover={{ opacity: '0.6', transition: 'opacity 0.4s ease-in-out' }}>
+                                    <Box color={useColorModeValue('brand.blueLogo', 'brand.greenLogo')} as="button" fontWeight='semibold' fontSize={{base: 'md', xl: 'lg'}} onClick={() => handleEdit()} _hover={{ opacity: '0.6', transition: 'opacity 0.4s ease-in-out' }}>
                                         Editar
                                     </Box>
                                 ) : (
