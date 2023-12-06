@@ -24,7 +24,6 @@ import {
   ModalOverlay,
   VStack,
   useBreakpointValue,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { SecondaryButton } from "../../Button";
 import { useForm } from "react-hook-form";
@@ -55,7 +54,12 @@ const schema = z.object({
 
 type LoginDataForm = z.infer<typeof schema>;
 
-const Login = () => {
+interface Props {
+  isOpen: boolean,
+  onOpen: () => void,
+  onClose: () => void
+}
+const Login = ({isOpen, onOpen, onClose}: Props) => {
   const dispatch = useAppDispatch();
   const breakpointValue = useBreakpointValue({
     base: "base",
@@ -105,12 +109,13 @@ const Login = () => {
 
       if (response.statusCode === 200) {
         const token = response.data?.token;
-        reset();
+        reset();        
 
         response.data.user && localStorage.setItem('user', JSON.stringify({ 
           name: response.data.user.name, 
           lastName: response.data.user.lastName, 
-          id: response.data.user.id 
+          id: response.data.user.id,
+          email: data.email
         }))
 
         if (token) {
@@ -156,7 +161,6 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <SecondaryButton onClick={onOpen} text={"LOGIN"} />

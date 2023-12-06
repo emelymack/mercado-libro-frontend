@@ -19,6 +19,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 import { useNavigate } from "react-router-dom";
@@ -87,14 +88,14 @@ const MyAccount = () => {
         <MenuButton as={Button} bg="none" _focus={{ boxShadow: "none" }}>
           <Flex align="center">
             <Avatar size="sm" name={initials} mr={2} bg={"brand.greenLogo"} border={'2px solid'} borderColor={'white !important'} color={'white'} fontWeight={700} />
-            <Text color='brand.blueLogo'>Mi Cuenta</Text>
+            <Text color={useColorModeValue('brand.blueLogo', 'white')}>Mi Cuenta</Text>
             <ChevronDownIcon ms={1} color='brand.blueLogo'/>
           </Flex>
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={handleInfoClick}>Información</MenuItem>
+          <MenuItem color={useColorModeValue('brand.blueLogo', 'white')} onClick={handleInfoClick}>Información</MenuItem>
           <MenuDivider />
-          <MenuItem onClick={onLogoutClick}>Cerrar sesión</MenuItem>
+          <MenuItem color={useColorModeValue('brand.blueLogo', 'white')} onClick={onLogoutClick}>Cerrar sesión</MenuItem>
         </MenuList>
       </Menu>
       {isLogoutModalOpen && (
