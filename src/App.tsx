@@ -57,8 +57,8 @@ function App() {
   }, []);
 
   return (
-    <div className="content">
-      <Layout>
+    <Layout>
+      <div className="content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<RegisterUser />} />
@@ -86,8 +86,8 @@ function App() {
           <Route path="/bestsellers" element={<BestsellersPage />} />
           <Route path="/novedades" element={<NewsPage />} />
         </Routes>
-      </Layout>
-    </div>
+      </div>
+    </Layout>
   );
 }
 
