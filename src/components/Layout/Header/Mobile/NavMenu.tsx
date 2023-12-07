@@ -2,19 +2,20 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  Link,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   Stack,
+
 } from "@chakra-ui/react";
 import NavLink from "../NavLink";
 import Login from "../Login";
 import MyAccount from "../MyAccount";
+import { Link, Link as LinkTo } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Category, getAllCategory } from "../../../../services/BookService";
+
 
 interface Props {
   Links: {
@@ -28,13 +29,19 @@ interface Props {
 }
 const NavMenu = ({ Links, isLogged, isOpenLogin, onOpenLogin, onCloseLogin }: Props) => {
   const [categoria, setCategoria] = useState<Category[]>([]);
-
+  const [isAdmin, setIsAdmin] = useState(false);
+ 
+  
   useEffect(() => {
     getAllCategory().then((res) => {
       console.log(res);
       setCategoria(res);
     });
   }, []);
+
+useEffect(() => {
+    setIsAdmin(localStorage.getItem("isLoggedAdmin") === "true");
+  }, [isLogged]);
 
   return (
     <Box pb={4} display={{ lg: "none" }} pt={8}>
@@ -52,12 +59,11 @@ const NavMenu = ({ Links, isLogged, isOpenLogin, onOpenLogin, onCloseLogin }: Pr
 
           <MenuList>
             {categoria?.map((item) => (
+               <Link to={`/category/${item?.name}`}>
               <MenuItem>{item?.name}</MenuItem>
+              </Link>
             ))}
-            {/*  <MenuItem>Link 1</MenuItem>
-            <MenuItem>Link 2</MenuItem>
-            <MenuDivider />
-            <MenuItem>Link 3</MenuItem> */}
+          
           </MenuList>
         </Menu>
         {Links.map((link) => (
