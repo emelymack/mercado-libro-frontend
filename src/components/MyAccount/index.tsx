@@ -27,8 +27,6 @@ export const MyAccount = () => {
     const [addressEdited, setAddressEdited] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState(true);
 
-    //let user = localStorage.getItem("user");
-    //if (user != null) { user = JSON.parse(user); }
     const user = useAppSelector(selectUser);
     const email = decodeToken()?.sub;
 
@@ -41,7 +39,6 @@ export const MyAccount = () => {
     };
 
     const checkLoadingState = () => {
-        console.log(isOrdersLoading, isAddressLoading)
         if (!isAddressLoading && !isOrdersLoading) {
             setIsLoading(false);
         }
@@ -109,7 +106,7 @@ export const MyAccount = () => {
         );
 
     return (
-        <Box m='0 auto' w='min-content' pt={{base: '20vh', lg: '25vh'}} pb={{base: '12vh', '2xl': '12vh'}} display={"flex"} flexDir={"column"} alignItems={"center"} >
+        <Box m='0 auto' w='min-content' pt={{base: '100px', md: '150px'}} pb={{base: '100px'}} display={"flex"} flexDir={"column"} alignItems={"center"} >
             <Box alignSelf='flex-start' mb='10px'>
                 <BreadcrumbNav size={{ base: 'sm', lg: 'sm'}}/>
             </Box>
