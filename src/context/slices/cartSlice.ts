@@ -3,7 +3,7 @@ import { CartItem } from "../../types/product";
 import { getBookById } from "../../services/BookService";
 
 interface ShippingProps {
-  type: 'ENVIO_DOMICILIO' | 'RETIRO_SUCURSAL' | null,
+  type: 'CORREO_ARGENTINO' | 'PICK_UP' | null,
   price: number,
   postalCode: number,
   date: string

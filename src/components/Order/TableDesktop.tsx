@@ -1,5 +1,6 @@
 import { Text, Table, Thead, Tr, Th, Tbody, Td, Image, TableContainer, useColorModeValue} from "@chakra-ui/react";
 import { Item } from './index';
+import { formatPrice } from "../Cart/PriceTag";
 
 const TableDesktop = ({ items }: { items: Item[] }) => {
     const formatNumberWithDots = (n : number) => {
@@ -34,9 +35,9 @@ const TableDesktop = ({ items }: { items: Item[] }) => {
                          <Td pl={0}>
                              <Text fontSize={{base: 'sm', '2xl': 'md'}} whiteSpace="normal" wordBreak="break-word" fontWeight='semibold'>{`${item.book.title}, ${item.book.authors.map(author => author.name).join(', ')}`}</Text>
                          </Td>
-                         <Td fontSize={{base: 'sm', '2xl': 'md'}} textAlign='center'>${formatNumberWithDots(item.book.price)}</Td>
+                         <Td fontSize={{base: 'sm', '2xl': 'md'}} textAlign='center'>{formatPrice(item.book.price)}</Td>
                          <Td fontSize={{base: 'sm', '2xl': 'md'}} textAlign='center'>{item.invoice.quantity}</Td>
-                         <Td fontSize={{base: 'sm', '2xl': 'md'}} textAlign='center'>${formatNumberWithDots(item.invoice.total)}</Td>
+                         <Td fontSize={{base: 'sm', '2xl': 'md'}} textAlign='center'>{formatPrice(item.book.price * item.invoice.quantity)}</Td>
                      </Tr>
                     ))}
                 </Tbody>

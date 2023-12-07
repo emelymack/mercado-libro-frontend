@@ -8,7 +8,7 @@ interface CheckoutDataProps {
   province: string,
   phoneNumber: string,
   shippingDate?: string,
-  shippingType: 'ENVIO_DOMICILIO' | 'RETIRO_SUCURSAL' | null,
+  shippingType: 'CORREO_ARGENTINO' | 'PICK_UP' | null,
   paymentType: string
 }
 interface Props {

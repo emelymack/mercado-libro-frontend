@@ -57,7 +57,7 @@ const PaymentData = ({ handlePaymentData, email, address, city, province }: Prop
         <Divider borderWidth={'1px'} opacity={.75} />
         <Flex alignItems={"center"} p={5} fontSize={'lg'}>
           <Image src={shippingIcon} w={'40px'} h={'40px'} me={5} />
-          {cartData.shipping.type === 'ENVIO_DOMICILIO' ? (
+          {cartData.shipping.type === 'CORREO_ARGENTINO' ? (
             <>
               Llega el {cartData.shipping.date}
               <br/>

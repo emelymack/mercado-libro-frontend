@@ -22,8 +22,11 @@ interface Props {
     url: string;
   }[];
   isLogged: boolean;
+  isOpenLogin: boolean,
+  onOpenLogin: () => void,
+  onCloseLogin: () => void
 }
-const NavMenu = ({ Links, isLogged }: Props) => {
+const NavMenu = ({ Links, isLogged, isOpenLogin, onOpenLogin, onCloseLogin }: Props) => {
   const [categoria, setCategoria] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -62,7 +65,7 @@ const NavMenu = ({ Links, isLogged }: Props) => {
             {link.name}
           </NavLink>
         ))}
-        {!isLogged ? <Login /> : <MyAccount />}
+        {!isLogged ? <Login isOpen={isOpenLogin} onOpen={onOpenLogin} onClose={onCloseLogin} /> : <MyAccount />}
       </Stack>
     </Box>
   );

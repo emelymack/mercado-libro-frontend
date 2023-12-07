@@ -13,7 +13,7 @@ export interface IShippingData {
   city: string,
   province: string,
   dniOrCuil: number,
-  shippingType: 'RETIRO_SUCURSAL' | 'ENVIO_DOMICILIO',
+  shippingType: 'PICK_UP' | 'CORREO_ARGENTINO',
   shippingPrice: number
 }
 

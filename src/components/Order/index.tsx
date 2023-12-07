@@ -1,10 +1,4 @@
-import { Grid, Text, Box, GridItem, Heading, Image, Flex, Spinner, Button, useColorModeValue, Icon } from "@chakra-ui/react"
-import CalendarIcon from '../../assets/icons/icon-calendar.svg'
-import InfoIcon from '../../assets/icons/icon-info.svg'
-import CardIcon from '../../assets/icons/icon-card.svg'
-import DollarIcon from '../../assets/icons/icon-dollar.svg'
-import TruckIcon from '../../assets/icons/icon-truckk.svg'
-import LocationIcon from '../../assets/icons/icon-loc.svg'
+import { Grid, Text, Box, GridItem, Heading, Flex, Spinner, Button, useColorModeValue } from "@chakra-ui/react"
 import BreadcrumbNav from "../MyAccount/BreadCrumbNav"
 import TableDesktop from "./TableDesktop"
 import { useWindowSize } from "@uidotdev/usehooks";
@@ -13,10 +7,8 @@ import { useEffect, useState } from "react";
 import { Invoice, getInvoiceById, InvoiceItem } from "../../services/InvoiceService";
 import { getBookById } from "../../services/BookService";
 import { Book } from "../../types/product";
-import { selectId } from "../../context/slices/invoiceSlice";
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../context/slices/userSlice';
-import { useAppSelector } from "../../context/hooks";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import CustomLoading from "../CustomLoading/CustomLoading";
@@ -26,6 +18,7 @@ import { FaCreditCard } from "react-icons/fa";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { FaTruck } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import { formatPrice } from "../Cart/PriceTag";
 
 export interface Item {
   book: Book,
@@ -228,14 +221,14 @@ const Order = () => {
                       <b>Costo de envío (retiro en sucursal Av. Fantasia 111, Buenos Aires)</b>: $0
                   </Text> 
                 )}
-                    <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}}><b>Subtotal:</b> ${formatNumberWithDots(invoice?.subTotal)}</Text>
+                    <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}}><b>Subtotal:</b>{formatPrice(invoice?.subTotal)}</Text>
                     </Box>
 
                     { size.width && size.width < 550 ? '' : (
                       <Button bg='brand.greenLogo' _hover={{ backgroundColor: 'brand.blueLogo' }} textColor='white' size={{ base: 'sm', lg: 'md'}} onClick={() => handleReturn()}>Volver</Button>
                     )}
                     </Flex>
-                    <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}} fontWeight='semibold' alignSelf='center'>Total: ${formatNumberWithDots(invoice?.total)}</Text>
+                    <Text fontSize={{ base: 'sm', lg: 'md', xl: 'md', '2xl': 'md'}} fontWeight='semibold' alignSelf='center'>Total:{formatPrice(invoice?.total)}</Text>
                     { size.width && size.width < 550 ?  (
                       <Button bg='brand.greenLogo' _hover={{ backgroundColor: 'brand.blueLogo' }} mt={5} textColor='white' size={{ base: 'sm', lg: 'md'}} onClick={() => handleReturn()}>Volver</Button>
                     ) : ''}

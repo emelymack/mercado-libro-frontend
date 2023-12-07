@@ -31,16 +31,8 @@ export const CartOrderSummary = ({onCloseCart}: Props) => {
   const [ errorModalTxt, setErrorModalTxt ] = useState('')
   const dispatch = useAppDispatch()
 
-  const calcSubtotal = () => {
-    let subtotal = 0
-    cartState.items?.map((item) => {
-      subtotal += item.product.price * item.quantity
-    })
-    return subtotal
-  }
-
   const calcTotal = () => {
-    let total = calcSubtotal()
+    let total = calcSubtotal(cartState.items)
 
     total += cartState.shipping.price
     return total

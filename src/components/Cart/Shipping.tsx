@@ -6,7 +6,7 @@ import { setShippingData } from '../../context/slices/cartSlice'
 
 const Shipping = () => {
   const [results, setResults ] = useState({isLoading: false, isShown: false})
-  const [shippingType, setShippingType] = useState<'ENVIO_DOMICILIO'| 'RETIRO_SUCURSAL' | null>('RETIRO_SUCURSAL')
+  const [shippingType, setShippingType] = useState<'CORREO_ARGENTINO'| 'PICK_UP' | null>('PICK_UP')
   const [ postalCode, setPostalCode ] = useState('')
   const [ displayError, setDisplayError ] = useState<'block' | 'none'>('none')
   const dispatch = useAppDispatch()
@@ -35,7 +35,7 @@ const Shipping = () => {
   const shippingDate = dayOfWeek + ' ' + (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month
 
   useEffect(()=> {
-    const price = shippingType === 'ENVIO_DOMICILIO' ? 2800 : 0
+    const price = shippingType === 'CORREO_ARGENTINO' ? 2800 : 0
     dispatch(setShippingData({ type: shippingType, price: price, postalCode: Number(postalCode), date: shippingDate }))
   }, [shippingType])
 
@@ -56,7 +56,7 @@ const Shipping = () => {
           {results.isLoading && <Flex justifyContent={'center'}><Spinner alignSelf={'center'} /></Flex>}
           {results.isShown && (
             <RadioGroup onChange={setShippingType} value={shippingType} display={'flex'} gap={5} flexDir={'column'}>
-              <Radio size='lg' value='ENVIO_DOMICILIO' name='shippingOptions' colorScheme='auto' bg='brand.greenLogo' borderColor={'brand.greenLogo'}>
+              <Radio size='lg' value='CORREO_ARGENTINO' name='shippingOptions' colorScheme='auto' bg='brand.greenLogo' borderColor={'brand.greenLogo'}>
                 <Box ms={1}>
                   <HStack display={'flex'} justifyContent={'space-between'} w={'338px'}>
                     <Box fontSize={14} fontWeight={500}>
@@ -71,7 +71,7 @@ const Shipping = () => {
                   <Text fontSize={'xs'} color={'gray.00'}>Llega el {shippingDate}</Text>
                 </Box>
               </Radio>
-              <Radio size='lg' value='RETIRO_SUCURSAL' name='shippingOptions' colorScheme='auto' bg='brand.greenLogo' borderColor={'brand.greenLogo'} defaultChecked>
+              <Radio size='lg' value='PICK_UP' name='shippingOptions' colorScheme='auto' bg='brand.greenLogo' borderColor={'brand.greenLogo'} defaultChecked>
                 <Box ms={1}>
                   <HStack display={'flex'} justifyContent={'space-between'} w={'338px'}>
                     <Box fontSize={14} fontWeight={500}>

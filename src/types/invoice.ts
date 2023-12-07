@@ -8,7 +8,6 @@ export interface InvoiceData {
 }
 
 export interface Invoice {
-  total: number,
   address: {
     city: string,
     department?: string,
@@ -26,7 +25,11 @@ export interface Invoice {
   tax: number,
   deadline: string,
   payment_method: 'MERCADO_PAGO' | 'TRANSFER',
-  paid: boolean
+  paid: boolean,
+  shipping: number,
+  shipping_method: 'CORREO_ARGENTINO' | 'PICK_UP',
+  subTotal: number,
+  total: number,
 }
 export interface InvoiceItem {
   book_id: number,

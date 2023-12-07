@@ -27,7 +27,7 @@ const CartData = () => {
         </Flex>
         <Flex alignItems={"center"} justifyContent={"space-between"} my={4}>
           <Text color={useColorModeValue('brand.blueLogo', 'white')} fontWeight={500}>Costo de envío:</Text>
-          <Text color={useColorModeValue('brand.blueLogo', 'white')} fontWeight={500}>{cartData.shipping.type === 'ENVIO_DOMICILIO' ? formatPrice(cartData.shipping.price) : 'Gratis'}</Text>
+          <Text color={useColorModeValue('brand.blueLogo', 'white')} fontWeight={500}>{cartData.shipping.type === 'CORREO_ARGENTINO' ? formatPrice(cartData.shipping.price) : 'Gratis'}</Text>
         </Flex>
         <Flex alignItems={"center"} justifyContent={"space-between"} my={4}>
           <Text color={useColorModeValue('brand.blueLogo', 'white')} fontWeight={700} fontSize={'lg'}>Total:</Text>
