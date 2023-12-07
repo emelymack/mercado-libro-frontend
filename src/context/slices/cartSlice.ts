@@ -5,7 +5,7 @@ import { getBookById } from "../../services/BookService";
 interface ShippingProps {
   type: 'CORREO_ARGENTINO' | 'PICK_UP' | null,
   price: number,
-  postalCode: number,
+  postalCode: string,
   date: string
 }
 interface Props {
@@ -18,7 +18,7 @@ const initialState: Props = {
 // @ts-ignore  
   items: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [], 
   total: 0, 
-  shipping: { type: null, price: 0, postalCode: 0, date: '' },
+  shipping: { type: null, price: 0, postalCode: '', date: '' },
 }
 
 interface PropsFetchProduct {
@@ -55,13 +55,13 @@ export const cartSlice = createSlice({
     },
 
     clearShippingData: (state) => {
-      state.shipping = { type: null, price: 0, postalCode: 0, date: '' }
+      state.shipping = { type: null, price: 0, postalCode: '', date: '' }
     },
 
     clearCartData: (state) => {
       localStorage.removeItem('cart')
       state.items = []
-      state.shipping = { type: null, price: 0, postalCode: 0, date: '' },
+      state.shipping = { type: null, price: 0, postalCode: '', date: '' },
       state.total = 0
     }
   },

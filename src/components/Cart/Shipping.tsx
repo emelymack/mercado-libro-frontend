@@ -12,10 +12,10 @@ const Shipping = () => {
   const dispatch = useAppDispatch()
 
   const handleSearch = () => {
-    if(postalCode.length >= 4) {
+    if(postalCode.length >= 4 && postalCode.length <= 8) {
       setResults({isShown:false, isLoading: true})
       setDisplayError('none')
-      dispatch(setShippingData({ type: shippingType, price: 0, postalCode: Number(postalCode), date: shippingDate }))
+      dispatch(setShippingData({ type: shippingType, price: 0, postalCode: postalCode, date: shippingDate }))
       setTimeout(()=> {
         setResults({isLoading:false, isShown:true})
       }, 1500)
@@ -35,8 +35,10 @@ const Shipping = () => {
   const shippingDate = dayOfWeek + ' ' + (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month
 
   useEffect(()=> {
+    console.log(postalCode);
+    
     const price = shippingType === 'CORREO_ARGENTINO' ? 2800 : 0
-    dispatch(setShippingData({ type: shippingType, price: price, postalCode: Number(postalCode), date: shippingDate }))
+    dispatch(setShippingData({ type: shippingType, price: price, postalCode: postalCode, date: shippingDate }))
   }, [shippingType])
 
   return (
