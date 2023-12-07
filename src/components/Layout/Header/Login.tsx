@@ -76,13 +76,14 @@ export const Login = ({isOpen, onOpen, onClose}: Props) => {
     resolver: zodResolver(schema),
   });
 
+  const shouldShowText = useBreakpointValue({ base: false, md: true });
   const redirectToLoginProvider = async (provider: string) => {
     setIsLoading(true);
     setLocalStorageItem("currentUrl", window.location.href);
-    
-    location.assign(`${BASE_URL}api/auth/oauth/${provider}`)
-    
-    location.assign(`${BASE_URL}api/auth/oauth/${provider}`)
+
+    location.assign(`${BASE_URL}api/auth/oauth/${provider}`);
+
+    location.assign(`${BASE_URL}api/auth/oauth/${provider}`);
   };
 
   const redirectToFacebook = () => {
@@ -203,7 +204,7 @@ export const Login = ({isOpen, onOpen, onClose}: Props) => {
                     flexGrow={1}
                     onClick={redirectToGoogle}
                   >
-                    Iniciar sesión con{" "}
+                    {shouldShowText && "Iniciar sesión con "}
                     <Image src={googleLogo} w={"60px"} ms={2} mt={1} />
                   </Button>
                   <Button
@@ -214,7 +215,7 @@ export const Login = ({isOpen, onOpen, onClose}: Props) => {
                     flexGrow={1}
                     onClick={redirectToFacebook}
                   >
-                    Iniciar sesión con{" "}
+                    {shouldShowText && "Iniciar sesión con "}
                     <Image src={facebookLogo} w={"70px"} ms={2} />
                   </Button>
                 </Flex>
