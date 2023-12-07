@@ -69,7 +69,7 @@ const SearchBar = () => {
       <Modal isOpen={isOpenSearch} onClose={onCloseSearch}>
         <ModalOverlay />
         <ModalContent bg={'gray.800'} w={{base: '90vw'}}>
-          <ModalHeader color={'brand.violetLogo'} pe={{base: 20}}>Buscar por título, autor o categoría</ModalHeader>
+          <ModalHeader color={'brand.violetLogo'} pe={{base: 20}}>Buscar por título o autor</ModalHeader>
           <ModalCloseButton color={'brand.violetLogo'} fontSize={'18px'} _hover={{bg: 'brand.violetLogo25'}} />
           <ModalBody pb={5} py={5}>
             <form onSubmit={onSubmit} style={{ display: 'flex', alignItems: 'center'}}>

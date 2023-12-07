@@ -7,6 +7,7 @@ import { Title } from "../../Title";
 import CustomInput from "../../Input/CustomInput";
 import { useAppSelector } from "../../../context/hooks";
 import { formatPrice } from "../../Cart/PriceTag";
+import { useEffect } from "react";
 
 interface Props {
   handleShippingData: (data: IShippingData) => void,
@@ -15,7 +16,7 @@ interface Props {
 const ShippingData = ({handleShippingData}: Props) => {
   const cartData = useAppSelector((state) => state.cart)
   const userData = useAppSelector((state) => state.user)
-  const { control, formState: { errors }, handleSubmit } = useForm<IShippingData>({
+  const { control, formState: { errors }, handleSubmit, setValue } = useForm<IShippingData>({
     resolver: zodResolver(shippingSchema),
   });
 
@@ -25,6 +26,12 @@ const ShippingData = ({handleShippingData}: Props) => {
     md: "md",
     lg: "lg",
   });
+
+  useEffect(() => {
+    if(userData.email) {
+      setValue("email", userData.email)
+    } 
+  }, [])
   
 
   const onSubmit: SubmitHandler<IShippingData> = (data) => {
@@ -61,13 +68,13 @@ const ShippingData = ({handleShippingData}: Props) => {
             <Box ms={1}>
               <HStack display={'flex'} justifyContent={'space-between'} alignItems={"center"}>
                 <Box fontWeight={500}>
-                  { cartData.shipping.type === 'ENVIO_DOMICILIO' ? 'Envío a domicilio' : 'Retiro por sucursal' }
+                  { cartData.shipping.type === 'CORREO_ARGENTINO' ? 'Envío a domicilio' : 'Retiro por sucursal' }
                 </Box>
                 <Box  color={useColorModeValue('gray.700','whiteAlpha.700')}>
                   { cartData.shipping.price > 0 ? formatPrice(cartData.shipping.price) : 'Gratis' }
                 </Box>
               </HStack>
-              <Text fontSize={'md'} color={'gray.00'}>{ cartData.shipping.type === 'ENVIO_DOMICILIO' ? `Llega el ${cartData.shipping.date}` : 'Av. Fantasía 111, Buenos Aires' }</Text>
+              <Text fontSize={'md'} color={'gray.00'}>{ cartData.shipping.type === 'CORREO_ARGENTINO' ? `Llega el ${cartData.shipping.date}` : 'Av. Fantasía 111, Buenos Aires' }</Text>
             </Box>
           </Radio>
         </Box>

@@ -76,7 +76,7 @@ const CheckoutInfo = () => {
 								<Image src={TruckIcon} alt="Location icon" w={{ base: '25px', xl: '35px' }} />
 							</Box>
 							<Text>
-								{ checkoutData.shippingType === 'ENVIO_DOMICILIO' ? (
+								{ checkoutData.shippingType === 'CORREO_ARGENTINO' ? (
 									<>
 										<Text fontWeight={500}>Envío a domicilio</Text>
 										Llega el {checkoutData.shippingDate}

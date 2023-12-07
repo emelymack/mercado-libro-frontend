@@ -14,6 +14,7 @@ import { saveOrder } from "../../services/CheckoutService";
 import CustomLoading from "../CustomLoading/CustomLoading";
 import ModalError from "../Modal/ModalError";
 import MercadoPago from "./MercadoPago";
+import { calcSubtotal } from "../../utils/functions";
 
 const defaultValues = {
   shippingData: {
@@ -100,7 +101,6 @@ const CheckoutPage = () => {
               zipCode: String(cartData.shipping.postalCode)
             },
             date_created: new Date(),
-            total: cartData.total,
             tax: 0.0,
             user_id: userData.id,
             deadline: cartData.shipping.date,
@@ -108,7 +108,11 @@ const CheckoutPage = () => {
             dni: formData.paymentData.cardOwnerDocument,
             notes: formData.paymentData.orderNotes,
             paid: false,
-            payment_method: formData.paymentData.paymentMethod
+            payment_method: formData.paymentData.paymentMethod,
+            shipping: formData.shippingData.shippingPrice,
+            shipping_method: formData.shippingData.shippingType,
+            subTotal: calcSubtotal(cartData.items),
+            total: cartData.total,
           },
           invoice_item: cartData.items.map((item) => ({
             book_id : item.product.id,
