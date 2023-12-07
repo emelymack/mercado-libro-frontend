@@ -4,6 +4,7 @@ import { ReactNode } from 'react'
 import { Title } from "../Title"
 import { formatDateMonthYYYY, googleSearch } from "../../utils/functions"
 import NotFoundImg from "../../assets/img/403_2.jpg"
+import { formatPrice } from "../Cart/PriceTag"
 
 interface Props {
   book: Book,
@@ -37,7 +38,7 @@ const ProductData = ({book, children}: Props) => {
 
         {/* Precio */}
         <Text color={useColorModeValue('brand.blueLogo', '#b9b6ff')} fontWeight={800} fontSize={'4xl'} mt={{base: 2, lg:8}} mb={6}>
-          ${book.price}
+          {formatPrice(book.price)}
         </Text>
 
         {children}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Flex, Icon, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react";
+import { Button, Icon, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react";
 import searchIcon from "../../assets/icons/icon-search.svg";
 // import closeIcon from "../../assets/icons/icon-xmark.svg"
 import { getAllBooksSearch } from "../../services/SearchServiceBook";

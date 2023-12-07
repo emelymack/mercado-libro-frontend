@@ -3,16 +3,6 @@ import { Item } from './index';
 import { formatPrice } from "../Cart/PriceTag";
 
 const TableDesktop = ({ items }: { items: Item[] }) => {
-    const formatNumberWithDots = (n : number) => {
-        const numberString = String(n).replace(/\./g, '');
-    
-        const parts = [];
-        for (let i = numberString.length; i > 0; i -= 3) {
-            parts.unshift(numberString.slice(Math.max(i - 3, 0), i));
-        }
-    
-        return parts.join('.');
-      }
 
     return(
         <TableContainer>
