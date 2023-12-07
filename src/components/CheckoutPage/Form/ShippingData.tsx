@@ -42,6 +42,7 @@ const ShippingData = ({handleShippingData}: Props) => {
           name="email" 
           placeholder={breakpointValue === "base" ? "Correo electrónico" : "Dirección de correo electrónico"} 
           control={control} 
+          value={userData.email}
           type="email" 
           mt={2} 
         />

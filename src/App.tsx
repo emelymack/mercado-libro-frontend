@@ -26,6 +26,7 @@ import Oauth from "./components/Oauth/Oauth";
 import Order from "./components/Order";
 import MyAccountInfo from "./components/MyAccount";
 import InvoiceManager from "./components/Invoice/manager";
+import BestsellersPage from "./components/BestsellersPage/BestsellersPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -43,8 +44,7 @@ function App() {
       dispatch(login());
     }
     if (storedUser) {
-      dispatch(setUser({ name: storedUser.name, lastName: storedUser.lastName, id: storedUser.id }));
-      dispatch(setUser({ name: storedUser.name, lastName: storedUser.lastName, id: storedUser.id }));
+      dispatch(setUser({ name: storedUser.name, lastName: storedUser.lastName, id: storedUser.id, email: storedUser.email }));
     }
   }, [loggedState]);
 
@@ -83,7 +83,8 @@ function App() {
           <Route path="/successful" element={<SuccesfulPurchase />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/questions" element={<QuestionsPage />} />
-          <Route path="/bestsellers" element={<NewsPage />} />
+          <Route path="/bestsellers" element={<BestsellersPage />} />
+          <Route path="/novedades" element={<NewsPage />} />
         </Routes>
       </Layout>
     </div>

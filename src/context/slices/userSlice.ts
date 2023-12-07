@@ -4,6 +4,7 @@ interface UserState {
   name: string;
   lastName: string;
   id: number;
+  email: string
 }
 
 const user = JSON.parse(localStorage.getItem('user'))
@@ -11,7 +12,8 @@ const user = JSON.parse(localStorage.getItem('user'))
 const initialState: UserState = {
   name: user?.name,
   lastName: user?.lastName,
-  id: user?.id
+  id: user?.id,
+  email: user?.email
 };
 
 const userSlice = createSlice({
@@ -20,11 +22,12 @@ const userSlice = createSlice({
   reducers: {
     setUser: (
       state,
-      action: PayloadAction<{ name: string; lastName: string, id: number }>
+      action: PayloadAction<UserState>
     ) => {
       state.id = action.payload.id
       state.name = action.payload.name;
       state.lastName = action.payload.lastName;
+      state.email = action.payload.email
     },
     logoutUser:( state ) => {
       state.id = initialState.id,
