@@ -727,7 +727,7 @@ const ProductManager = () => {
                           {...register("description")}
                           size="sm"
                           borderRadius="6px"
-                          maxLength={100}
+                          maxLength={400}
                         />
                         {errors.description && (
                           <FormErrorMessage fontSize="xs" color="red">
